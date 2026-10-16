@@ -13,14 +13,14 @@ concurrency:
 jobs:
   collect:
     if: github.repository == 'ejronin/1ADAAR' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     environment: github-pages
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: true
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Run tests before collector
@@ -41,13 +41,13 @@ jobs:
             git push origin HEAD:main
           fi
       # GITHUB_TOKEN commits do not fire push-triggered workflows. Deploy here too.
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
         if: ${{ success() }}
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         if: ${{ success() }}
         with:
           path: ./docs
       - name: Deploy published snapshot
         if: ${{ success() }}
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
