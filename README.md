@@ -91,3 +91,11 @@ The hero and header link to the existing community invitation. `docs/assets/bran
 ## Official WARDOGS hero photography
 
 The Match Intelligence and Player Intelligence hero backgrounds use the user-supplied WARDOGS official press-pack helicopter screenshot. It is color-graded, cropped and darkened for readable 1ADAAR text without inventing aircraft, uniforms, or other game assets. Source artwork credited to WARDOGS/BULKHEAD. The photograph is part of the GitHub Pages static assets; no external image host or paid service is required.
+
+## WARDOGS branding and Discord one-time smoke test
+
+The homepage and Player Intelligence view show the official **WARDOGS: Tactical All Out Warfare** fullmark alongside community 1AD identity. The game logo was supplied by the community owner and rendered from the original official SVG into a local optimized PNG. Player statistics remain unchanged.
+
+To validate Discord delivery without waiting for live game data, open **Actions → Verify Discord match recap webhook → Run workflow**. The workflow uses the pre-existing repository secret `DISCORD_MATCH_WEBHOOK`, posts **one clearly marked TEST** embed, and prints only Discord's acknowledgment message ID (not the secret). It never writes to match history or the delivery ledger. This workflow also performs one automatic test when first merged with the designated smoke-test commit title; subsequent routine pushes do not repeat it.
+
+**Public index capacity:** WARCON publicly exposes 20 pages of 50 leaderboard rows, so 1ADAAR's lookup indexes a maximum of 1,000 distinct ranked player entries. It is unrelated to Discord member counts or server capacity. Players ranked outside that public cap are not automatically searchable. A 60-day inactivity deletion would erase useful player lookup history and would not remove WARCON's public API cap, so **no destructive 60-day purge has been enabled**. Historical completed-match records remain bounded by the existing match archive policy.
