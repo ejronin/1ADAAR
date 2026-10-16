@@ -109,3 +109,10 @@ To validate Discord delivery without waiting for live game data, open **Actions 
 - **Test a card:** GitHub Actions → Verify Discord match recap webhook → Run workflow. This posts one boldly labeled **TEST / FICTIONAL DATA** card using PlayerOne, PlayerTwo, and PlayerThree. It does not touch the production match ledger or leaderboard.
 - **PlayerOne preview:** Player Intelligence → **Preview PlayerOne demo stats**. The separately stored \`docs/data/demo-player.json\` includes fictional example K/D, match history, and map/faction results to exercise the *real dossier UI*. It never enters \`players.json\`, \`matches.json\`, the collector or Discord production posts.
 - Tests cover PNG generation, multipart payload, test labeling, and fixture separation.
+
+## UI/navigation and complete-match delivery (October 2026)
+
+- The main **Match reports** navigation opens the existing archive. Its redundant **Explore match reports** hero button was removed. Player Lookup stays in the navigation rather than appearing again as an extra hero text link.
+- On the homepage, **Latest match report** is intentionally hidden until the public WARCON match archive contains a completed match. When available it opens that specific match dossier; a direct GitHub Pages `#match-<id>` link also opens the same dossier from Discord.
+- A completed-match Discord image embeds its main title link to the specific **1ADAAR GitHub Pages dossier**; the source WARCON URL remains visible as a secondary provenance link. Webhook posts only for new matches containing WARCON `endedAt` plus verified final faction scores, at the next scheduled collector pass (typically up to ten minutes, though GitHub scheduling can be delayed). A manual smoke test is the only exception, prominently marked TEST.
+- At narrow viewport widths, all four unique navigation items are accessible in a compact two-column menu; the previous rule that hid inactive navigation is overridden. Tables can scroll horizontally on small screens while card layouts reflow to one or two columns. The main menu remains keyboard accessible without JavaScript.

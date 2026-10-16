@@ -12,3 +12,29 @@
 /* Static, full-featured PlayerOne demo accessible even when WARCON or browser JavaScript fails. */
 .demo-button{text-decoration:none}.demo-button:focus-visible,.new-search:focus-visible{outline:2px solid #a2f3b4;outline-offset:3px}
 #dossier .demo-warning{display:block}
+
+/* Phase 2.5: keep player lookup and dossier usable at phone widths. */
+@media(max-width:720px){
+  .player-hero{min-height:0}
+  .player-hero .hero-text{padding:30px 22px}
+  .player-search{margin-top:16px}
+  .player-search input,.player-search button{min-height:46px}
+  .player-hero .search-footnote{line-height:1.65}
+  .profile-header{align-items:flex-start;flex-wrap:wrap}
+  .profile-header .new-search{margin-left:auto}
+  .profile-columns{grid-template-columns:minmax(0,1fr)}
+  .profile-panel{padding:15px}
+  .table-scroll{overflow-x:auto;max-width:100%}
+  .recent-table{min-width:540px}
+  .metric-grid{gap:8px}
+  .metric-tile{padding:12px;min-width:0}
+  .metric-tile strong{font-size:clamp(24px,7vw,32px);overflow-wrap:anywhere}
+  .breakdown-row{grid-template-columns:minmax(0,1fr) 57px 51px}
+}
+@media(max-width:380px){
+  .player-hero .hero-text{padding:25px 17px}
+  .profile-header{gap:9px}
+  .profile-heading{flex-basis:calc(100% - 70px)}
+  .profile-header .new-search{margin-top:7px}
+  .metric-tile span{font-size:9px}
+}
