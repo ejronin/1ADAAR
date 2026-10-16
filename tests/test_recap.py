@@ -57,6 +57,20 @@ class TestCollector(unittest.TestCase):
                 recap.run(webhook='https://discord.com/api/webhooks/12345/longtoken')
                 recap.run(webhook='https://discord.com/api/webhooks/12345/longtoken')
                 self.assertEqual(sender.call_count,1)
+    def test_discord_primary_link_opens_github_report_for_completed_match(self):
+        m=recap.public_match(SAMPLE,DETAIL)
+        payload=recap.discord_payload(m)
+        embed=payload['embeds'][0]
+        self.assertEqual(embed['url'], f"{recap.SITE_URL}#match-812")
+        self.assertIn('1ADAAR', embed['fields'][-1]['name'])
+        self.assertIn(m['warconUrl'], embed['fields'][-1]['value'])
+        self.assertEqual(payload['allowed_mentions'],{'parse':[]})
+    def test_match_must_end_with_final_scores_before_posting(self):
+        self.assertFalse(recap.usable_match({**SAMPLE, 'endedAt':None}))
+        self.assertFalse(recap.usable_match({**SAMPLE, 'finalScores':None}))
+        self.assertFalse(recap.usable_match({**SAMPLE, 'finalScores':[]}))
+        self.assertFalse(recap.usable_match({**SAMPLE, 'endedAt':'2026-10-15T20:00:00Z'}))
+        self.assertTrue(recap.usable_match(SAMPLE))
     def test_site_url_is_correct(self):
         self.assertEqual(recap.public_match(SAMPLE)['warconUrl'],f'{recap.PUBLIC_SITE}/812')
     def test_webhook_is_restricted_to_discord(self):

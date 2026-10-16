@@ -171,14 +171,14 @@ def discord_payload(match: dict) -> dict:
     if awards:
         summary = "\n".join(f"**{a['label']}** · {a['name']} — {a['value']}" for a in awards[:4])
         fields.append({"name": "🎖 Match awards", "value": summary[:1024], "inline": False})
-    fields.append({"name": "📊 Full after-action report", "value":
+    fields.append({"name": "📊 View the detailed 1ADAAR match report", "value":
                    f"[Open 1ADAAR]({SITE_URL}#match-{match['id']}) · [WARCON source]({match['warconUrl']})",
                    "inline": False})
     winner = match["winner"] or "Draw"
     return {"username": "1ADAAR | WARDOGS", "allowed_mentions": {"parse": []},
-            "embeds": [{"title": f"MATCH COMPLETE · {winner}",
-                        "url": match["warconUrl"], "color": 0x56CE71,
-                        "description": "**OneAverageDan WARDOGS Community Server** · Official match recap",
+            "embeds": [{"title": f"WARDOGS MATCH COMPLETE · {winner}",
+                        "url": f"{SITE_URL}#match-{match['id']}", "color": 0x56CE71,
+                        "description": "**OneAverageDan WARDOGS Community Server** · Verified completed-match results from WARCON",
                         "image": {"url": "attachment://match-recap.png"},
                         "fields": fields, "footer": {"text": f"1ADAAR • Match #{match['id']} • Data: WARCON"},
                         "timestamp": match["endedAt"]}]}
