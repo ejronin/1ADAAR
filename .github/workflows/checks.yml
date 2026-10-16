@@ -23,15 +23,20 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Python compilation
         run: python -m compileall -q src
+      - name: JavaScript syntax validation
+        run: |
+          node --check docs/js/app.js
+          node --check docs/js/players.js
       - name: No secrets in public snapshot
         run: |
           python - <<'PY'
           import pathlib,re
           public=pathlib.Path('docs')
           for path in public.rglob('*'):
-            if not path.is_file(): continue
+            if not path.is_file() or path.suffix not in {'.html','.js','.css','.json','.svg','.txt'}: continue
             txt=path.read_text(encoding='utf-8')
             assert not re.search(r'(?:wkf|wck)_[A-Za-z0-9_-]{15,}',txt),path
             assert 'discord.com/api/webhooks/' not in txt,path
+            assert not re.search(r'7656119[0-9]{10}',txt),path
           print('Public files contain no WARCON tokens or Discord webhook URLs')
           PY

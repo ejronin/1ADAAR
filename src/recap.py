@@ -6,6 +6,7 @@ Schema verified against warcon-app/warcon src/lib/matches.ts (October 2026).
 from __future__ import annotations
 
 import argparse
+from src.player_index import player_key, safe_name, collect_players
 import datetime as dt
 import json
 import os
@@ -20,6 +21,7 @@ import urllib.request
 WARCON_ORIGIN = "https://console.warcon.app"
 SERVER_ID = "e30a7ee9-7ea5-4633-882e-98d2e0c03342"
 PUBLIC_MATCHES = f"{WARCON_ORIGIN}/api/public/servers/{SERVER_ID}/matches"
+PUBLIC_BOARD = f"{WARCON_ORIGIN}/api/public/servers/{SERVER_ID}/leaderboard"
 PUBLIC_SITE = f"{WARCON_ORIGIN}/s/{SERVER_ID}/matches"
 SITE_URL = "https://ejronin.github.io/1ADAAR/"
 DATA = Path(__file__).resolve().parents[1] / "docs" / "data"
@@ -110,20 +112,35 @@ def public_match(raw: dict, detail: dict | None = None) -> dict:
             key = entry.get("key")
             if key not in {"kills", "kd", "longest", "streak", "cash"}:
                 continue
+            winner_name = safe_name(entry.get("name"))
+            if not winner_name:
+                continue
             awards.append({"key": key, "label": clean(entry.get("label"), 30),
-                           "name": clean(entry.get("name"), 60), "value": clean(entry.get("value"), 25)})
+                           "name": winner_name, "value": clean(entry.get("value"), 25)})
     # Do not publish per-player SteamIDs or full raw WARCON payloads.
     players = []
     if isinstance(detail, dict):
         for line in sorted((x for x in detail.get("lines", []) if isinstance(x, dict)),
-                           key=lambda x: -(x.get("kills") if isinstance(x.get("kills"), int) else 0))[:50]:
+                           key=lambda x: -(x.get("kills") if isinstance(x.get("kills"), int) else 0))[:120]:
             def safe_int(key: str) -> int:
                 value = line.get(key, 0)
                 return max(0, value) if isinstance(value, int) and not isinstance(value, bool) else 0
-            players.append({"name": clean(line.get("name"), 60), "faction": clean(line.get("faction"), 30),
+            key = player_key(line.get("steamId"))
+            if not key:
+                continue
+            name = safe_name(line.get("name"))
+            if not name:
+                continue
+            players.append({"key": key, "name": name,
+                            "faction": clean(line.get("faction"), 30),
+                            "result": clean(line.get("result"), 5) if line.get("result") in ("win", "loss", "draw") else "",
                             "kills": safe_int("kills"), "deaths": safe_int("deaths"),
-                            "seconds": safe_int("seconds"), "headshots": safe_int("headshots")})
-    return {"id": identifier, "startedAt": started.isoformat().replace("+00:00", "Z"),
+                            "seconds": safe_int("seconds"),
+                            "cashDelta": line.get("cashDelta") if isinstance(line.get("cashDelta"), int) else 0,
+                            "headshots": safe_int("headshots") if detail.get("hasFeed") else None,
+                            "longestM": safe_int("longestM") if detail.get("hasFeed") else None,
+                            "killStreak": safe_int("killStreak") if detail.get("hasFeed") else None})
+    return {"schemaVersion": 2, "id": identifier, "startedAt": started.isoformat().replace("+00:00", "Z"),
             "endedAt": ended.isoformat().replace("+00:00", "Z"),
             "durationSeconds": max(0, int((ended - started).total_seconds())),
             "map": MAP_LABELS.get(clean(raw.get("map"), 55), clean(raw.get("map"), 55)) or "Unknown map",
@@ -216,7 +233,7 @@ def run(*, webhook: str = "", dry_run: bool = False) -> dict:
     # Fail closed: no output change when the upstream request/schema is broken.
     for match_id, raw in fetched.items():
         try:
-            if match_id not in old_matches or not old_matches[match_id].get("awards"):
+            if match_id not in old_matches or old_matches[match_id].get("schemaVersion") != 2:
                 detailed = fetch_json(f"{PUBLIC_MATCHES}/{match_id}")
                 if not isinstance(detailed.get("match"), dict) or detailed["match"].get("id") != match_id:
                     raise ValueError("Match detail mismatch")
@@ -229,6 +246,19 @@ def run(*, webhook: str = "", dry_run: bool = False) -> dict:
         atomic_write_json(db_file, {"schemaVersion": 1, "source": "WARCON public matches API",
                                     "lastCheckedAt": dt.datetime.now(dt.timezone.utc).isoformat(),
                                     "matches": latest})
+    # Enrich the static player lookup using WARCON's public, all-time scoreboard.
+    # This is independent of recap delivery: a leaderboard outage never blocks
+    # a completed match or causes the existing lookup index to be erased.
+    player_count = None
+    if not dry_run:
+        try:
+            index = collect_players(fetch_json, PUBLIC_BOARD)
+            player_count = len(index["players"])
+            player_file = DATA / "players.json"
+            if read_json(player_file, {}) != index:
+                atomic_write_json(player_file, index)
+        except (RuntimeError, ValueError, urllib.error.HTTPError) as exc:
+            print(f"1ADAAR player snapshot skipped: {type(exc).__name__}", file=sys.stderr)
     # First run is baseline-only: never spam Discord with historical recaps.
     if not ledger.get("initialized", False):
         ledger["initialized"] = True
@@ -247,7 +277,7 @@ def run(*, webhook: str = "", dry_run: bool = False) -> dict:
         recent = {str(m["id"]) for m in latest}
         ledger["posted"] = {key: value for key, value in ledger["posted"].items() if key in recent}
         atomic_write_json(ledger_file, ledger)
-    return {"matches": len(latest), "initialized": ledger["initialized"], "webhookConfigured": bool(webhook)}
+    return {"matches": len(latest), "initialized": ledger["initialized"], "webhookConfigured": bool(webhook), "playerCount": player_count}
 
 
 def main() -> int:

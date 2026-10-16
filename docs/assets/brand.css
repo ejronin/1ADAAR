@@ -59,3 +59,16 @@ footer b{color:#72db88}
 @media(max-width:1099px){.hero-text{width:78%;padding:40px 34px}.hero-graphic{right:-4%;width:48%;opacity:.67}}
 @media(max-width:720px){.brand{padding:0 0 15px}.brand-emblem{width:48px;height:48px}.brand strong{font-size:24px}.hero{min-height:430px}.hero-text{width:100%;padding:33px 23px}.hero-glow{background:linear-gradient(90deg,rgba(6,12,9,.97),rgba(7,17,11,.89) 75%,rgba(10,21,13,.68))}.hero-graphic{right:-25%;top:12%;width:80%;opacity:.17}.hero h1{font-size:clamp(45px,11vw,61px)}.hero-actions{align-items:flex-start}.hero-actions .primary,.hero-actions .secondary{min-height:43px;padding:12px 13px;font-size:10px}.hero .source-tag{margin-top:17px}.discord-link{gap:6px}.discord-icon{width:17px;height:17px}.pill-link{font-size:9px;padding:8px}.hero-coordinate{display:none}}
 @media(prefers-reduced-motion:reduce){.primary,.pill-link,.match-card{transition:none}}
+
+/* Phase 2: approved art; keep direct public match access and one Discord button. */
+.hero{background:#07120b url("hero-battle.webp") center center/cover no-repeat;min-height:430px}
+.hero:before{opacity:.07}
+.hero-glow{background:linear-gradient(90deg,rgba(5,11,8,.98) 0%,rgba(5,11,8,.91) 33%,rgba(6,14,10,.47) 66%,rgba(5,12,8,.05) 100%)}
+.hero-text{width:73%;max-width:700px;position:relative;z-index:2}
+.hero-graphic{right:1%;top:23%;width:24%;height:57%;opacity:.92;filter:drop-shadow(0 5px 17px #0a3017);z-index:1}
+.hero-logo{max-width:220px;filter:drop-shadow(0 0 20px #28b94d80) drop-shadow(0 7px 19px #000b)}
+.hero-scanner,.hero-coordinate,.hero-graphic .target,.hero-graphic .cross{display:none}
+.find-stats-link{color:#c5ffd5;text-decoration:none;margin-left:17px;font-size:11px;letter-spacing:.015em;text-transform:none}.find-stats-link:hover{text-decoration:underline}
+.topbar{justify-content:flex-start}
+@media(max-width:950px){.hero-text{width:86%}.hero-graphic{opacity:.48;right:-2%;width:28%}}
+@media(max-width:720px){.hero{min-height:445px;background-position:64% center}.hero-text{width:100%}.hero-graphic{width:45%;top:18%;right:-11%;opacity:.19}.hero-glow{background:linear-gradient(90deg,rgba(5,12,8,.97),rgba(6,13,8,.79) 90%)}.find-stats-link{display:block;margin:8px 0 0}.source-tag{display:block}.hero-actions .secondary{max-width:210px}}
