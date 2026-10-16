@@ -4,7 +4,7 @@
 
 Production-oriented static dashboard and scheduled Discord recap workflow for the 1OF1-hosted OneAverageDan WARDOGS server. The WARCON public API supplies historical match results; GitHub Actions takes snapshots and posts to Discord; GitHub Pages presents the player-friendly dashboard.
 
-- Dashboard: `https://ejronin.github.io/1ADAAR/` (**available only after Pages is enabled and deployment succeeds**)
+- Dashboard: `https://ejronin.github.io/1ADAAR/` (GitHub Pages).
 - Data source: `https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342/matches`
 - Repository: `https://github.com/ejronin/1ADAAR`
 - This project does **not** require the game's RCON password, 1OF1 login, WARCON API key, or a running personal computer.
@@ -17,7 +17,7 @@ Production-oriented static dashboard and scheduled Discord recap workflow for th
 4. In **GitHub → Settings → Pages → Build and deployment**, select **GitHub Actions** as source (if not already configured).
 5. In **GitHub → Actions**, run **Collect WARCON and publish 1ADAAR** once using `Run workflow`. The first run imports the existing archive **without posting older matches**. New completed matches post automatically on subsequent runs.
 6. Run **Deploy dashboard to GitHub Pages** if needed. Open the published Pages URL and verify the data / status / match report link.
-7. Upload the **approved official 1AD logo** to `docs/assets/1ad-logo.png` and replace the temporary text wordmark in `docs/index.html`. The current wordmark is deliberately a neutral typographic placeholder, **not a purported reproduction of the corporate logo**.
+7. The community-approved official 1AD logo is already integrated as `docs/assets/1ad-logo.svg`, alongside the tactical hero artwork. No manual logo upload is needed.
 8. In repository **Settings → Rules → Rulesets**, protect `main`: require pull requests and successful CI checks for human contributors. Keep repository collaborators to the minimum necessary. GitHub-hosted schedule requires Actions enabled, and branch protection should be tested alongside the bot's data write permissions.
 
 ## What is automated
@@ -73,3 +73,17 @@ The roles above are a review plan, not additional people or paid services.
 The public dashboard now uses a transparent vector trace of the **supplied official 1AD logo** for the sidebar emblem, hero graphic and favicon. The source is the community-approved black-and-white mark, not an AI-generated lookalike. The accent palette is 1AD green over a dark tactical-map backdrop (`docs/assets/tactical-terrain.svg`). The Discord icon is a path from [Simple Icons](https://github.com/simple-icons/simple-icons) under its published license. All visual assets are stored locally in this repository, not fetched from a paid service.
 
 The hero and header link to the existing community invitation. `docs/assets/brand.css` is intentionally layered after the existing `style.css`, preserving the match card and data logic. Phase 2 player lookup is **not** enabled by this cosmetic release. This release does not modify match ingestion, API calls, Discord message delivery or webhook secrets.
+
+## Phase 2 — Player intelligence (automatic; no bot)
+
+- Browse `https://ejronin.github.io/1ADAAR/players.html` from the **Player lookup** navigation entry.
+- Search by in-game name (partial match) or enter a 17-digit SteamID64. The app clears entered SteamID64 after lookup and never renders the identifier on results pages.
+- The collector requests WARCON's **public leaderboard**, `range=all&scope=server&minMinutes=0`, up to the public limit of 20 pages (top 1,000), and saves `docs/data/players.json` automatically. This is an all-time leaderboard *snapshot*, not a private player dossier.
+- Career totals include kills, deaths, matches, wins/losses/draws, playtime and seeded minutes. Headshots, vehicle kills and kill streaks are shown only when WARCON indicates its kill feed is enabled.
+- Recent-match tables and by-map/by-faction summaries are derived from the **retained 1ADAAR match archive only**, never labeled as complete lifetime statistics. The archive retains up to 120 recorded matches.
+- Player identities are matched by an SHA-256 lookup digest based on their SteamID64, not by mutable display name. **No raw SteamID64 is written to any public HTML or JSON artifact.**
+- **Privacy limitation:** unsalted one-way digests can be compared against candidate public SteamID64 values, so this is pseudonymization, *not* secure anonymization. There is no public player-to-Steam link or comment feature. Fully private/account-gated lookups would require a backend and authentication, which are intentionally excluded from this architecture.
+- WARCON's public interface may be rate limited or its schema may change; leaderboards are not a guaranteed complete roster. If the leaderboard request fails, the collector retains the prior player index and continues ordinary match reporting.
+- Deep weapon-by-weapon statistics, accuracy, revives, or military "rank" are intentionally **not claimed** because those are not available in the verified WARCON public leaderboard contract.
+
+**Operational note:** All public data is sourced from WARCON. No Discord slash command, always-on bot, paid database, local computer or game-host INI change is used.

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b120f" />
+  <meta name="description" content="Find your OneAverageDan WARDOGS server performance: match results, wins, kills, factions and maps, sourced from WARCON." />
+  <title>Find Your Stats — 1ADAAR Player Intelligence</title>
+  <link rel="icon" href="assets/1ad-logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="stylesheet" href="assets/brand.css" />
+  <link rel="stylesheet" href="assets/players.css" />
+  <script defer src="js/players.js"></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to player lookup</a>
+<div class="app-shell">
+  <aside class="rail" aria-label="Primary navigation">
+    <div class="brand"><img class="brand-emblem" src="assets/1ad-logo.svg" width="52" height="52" alt="Official 1AD emblem" /><div><strong>1ADAAR</strong><small>AFTER ACTION REPORT</small></div></div>
+    <div class="rail-label">THE COMMAND DECK</div>
+    <a class="nav" href="index.html#reports"><span class="nav-glyph">▦</span>Match intelligence</a>
+    <a class="nav active" href="players.html" aria-current="page"><span class="nav-glyph">◎</span>Player lookup</a>
+    <a class="nav" href="https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342/leaderboard" target="_blank" rel="noopener noreferrer"><span class="nav-glyph">♜</span>WARCON leaderboards <span class="external">↗</span></a>
+    <a class="nav" href="https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342" target="_blank" rel="noopener noreferrer"><span class="nav-glyph">◉</span>Live server status <span class="external">↗</span></a>
+    <div class="rail-footer"><div class="status-pulse"></div><div><strong>WARCON PUBLIC DATA</strong><small>Updated automatically</small></div></div>
+  </aside>
+  <main id="content" class="main">
+    <header class="topbar"><div class="breadcrumb">WARDOGS <span>/</span> ONEAVERAGEDAN <span>/</span> PLAYER INTELLIGENCE</div><a class="back-match" href="index.html#reports">← Match reports</a></header>
+    <section class="hero player-hero" aria-labelledby="player-hero-title">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-text"><div class="eyebrow">◆ ONEAVERAGEDAN PLAYER ANALYTICS</div><h1 id="player-hero-title">Find your <em>stats.</em></h1><p>Search by in-game name or SteamID64 to review verified WARDOGS performance. Player profiles show names only — not Steam IDs.</p>
+        <form id="player-search" class="player-search" role="search"><label class="sr-only" for="player-query">Player name or SteamID64</label><input id="player-query" type="search" autocomplete="off" spellcheck="false" placeholder="Player name or 17-digit SteamID64" maxlength="80" required /><button type="submit">Find player →</button></form>
+        <p class="search-footnote">Players are indexed from WARCON's public all-time leaderboard (up to 1,000 entries). Entered Steam IDs are never displayed in results or placed in links.</p>
+      </div>
+      <img class="player-hero-logo" src="assets/1ad-logo.svg" width="166" height="166" alt="" aria-hidden="true" />
+    </section>
+    <div id="lookup-message" class="notice" role="status">Loading the public player index…</div>
+    <section id="lookup-results" class="player-results" aria-labelledby="results-title" hidden><div class="section-head"><div><div class="eyebrow">01 / PLAYER DIRECTORY</div><h2 id="results-title">Matching players</h2><p>Select the correct in-game name to open its dossier.</p></div></div><div id="player-candidates" class="candidate-grid"></div></section>
+    <section id="dossier" aria-labelledby="dossier-title" hidden>
+      <div class="profile-header"><div class="profile-emblem"><img src="assets/1ad-logo.svg" alt="" width="58" height="58" /></div><div class="profile-heading"><span class="eyebrow">PLAYER INTELLIGENCE / VERIFIED WARCON RESULTS</span><h2 id="dossier-title"></h2><div id="profile-subtitle" class="profile-subtitle"></div></div><button type="button" id="new-search" class="new-search">New search</button></div>
+      <div class="metric-grid" id="profile-metrics"></div>
+      <div id="combat-panel" class="profile-panel" hidden><div class="panel-heading"><h3>Kill-feed combat insights</h3><span>Available only when WARCON records combat events</span></div><div class="metric-grid compact" id="combat-metrics"></div></div>
+      <div class="profile-columns"><section class="profile-panel"><div class="panel-heading"><h3>Map performance</h3><span>Recent archived matches only</span></div><div id="map-breakdown"></div></section><section class="profile-panel"><div class="panel-heading"><h3>Faction performance</h3><span>Recent archived matches only</span></div><div id="faction-breakdown"></div></section></div>
+      <section class="profile-panel"><div class="panel-heading"><h3>Recent completed matches</h3><span>From the available 1ADAAR match archive</span></div><div id="recent-match-table" class="table-scroll"></div></section>
+      <p class="profile-disclaimer">Career totals are sourced from WARCON's all-time leaderboard. Map, faction, and recent-match breakdowns use only completed matches present in the 1ADAAR archive; they are not lifetime estimates. A dash means the metric is unavailable, not zero.</p>
+    </section>
+    <footer><span>1ADAAR <b>◆</b> ONEAVERAGEDAN AFTER ACTION REPORT</span><span>Public WARCON game statistics · No Steam profiles or comment system</span></footer>
+  </main>
+</div>
+</body>
+</html>
