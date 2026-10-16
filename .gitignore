@@ -1,0 +1,23 @@
+# Authentication and local secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+secrets*.json
+*webhook*.txt
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+# Tooling and local artifacts
+.DS_Store
+.idea/
+.vscode/
+coverage/
+*.log
+*.tmp
+# Generated data is committed only intentionally by the scheduled workflow
