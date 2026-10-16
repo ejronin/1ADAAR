@@ -1,0 +1,61 @@
+/* 1ADAAR Phase 1.5: official 1AD identity, accessible green accents, tactical hero. */
+:root{--gold:#56ce71;--gold-light:#8ef2a0;--text:#f0f5f1;--card:#151b19;--edge:#33423a}
+body{background:#090e0c;color:var(--text)}
+.rail{background:#0b120f;border-right:1px solid #21352a}
+.brand{gap:14px;padding:0 7px 44px;min-width:0}
+.brand-emblem{width:54px;height:54px;flex:none;filter:drop-shadow(0 0 10px rgba(84,205,112,.18))}
+.brand strong{font-size:26px;letter-spacing:.04em;color:#fff}
+.brand small{color:#9eb4a7;font-size:8.5px;letter-spacing:.13em}
+.rail-label{color:#829a89}
+.nav{color:#aabbb1}
+.nav.active{color:#a6f4b3;background:#152e20;border:1px solid #316848}
+.nav:hover,.nav:focus-visible{background:#1c3025}
+.rail-footer{border-color:#233a2b}
+.status-pulse,.signal{background:#5dde79;box-shadow:0 0 0 4px #5dde7922}
+.topbar{border-color:#24372d}
+.breadcrumb span{color:#5dde79}
+.pill-link{border-color:#467354;background:linear-gradient(135deg,#122319,#173324);transition:.18s ease}
+.pill-link:hover,.pill-link:focus-visible{border-color:#8aeba0;background:#204630}
+.discord-link{display:inline-flex;align-items:center;justify-content:center;gap:10px;white-space:nowrap}
+.discord-icon{width:19px;height:19px;object-fit:contain;flex:none}
+.hero{min-height:393px;background:#09120e url('tactical-terrain.svg') center / cover no-repeat;border:1px solid #3a704a;box-shadow:0 18px 58px #0005,inset 0 0 0 1px #c3ffc90a}
+.hero:before{opacity:.28;background:repeating-linear-gradient(110deg,transparent 0 55px,#a6efbd14 56px,transparent 57px)}
+.hero-glow{background:linear-gradient(90deg,rgba(7,14,10,.96) 0%,rgba(8,15,11,.93) 27%,rgba(9,20,13,.74) 58%,rgba(7,15,11,.18) 100%),radial-gradient(circle at 84% 53%,#48d86c5e,transparent 38%)}
+.hero-text{padding:42px 50px;max-width:720px;width:71%}
+.hero .eyebrow{color:#85f2a1}
+.hero h1{font-size:clamp(47px,5vw,79px);line-height:.94;letter-spacing:.01em;text-shadow:0 2px 24px #000a}
+.hero h1 em{color:#78df91}
+.hero p{max-width:420px;font-size:13px;color:#d2dfd5;line-height:1.7}
+.hero-actions{gap:11px;margin-top:25px}
+.hero-actions .primary{min-height:45px;gap:23px}
+.primary{color:#0c1b10;background:linear-gradient(125deg,#7be08e,#48b966);font-weight:900;box-shadow:0 4px 18px #1d91372e}
+.primary:hover,.primary:focus-visible{background:#a1efae;box-shadow:0 6px 22px #36da5650}
+.hero-actions .secondary{min-height:45px;background:#122019cb;border:1px solid #6c9e78;color:#f1f8f3;border-radius:4px;padding:12px 15px;text-decoration:none;font-size:11px;text-transform:uppercase;font-weight:800;letter-spacing:.07em}
+.hero-actions .secondary:hover,.hero-actions .secondary:focus-visible{background:#244b30;border-color:#b1f8bb}
+.source-tag{color:#a3c6ae;display:flex;align-items:center;gap:8px;margin-top:21px;letter-spacing:.09em}
+.signal{width:6px;height:6px;border-radius:50%;display:inline-block}
+.hero-graphic{right:1%;top:5%;width:40%;height:90%;border:none;clip-path:none;opacity:1;pointer-events:none}
+.hero-scanner{position:absolute;inset:9% 5%;border:1px solid #82ff9938;transform:skew(-10deg);background:repeating-linear-gradient(0deg,transparent 0 23px,#79fca20c 24px),repeating-linear-gradient(90deg,transparent 0 34px,#79fca209 35px);mask-image:radial-gradient(ellipse at center,#000 23%,transparent 75%)}
+.hero-logo{width:min(69%,260px);height:auto;object-fit:contain;filter:drop-shadow(0 12px 28px #000b) drop-shadow(0 0 23px #3ce8645a);opacity:.94;position:relative;z-index:1}
+.hero-graphic .target{border-color:#6ce68b66;box-shadow:0 0 28px #2fe05b16;width:min(60%,234px);height:auto;aspect-ratio:1}
+.hero-graphic .target.t2{width:min(86%,315px);border-color:#4fbf7870}
+.hero-graphic .cross{color:#7ef899a3;right:8%;top:17%;font-size:24px}
+.hero-coordinate{position:absolute;z-index:2;color:#b4e7c0;font-size:9px;letter-spacing:.15em;font-weight:700;white-space:nowrap;text-shadow:0 1px 4px #000}
+.hero-coordinate-top{top:8%;left:8%}.hero-coordinate-bottom{right:9%;bottom:6%}
+.kpi{background:#131a17;border-color:#2c4536}
+.kpi strong{color:#ccebd1}
+.kpi .text-value{color:#a6e7b2}
+.section-head .eyebrow,.winner,.card-id,.card-foot b{color:#8bf4a6}
+.match-card{border-color:#31503d;background:#121a15}
+.match-card:hover,.match-card:focus-visible{border-color:#73e28c}
+.card-top{background:linear-gradient(125deg,#223b2a,#15251c);border-color:#3d614a}
+.track>span{background:#55d87a}
+.filters input:focus,.filters select:focus{outline-color:#8bed9d}
+.notice{background:#111b15;border-color:#2b4836}
+.detail{border-color:#498f60;background:#101b15}
+.detail .award b{color:#9eeaaf}
+.detail .report-link{background:#72db88;color:#092010}
+footer b{color:#72db88}
+@media(max-width:1099px){.hero-text{width:78%;padding:40px 34px}.hero-graphic{right:-4%;width:48%;opacity:.67}}
+@media(max-width:720px){.brand{padding:0 0 15px}.brand-emblem{width:48px;height:48px}.brand strong{font-size:24px}.hero{min-height:430px}.hero-text{width:100%;padding:33px 23px}.hero-glow{background:linear-gradient(90deg,rgba(6,12,9,.97),rgba(7,17,11,.89) 75%,rgba(10,21,13,.68))}.hero-graphic{right:-25%;top:12%;width:80%;opacity:.17}.hero h1{font-size:clamp(45px,11vw,61px)}.hero-actions{align-items:flex-start}.hero-actions .primary,.hero-actions .secondary{min-height:43px;padding:12px 13px;font-size:10px}.hero .source-tag{margin-top:17px}.discord-link{gap:6px}.discord-icon{width:17px;height:17px}.pill-link{font-size:9px;padding:8px}.hero-coordinate{display:none}}
+@media(prefers-reduced-motion:reduce){.primary,.pill-link,.match-card{transition:none}}
