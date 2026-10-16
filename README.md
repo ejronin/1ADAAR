@@ -87,3 +87,7 @@ The hero and header link to the existing community invitation. `docs/assets/bran
 - Deep weapon-by-weapon statistics, accuracy, revives, or military "rank" are intentionally **not claimed** because those are not available in the verified WARCON public leaderboard contract.
 
 **Operational note:** All public data is sourced from WARCON. No Discord slash command, always-on bot, paid database, local computer or game-host INI change is used.
+
+## Official WARDOGS hero photography
+
+The Match Intelligence and Player Intelligence hero backgrounds use the user-supplied WARDOGS official press-pack helicopter screenshot. It is color-graded, cropped and darkened for readable 1ADAAR text without inventing aircraft, uniforms, or other game assets. Source artwork credited to WARDOGS/BULKHEAD. The photograph is part of the GitHub Pages static assets; no external image host or paid service is required.

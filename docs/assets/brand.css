@@ -61,7 +61,7 @@ footer b{color:#72db88}
 @media(prefers-reduced-motion:reduce){.primary,.pill-link,.match-card{transition:none}}
 
 /* Phase 2: approved art; keep direct public match access and one Discord button. */
-.hero{background:#07120b url("hero-battle.webp") center center/cover no-repeat;min-height:430px}
+.hero{background:#07120b url("wardogs-official-hero.webp") center center/cover no-repeat;min-height:430px}
 .hero:before{opacity:.07}
 .hero-glow{background:linear-gradient(90deg,rgba(5,11,8,.98) 0%,rgba(5,11,8,.91) 33%,rgba(6,14,10,.47) 66%,rgba(5,12,8,.05) 100%)}
 .hero-text{width:73%;max-width:700px;position:relative;z-index:2}
