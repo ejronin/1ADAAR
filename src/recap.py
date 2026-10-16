@@ -25,6 +25,7 @@ SITE_URL = "https://ejronin.github.io/1ADAAR/"
 DATA = Path(__file__).resolve().parents[1] / "docs" / "data"
 MAX_MATCHES = 120
 MIN_SCORE = 1
+MAP_LABELS = {"NorthAmerica": "Zestafona", "Europe": "Ozeti", "Kavkazi": "Bakurani"}
 MAX_PAGES_PER_RUN = 3
 TIMEOUT = 18
 USER_AGENT = "1ADAAR/1.0 (+https://github.com/ejronin/1ADAAR)"
@@ -125,8 +126,8 @@ def public_match(raw: dict, detail: dict | None = None) -> dict:
     return {"id": identifier, "startedAt": started.isoformat().replace("+00:00", "Z"),
             "endedAt": ended.isoformat().replace("+00:00", "Z"),
             "durationSeconds": max(0, int((ended - started).total_seconds())),
-            "map": clean(raw.get("map"), 55) or "Unknown map",
-            "mode": clean(raw.get("experiences"), 90) or "King of the Hill",
+            "map": MAP_LABELS.get(clean(raw.get("map"), 55), clean(raw.get("map"), 55)) or "Unknown map",
+            "mode": "King of the Hill" if "_KOTH_" in str(raw.get("experiences") or "") else (clean(raw.get("experiences"), 90) or "Unknown mode"),
             "lighting": clean(raw.get("lighting"), 50),
             "winner": clean(raw.get("winner"), 35),
             "scores": score_rows(raw.get("finalScores")),
