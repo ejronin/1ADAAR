@@ -8,3 +8,7 @@
 .demo-button:hover,.demo-button:focus-visible{background:#27432f;border-color:#a1f0aa}
 .demo-warning{margin-top:8px;padding:9px 12px;background:#49331c;border:1px solid #c4a064;color:#ffe5af;font-size:12px;font-weight:900;letter-spacing:.025em}
 .demo-warning[hidden]{display:none!important}
+
+/* Static, full-featured PlayerOne demo accessible even when WARCON or browser JavaScript fails. */
+.demo-button{text-decoration:none}.demo-button:focus-visible,.new-search:focus-visible{outline:2px solid #a2f3b4;outline-offset:3px}
+#dossier .demo-warning{display:block}

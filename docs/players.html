@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="assets/style.css" />
   <link rel="stylesheet" href="assets/brand.css" />
   <link rel="stylesheet" href="assets/players.css" />
-  <script defer src="js/players.js"></script>
+  <script defer src="js/players.js?v=3"></script>
 </head>
 <body>
 <a class="skip" href="#content">Skip to player lookup</a>
@@ -30,7 +30,7 @@
       <div class="hero-glow" aria-hidden="true"></div>
       <div class="hero-text"><div class="eyebrow">◆ WARDOGS · ONEAVERAGEDAN PLAYER ANALYTICS</div><h1 id="player-hero-title">Find your <em>stats.</em></h1><p>Search by in-game name or SteamID64 to review verified WARDOGS performance. Player profiles show names only — not Steam IDs.</p>
         <form id="player-search" class="player-search" role="search"><label class="sr-only" for="player-query">Player name or SteamID64</label><input id="player-query" type="search" autocomplete="off" spellcheck="false" placeholder="Player name or 17-digit SteamID64" maxlength="80" required /><button type="submit">Find player →</button></form>
-        <button id="view-demo" class="demo-button" type="button">🧪 Preview PlayerOne demo stats</button><p class="search-footnote">Players are indexed from WARCON's public all-time leaderboard (up to 1,000 entries). Entered Steam IDs are never displayed in results or placed in links.</p>
+        <a id="view-demo" class="demo-button" href="playerone-demo.html" aria-label="Open standalone PlayerOne demonstration profile, fictional statistics">🧪 Preview PlayerOne demo stats →</a><p class="search-footnote">Players are indexed from WARCON's public all-time leaderboard (up to 1,000 entries). Entered Steam IDs are never displayed in results or placed in links.</p>
       </div>
       <img class="player-hero-logo" src="assets/1ad-logo.svg" width="166" height="166" alt="" aria-hidden="true" />
     </section>
