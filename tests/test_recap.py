@@ -20,6 +20,8 @@ class TestCollector(unittest.TestCase):
         result = recap.public_match(SAMPLE, DETAIL)
         text = json.dumps(result)
         self.assertEqual(result['durationSeconds'], 2820)
+        self.assertEqual(result['map'], 'Bakurani')
+        self.assertEqual(result['mode'], 'King of the Hill')
         self.assertNotIn('steamId', text)
         self.assertNotIn('76561190000000001', text)
         self.assertEqual(result['scores'][0]['score'], 100)
