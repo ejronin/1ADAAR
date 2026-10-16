@@ -1,0 +1,53 @@
+name: Collect WARCON and publish 1ADAAR
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: 1adaar-collector
+  cancel-in-progress: false
+jobs:
+  collect:
+    if: github.repository == 'ejronin/1ADAAR' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: github-pages
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run tests before collector
+        run: python -m unittest discover -s tests -v
+      - name: Read WARCON public API and publish new match cards
+        id: collect
+        env:
+          DISCORD_MATCH_WEBHOOK: ${{ secrets.DISCORD_MATCH_WEBHOOK }}
+        run: python -m src.recap
+      - name: Persist public match snapshot and delivery checkpoint
+        if: ${{ always() && steps.collect.outcome != 'skipped' }}
+        run: |
+          git config user.name "1adaar-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data/matches.json docs/data/delivery.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: publish updated WARCON match snapshot"
+            git push origin HEAD:main
+          fi
+      # GITHUB_TOKEN commits do not fire push-triggered workflows. Deploy here too.
+      - uses: actions/configure-pages@v5
+        if: ${{ success() }}
+      - uses: actions/upload-pages-artifact@v3
+        if: ${{ success() }}
+        with:
+          path: ./docs
+      - name: Deploy published snapshot
+        if: ${{ success() }}
+        id: deployment
+        uses: actions/deploy-pages@v4

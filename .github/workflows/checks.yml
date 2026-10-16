@@ -1,0 +1,37 @@
+name: Validate code and publication safety
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - '.github/workflows/checks.yml'
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Python compilation
+        run: python -m compileall -q src
+      - name: No secrets in public snapshot
+        run: |
+          python - <<'PY'
+          import pathlib,re
+          public=pathlib.Path('docs')
+          for path in public.rglob('*'):
+            if not path.is_file(): continue
+            txt=path.read_text(encoding='utf-8')
+            assert not re.search(r'(?:wkf|wck)_[A-Za-z0-9_-]{15,}',txt),path
+            assert 'discord.com/api/webhooks/' not in txt,path
+          print('Public files contain no WARCON tokens or Discord webhook URLs')
+          PY
