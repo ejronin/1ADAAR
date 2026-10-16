@@ -1,0 +1,27 @@
+name: Verify Discord match recap webhook
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/discord-smoke.yml'
+permissions:
+  contents: read
+jobs:
+  smoke:
+    if: >-
+      github.repository == 'ejronin/1ADAAR' &&
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'workflow_dispatch' ||
+       github.event.head_commit.message == 'ci: [discord-smoke] verify match recap webhook')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Send clearly labeled test recap via dedicated webhook
+        env:
+          DISCORD_MATCH_WEBHOOK: ${{ secrets.DISCORD_MATCH_WEBHOOK }}
+        run: python -m src.discord_smoke

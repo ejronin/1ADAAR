@@ -72,3 +72,10 @@ footer b{color:#72db88}
 .topbar{justify-content:flex-start}
 @media(max-width:950px){.hero-text{width:86%}.hero-graphic{opacity:.48;right:-2%;width:28%}}
 @media(max-width:720px){.hero{min-height:445px;background-position:64% center}.hero-text{width:100%}.hero-graphic{width:45%;top:18%;right:-11%;opacity:.19}.hero-glow{background:linear-gradient(90deg,rgba(5,12,8,.97),rgba(6,13,8,.79) 90%)}.find-stats-link{display:block;margin:8px 0 0}.source-tag{display:block}.hero-actions .secondary{max-width:210px}}
+
+/* Official WARDOGS: Tactical All Out Warfare fullmark. 1AD community identity stays primary. */
+.topbar{justify-content:space-between;gap:22px}
+.game-lockup{display:flex;align-items:center;justify-content:flex-end;flex:none;min-width:145px}
+.game-lockup img{display:block;width:200px;max-width:100%;height:auto;object-fit:contain}
+@media(max-width:900px){.game-lockup img{width:160px}}
+@media(max-width:720px){.topbar{height:auto;min-height:85px;flex-wrap:wrap;padding:17px 0;gap:12px}.game-lockup{margin-left:0}.game-lockup img{width:155px}.breadcrumb{font-size:9px}}
