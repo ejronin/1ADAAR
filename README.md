@@ -67,3 +67,9 @@ The WARCON API is unversioned; monitor CI and update the connector if the upstre
 - **Delivery owner:** test acceptance, final deployment verification and incident/runbook maintenance.
 
 The roles above are a review plan, not additional people or paid services.
+
+## Phase 1.5 — Official 1AD identity
+
+The public dashboard now uses a transparent vector trace of the **supplied official 1AD logo** for the sidebar emblem, hero graphic and favicon. The source is the community-approved black-and-white mark, not an AI-generated lookalike. The accent palette is 1AD green over a dark tactical-map backdrop (`docs/assets/tactical-terrain.svg`). The Discord icon is a path from [Simple Icons](https://github.com/simple-icons/simple-icons) under its published license. All visual assets are stored locally in this repository, not fetched from a paid service.
+
+The hero and header link to the existing community invitation. `docs/assets/brand.css` is intentionally layered after the existing `style.css`, preserving the match card and data logic. Phase 2 player lookup is **not** enabled by this cosmetic release. This release does not modify match ingestion, API calls, Discord message delivery or webhook secrets.
