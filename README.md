@@ -99,3 +99,13 @@ The homepage and Player Intelligence view show the official **WARDOGS: Tactical 
 To validate Discord delivery without waiting for live game data, open **Actions → Verify Discord match recap webhook → Run workflow**. The workflow uses the pre-existing repository secret `DISCORD_MATCH_WEBHOOK`, posts **one clearly marked TEST** embed, and prints only Discord's acknowledgment message ID (not the secret). It never writes to match history or the delivery ledger. This workflow also performs one automatic test when first merged with the designated smoke-test commit title; subsequent routine pushes do not repeat it.
 
 **Public index capacity:** WARCON publicly exposes 20 pages of 50 leaderboard rows, so 1ADAAR's lookup indexes a maximum of 1,000 distinct ranked player entries. It is unrelated to Discord member counts or server capacity. Players ranked outside that public cap are not automatically searchable. A 60-day inactivity deletion would erase useful player lookup history and would not remove WARCON's public API cap, so **no destructive 60-day purge has been enabled**. Historical completed-match records remain bounded by the existing match archive policy.
+
+
+## Visual Discord recaps and test-only PlayerOne demo
+
+- **Actual match delivery** renders a locally generated PNG card from the real WARCON map, mode, duration, faction scores, winner, and supplied match awards. The actual image is attached to a Discord webhook embed, with a clickable verified WARCON report and 1ADAAR links. The image's official WARDOGS artwork is decorative; it is never claimed to be the specific map screenshot.
+- No fabricated MVP, K/D, or longest-shot awards appear if WARCON does not supply them. Missing awards are labeled unavailable in the graphic.
+- Both the standard collector and the smoke-test Action install a pinned version of Pillow on ephemeral GitHub runners. Nothing runs on a personal machine or paid image-rendering service.
+- **Test a card:** GitHub Actions → Verify Discord match recap webhook → Run workflow. This posts one boldly labeled **TEST / FICTIONAL DATA** card using PlayerOne, PlayerTwo, and PlayerThree. It does not touch the production match ledger or leaderboard.
+- **PlayerOne preview:** Player Intelligence → **Preview PlayerOne demo stats**. The separately stored \`docs/data/demo-player.json\` includes fictional example K/D, match history, and map/faction results to exercise the *real dossier UI*. It never enters \`players.json\`, \`matches.json\`, the collector or Discord production posts.
+- Tests cover PNG generation, multipart payload, test labeling, and fixture separation.

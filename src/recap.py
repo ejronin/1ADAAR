@@ -17,6 +17,8 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import uuid
+from .recap_card import render_match_card
 
 WARCON_ORIGIN = "https://console.warcon.app"
 SERVER_ID = "e30a7ee9-7ea5-4633-882e-98d2e0c03342"
@@ -175,20 +177,38 @@ def discord_payload(match: dict) -> dict:
     winner = match["winner"] or "Draw"
     return {"username": "1ADAAR | WARDOGS", "allowed_mentions": {"parse": []},
             "embeds": [{"title": f"MATCH COMPLETE · {winner}",
-                        "url": match["warconUrl"], "color": 0xD8A851,
+                        "url": match["warconUrl"], "color": 0x56CE71,
                         "description": "**OneAverageDan WARDOGS Community Server** · Official match recap",
+                        "image": {"url": "attachment://match-recap.png"},
                         "fields": fields, "footer": {"text": f"1ADAAR • Match #{match['id']} • Data: WARCON"},
                         "timestamp": match["endedAt"]}]}
 
 
-def send_discord(url: str, payload: dict) -> str:
+def send_discord(url: str, payload: dict, *, image_bytes: bytes | None = None) -> str:
     parsed = urllib.parse.urlparse(url)
     if parsed.scheme != "https" or parsed.hostname not in {"discord.com", "discordapp.com"} or \
        not re.fullmatch(r"/api/webhooks/\d+/[A-Za-z0-9_-]+/?", parsed.path):
         raise ValueError("Invalid Discord webhook URL")
     url = url.rstrip("/") + "?wait=true"
-    req = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"),
-                                 headers={"Content-Type": "application/json", "User-Agent": USER_AGENT},
+    if image_bytes is None:
+        body = json.dumps(payload).encode("utf-8")
+        content_type = "application/json"
+    else:
+        if not image_bytes.startswith(b"\x89PNG\r\n\x1a\n") or len(image_bytes) > 7_000_000:
+            raise ValueError("Invalid or oversized Discord PNG image")
+        boundary = "1ADAAR" + uuid.uuid4().hex
+        meta = json.dumps(payload).encode("utf-8")
+        body = (
+            f"--{boundary}\r\nContent-Disposition: form-data; name=\"payload_json\"\r\n"
+            "Content-Type: application/json\r\n\r\n".encode("ascii")
+            + meta +
+            f"\r\n--{boundary}\r\nContent-Disposition: form-data; name=\"files[0]\"; filename=\"match-recap.png\"\r\n"
+            "Content-Type: image/png\r\n\r\n".encode("ascii")
+            + image_bytes + f"\r\n--{boundary}--\r\n".encode("ascii")
+        )
+        content_type = f"multipart/form-data; boundary={boundary}"
+    req = urllib.request.Request(url, data=body,
+                                 headers={"Content-Type": content_type, "User-Agent": USER_AGENT},
                                  method="POST")
     # Do not retry POST automatically; an ambiguous network timeout may have delivered the post.
     with urllib.request.urlopen(req, timeout=TIMEOUT) as response:
@@ -269,7 +289,7 @@ def run(*, webhook: str = "", dry_run: bool = False) -> dict:
         for match in unposted[:15]:
             if dry_run:
                 continue
-            message_id = send_discord(webhook, discord_payload(match))
+            message_id = send_discord(webhook, discord_payload(match), image_bytes=render_match_card(match))
             ledger["posted"][str(match["id"])] = message_id
             atomic_write_json(ledger_file, ledger)
     # Keep checkpoint data bounded, but preserve recent delivery information.
