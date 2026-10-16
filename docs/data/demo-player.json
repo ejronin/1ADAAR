@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "kind": "demo-only",
+  "fictional": true,
+  "notice": "DEMO PROFILE — FICTIONAL STATISTICS. Not a WARCON player or verified record.",
+  "player": {
+    "key": "demo-playerone",
+    "name": "PlayerOne",
+    "demo": true,
+    "rank": 12,
+    "minutes": 2220,
+    "seedMinutes": 180,
+    "kills": 634,
+    "deaths": 332,
+    "matches": 48,
+    "wins": 27,
+    "losses": 17,
+    "draws": 4,
+    "cash": 58700,
+    "headshots": 128,
+    "teamKills": 3,
+    "vehicleKills": 19,
+    "killStreak": 14,
+    "lastSeen": "2026-10-15T19:00:00Z",
+    "hasFeed": true
+  },
+  "matches": [
+    {
+      "id": 0,
+      "endedAt": "2026-10-15T19:00:00Z",
+      "map": "Bakurani",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Lonestar",
+          "result": "win",
+          "kills": 29,
+          "deaths": 12,
+          "seconds": 2520
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-14T19:00:00Z",
+      "map": "Ozeti",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Valkyra",
+          "result": "loss",
+          "kills": 18,
+          "deaths": 15,
+          "seconds": 2160
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-12T19:00:00Z",
+      "map": "Zestafona",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Manticore",
+          "result": "win",
+          "kills": 21,
+          "deaths": 8,
+          "seconds": 2280
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-11T19:00:00Z",
+      "map": "Bakurani",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Lonestar",
+          "result": "draw",
+          "kills": 11,
+          "deaths": 10,
+          "seconds": 1740
+        }
+      ]
+    }
+  ]
+}
