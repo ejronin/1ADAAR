@@ -49,7 +49,7 @@
   }
   const format = n => n === null || !Number.isFinite(n) ? '—' : n.toFixed(2);
   const tickDate = stamp => {
-    const date = new Date(stamp);
+    const date = new Date(/^\d{4}-\d{2}-\d{2}$/.test(stamp) ? stamp + 'T12:00:00Z' : stamp);
     return Number.isFinite(date.getTime())
       ? date.toLocaleDateString(undefined,{month:'short',day:'numeric'}) : '—';
   };
