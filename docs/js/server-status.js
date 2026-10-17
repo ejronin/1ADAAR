@@ -16,6 +16,7 @@
     reconnecting:'RECONNECTING',
     unknown:'STATUS UNAVAILABLE'
   };
+  // GitHub Actions scheduled workflows are best-effort, and may be delayed.
   const MAX_SNAPSHOT_AGE_MS=20*60*1000;
   function fresh(value,ms=MAX_SNAPSHOT_AGE_MS){
     if(typeof value!=='string')return false;
@@ -35,7 +36,7 @@
       doc.map.slice(0,55):'—';
     target.updated.textContent=valid?
       'WARCON observed '+new Date(doc.observedAt).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'}):
-      'Waiting for a current WARCON status observation';
+      'No recent public status reading · Check live WARCON ↗';
     card.setAttribute('aria-label','Server status: '+line+
       (online?', '+target.players.textContent+' players, map '+target.map.textContent:''));
   }

@@ -4,7 +4,6 @@
   "limit": 1000,
   "players": [
     {
-      "cash": 0,
       "deaths": 0,
       "draws": 0,
       "hasFeed": true,
@@ -12,7 +11,6 @@
       "key": "3869ff8841556b29a1c4135526e0ee0f129b98538542ee7f7a507ec3e8fea8cc",
       "killStreak": 0,
       "kills": 0,
-      "lastSeen": "2026-10-16T02:57:18.932000+00:00",
       "losses": 0,
       "matches": 0,
       "minutes": 0,
@@ -24,7 +22,6 @@
       "wins": 0
     },
     {
-      "cash": 0,
       "deaths": 0,
       "draws": 0,
       "hasFeed": true,
@@ -32,7 +29,6 @@
       "key": "b07a26a6a098aa88e35cf668745ea84f5bd4da05eb35a6e682a9b60bfc265cd7",
       "killStreak": 0,
       "kills": 0,
-      "lastSeen": "2026-10-16T13:49:55.314000+00:00",
       "losses": 0,
       "matches": 0,
       "minutes": 3,
@@ -44,7 +40,6 @@
       "wins": 0
     },
     {
-      "cash": 0,
       "deaths": 0,
       "draws": 0,
       "hasFeed": true,
@@ -52,7 +47,6 @@
       "key": "d12237c960cedf5f57959127c074c96bda76424cbf3b3c7a118b23a42528e5a7",
       "killStreak": 0,
       "kills": 0,
-      "lastSeen": "2026-10-16T22:50:20.536000+00:00",
       "losses": 0,
       "matches": 0,
       "minutes": 0,
@@ -64,7 +58,6 @@
       "wins": 0
     },
     {
-      "cash": 0,
       "deaths": 0,
       "draws": 0,
       "hasFeed": true,
@@ -72,7 +65,6 @@
       "key": "ba0fb72238715cdfe99c16603de61a20e54953daf886e564006b530616027508",
       "killStreak": 0,
       "kills": 0,
-      "lastSeen": "2026-10-16T03:26:48.611000+00:00",
       "losses": 0,
       "matches": 0,
       "minutes": 1,
@@ -84,7 +76,6 @@
       "wins": 0
     },
     {
-      "cash": 0,
       "deaths": 0,
       "draws": 0,
       "hasFeed": true,
@@ -92,7 +83,6 @@
       "key": "227258b88a8a813cc92d77a735e4cf257fc86a7cb0988ab0d3982cc9bc4b2688",
       "killStreak": 0,
       "kills": 0,
-      "lastSeen": "2026-10-16T23:54:21.068000+00:00",
       "losses": 0,
       "matches": 0,
       "minutes": 1,
@@ -104,7 +94,6 @@
       "wins": 0
     },
     {
-      "cash": 0,
       "deaths": 0,
       "draws": 0,
       "hasFeed": true,
@@ -112,7 +101,6 @@
       "key": "dacbc4baf045a62437e6ae4f0ed7719c8567a1579a0dfd0b4e78538b5d598f35",
       "killStreak": 0,
       "kills": 0,
-      "lastSeen": "2026-10-16T23:52:54.695000+00:00",
       "losses": 0,
       "matches": 0,
       "minutes": 0,

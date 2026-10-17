@@ -11,11 +11,11 @@
   <link rel="stylesheet" href="assets/style.css" />
   <link rel="stylesheet" href="assets/brand.css?v=7" />
   <link rel="stylesheet" href="assets/factions.css?v=1" />
-  <link rel="stylesheet" href="assets/server-status.css?v=1" />
+  <link rel="stylesheet" href="assets/server-status.css?v=2" />
   <script defer src="js/factions.js?v=1"></script>
   <script defer src="js/share.js?v=2"></script>
   <script defer src="js/app.js?v=6"></script>
-  <script defer src="js/server-status.js?v=1"></script>
+  <script defer src="js/server-status.js?v=2"></script>
 </head>
 <body>
 <a class="skip" href="#content">Skip to match results</a>
@@ -37,9 +37,10 @@
         <span class="server-status-lamp" aria-hidden="true"></span>
         <div><div class="eyebrow">ONEAVERAGEDAN / WARDOGS SERVER</div>
           <div class="server-status-label" id="server-status-label" aria-live="polite">STATUS UNAVAILABLE</div>
-          <small class="server-status-updated" id="server-status-updated">Waiting for a current WARCON status observation</small>
+          <small class="server-status-updated" id="server-status-updated">Checking WARCON reporting…</small>
         </div>
       </div>
+      <a class="server-status-source" href="https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342" target="_blank" rel="noopener noreferrer" aria-label="Check actual WARDOGS server status on WARCON">Check live WARCON ↗</a>
       <div class="server-status-cell"><span>PLAYERS CONNECTED</span><strong id="server-status-players">—</strong></div>
       <div class="server-status-cell"><span>CURRENT MAP</span><strong id="server-status-map">—</strong></div>
     </section>

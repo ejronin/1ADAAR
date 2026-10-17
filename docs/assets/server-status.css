@@ -31,3 +31,11 @@
 @media(max-width:900px){.server-status{grid-template-columns:minmax(200px,1.1fr) minmax(95px,.6fr) minmax(155px,.8fr)}.server-status-main{padding:15px 16px}.server-status-cell{padding:13px 14px}}
 @media(max-width:620px){.server-status{grid-template-columns:1fr 1fr}.server-status-main{grid-column:1/-1;border-bottom:1px solid #2d4736;padding:16px 18px}.server-status-cell{padding:13px 17px;border-left:0}.server-status-cell:last-child{border-left:1px solid #2d4736}.server-status-cell strong{font-size:27px}.server-status-cell:last-child strong{font-size:22px}}
 @media(prefers-reduced-motion:reduce){.server-status-lamp{animation:none!important}}
+
+/* Source escape hatch: always show WARCON's official live view when scheduled jobs lag. */
+.server-status-source{display:flex;align-items:center;justify-content:center;min-height:44px;padding:10px 13px;font-size:11px;font-weight:800;letter-spacing:.03em;text-decoration:none;color:#bcf9ce;border-left:1px solid #2d4736;background:#152a1b}
+.server-status-source:hover{color:#fff;background:#1b3a26}
+.server-status-source:focus-visible{outline:2px solid #9affb6;outline-offset:-3px}
+.server-status{grid-template-columns:minmax(210px,1.5fr) minmax(110px,.7fr) minmax(145px,1fr) minmax(155px,.7fr)}
+@media(max-width:1100px){.server-status{grid-template-columns:repeat(2,minmax(0,1fr))}.server-status-main{grid-column:1 / -1}.server-status-source{grid-column:1 / -1;grid-row:3;border-top:1px solid #2d4736;border-left:0}.server-status-cell{border-top:1px solid #2d4736}}
+@media(max-width:620px){.server-status-source{grid-row:3}.server-status-cell:last-child{border-left:1px solid #2d4736}}

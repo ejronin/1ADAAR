@@ -23,6 +23,8 @@ class TestPlayerIndex(unittest.TestCase):
         self.assertEqual(row['kills'],24)
         self.assertEqual(row['rank'],1)
         self.assertEqual(row['headshots'],5)
+        self.assertNotIn('lastSeen', row)
+        self.assertNotIn('cash', row)
         self.assertNotIn('steamId',json.dumps(row))
         self.assertNotIn(SID,json.dumps(row))
     def test_feed_metrics_not_displayed_before_feed(self):
