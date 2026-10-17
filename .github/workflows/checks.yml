@@ -29,6 +29,9 @@ jobs:
         run: |
           node --check docs/js/app.js
           node --check docs/js/players.js
+          node --check docs/js/share.js
+          node --check docs/js/demo-share.js
+          node tests/share_browser.test.cjs
       - name: No secrets in public snapshot
         run: |
           python - <<'PY'

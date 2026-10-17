@@ -40,4 +40,16 @@ class ShareAndJoinTests(unittest.TestCase):
         self.assertIn('navigator.share',share)
         self.assertIn('navigator.clipboard.writeText',share)
         self.assertIn('input.select()',share)
+        self.assertIn("document.createElement('textarea')",share)
         self.assertIn('destination.origin !== location.origin',share)
+
+    def test_community_attribution_in_real_and_demo_profile_messages(self):
+        players=(ROOT/'js/players.js').read_text()
+        demo=(ROOT/'js/demo-share.js').read_text()
+        for content in (players,demo):
+            self.assertIn('OneAverageDan WARDOGS Community Server!',content)
+            self.assertIn('Join the 1AD Discord: https://discord.gg/e9B69UkE53',content)
+        self.assertIn('View my 1ADAAR player profile:',players)
+        self.assertIn('DEMO',demo)
+        self.assertNotIn('steamcommunity.com',players+demo)
+        self.assertIn('players.html#player-',players)

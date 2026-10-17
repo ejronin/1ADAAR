@@ -168,7 +168,9 @@ footer b{color:#72db88}
 #share-match{white-space:nowrap}
 .share-status{padding:10px 12px;margin:13px 0;color:#b6f0c5;font-size:12px;border:1px solid #386446;background:#11291a;border-radius:5px;overflow-wrap:anywhere}
 .share-status[hidden]{display:none}
-.share-status input{display:block;width:100%;min-height:42px;margin:7px 0 0;padding:10px;color:#fff;background:#0e1a15;border:1px solid #477452;border-radius:4px}
+.share-status input,.share-status textarea{display:block;width:100%;min-height:42px;margin:7px 0 0;padding:10px;color:#fff;background:#0e1a15;border:1px solid #477452;border-radius:4px}
 @media(max-width:950px){.join-panel{align-items:flex-start;flex-wrap:wrap}.join-panel-link{margin-left:70px}}
 @media(max-width:720px){.join-panel{gap:11px;padding:18px 15px;margin:27px 0 0}.join-panel-icon{width:43px;height:43px}.join-panel-copy{flex-basis:calc(100% - 58px)}.join-panel-link{width:100%;margin:4px 0 0;min-height:48px}.dialog-actions button{padding:9px 11px;font-size:11px}}
 @media(max-width:380px){.dialog-actions{gap:5px}#share-match{font-size:10px}}
+
+.share-status textarea{resize:vertical;min-height:106px;line-height:1.5;font:inherit;font-size:12px}

@@ -27,5 +27,8 @@ async function init(){try{const [playerRes,matchRes]=await Promise.all([fetch('d
 const incoming=/^#player-([a-f0-9]{64})$/.exec(location.hash);if(incoming){const match=index.players.find(p=>p.key===incoming[1]);if(match)openProfile(match);}
 }catch(_){setMessage('WARCON player data is not available yet. The next successful collection will populate this page.');}}
 
-$('share-player').addEventListener('click',()=>{const entry=publicState.selected;if(!entry||entry.demo||!(/^[a-f0-9]{64}$/.test(entry.key)))return;const url=new URL(`players.html#player-${entry.key}`,location.href).href;window.OneADAARShare.share(url,`WARDOGS stats: ${entry.name} — 1ADAAR`,$('player-share-status'));});
+$('share-player').addEventListener('click',()=>{const entry=publicState.selected;if(!entry||entry.demo||!(/^[a-f0-9]{64}$/.test(entry.key)))return;const url=new URL(`players.html#player-${entry.key}`,location.href).href;window.OneADAARShare.share(url,`WARDOGS stats: ${entry.name} — 1ADAAR`,$('player-share-status'),{
+  intro:'🐺 Check out my stats on the OneAverageDan WARDOGS Community Server!\n\n📊 View my 1ADAAR player profile:',
+  outro:'🎮 Join the 1AD Discord: https://discord.gg/e9B69UkE53'
+});});
 $('player-search').addEventListener('submit',submitLookup);$('new-search').addEventListener('click',()=>{$('dossier').hidden=true;$('lookup-results').hidden=true;setMessage('Enter an in-game name or SteamID64 to search again.');history.replaceState(null,'','players.html');$('player-query').focus();});init();

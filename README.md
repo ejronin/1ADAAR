@@ -125,3 +125,11 @@ To validate Discord delivery without waiting for live game data, open **Actions 
 - **Share player stats** appears only on a resolved, real public player dossier and shares `players.html#player-<public lookup key>`. The URL contains no raw SteamID64 or Steam-community profile link. The key is derived from the identifier and should not be represented as secret or anonymous.
 - **Share demo profile** publishes a link to the clearly labeled fictional PlayerOne page, separate from actual player records.
 - On phones, the native share sheet is used where supported. Otherwise, the URL is copied; browsers denying clipboard access display a selectable link. No tracking scripts or third-party share service are used.
+
+
+## Branded community profile sharing
+
+- **Share Player Stats** on a verified player dossier now shares the copy `Check out my stats on the OneAverageDan WARDOGS Community Server!` plus that individual profile URL and the existing 1AD Discord invite.
+- The native mobile share sheet includes the community message and the report URL. Clipboard-based sharing copies the complete multi-line message rather than only a URL. When clipboard permissions are unavailable, a selectable multiline message appears.
+- The PlayerOne demo share message is similarly branded but explicitly marked **DEMO / fictional**, and it never links to a real user's Steam profile.
+- **Share Match** retains its existing link-only behavior. No changes to WARCON integration, Discord webhooks, data indexing or match delivery.
