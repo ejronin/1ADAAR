@@ -26,7 +26,7 @@ class RepositorySecurityBaseline(unittest.TestCase):
         bad=[name for name in bad if name != '.env.example']
         self.assertEqual(bad,[],f'Sensitive files tracked: {bad}')
         example=(ROOT/'.env.example').read_text()
-        self.assertNotRegex(example,r'(?im)^(?!#)\s*\w+\s*=\s*\S+', 'Example env contains real values')
+        self.assertNotRegex(example,r'(?im)^[ \t]*[A-Z_][A-Z0-9_]*[ \t]*=[ \t]*[^ \t\r\n#]', 'Example env contains real values')
     def test_public_files_do_not_contain_credential_patterns(self):
         src=ROOT/'docs'
         for path in src.rglob('*'):
