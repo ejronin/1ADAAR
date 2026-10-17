@@ -185,3 +185,5 @@ Website requests download static, published files from GitHub Pages; charts calc
 ### Published player data minimization
 
 The October 2026 audit removed **exact last-seen timestamps** and **in-game cash totals** from live public player JSON because the dashboard does not use them. Names, performance totals and pseudonymous matching keys remain intentionally public. No previously committed file can be made private by adding a .gitignore entry; consider GitHub historical secret scanning separately from current-tree tests. Test fixtures may use clearly synthetic IDs to exercise the sanitizers; production files must never contain raw SteamID64.
+
+**Scheduled update reliability:** GitHub Actions can delay or skip scheduled tasks. The 1ADAAR collector targets minutes 04, 14, 24, 34, 44 and 54 (UTC) rather than the top of each hour. Always rely on the WARCON observation timestamp, and use the live WARCON link when data is old.
