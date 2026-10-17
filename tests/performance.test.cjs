@@ -18,7 +18,10 @@ assert.equal(series[3].kd,6);
 assert.equal(series[0].rolling,null);
 assert.equal(series[4].rolling,2.32); // (10+8+0+6+20)/(5+4+0+0+10) = 44/19
 assert.equal(series[5].rolling,2.58); // (8+0+6+20+15)/(4+0+0+10+5) = 49/19
-assert.equal(M.windowed(series,2).length,2);
+assert.equal(M.windowed(series,10).length,6);
+assert.equal(M.windowed(series,25).length,6);
+assert.equal(M.windowed(Array.from({length:30},(_,i)=>i),10).length,10);
+assert.equal(M.windowed(Array.from({length:30},(_,i)=>i),25).length,25);
 assert.equal(M.windowed(series,Infinity).length,6);
 assert.equal(M.matchSeries([...rows,rows[0]],key).length,6);
 assert.equal(M.matchSeries(rows,'does-not-exist').length,0);
