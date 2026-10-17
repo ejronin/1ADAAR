@@ -187,3 +187,11 @@ Website requests download static, published files from GitHub Pages; charts calc
 The October 2026 audit removed **exact last-seen timestamps** and **in-game cash totals** from live public player JSON because the dashboard does not use them. Names, performance totals and pseudonymous matching keys remain intentionally public. No previously committed file can be made private by adding a .gitignore entry; consider GitHub historical secret scanning separately from current-tree tests. Test fixtures may use clearly synthetic IDs to exercise the sanitizers; production files must never contain raw SteamID64.
 
 **Scheduled update reliability:** GitHub Actions can delay or skip scheduled tasks. The 1ADAAR collector targets minutes 04, 14, 24, 34, 44 and 54 (UTC) rather than the top of each hour. Always rely on the WARCON observation timestamp, and use the live WARCON link when data is old.
+
+## Community ownership and non-placeholder filters
+
+This is the **OneAverageDan WARDOGS Community Server**, operated by the community, **not an official developer-run server**. The server-status panel and page footers state this clearly.
+
+The fictional PlayerOne demo includes 32 completed match observations and 32 aligned career snapshots. Its chart's Last 10 / Last 25 / All Available views show 10 / 25 / 32 genuinely different data points (the static recent-match table intentionally stays at ten). The current window and metric totals update with the selection. The live dashboard never manufactures player observations: a window without enough actual history is disabled with an explanation.
+
+Match-report sorting uses verified completion timestamps and changes the actual report order. With zero or one report visible, sorting is disabled and the reason is shown; it automatically activates when two or more real reports are available. Fictional sample matches stay out of the production WARCON archive and Discord recaps.

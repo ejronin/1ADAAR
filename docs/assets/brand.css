@@ -174,3 +174,9 @@ footer b{color:#72db88}
 @media(max-width:380px){.dialog-actions{gap:5px}#share-match{font-size:10px}}
 
 .share-status textarea{resize:vertical;min-height:106px;line-height:1.5;font:inherit;font-size:12px}
+
+/* Clear, accurate community ownership + non-decorative archive filter hint. */
+.server-status-community{display:block;color:#b9d7c1;font-size:10px;line-height:1.5;margin:4px 0 0;font-weight:650}
+.filters .filter-hint{flex-basis:100%;text-align:right;color:#a0baaa;font-size:10px;line-height:1.5}
+.filters select:disabled{opacity:.48;cursor:not-allowed;border-color:#354038;color:#a3b6a6}
+@media(max-width:720px){.filters .filter-hint{text-align:left}}

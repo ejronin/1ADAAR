@@ -43,7 +43,7 @@
   }));
   const priorMinutes=[1803,1850,1896,1942,1988,2035,2081,2127,2173,2220];
   let kills=104,deaths=76,matchesPlayed=16,wins=8,losses=7,draws=1;
-  const career=matches.map((record,i)=>{
+  const career=matches.slice().reverse().map((record,i)=>{
     const p=record.players[0];
     kills+=p.kills;deaths+=p.deaths;matchesPlayed++;
     wins+=Number(p.result==='win');losses+=Number(p.result==='loss');draws+=Number(p.result==='draw');
@@ -52,6 +52,6 @@
       wins,losses,draws,minutes};
   });
   window.OneADAARPerformance.mount(document.getElementById('performance-module'),{
-    key,matches,career,demo:true
+    key,matches:matches.slice().reverse(),career,demo:true
   });
 })();
