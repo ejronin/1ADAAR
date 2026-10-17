@@ -12,6 +12,8 @@ on:
   schedule:
     # Ten-minute target, offset from busy top-of-hour GitHub Actions queues.
     - cron: '4,14,24,34,44,54 * * * *'
+    # Only fetch the public server status between full collection runs.
+    - cron: '9,19,29,39,49,59 * * * *'
   workflow_dispatch:
 permissions:
   contents: write
@@ -33,17 +35,34 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
+      - name: Choose scheduled workload
+        id: workload
+        env:
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          if [ "$SCHEDULE" = "9,19,29,39,49,59 * * * *" ]; then
+            echo "full=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "full=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Install pinned image renderer
+        if: steps.workload.outputs.full == 'true'
         run: python -m pip install Pillow==11.3.0 CairoSVG==2.8.2
       - name: Run tests before collector
+        if: steps.workload.outputs.full == 'true'
         run: python -m unittest discover -s tests -v
       - name: Read WARCON public API and publish new match cards
+        if: steps.workload.outputs.full == 'true'
         id: collect
         env:
           DISCORD_MATCH_WEBHOOK: ${{ secrets.DISCORD_MATCH_WEBHOOK }}
         run: python -m src.recap
+      - name: Refresh public server status without collecting match/player data
+        if: steps.workload.outputs.full == 'false'
+        id: status
+        run: python -m src.status_poll
       - name: Persist public match snapshot and delivery checkpoint
-        if: ${{ always() && steps.collect.outcome != 'skipped' }}
+        if: ${{ success() && (steps.collect.outcome == 'success' || steps.status.outcome == 'success') }}
         run: |
           git config user.name "1adaar-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -52,8 +71,9 @@ jobs:
             git commit -m "data: publish updated WARCON match snapshot"
             git push origin HEAD:main
           fi
-      # Status snapshot is deployed from the working tree, deliberately not staged:
-      # one status check per existing run, without 144 Git commits/day.
+      # Each full/short run deploys a fresh status snapshot from the working
+      # tree, without committing every observation timestamp to Git.
+      # The only changes committed by short runs are real status transitions.
       # GITHUB_TOKEN commits do not fire push-triggered workflows. Deploy here too.
       - uses: actions/configure-pages@v6
         if: ${{ success() }}
