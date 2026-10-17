@@ -133,3 +133,13 @@ To validate Discord delivery without waiting for live game data, open **Actions 
 - The native mobile share sheet includes the community message and the report URL. Clipboard-based sharing copies the complete multi-line message rather than only a URL. When clipboard permissions are unavailable, a selectable multiline message appears.
 - The PlayerOne demo share message is similarly branded but explicitly marked **DEMO / fictional**, and it never links to a real user's Steam profile.
 - **Share Match** retains its existing link-only behavior. No changes to WARCON integration, Discord webhooks, data indexing or match delivery.
+
+
+## Phase 3 — Player Performance Analytics
+
+- The Player Intelligence dossier adds **Performance Over Time**: match K/D, kills versus deaths, five-match rolling K/D, and actual career K/D snapshots, using a single interactive, responsive chart. The selector offers last 10/25/all available observations. The graph is calculated in the browser from published data with no new on-demand WARCON calls.
+- Career snapshots are captured by the existing collector **only on successful WARCON leaderboard reads**, no more than once per player per UTC date; same-day changes replace the earlier point. The first genuine snapshot is captured only when a player has nonzero match or combat activity. No history is manufactured before tracking begins.
+- Snapshots contain only the already-public SHA-256-derived lookup key and counters, **never raw SteamIDs or player names**. They are stored in 16 one-hex-prefix JSON shards under `docs/data/history/`, so browser loads are limited to the selected player's shard.
+- Retention is capped at **60 changed daily observations / 180 days per player**, **125 player tracks per shard** (2,000 overall maximum). History is a bounded trend window, not a forever record, and is independent of the archive's latest 120 server matches.
+- The **PlayerOne demonstration** uses explicitly fictional match and career history, loaded from local static JavaScript with no API fetch. Live production JSON never contains fictional records.
+- No new hosting services, bot, database, tokens, subscriptions, webhook posts or collector polling intervals. The GitHub Actions job that already publishes players and matches also commits only changed history shards.
