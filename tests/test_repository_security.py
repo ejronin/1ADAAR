@@ -36,6 +36,6 @@ class RepositorySecurityBaseline(unittest.TestCase):
                                 f'Raw SteamID in {path}')
     def test_public_export_restrictions_documented(self):
         readme=(ROOT/'README.md').read_text()
-        self.assertIn('hashed lookup keys are pseudonymous',readme)
+        self.assertIn('hashed keys are pseudonymous',readme)
         self.assertIn('not truly anonymous',readme)
         self.assertIn('Opening a player profile',readme)

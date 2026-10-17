@@ -27,6 +27,8 @@ ServerSettings.ini
 *.rcon
 *.rcon.json
 *.secrets.*
+*.secret
+*.secret.*
 *.credentials.*
 *.token
 *.token.*
