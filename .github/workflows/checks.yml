@@ -42,6 +42,8 @@ jobs:
           node --check docs/js/share.js
           node --check docs/js/demo-share.js
           node tests/share_browser.test.cjs
+      - name: Repository privacy and ignore-file protections
+        run: python -m unittest tests.test_repository_security -v
       - name: No secrets in public snapshot
         run: |
           python - <<'PY'

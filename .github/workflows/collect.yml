@@ -1,5 +1,14 @@
 name: Collect WARCON and publish 1ADAAR
 on:
+  # Prime WARCON status after a real code release; GITHUB_TOKEN data commits
+  # do not create another run. Scheduled polling remains best-effort.
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - '.github/workflows/collect.yml'
+      - 'docs/js/server-status.js'
+      - 'docs/assets/server-status.css'
   schedule:
     - cron: '*/10 * * * *'
   workflow_dispatch:

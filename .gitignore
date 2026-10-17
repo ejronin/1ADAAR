@@ -21,3 +21,51 @@ coverage/
 *.log
 *.tmp
 # Generated data is committed only intentionally by the scheduled workflow
+
+# Server-side configuration exports and credentials must never enter this public repo
+ServerSettings.ini
+*.rcon
+*.rcon.json
+*.secrets.*
+*.credentials.*
+*.token
+*.token.*
+*.pfx
+*.p8
+*.p12
+*.jks
+*.keystore
+*.asc
+*.gpg
+id_rsa*
+id_ed25519*
+# Local database dumps, archives, saved WARCON responses and player exports
+*.db
+*.sqlite
+*.sqlite3
+*.sql
+*.sql.gz
+*.bak
+*.backup
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+*.tgz
+*player*export*.csv
+*roster*.csv
+*steamid*.csv
+*warcon*dump*
+# Local editor, script and computer working state
+.envrc
+.direnv/
+.local/
+.private/
+private/
+tmp/
+temp/
+node_modules/
+dist/
+build/
+*.pyc

@@ -1,4 +1,21 @@
-# 1ADAAR — OneAverageDan After Action Report
+# 1ADAAR — OneAverageDan After-Action Report
+
+**What it is:** A public WARDOGS community dashboard showing finished matches, player stats, performance trends, and a link to the 1AD Discord.
+
+**Where to use it:** https://ejronin.github.io/1ADAAR/
+
+**How the data gets there:** WARCON records game activity. GitHub periodically copies approved public stats, makes the website available, and posts a Discord recap after a newly completed match. Opening a player profile **does not start a GitHub job or query WARCON**; the charts are calculated in your browser using the published data.
+
+**Server-status accuracy:** WARCON's own page is the freshest place to check whether the server is running. The 1ADAAR indicator uses the last successful GitHub update and will show **Status unavailable** when it has no recent reading. GitHub's schedule is not a real-time guarantee. You can use **Check live WARCON** next to the indicator for an authoritative view. If the public server-status API is disabled by its administrator, 1ADAAR cannot read it, even if WARCON's logged-in panel shows the server as live.
+
+**Privacy:** SteamID64 values, RCON passwords, Discord webhook URLs and administrative logs do not belong in the public website. Player names, totals and hashed lookup keys are intentionally public; hashed keys are pseudonymous, **not truly anonymous**. Anyone with access to GitHub can view files committed to this public repository, even if they aren't linked on the website.
+
+**Want technical setup or maintainer details?** Everything below this section is documentation for administrators and contributors.
+
+---
+
+## Maintainer and deployment reference
+
 
 **One match. One recap. One linked dossier. No paid backend.**
 
@@ -155,3 +172,12 @@ To validate Discord delivery without waiting for live game data, open **Actions 
 - The browser refreshes the GitHub Pages snapshot approximately every 2 minutes while visible; actual observation cadence is approximately every 10 minutes via GitHub Actions. Server status is therefore **near-live, not instant**; the observed time is displayed.
 - `docs/data/server-status.json` is published as part of the Pages artifact **without being git-staged**, so frequent status timestamps/player counts do not generate Git commits. The small `server-status-state.json` file commits **only when state changes** to identify an online-to-offline transition. Private roster, Steam IDs, join code and RCON information are not published in 1ADAAR.
 - Discord recap PNGs use the **same official-source faction SVG artwork** as the site and each faction's correct team color. The renderer reads only repo-local assets and renders only verified WARCON faction labels; no fake scores or extra Discord posts are introduced.
+
+
+## Advanced analytics — verified feasibility (October 2026)
+
+WARCON's **public match detail** contains score, map, faction, per-player kills/deaths/playtime and awards. If the kill feed is transmitting and the public match kill-feed pages are available, events additionally contain weapon/cause tags, timestamps, killer/victim names and factions; kill-feed pages are paginated and can be rate-limited. An event's cause may describe a vehicle/environment rather than a specific rifle. Show only named verified metrics, e.g. **Most kills by weapon**; do not call kill counts **most used** or **favorite** without loadout/usage telemetry.
+
+No verified public event supports true bullet-to-death **TTK**, precise **life span from spawn to death** or **player levels**. Missing firing/damage/spawn/level telemetry is not an invitation to infer or fabricate these metrics. Player-level per-weapon K/D is also not a simple public-contract feature: public kill events identify people by names rather than pseudonymous player keys, so joining historical names to account-specific player profiles could misattribute events. If later added, build bounded, sanitized **aggregate match/faction weapon counts**, not raw named kill logs in the public repo.
+
+Website requests download static, published files from GitHub Pages; charts calculate locally. Heavy aggregation, if introduced later, should run **once per new completed match** inside the existing scheduled collector and publish only compact approved statistics. Never fetch hundreds of WARCON event pages per dashboard visitor. Currently match archive contains the most recent 120 completed server matches, player index up to 1,000 entries, and career history up to 60 changed daily observations over 180 days.
