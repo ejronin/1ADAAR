@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 from src.history import record_snapshots
+from src.server_status import project as project_server_status, unknown as unknown_server_status
 from src.player_index import player_key, safe_name, collect_players
 import datetime as dt
 import json
@@ -25,6 +26,7 @@ WARCON_ORIGIN = "https://console.warcon.app"
 SERVER_ID = "e30a7ee9-7ea5-4633-882e-98d2e0c03342"
 PUBLIC_MATCHES = f"{WARCON_ORIGIN}/api/public/servers/{SERVER_ID}/matches"
 PUBLIC_BOARD = f"{WARCON_ORIGIN}/api/public/servers/{SERVER_ID}/leaderboard"
+PUBLIC_STATUS = f"{WARCON_ORIGIN}/api/public/servers/{SERVER_ID}"
 PUBLIC_SITE = f"{WARCON_ORIGIN}/s/{SERVER_ID}/matches"
 SITE_URL = "https://ejronin.github.io/1ADAAR/"
 DATA = Path(__file__).resolve().parents[1] / "docs" / "data"
@@ -267,6 +269,21 @@ def run(*, webhook: str = "", dry_run: bool = False) -> dict:
         atomic_write_json(db_file, {"schemaVersion": 1, "source": "WARCON public matches API",
                                     "lastCheckedAt": dt.datetime.now(dt.timezone.utc).isoformat(),
                                     "matches": latest})
+    # Public status is independent of completed matches and never touches Discord.
+    # Always deploy a fresh snapshot but persist only state changes in Git history.
+    if not dry_run:
+        state_file = DATA / "server-status-state.json"
+        state_info = read_json(state_file, {"schemaVersion": 1, "state": "unknown"})
+        previous_state = state_info.get("state", "unknown")
+        try:
+            result = fetch_json(PUBLIC_STATUS)
+            status = project_server_status(result.get("server"), previous_state)
+        except (RuntimeError, ValueError, urllib.error.HTTPError, TypeError) as exc:
+            print(f"1ADAAR server status unavailable: {type(exc).__name__}", file=sys.stderr)
+            status = unknown_server_status()
+        atomic_write_json(DATA / "server-status.json", status)
+        if status["state"] != previous_state:
+            atomic_write_json(state_file, {"schemaVersion": 1, "state": status["state"]})
     # Enrich the static player lookup using WARCON's public, all-time scoreboard.
     # This is independent of recap delivery: a leaderboard outage never blocks
     # a completed match or causes the existing lookup index to be erased.
