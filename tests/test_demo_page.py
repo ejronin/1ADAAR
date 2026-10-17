@@ -25,7 +25,8 @@ class DemoPageTests(unittest.TestCase):
         self.assertIn(f"{fixture['player']['kills']/fixture['player']['deaths']:.2f}",page)
         for name in ('Bakurani','Ozeti','Zestafona','Lonestar','Valkyra','Manticore'):
             self.assertIn(name,page)
-        self.assertEqual(page.count('<tr>'),len(fixture['matches'])+1)
+        self.assertEqual(page.count('<tr>'),11)  # Only latest ten fictional matches shown in compact table
+        self.assertEqual(len(fixture['matches']),32)
     def test_demo_is_not_in_production_public_player_index(self):
         root=Path(__file__).resolve().parents[1]/'docs'
         players=json.loads((root/'data/players.json').read_text())

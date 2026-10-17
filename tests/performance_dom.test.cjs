@@ -59,3 +59,56 @@ mount(empty,{key,matches:[],career:[],demo:false});
 assert.equal(find(empty,n=>n.className==='perf-empty').hidden,false);
 assert.equal(find(empty,n=>n.tag==='svg'),null);
 console.log('Responsive chart DOM, accessibility and controls smoke tests passed');
+
+const twelveMonthDays=Array.from({length:32},(_,i)=>new Date(Date.UTC(2026,8,13+i)).toISOString().slice(0,10));
+const chronological=twelveMonthDays.map((day,i)=>({
+  id:i+1,endedAt:day+'T19:00:00Z',map:'Bakurani',
+  players:[{key,kills:8+i,deaths:2+(i%9)}]
+}));
+const careerThirtyTwo=twelveMonthDays.map((date,i)=>({
+  date,kills:100+i*15,deaths:42+i*7,matches:17+i,wins:9+Math.floor(i/2)
+}));
+const fullHost=new Node('section');
+mount(fullHost,{key,matches:chronological,career:careerThirtyTwo,demo:true});
+const select=find(fullHost,n=>n.className==='perf-window');
+const coverage=find(fullHost,n=>n.className==='perf-coverage');
+const graphic=find(fullHost,n=>n.tag==='svg');
+assert.ok(select&&!select.disabled,'Range selector must be enabled with 32 observations');
+assert.equal(select.value,'10');
+assert.match(coverage.textContent,/10 of 32 completed matches/);
+assert.match(graphic.attrs['aria-label'],/10 observations/);
+select.value='25';select.events.change();
+assert.equal(select.value,'25');
+assert.match(coverage.textContent,/25 of 32 completed matches/);
+assert.match(find(fullHost,n=>n.tag==='svg').attrs['aria-label'],/25 observations/);
+select.value='all';select.events.change();
+assert.equal(select.value,'all');
+assert.match(coverage.textContent,/32 of 32 completed matches/);
+assert.match(find(fullHost,n=>n.tag==='svg').attrs['aria-label'],/32 observations/);
+const updatedTable=find(fullHost,n=>n.tag==='tbody');
+assert.equal(updatedTable.children.length,32,'Exact data table must change with selected range');
+const richTabs=find(fullHost,n=>n.className==='perf-tabs');
+richTabs.children[1].events.click();
+assert.ok(find(fullHost,n=>n.textContent==='KILLS IN VIEW'));
+const killsView=find(fullHost,n=>n.className==='perf-summary');
+assert.equal(killsView.children[1].children[1].textContent,
+  String(chronological.reduce((sum,row)=>sum+row.players[0].kills,0)));
+select.value='10';select.events.change();
+const tenKills=chronological.slice(-10).reduce((sum,row)=>sum+row.players[0].kills,0);
+assert.equal(killsView.children[1].children[1].textContent,String(tenKills));
+richTabs.children[2].events.click();
+assert.match(coverage.textContent,/10 of 32 career snapshots/);
+select.value='25';select.events.change();
+assert.match(coverage.textContent,/25 of 32 career snapshots/);
+select.value='all';select.events.change();
+assert.match(coverage.textContent,/32 of 32 career snapshots/);
+const midHost=new Node('section');
+mount(midHost,{key,matches:chronological.slice(0,17),career:[],demo:false});
+const midSelect=find(midHost,n=>n.className==='perf-window');
+assert.equal(midSelect.disabled,false);
+assert.equal(midSelect.children[1].disabled,true,'Last 25 and All are duplicates for 17 records');
+midSelect.value='all';midSelect.events.change();
+assert.match(find(midHost,n=>n.className==='perf-coverage').textContent,/17 of 17/);
+assert.equal(find(host,n=>n.className==='perf-window').disabled,true,
+ 'A real profile with six matches cannot present three indistinguishable ranges');
+console.log('32-observation chart selection, reactive summaries, career ranges and sparse-data controls passed.');

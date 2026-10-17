@@ -122,3 +122,8 @@
 @media(prefers-reduced-motion:reduce){
   .perf-stroke,.perf-hit,.perf-tab{animation:none;transition:none}
 }
+
+/* Distinct observation windows are explained beside actual WARCON data, not guessed. */
+.perf-coverage{margin:-5px 0 14px;color:#bfead0;font-size:11px;letter-spacing:.035em;font-weight:700;line-height:1.5}
+.perf-window:disabled{color:#a0c0ac;background:#18271d;border-color:#31543d;cursor:not-allowed;opacity:.72}
+.perf-window option:disabled{color:#90aa98}

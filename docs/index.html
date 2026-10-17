@@ -5,16 +5,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="color-scheme" content="dark" />
   <meta name="theme-color" content="#101216" />
-  <meta name="description" content="1ADAAR — OneAverageDan WARDOGS post-match reports, scores and player performance. Official WARCON-sourced results." />
+  <meta name="description" content="1ADAAR — OneAverageDan WARDOGS Community Server — community-run match reports and player statistics sourced from WARCON." />
   <title>1ADAAR — WARDOGS Match Intelligence</title>
   <link rel="icon" href="assets/1ad-logo.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="assets/style.css" />
-  <link rel="stylesheet" href="assets/brand.css?v=7" />
+  <link rel="stylesheet" href="assets/brand.css?v=8" />
   <link rel="stylesheet" href="assets/factions.css?v=1" />
   <link rel="stylesheet" href="assets/server-status.css?v=2" />
   <script defer src="js/factions.js?v=1"></script>
   <script defer src="js/share.js?v=2"></script>
-  <script defer src="js/app.js?v=6"></script>
+  <script defer src="js/match-sort.js?v=1"></script>
+  <script defer src="js/app.js?v=7"></script>
   <script defer src="js/server-status.js?v=2"></script>
 </head>
 <body>
@@ -35,9 +36,10 @@
     <section class="server-status" id="server-status" data-state="unknown" aria-label="Server status: STATUS UNAVAILABLE">
       <div class="server-status-main">
         <span class="server-status-lamp" aria-hidden="true"></span>
-        <div><div class="eyebrow">ONEAVERAGEDAN / WARDOGS SERVER</div>
+        <div><div class="eyebrow">ONEAVERAGEDAN / WARDOGS COMMUNITY SERVER</div>
           <div class="server-status-label" id="server-status-label" aria-live="polite">STATUS UNAVAILABLE</div>
           <small class="server-status-updated" id="server-status-updated">Checking WARCON reporting…</small>
+          <small class="server-status-community">Community-run · Not operated by the WARDOGS developers</small>
         </div>
       </div>
       <a class="server-status-source" href="https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342" target="_blank" rel="noopener noreferrer" aria-label="Check actual WARDOGS server status on WARCON">Check live WARCON ↗</a>
@@ -45,21 +47,21 @@
       <div class="server-status-cell"><span>CURRENT MAP</span><strong id="server-status-map">—</strong></div>
     </section>
     <section aria-label="Match summary" class="kpi-grid"><div class="kpi"><span>RECORDED MATCHES</span><strong id="stat-matches">—</strong><small>completed match history</small></div><div class="kpi"><span>MOST RECENT WINNER</span><strong id="stat-winner" class="text-value">—</strong><small>latest recorded result</small></div><div class="kpi"><span>MOST RECENT MAP</span><strong id="stat-map" class="text-value">—</strong><small>last completed match</small></div><div class="kpi"><span>DATA FEED</span><strong id="stat-feed" class="text-value">WAITING</strong><small id="stat-sync">WARCON public API</small></div></section>
-    <section id="reports" class="reports" aria-labelledby="reports-heading"><div class="section-head"><div><div class="eyebrow">01 / MISSION ARCHIVE</div><h2 id="reports-heading">After-action reports</h2><p>Verified results from completed WARDOGS matches.</p></div><div class="filters"><label class="sr-only" for="find-match">Search matches</label><input id="find-match" type="search" placeholder="Search map or winner…" autocomplete="off" /><label class="sr-only" for="sort-matches">Sort matches</label><select id="sort-matches"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></div></div>
+    <section id="reports" class="reports" aria-labelledby="reports-heading"><div class="section-head"><div><div class="eyebrow">01 / MISSION ARCHIVE</div><h2 id="reports-heading">After-action reports</h2><p>Verified results from completed WARDOGS matches.</p></div><div class="filters"><label class="sr-only" for="find-match">Search matches</label><input id="find-match" type="search" placeholder="Search map or winner…" autocomplete="off" /><label class="sr-only" for="sort-matches">Sort matches</label><select id="sort-matches" disabled aria-describedby="sort-explanation"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select><small class="filter-hint" id="sort-explanation" role="status">Sorting becomes available after 2 completed matches.</small></div></div>
     <div id="feedback" class="notice" role="status">Retrieving published match history…</div><div id="match-grid" class="match-grid" aria-live="polite"></div></section>
     <section id="join-wardogs" class="join-panel" aria-labelledby="join-wardogs-heading">
       <div class="join-panel-icon" aria-hidden="true">◆</div>
       <div class="join-panel-copy">
         <div class="eyebrow">JOIN THE COMMUNITY</div>
         <h2 id="join-wardogs-heading">New to WARDOGS?</h2>
-        <p>Join the OneAverageDan community, grab the server join code in Discord, and get into the fight.</p>
+        <p>Join the OneAverageDan WARDOGS Community Server. Find the server join code in the 1AD Discord and get into the fight.</p>
       </div>
       <a class="join-panel-link" href="https://discord.gg/e9B69UkE53" target="_blank" rel="noopener noreferrer">
         <img src="assets/discord.svg" alt="" width="21" height="21" />
         Join the 1AD Discord <span aria-hidden="true">↗</span>
       </a>
     </section>
-    <footer><span>1ADAAR <b>◆</b> ONEAVERAGEDAN AFTER ACTION REPORT</span><span>Community analytics · Not affiliated with game developer or WARCON</span></footer>
+    <footer><span>1ADAAR <b>◆</b> ONEAVERAGEDAN AFTER ACTION REPORT</span><span>Community-run server · Not operated by WARDOGS developers · Statistics from WARCON</span></footer>
   </main>
 </div>
 <dialog id="match-dialog" class="detail" aria-labelledby="detail-title">
