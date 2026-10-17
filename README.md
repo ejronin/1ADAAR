@@ -143,3 +143,8 @@ To validate Discord delivery without waiting for live game data, open **Actions 
 - Retention is capped at **60 changed daily observations / 180 days per player**, **125 player tracks per shard** (2,000 overall maximum). History is a bounded trend window, not a forever record, and is independent of the archive's latest 120 server matches.
 - The **PlayerOne demonstration** uses explicitly fictional match and career history, loaded from local static JavaScript with no API fetch. Live production JSON never contains fictional records.
 - No new hosting services, bot, database, tokens, subscriptions, webhook posts or collector polling intervals. The GitHub Actions job that already publishes players and matches also commits only changed history shards.
+
+## Faction emblems and color identity
+
+- The Lonestar **blue**, Valkyra **red**, and Manticore **green** SVGs in `docs/assets/factions/` are compact vector contours derived from the three faction emblem images supplied for 1ADAAR. Each retains the source emblem silhouette and official team color identity; they are not invented stock graphics. Unknown WARCON faction names remain readable in neutral styling.
+- Faction identity is applied to the Player Intelligence faction panel, recent-match table, completed match card winner, faction score bars, and match dossier player scoreboard. All retain actual text labels and adequate dark-mode contrast, including mobile layouts. No synthetic team stats are introduced into WARCON.

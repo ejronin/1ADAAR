@@ -1,0 +1,21 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const created=[];
+const ctx={window:{},document:{createElement(tag){
+  const node={tag,children:[],style:{value:{},setProperty(k,v){this.value[k]=v;}},append(...children){this.children.push(...children);}};
+  created.push(node);return node;
+}}};
+vm.runInNewContext(fs.readFileSync('docs/js/factions.js','utf8'),ctx);
+const F=ctx.window.OneADAARFactions;
+assert.equal(F.identify('Lonestar').color,'#465eff');
+assert.equal(F.identify(' VALKYRA ').name,'Valkyra');
+assert.equal(F.identify('manticore').icon,'assets/factions/manticore.svg');
+assert.equal(F.identify('Unknown clan'),null);
+const row=F.label('Lonestar');
+assert.equal(row.children[0].tag,'img');
+assert.equal(row.children[0].alt,'');
+assert.equal(row.children[1].textContent,'Lonestar');
+const fallback=F.label('<img onerror=evil>');
+assert.equal(fallback.children.length,1);
+assert.equal(fallback.children[0].textContent,'<img onerror=evil>');
+console.log('Faction identity maps and text-safe fallback passed.');

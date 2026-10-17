@@ -75,7 +75,7 @@
           const group=se('g',{class:'perf-point'});
           const label=M.tickDate(rows[p.i].date)+' · '+(rows[p.i].map||'Career snapshot')+' · '+s.label+': '+
             (isCount?String(p.value):p.value.toFixed(2));
-          group.append(se('circle',{cx:p.px,cy:p.py,r:4.7,fill:'#0c1710',stroke:s.color,'stroke-width':2.4}));
+          group.append(se('circle',{cx:p.px,cy:p.py,r:4.7,fill:'#0c1710',stroke:s.color,'stroke-width':2.4,class:'perf-dot'}));
           const hit=se('circle',{cx:p.px,cy:p.py,r:16,fill:'transparent',tabindex:'0',role:'button',
             'aria-label':label,class:'perf-hit'});
           hit.append(se('title',{},label));
