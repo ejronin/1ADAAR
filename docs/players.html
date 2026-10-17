@@ -9,9 +9,12 @@
   <link rel="icon" href="assets/1ad-logo.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="assets/style.css" />
   <link rel="stylesheet" href="assets/brand.css?v=7" />
-  <link rel="stylesheet" href="assets/players.css?v=6" />
+  <link rel="stylesheet" href="assets/players.css?v=8" />
+  <link rel="stylesheet" href="assets/performance.css?v=1" />
+  <script defer src="js/performance-core.js?v=1"></script>
+  <script defer src="js/performance.js?v=1"></script>
   <script defer src="js/share.js?v=2"></script>
-  <script defer src="js/players.js?v=5"></script>
+  <script defer src="js/players.js?v=6"></script>
 </head>
 <body>
 <a class="skip" href="#content">Skip to player lookup</a>
@@ -41,9 +44,11 @@
       <div class="profile-header"><div class="profile-emblem"><img src="assets/1ad-logo.svg" alt="" width="58" height="58" /></div><div class="profile-heading"><span class="eyebrow"><span id="profile-source-text">PLAYER INTELLIGENCE / VERIFIED WARCON RESULTS</span></span><h2 id="dossier-title"></h2><div id="profile-subtitle" class="profile-subtitle"></div><div id="demo-warning" class="demo-warning" hidden>DEMO PROFILE — FICTIONAL DATA · NOT A WARCON RECORD</div></div><div class="profile-actions"><button type="button" id="share-player" class="new-search" aria-label="Share this player stats profile">↗ Share player stats</button><button type="button" id="new-search" class="new-search">New search</button></div></div>
       <div id="player-share-status" class="share-status" role="status" aria-live="polite" hidden></div>
       <div class="metric-grid" id="profile-metrics"></div>
+      <section id="performance-module" class="performance-module" aria-label="Performance over time"><p class="perf-empty-static">Performance trends will appear after completed matches are recorded.</p></section>
       <div id="combat-panel" class="profile-panel" hidden><div class="panel-heading"><h3>Kill-feed combat insights</h3><span>Available only when WARCON records combat events</span></div><div class="metric-grid compact" id="combat-metrics"></div></div>
+      <div class="analytics-section-label"><span>03 / BATTLEFIELD BREAKDOWN</span><small>Map and faction effectiveness · completed matches only</small></div>
       <div class="profile-columns"><section class="profile-panel"><div class="panel-heading"><h3>Map performance</h3><span>Recent archived matches only</span></div><div id="map-breakdown"></div></section><section class="profile-panel"><div class="panel-heading"><h3>Faction performance</h3><span>Recent archived matches only</span></div><div id="faction-breakdown"></div></section></div>
-      <section class="profile-panel"><div class="panel-heading"><h3>Recent completed matches</h3><span>From the available 1ADAAR match archive</span></div><div id="recent-match-table" class="table-scroll"></div></section>
+      <section class="profile-panel"><div class="panel-heading"><h3>04 / Recent completed matches</h3><span>From the available 1ADAAR match archive</span></div><div id="recent-match-table" class="table-scroll"></div></section>
       <p class="profile-disclaimer">Career totals are sourced from WARCON's all-time leaderboard. Map, faction, and recent-match breakdowns use only completed matches present in the 1ADAAR archive; they are not lifetime estimates. A dash means the metric is unavailable, not zero.</p>
     </section>
     <footer><span>1ADAAR <b>◆</b> ONEAVERAGEDAN AFTER ACTION REPORT</span><span>Public WARCON game statistics · No Steam profiles or comment system</span></footer>

@@ -14,10 +14,29 @@ async function keyForSteamId(id){const data=new TextEncoder().encode(`1ADAAR:v1:
 function profileMatches(key){return (publicState.selected?.demo?publicState.demoMatches:publicState.matches).filter(m=>(m.players||[]).some(p=>p.key===key)).sort((a,b)=>new Date(b.endedAt)-new Date(a.endedAt));}
 function breakdown(items,field,parentId){const parent=$(parentId);parent.replaceChildren();const groups=new Map();for(const x of items){const player=(x.players||[]).find(p=>p.key===publicState.selected?.key);if(!player)continue;const label=field==='map'?x.map:player.faction||'Unassigned';const curr=groups.get(label)||{matches:0,wins:0};curr.matches+=1;curr.wins+=Number(player.result==='win');groups.set(label,curr);}if(!groups.size){parent.append(escapeFree('div','empty-insight','No completed matches recorded for this player in the current archive.'));return;}const max=Math.max(...[...groups.values()].map(v=>v.matches));for(const [label,row] of [...groups.entries()].sort((a,b)=>b[1].matches-a[1].matches)){const item=escapeFree('div','breakdown-row');const left=escapeFree('div');left.append(escapeFree('strong','',label));const bar=escapeFree('div','mini-meter');const fill=escapeFree('i');fill.style.width=`${100*row.matches/max}%`;bar.append(fill);left.append(bar);item.append(left,escapeFree('span','',`${row.matches} matches`),escapeFree('em','',`${row.wins} wins`));parent.append(item);}}
 function recentTable(matches,key){const wrap=$('recent-match-table');wrap.replaceChildren();if(!matches.length){wrap.append(escapeFree('div','empty-insight','Recent match-level data will appear after WARCON records completed matches.'));return;}const table=escapeFree('table','recent-table'),thead=document.createElement('thead'),tr=document.createElement('tr');['Date','Map','Faction','Result','K','D','Time'].forEach(h=>tr.append(escapeFree('th','',h)));thead.append(tr);table.append(thead);const tbody=document.createElement('tbody');for(const m of matches.slice(0,15)){const p=m.players.find(x=>x.key===key),row=document.createElement('tr');row.append(escapeFree('td','',dateText(m.endedAt)));const map=document.createElement('td');if(publicState.selected?.demo){map.append(escapeFree('span','',m.map));}else{const link=escapeFree('a','',m.map);link.href=`index.html#match-${Number(m.id)}`;map.append(link);}row.append(map,escapeFree('td','',p.faction||'—'));row.append(escapeFree('td',`result-${p.result||'draw'}`,(p.result||'—').toUpperCase()));row.append(escapeFree('td','',p.kills),escapeFree('td','',p.deaths),escapeFree('td','',`${Math.floor(p.seconds/60)}m`));tbody.append(row);}table.append(tbody);wrap.append(table);}
+/* Cache history by the first hex nibble so only one small shard loads per player. */
+const historyCache=new Map();
+function loadCareer(key) {
+  if(!/^[a-f0-9]{64}$/.test(key))return Promise.resolve([]);
+  const shard=key[0];
+  if(!historyCache.has(shard)){
+    historyCache.set(shard,fetch('data/history/'+shard+'.json',{cache:'no-store'})
+      .then(response=>response.ok?response.json():{players:{}})
+      .catch(()=>({players:{}})));
+  }
+  return historyCache.get(shard).then(doc=>
+    doc&&doc.schemaVersion===1&&doc.players&&Array.isArray(doc.players[key])?doc.players[key]:[]);
+}
 function openProfile(entry){publicState.selected=entry;$('demo-warning').hidden=!entry.demo;$('profile-source-text').textContent=entry.demo?'PLAYER INTELLIGENCE / SYNTHETIC DEMO DATA':'PLAYER INTELLIGENCE / VERIFIED WARCON RESULTS';$('lookup-results').hidden=true;$('dossier').hidden=false;$('lookup-message').hidden=true;$('dossier-title').textContent=entry.name;$('profile-subtitle').textContent=entry.demo?`DEMO ONLY • Fictional stats • Example rank #${num(entry.rank)}`:`WARDOGS server • All-time WARCON scoreboard • Rank #${num(entry.rank)}`;
  const metrics=$('profile-metrics');metrics.replaceChildren(tile('Kills',num(entry.kills)),tile('Deaths',num(entry.deaths)),tile('K/D',ratio(entry.kills,entry.deaths)),tile('Matches',num(entry.matches)),tile('Wins',num(entry.wins)),tile('Win rate',percent(entry.wins,entry.wins+entry.losses+entry.draws)),tile('Playtime',duration(entry.minutes)),tile('Seeding time',duration(entry.seedMinutes)));
  const combat=$('combat-panel');combat.hidden=!entry.hasFeed;const box=$('combat-metrics');box.replaceChildren();if(entry.hasFeed)box.append(tile('Headshots',num(entry.headshots),'Kill feed'),tile('Vehicle kills',num(entry.vehicleKills),'Kill feed'),tile('Best kill streak',num(entry.killStreak),'Kill feed'));
- $('player-share-status').hidden=true;const recent=profileMatches(entry.key);breakdown(recent,'map','map-breakdown');breakdown(recent,'faction','faction-breakdown');recentTable(recent,entry.key);
+ $('player-share-status').hidden=true;const recent=profileMatches(entry.key);
+ window.OneADAARPerformance.mount($('performance-module'),{key:entry.key,matches:recent,career:[],demo:false});
+ loadCareer(entry.key).then(points=>{
+   if(publicState.selected?.key!==entry.key)return;
+   window.OneADAARPerformance.mount($('performance-module'),{key:entry.key,matches:recent,career:points,demo:false});
+ });
+breakdown(recent,'map','map-breakdown');breakdown(recent,'faction','faction-breakdown');recentTable(recent,entry.key);
  if(!entry.demo)history.replaceState(null,'',`#player-${entry.key}`);$('dossier').scrollIntoView({behavior:'smooth',block:'start'});
 }
 function showCandidates(rows){$('lookup-results').hidden=false;$('dossier').hidden=true;$('lookup-message').hidden=true;const list=$('player-candidates');list.replaceChildren();for(const entry of rows.slice(0,40)){const btn=escapeFree('button','candidate');btn.type='button';btn.append(escapeFree('strong','',entry.name),escapeFree('small','',`${num(entry.kills)} kills · ${num(entry.matches)} matches · rank #${num(entry.rank)}`));btn.addEventListener('click',()=>openProfile(entry));list.append(btn);}if(rows.length>40)list.append(escapeFree('p','empty-insight','Showing the first 40 matches. Refine the name to narrow your search.'));$('lookup-results').scrollIntoView({behavior:'smooth',block:'start'});}
