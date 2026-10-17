@@ -97,7 +97,11 @@
     if(!host||!config||typeof config.key!=='string')return;
     const matches=M.matchSeries(config.matches,config.key);
     const careers=M.careerSeries(config.career);
-    let metric='kd',range=10;
+    // Preserve a visitor's selected view while the background history shard loads.
+    const oldMetric=host.querySelector('.perf-tab[aria-pressed="true"]')?.dataset.metric;
+    const oldRange=host.querySelector('.perf-window')?.value;
+    let metric=['kd','kills','career'].includes(oldMetric)?oldMetric:'kd';
+    let range=oldRange==='25'?25:oldRange==='all'?Infinity:10;
     host.replaceChildren();
     const header=el('header','perf-header'),
       left=el('div','perf-heading');
@@ -121,6 +125,7 @@
     for(const [value,label] of [['10','Last 10'],['25','Last 25'],['all','All available']]){
       const option=el('option','',label);option.value=value;select.append(option);
     }
+    select.value=range===Infinity?'all':String(range);
     select.addEventListener('change',()=>{range=select.value==='all'?Infinity:Number(select.value);update();});
     selectLabel.append(select);
     toolbar.append(tabs,selectLabel);host.append(toolbar);
