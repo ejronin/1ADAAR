@@ -1,5 +1,5 @@
 'use strict';
-/* GitHub Pages snapshot: refreshed by the existing collector every ~10 minutes.
+/* GitHub Pages snapshot: refreshed by the existing collector, targeting ~5 minutes.
    Never claim live status from an old snapshot or an unrelated data-source light. */
 (function(){
   const card=document.getElementById('server-status');
@@ -14,7 +14,7 @@
     online:'ONLINE / LIVE',
     offline:'OFFLINE',
     reconnecting:'RECONNECTING',
-    unknown:'STATUS UNAVAILABLE'
+    unknown:'STATUS NOT VERIFIED'
   };
   // GitHub Actions scheduled workflows are best-effort, and may be delayed.
   const MAX_SNAPSHOT_AGE_MS=20*60*1000;
@@ -36,7 +36,7 @@
       doc.map.slice(0,55):'—';
     target.updated.textContent=valid?
       'WARCON observed '+new Date(doc.observedAt).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'}):
-      'No recent public status reading · Check live WARCON ↗';
+      'No recent verified WARCON observation · Check live WARCON ↗';
     card.setAttribute('aria-label','Server status: '+line+
       (online?', '+target.players.textContent+' players, map '+target.map.textContent:''));
   }

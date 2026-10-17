@@ -195,3 +195,9 @@ This is the **OneAverageDan WARDOGS Community Server**, operated by the communit
 The fictional PlayerOne demo includes 32 completed match observations and 32 aligned career snapshots. Its chart's Last 10 / Last 25 / All Available views show 10 / 25 / 32 genuinely different data points (the static recent-match table intentionally stays at ten). The current window and metric totals update with the selection. The live dashboard never manufactures player observations: a window without enough actual history is disabled with an explanation.
 
 Match-report sorting uses verified completion timestamps and changes the actual report order. With zero or one report visible, sorting is disabled and the reason is shown; it automatically activates when two or more real reports are available. Fictional sample matches stay out of the production WARCON archive and Discord recaps.
+
+## Staged v1.0.1: more frequent, lighter status polling
+
+The proposed v1.0.1 schedule keeps all existing match/player collection and Discord recaps at their current approximately 10-minute interval, plus one **status-only WARCON request at the five-minute midpoint**. GitHub may still delay or skip a scheduled job; this is **not a real-time uptime monitor**. A missing or stale reading becomes neutral **STATUS NOT VERIFIED**, never red/offline or green/live. The link to WARCON's own live page remains visible. Only changes of status are committed; individual player counts and observation timestamps are published to Pages without committing new data on every check.
+
+Production v1.0.0 continues running unchanged until a reviewed PR is merged. Work planned for weekly intelligence is tracked in `planning/V1.0.1.md` and must not publish fictional reports or auto-post a weekly message before first-match validation.
