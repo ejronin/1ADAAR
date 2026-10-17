@@ -22,7 +22,11 @@ class RepositorySecurityBaseline(unittest.TestCase):
         bad=[x for x in lines if re.search(
             r'(^|/)(\.env(\.|$)|ServerSettings\.ini$|id_rsa|id_ed25519|\.private/|private/)|'
             r'\.(p12|pfx|pem|key|db|sqlite3?|zip|7z|sql|backup|log)$',x,re.I)]
+        # The deliberately empty template is approved and contains no credentials.
+        bad=[name for name in bad if name != '.env.example']
         self.assertEqual(bad,[],f'Sensitive files tracked: {bad}')
+        example=(ROOT/'.env.example').read_text()
+        self.assertNotRegex(example,r'(?im)^(?!#)\s*\w+\s*=\s*\S+', 'Example env contains real values')
     def test_public_files_do_not_contain_credential_patterns(self):
         src=ROOT/'docs'
         for path in src.rglob('*'):
