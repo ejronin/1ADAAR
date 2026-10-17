@@ -24,7 +24,8 @@ class CareerHistoryTests(unittest.TestCase):
             self.assertEqual(record_snapshots(folder, one, now=date("2026-10-16")), 0)
             newer = {"players": [player(kills=27, deaths=11)]}
             self.assertEqual(record_snapshots(folder, newer, now=date("2026-10-16")), 1)
-            self.assertEqual(record_snapshots(folder, newer, now=date("2026-10-17")), 1)
+            self.assertEqual(record_snapshots(folder, newer, now=date("2026-10-17")), 0)
+            self.assertEqual(record_snapshots(folder, {"players": [player(kills=31, deaths=12)]}, now=date("2026-10-17")), 1)
             values = json.loads((folder / "a.json").read_text())["players"][KEY]
             self.assertEqual(len(values), 2)
             self.assertEqual(values[0]["kills"], 27)
