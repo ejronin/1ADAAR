@@ -33,6 +33,7 @@ jobs:
           node --check docs/js/performance.js
           node --check docs/js/demo-performance.js
           node tests/performance.test.cjs
+          node tests/demo_performance.test.cjs
           node --check docs/js/share.js
           node --check docs/js/demo-share.js
           node tests/share_browser.test.cjs
