@@ -34,6 +34,17 @@ class RepositorySecurityBaseline(unittest.TestCase):
                                 f'WARCON token in {path}')
             self.assertNotRegex(text,r'\b7656119\d{10}\b',
                                 f'Raw SteamID in {path}')
+    def test_public_player_index_removes_unused_activity_and_cash(self):
+        import json
+        from src.player_index import sanitize_board_row
+        for person in json.loads((ROOT/'docs/data/players.json').read_text())['players']:
+            self.assertNotIn('lastSeen',person)
+            self.assertNotIn('cash',person)
+        sample={"steamId":"76561190000000001","name":"Test","cash":1000,
+                "lastSeen":"2026-10-16T21:00:00Z"}
+        row=sanitize_board_row(sample,has_feed=False)
+        self.assertNotIn('cash',row)
+        self.assertNotIn('lastSeen',row)
     def test_public_export_restrictions_documented(self):
         readme=(ROOT/'README.md').read_text()
         self.assertIn('hashed keys are pseudonymous',readme)

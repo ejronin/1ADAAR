@@ -40,16 +40,11 @@ def sanitize_board_row(row: object, *, has_feed: bool) -> dict | None:
         return None
     out = {"key": key, "name": name, "hasFeed": bool(has_feed)}
     for field in ("rank", "minutes", "seedMinutes", "kills", "deaths", "matches", "wins",
-                  "losses", "draws", "cash"):
+                  "losses", "draws"):
         out[field] = nonnegative_integer(row.get(field))
     for field in ("headshots", "teamKills", "vehicleKills", "killStreak"):
         # These columns have no meaning without the verified server kill feed.
         out[field] = nonnegative_integer(row.get(field)) if has_feed else None
-    stamp = row.get("lastSeen")
-    try:
-        out["lastSeen"] = datetime.fromisoformat(stamp.replace("Z", "+00:00")).astimezone(timezone.utc).isoformat() if stamp else None
-    except (ValueError, AttributeError, TypeError):
-        out["lastSeen"] = None
     return out
 
 
