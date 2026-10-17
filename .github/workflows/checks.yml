@@ -28,6 +28,9 @@ jobs:
       - name: JavaScript syntax validation
         run: |
           node --check docs/js/app.js
+          node --check docs/js/match-sort.js
+          node tests/match-sort.test.cjs
+          node tests/archive_ui.test.cjs
           node --check docs/js/players.js
           node --check docs/js/performance-core.js
           node --check docs/js/performance.js

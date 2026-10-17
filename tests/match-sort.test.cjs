@@ -1,0 +1,12 @@
+'use strict';
+const assert=require('node:assert/strict');
+const archive=require('../docs/js/match-sort.js');
+const mk=(id,d,map,winner)=>({id,endedAt:'2026-10-'+d+'T19:00:00Z',map,winner});
+const original=[mk(3,'13','Ozeti','Valkyra'),mk(1,'11','Bakurani','Lonestar'),mk(2,'12','Zestafona','Manticore')];
+assert.deepEqual(archive.visible(original,'','newest').map(m=>m.id),[3,2,1]);
+assert.deepEqual(archive.visible(original,'','oldest').map(m=>m.id),[1,2,3]);
+assert.deepEqual(archive.visible(original,'ozeti','newest').map(m=>m.id),[3]);
+assert.deepEqual(archive.visible(original,'lonestar','oldest').map(m=>m.id),[1]);
+assert.deepEqual(original.map(m=>m.id),[3,1,2],'No mutations to original archive');
+assert.deepEqual(archive.visible([],'','newest'),[]);
+console.log('Sorting by actual completed timestamps, search and immutability passed.');
