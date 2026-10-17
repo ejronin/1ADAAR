@@ -5,7 +5,9 @@ No guessed statistics, Steam IDs, external image services, or remote fonts.
 """
 from __future__ import annotations
 
+from functools import lru_cache
 from io import BytesIO
+from cairosvg import svg2png
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
@@ -17,7 +19,25 @@ BG = "#0a0e0c"
 GREEN = "#76e59a"
 LIGHT = "#f4f8f5"
 MUTED = "#a5b9ac"
-FACTION_COLORS = ("#75e39b", "#92abc2", "#d3ae77", "#d5a1a1")
+# Official-source local SVGs used by the website and the Discord PNG alike.
+FACTION_COLORS = {"lonestar": "#465eff", "valkyra": "#ee4138", "manticore": "#3eba42"}
+FACTION_ASSETS = ROOT / "docs" / "assets" / "factions"
+
+
+def faction_color(name: object) -> str | None:
+    return FACTION_COLORS.get(name.strip().lower()) if isinstance(name, str) else None
+
+
+@lru_cache(maxsize=3)
+def faction_emblem(name: str) -> Image.Image:
+    if name not in FACTION_COLORS:
+        raise ValueError("Unknown faction emblem")
+    path = FACTION_ASSETS / f"{name}.svg"
+    # No remote URLs. The repo's already-approved vector is rendered locally.
+    rendered = svg2png(bytestring=path.read_bytes(), output_width=52, output_height=52)
+    with Image.open(BytesIO(rendered)) as source:
+        return source.convert("RGBA")
+
 FONT_DIR = Path("/usr/share/fonts/truetype/dejavu")
 
 
@@ -92,14 +112,22 @@ def render_match_card(match: dict, *, demo: bool = False) -> bytes:
     maximum = max(1, *(float(row.get("score") or 0) for row in scores))
     for i, row in enumerate(scores):
         y = 465 + i * 83
-        draw.text((LEFT, y), truncate(draw, row.get("name"), font(24, True), 800), font=font(24, True), fill=LIGHT)
+        faction_name = str(row.get("name") or "")
+        faction = faction_name.strip().lower()
+        color = faction_color(faction_name)
+        if color:
+            icon = faction_emblem(faction)
+            im.paste(icon, (LEFT, y - 9), icon)
+        draw.text((LEFT + (65 if color else 0), y),
+                  truncate(draw, faction_name, font(24, True), 710 if color else 775),
+                  font=font(24, True), fill=LIGHT)
         val = max(0, float(row.get("score") or 0))
         score = f"{val:g}"
         draw.text((RIGHT - draw.textbbox((0, 0), score, font=font(24, True))[2], y), score, font=font(24, True), fill=LIGHT)
         draw.rounded_rectangle((LEFT, y + 37, RIGHT, y + 52), radius=6, fill="#28332d")
         fill_w = max(0, min(RIGHT - LEFT, int((RIGHT - LEFT) * val / maximum)))
         if fill_w > 0:
-            draw.rounded_rectangle((LEFT, y + 37, LEFT + fill_w, y + 52), radius=6, fill=FACTION_COLORS[i])
+            draw.rounded_rectangle((LEFT, y + 37, LEFT + fill_w, y + 52), radius=6, fill=color or "#6b8f79")
     bottom = 465 + len(scores) * 83 + 10
     draw.line((LEFT, bottom, RIGHT, bottom), fill="#294234", width=2)
     if awards:

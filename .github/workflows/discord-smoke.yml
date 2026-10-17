@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install pinned image renderer
-        run: python -m pip install Pillow==11.3.0
+        run: python -m pip install Pillow==11.3.0 CairoSVG==2.8.2
       - name: Send clearly labeled test recap via dedicated webhook
         env:
           DISCORD_MATCH_WEBHOOK: ${{ secrets.DISCORD_MATCH_WEBHOOK }}

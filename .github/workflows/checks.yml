@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install pinned image renderer
-        run: python -m pip install Pillow==11.3.0
+        run: python -m pip install Pillow==11.3.0 CairoSVG==2.8.2
       - name: Unit tests
         run: python -m unittest discover -s tests -v
       - name: Python compilation
@@ -34,6 +34,8 @@ jobs:
           node --check docs/js/demo-performance.js
           node --check docs/js/factions.js
           node tests/factions.test.cjs
+          node --check docs/js/server-status.js
+          node tests/server_status.test.cjs
           node tests/performance.test.cjs
           node tests/performance_dom.test.cjs
           node tests/demo_performance.test.cjs

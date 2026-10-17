@@ -1,0 +1,33 @@
+/* Compact, source-aware server status: colors never override actual WARCON reporting. */
+.server-status{
+  --server-accent:#84948a;--server-tint:#16231b;
+  position:relative;display:grid;grid-template-columns:minmax(210px,1.5fr) minmax(120px,.7fr) minmax(190px,1fr);
+  align-items:stretch;gap:0;margin:-3px 0 19px;border:1px solid #355442;border-left:4px solid var(--server-accent);
+  border-radius:6px;overflow:hidden;background:linear-gradient(115deg,var(--server-tint),#101a15 73%);
+  box-shadow:0 12px 27px #0003;
+}
+.server-status[data-state="online"]{--server-accent:#5eea83;--server-tint:#14271c}
+.server-status[data-state="offline"]{--server-accent:#ff515b;--server-tint:#2b1619}
+.server-status[data-state="reconnecting"]{--server-accent:#f6cb58;--server-tint:#292518}
+.server-status[data-state="unknown"]{--server-accent:#91a09b;--server-tint:#1b2420}
+.server-status-main{display:flex;align-items:center;gap:15px;padding:19px 23px;min-width:0}
+.server-status-lamp{
+ width:15px;height:15px;flex:none;background:var(--server-accent);border-radius:50%;
+ box-shadow:0 0 0 5px color-mix(in srgb,var(--server-accent) 16%,transparent);
+}
+.server-status[data-state="online"] .server-status-lamp{animation:server-green-pulse 2.5s ease-in-out infinite}
+.server-status[data-state="reconnecting"] .server-status-lamp{animation:server-yellow-pulse 1.5s ease-in-out infinite}
+.server-status[data-state="offline"] .server-status-lamp{animation:server-red-strobe 1.25s steps(1,end) infinite}
+.server-status .eyebrow{font-size:9px;letter-spacing:.16em;color:#9bb8a2}
+.server-status-label{color:var(--server-accent);font:800 clamp(21px,2.2vw,27px)/1.13 'Barlow Condensed',sans-serif;letter-spacing:.06em;margin:5px 0 2px}
+.server-status-updated{display:block;color:#9fb7a5;font-size:10px;line-height:1.6}
+.server-status-cell{display:flex;flex-direction:column;justify-content:center;min-width:0;padding:14px 22px;border-left:1px solid #2d4736}
+.server-status-cell span{font-size:9px;font-weight:800;letter-spacing:.13em;color:#a5beae}
+.server-status-cell strong{font:800 clamp(26px,2.7vw,36px)/1.12 'Barlow Condensed',sans-serif;color:#f0fff2;margin-top:8px;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.server-status-cell:last-child strong{font-size:clamp(21px,2.3vw,27px)}
+@keyframes server-green-pulse{0%,100%{box-shadow:0 0 0 4px #5eea8322,0 0 5px #5eea8370}50%{box-shadow:0 0 0 10px #5eea8305,0 0 17px #5eea8399}}
+@keyframes server-yellow-pulse{0%,100%{opacity:1;box-shadow:0 0 0 4px #f6cb5830}50%{opacity:.45;box-shadow:0 0 0 11px #f6cb5805}}
+@keyframes server-red-strobe{0%,20%,55%,100%{opacity:1;box-shadow:0 0 0 4px #ff515b38,0 0 18px #ff515b66}25%,50%,60%,95%{opacity:.18;box-shadow:none}}
+@media(max-width:900px){.server-status{grid-template-columns:minmax(200px,1.1fr) minmax(95px,.6fr) minmax(155px,.8fr)}.server-status-main{padding:15px 16px}.server-status-cell{padding:13px 14px}}
+@media(max-width:620px){.server-status{grid-template-columns:1fr 1fr}.server-status-main{grid-column:1/-1;border-bottom:1px solid #2d4736;padding:16px 18px}.server-status-cell{padding:13px 17px;border-left:0}.server-status-cell:last-child{border-left:1px solid #2d4736}.server-status-cell strong{font-size:27px}.server-status-cell:last-child strong{font-size:22px}}
+@media(prefers-reduced-motion:reduce){.server-status-lamp{animation:none!important}}
