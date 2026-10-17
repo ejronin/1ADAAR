@@ -79,7 +79,7 @@ def record_snapshots(directory: Path, leaderboard: dict, *, now: dt.datetime | N
             samples = tracks.get(key, [])
             # Refresh today's point when another match ends, never emit two
             # samples on one day. Skip unchanged career totals entirely.
-            if samples and samples[-1] == point:
+            if samples and all(samples[-1][field] == point[field] for field in FIELDS):
                 continue
             if samples and samples[-1]["date"] == today:
                 samples[-1] = point
