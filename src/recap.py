@@ -180,7 +180,10 @@ def discord_payload(match: dict) -> dict:
     winner = match["winner"] or "Draw"
     return {"username": "1ADAAR | WARDOGS", "allowed_mentions": {"parse": []},
             "embeds": [{"title": f"WARDOGS MATCH COMPLETE · {winner}",
-                        "url": f"{SITE_URL}#match-{match['id']}", "color": 0x56CE71,
+                        "url": f"{SITE_URL}#match-{match['id']}", "color": {
+                            "lonestar": 0x465EFF, "valkyra": 0xEE4138,
+                            "manticore": 0x3EBA42
+                        }.get(match["winner"].strip().lower(), 0x56CE71),
                         "description": "**OneAverageDan WARDOGS Community Server** · Verified completed-match results from WARCON",
                         "image": {"url": "attachment://match-recap.png"},
                         "fields": fields, "footer": {"text": f"1ADAAR • Match #{match['id']} • Data: WARCON"},
