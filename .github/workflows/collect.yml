@@ -10,7 +10,8 @@ on:
       - 'docs/js/server-status.js'
       - 'docs/assets/server-status.css'
   schedule:
-    - cron: '*/10 * * * *'
+    # Ten-minute target, offset from busy top-of-hour GitHub Actions queues.
+    - cron: '4,14,24,34,44,54 * * * *'
   workflow_dispatch:
 permissions:
   contents: write
