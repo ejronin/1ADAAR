@@ -6,6 +6,7 @@ Schema verified against warcon-app/warcon src/lib/matches.ts (October 2026).
 from __future__ import annotations
 
 import argparse
+from src.history import record_snapshots
 from src.player_index import player_key, safe_name, collect_players
 import datetime as dt
 import json
@@ -273,6 +274,9 @@ def run(*, webhook: str = "", dry_run: bool = False) -> dict:
     if not dry_run:
         try:
             index = collect_players(fetch_json, PUBLIC_BOARD)
+            # Capture bounded daily career history after a successful public index fetch.
+            # No extra WARCON requests and no history update when its feed is unavailable.
+            record_snapshots(DATA / "history", index)
             player_count = len(index["players"])
             player_file = DATA / "players.json"
             if read_json(player_file, {}) != index:

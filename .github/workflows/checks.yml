@@ -29,6 +29,12 @@ jobs:
         run: |
           node --check docs/js/app.js
           node --check docs/js/players.js
+          node --check docs/js/performance-core.js
+          node --check docs/js/performance.js
+          node --check docs/js/demo-performance.js
+          node tests/performance.test.cjs
+          node tests/performance_dom.test.cjs
+          node tests/demo_performance.test.cjs
           node --check docs/js/share.js
           node --check docs/js/demo-share.js
           node tests/share_browser.test.cjs

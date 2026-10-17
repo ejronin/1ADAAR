@@ -1,0 +1,124 @@
+/* 1ADAAR Phase 3 · Battlefield performance intelligence. No chart libraries. */
+.performance-module {
+  --perf-green:#86f4a4; --perf-soft:#a6c7b1;
+  position:relative;isolation:isolate;overflow:hidden;margin:6px 0 23px;
+  border:1px solid #346a49;border-radius:9px;
+  background:radial-gradient(ellipse at 84% 4%,#2f87502b,transparent 43%),
+    linear-gradient(132deg,#0d1b13 0%,#0c1511 49%,#111d15 100%);
+  box-shadow:0 16px 48px #0004,inset 0 1px #a0fec411;
+  padding:27px 28px 21px;
+}
+.performance-module::before {
+  content:"";pointer-events:none;position:absolute;top:0;right:0;width:43%;height:145px;
+  opacity:.34;z-index:-1;
+  background:repeating-linear-gradient(0deg,transparent 0 19px,#80ef9c11 20px),
+    repeating-linear-gradient(90deg,transparent 0 29px,#80ef9c0c 30px);
+  mask-image:linear-gradient(90deg,transparent,#000);
+}
+.perf-header{display:flex;justify-content:space-between;align-items:flex-start;gap:22px;margin-bottom:23px}
+.perf-heading .eyebrow{color:#91f2ad;letter-spacing:.16em;font-size:10px}
+.perf-heading h3{font:800 clamp(28px,3vw,39px)/1 'Barlow Condensed',sans-serif;
+  text-transform:uppercase;letter-spacing:.035em;margin:9px 0 7px;color:#f5fff6}
+.perf-subtitle{font-size:12px;color:#aec9b5;margin:0;line-height:1.6}
+.perf-source{white-space:nowrap;color:#b2dfbd;border:1px solid #356b49;background:#173422;
+  padding:8px 11px;border-radius:3px;letter-spacing:.12em;font-size:9px;font-weight:900}
+.perf-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding-bottom:18px;margin-bottom:18px;border-bottom:1px solid #294333}
+.perf-tabs{display:flex;gap:5px;flex-wrap:wrap}
+.perf-tab{font-size:10px;letter-spacing:.07em;font-weight:850;
+  padding:12px 14px;min-height:44px;border:1px solid transparent;background:transparent;
+  color:#9bb9a5;border-radius:4px;cursor:pointer}
+.perf-tab:hover,.perf-tab:focus-visible{background:#183725;color:#fff;border-color:#49835a}
+.perf-tab[aria-pressed="true"]{color:#092014;background:#85eaa3;
+  border-color:#a5ffbd;box-shadow:0 4px 18px #47b7692e}
+.perf-window-label{display:flex;align-items:center;gap:10px;flex:none;
+  color:#8ab09a;font-size:9px;font-weight:800;letter-spacing:.13em}
+.perf-window{border:1px solid #3d7351;color:#eafff1;background:#14261a;
+  border-radius:4px;padding:10px 12px;min-width:129px;min-height:43px;
+  font-size:12px;cursor:pointer}
+.perf-window:focus-visible{outline:2px solid #98ffb6;outline-offset:2px}
+.perf-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;margin-bottom:18px}
+.perf-mini-stat{background:#14231a9c;border:1px solid #284837;
+  border-top-color:#35684c;border-radius:5px;padding:15px 17px;min-width:0}
+.perf-mini-stat span{display:block;color:#9bb6a3;font-size:9px;
+  font-weight:850;letter-spacing:.13em;text-transform:uppercase}
+.perf-mini-stat strong{display:block;color:#d9fce2;font:800 clamp(25px,2.8vw,34px)/1.2 'Barlow Condensed',sans-serif;
+  margin:7px 0 3px;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.perf-mini-stat small{display:block;color:#8aa892;font-size:10px;line-height:1.45}
+.perf-canvas{position:relative;overflow-x:auto;overflow-y:hidden;border:1px solid #254332;
+  border-radius:7px;
+  background:linear-gradient(90deg,#101d16aa,#101c15aa),
+    repeating-linear-gradient(90deg,transparent 0 39px,#8ada9d0b 40px);
+  box-shadow:inset 0 1px 22px #0003;scrollbar-color:#386e4b #13251a}
+.perf-svg{display:block;width:100%;height:auto;min-height:195px}
+.perf-gridline{stroke:#466a51;stroke-opacity:.38;stroke-width:.8;stroke-dasharray:2 6}
+.perf-baseline{stroke:#649371;stroke-opacity:.64;stroke-width:1}
+.perf-axis-label{fill:#a2bfa9;font:500 11px 'DM Sans',sans-serif}
+.perf-dashed{stroke-dasharray:7 7;opacity:.96}
+.perf-stroke{filter:drop-shadow(0 0 4px #63f78a49)}
+.perf-hit{cursor:pointer;outline:none}
+.perf-point:focus-within .perf-dot{filter:drop-shadow(0 0 6px #adffb4)}
+.perf-hit:focus-visible{stroke:#d5ffe0;stroke-width:2;stroke-dasharray:3 3}
+.perf-legend{display:flex;gap:22px;align-items:center;flex-wrap:wrap;margin-top:15px}
+.perf-legend-item{display:inline-flex;gap:9px;align-items:center;color:#c2d4c7;
+  font-size:11px;line-height:1.5;font-weight:650}
+.perf-legend-item i{height:8px;width:18px;border-radius:5px;display:block}
+.perf-inspector{min-height:29px;padding-top:10px;color:#b6d8bc;font-size:11px;font-variant-numeric:tabular-nums}
+.perf-inspector[hidden],.perf-empty[hidden],.perf-footnote[hidden],.perf-details[hidden]{display:none}
+.perf-empty{padding:55px 26px 48px;border:1px dashed #3e7151;border-radius:5px;
+  background:radial-gradient(circle at center,#1a332128,transparent 65%);text-align:center}
+.perf-empty strong{display:block;font:800 25px 'Barlow Condensed',sans-serif;text-transform:uppercase;
+  color:#b8f2c7;margin-bottom:9px}
+.perf-empty p{font-size:12px;color:#a3baa9;max-width:490px;margin:0 auto;line-height:1.7}
+.perf-footnote{color:#809e8a;font-size:10px;line-height:1.7;margin:11px 0}
+.perf-details{border-top:1px solid #274332;padding-top:12px;margin-top:12px;color:#b2d8be;font-size:11px}
+.perf-details summary{cursor:pointer;width:max-content;max-width:100%;padding:8px 5px;
+  font-size:11px;font-weight:700}
+.perf-details summary:focus-visible{outline:2px solid #8dfaaa;outline-offset:2px}
+.perf-data-scroll{overflow-x:auto;max-width:100%;margin-top:9px}
+.perf-table{border-collapse:collapse;width:100%;min-width:490px;font-size:11px;color:#d6e8d8}
+.perf-table th,.perf-table td{text-align:left;padding:11px 10px;border-bottom:1px solid #31513b;white-space:nowrap}
+.perf-table th{text-transform:uppercase;letter-spacing:.07em;font-size:9px;color:#a8d3b4}
+.perf-table tbody tr:hover{background:#1d3625}
+.analytics-section-label{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  margin:26px 0 12px;padding-bottom:8px;border-bottom:1px solid #264331}
+.analytics-section-label span{color:#8ef4aa;font-size:10px;letter-spacing:.16em;font-weight:900}
+.analytics-section-label small{color:#8ca996;font-size:10px}
+@media(max-width:1000px){
+  .performance-module{padding:24px 19px 18px}
+  .perf-toolbar{align-items:flex-start;flex-wrap:wrap}
+  .perf-tab{padding:11px 12px}
+}
+@media(max-width:720px){
+  .performance-module{padding:20px 14px 17px;margin-bottom:20px;border-radius:7px}
+  .perf-header{gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .perf-heading h3{font-size:30px}
+  .perf-source{font-size:8px;padding:6px 9px}
+  .perf-toolbar{gap:12px;padding-bottom:13px}
+  .perf-tabs{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+  .perf-tab{padding:11px 6px;font-size:9px;letter-spacing:0;min-width:0}
+  .perf-window-label{width:100%;justify-content:flex-end}
+  .perf-window{flex:0 0 138px}
+  .perf-summary{gap:7px;margin-bottom:12px}
+  .perf-mini-stat{padding:12px 9px}
+  .perf-mini-stat span{font-size:8px;letter-spacing:.03em}
+  .perf-mini-stat strong{font-size:clamp(21px,5.7vw,30px)}
+  .perf-mini-stat small{font-size:9px}
+  .perf-svg{min-width:600px}
+  .perf-canvas{scroll-snap-type:x proximity}
+  .perf-canvas::after{content:"";position:sticky;right:0;display:block;height:3px;background:linear-gradient(90deg,transparent,#58c87866)}
+  .perf-inspector{line-height:1.5}
+  .perf-legend{gap:13px;margin-top:10px}
+  .perf-legend-item{font-size:10px}
+  .analytics-section-label{align-items:flex-start;flex-direction:column;gap:4px}
+}
+@media(max-width:380px){
+  .performance-module{padding:16px 10px}
+  .perf-tab{font-size:8px;padding:10px 3px}
+  .perf-mini-stat strong{font-size:21px}
+  .perf-summary{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(prefers-reduced-motion:reduce){
+  .perf-stroke,.perf-hit,.perf-tab{animation:none;transition:none}
+}

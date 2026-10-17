@@ -88,6 +88,204 @@
           "seconds": 1740
         }
       ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-10T19:00:00Z",
+      "map": "Ozeti",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Valkyra",
+          "result": "win",
+          "kills": 20,
+          "deaths": 7,
+          "seconds": 2340
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-09T19:00:00Z",
+      "map": "Zestafona",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Manticore",
+          "result": "loss",
+          "kills": 14,
+          "deaths": 17,
+          "seconds": 2640
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-08T19:00:00Z",
+      "map": "Bakurani",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Lonestar",
+          "result": "win",
+          "kills": 24,
+          "deaths": 10,
+          "seconds": 2460
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-07T19:00:00Z",
+      "map": "Ozeti",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Valkyra",
+          "result": "loss",
+          "kills": 12,
+          "deaths": 14,
+          "seconds": 2160
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-06T19:00:00Z",
+      "map": "Zestafona",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Manticore",
+          "result": "win",
+          "kills": 27,
+          "deaths": 9,
+          "seconds": 2760
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-05T19:00:00Z",
+      "map": "Bakurani",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Lonestar",
+          "result": "loss",
+          "kills": 9,
+          "deaths": 16,
+          "seconds": 1980
+        }
+      ]
+    }
+  ],
+  "careerHistory": [
+    {
+      "date": "2026-10-05",
+      "kills": 458,
+      "deaths": 230,
+      "matches": 39,
+      "wins": 22,
+      "losses": 14,
+      "draws": 3,
+      "minutes": 1803
+    },
+    {
+      "date": "2026-10-06",
+      "kills": 485,
+      "deaths": 239,
+      "matches": 40,
+      "wins": 23,
+      "losses": 14,
+      "draws": 3,
+      "minutes": 1850
+    },
+    {
+      "date": "2026-10-07",
+      "kills": 497,
+      "deaths": 253,
+      "matches": 41,
+      "wins": 23,
+      "losses": 15,
+      "draws": 3,
+      "minutes": 1896
+    },
+    {
+      "date": "2026-10-08",
+      "kills": 521,
+      "deaths": 263,
+      "matches": 42,
+      "wins": 24,
+      "losses": 15,
+      "draws": 3,
+      "minutes": 1942
+    },
+    {
+      "date": "2026-10-09",
+      "kills": 535,
+      "deaths": 280,
+      "matches": 43,
+      "wins": 24,
+      "losses": 16,
+      "draws": 3,
+      "minutes": 1988
+    },
+    {
+      "date": "2026-10-10",
+      "kills": 555,
+      "deaths": 287,
+      "matches": 44,
+      "wins": 25,
+      "losses": 16,
+      "draws": 3,
+      "minutes": 2035
+    },
+    {
+      "date": "2026-10-11",
+      "kills": 566,
+      "deaths": 297,
+      "matches": 45,
+      "wins": 25,
+      "losses": 16,
+      "draws": 4,
+      "minutes": 2081
+    },
+    {
+      "date": "2026-10-12",
+      "kills": 587,
+      "deaths": 305,
+      "matches": 46,
+      "wins": 26,
+      "losses": 16,
+      "draws": 4,
+      "minutes": 2127
+    },
+    {
+      "date": "2026-10-14",
+      "kills": 605,
+      "deaths": 320,
+      "matches": 47,
+      "wins": 26,
+      "losses": 17,
+      "draws": 4,
+      "minutes": 2173
+    },
+    {
+      "date": "2026-10-15",
+      "kills": 634,
+      "deaths": 332,
+      "matches": 48,
+      "wins": 27,
+      "losses": 17,
+      "draws": 4,
+      "minutes": 2220
     }
   ]
 }
