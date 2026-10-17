@@ -116,3 +116,12 @@ To validate Discord delivery without waiting for live game data, open **Actions 
 - On the homepage, **Latest match report** is intentionally hidden until the public WARCON match archive contains a completed match. When available it opens that specific match dossier; a direct GitHub Pages `#match-<id>` link also opens the same dossier from Discord.
 - A completed-match Discord image embeds its main title link to the specific **1ADAAR GitHub Pages dossier**; the source WARCON URL remains visible as a secondary provenance link. Webhook posts only for new matches containing WARCON `endedAt` plus verified final faction scores, at the next scheduled collector pass (typically up to ten minutes, though GitHub scheduling can be delayed). A manual smoke test is the only exception, prominently marked TEST.
 - At narrow viewport widths, all four unique navigation items are accessible in a compact two-column menu; the previous rule that hid inactive navigation is overridden. Tables can scroll horizontally on small screens while card layouts reflow to one or two columns. The main menu remains keyboard accessible without JavaScript.
+
+
+## Community sharing and onboarding
+
+- The **New to WARDOGS?** panel beneath the match archive explains that server join instructions are in the OneAverageDan Discord and links to the existing permanent invite. It creates no new Discord invite or sidebar item.
+- **Share match** appears only inside a real completed-match dossier and shares the exact GitHub Pages `index.html#match-<id>` deep link. It cannot fabricate a match when WARCON has no results.
+- **Share player stats** appears only on a resolved, real public player dossier and shares `players.html#player-<public lookup key>`. The URL contains no raw SteamID64 or Steam-community profile link. The key is derived from the identifier and should not be represented as secret or anonymous.
+- **Share demo profile** publishes a link to the clearly labeled fictional PlayerOne page, separate from actual player records.
+- On phones, the native share sheet is used where supported. Otherwise, the URL is copied; browsers denying clipboard access display a selectable link. No tracking scripts or third-party share service are used.

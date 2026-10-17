@@ -8,8 +8,10 @@
   <title>PlayerOne Demo — 1ADAAR Player Intelligence</title>
   <link rel="icon" href="assets/1ad-logo.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="assets/style.css" />
-  <link rel="stylesheet" href="assets/brand.css" />
-  <link rel="stylesheet" href="assets/players.css?v=3" />
+  <link rel="stylesheet" href="assets/brand.css?v=6" />
+  <link rel="stylesheet" href="assets/players.css?v=4" />
+  <script defer src="js/share.js?v=1"></script>
+  <script defer src="js/demo-share.js?v=1"></script>
   
 </head>
 <body>
@@ -46,8 +48,9 @@
           <div class="profile-subtitle">DEMO ONLY · Fictional stats · Example rank #12</div>
           <div class="demo-warning" role="status">DEMO PROFILE — FICTIONAL DATA · NOT A WARCON RECORD</div>
         </div>
-        <a class="new-search" href="players.html">Real player lookup ↗</a>
+        <div class="profile-actions"><button type="button" class="new-search" id="share-demo">↗ Share demo profile</button><a class="new-search" href="players.html">Real player lookup ↗</a></div>
       </div>
+      <div id="demo-share-status" class="share-status" role="status" aria-live="polite" hidden></div>
       <div class="metric-grid" id="profile-metrics"><div class="metric-tile"><span>Kills</span><strong>634</strong><small>DEMO / FICTIONAL</small></div>
 <div class="metric-tile"><span>Deaths</span><strong>332</strong><small>DEMO / FICTIONAL</small></div>
 <div class="metric-tile"><span>K/D</span><strong>1.91</strong><small>DEMO / FICTIONAL</small></div>

@@ -10,7 +10,7 @@ class NavigationAccessibilityTests(unittest.TestCase):
         self.assertNotIn('Find your stats →',html)
         self.assertIn('id="latest-match-link"',html)
         self.assertIn('hidden aria-label="Open latest completed match details"',html)
-        self.assertEqual(html.count('Join the 1AD Discord'),1)
+        self.assertEqual(html.count('Join the 1AD Discord'),2)  # Existing hero CTA + onboarding
     def test_live_latest_match_link_activated_only_after_data_loaded(self):
         js=(ROOT/'js/app.js').read_text(encoding='utf-8')
         self.assertIn("if(data.matches.length){",js)
