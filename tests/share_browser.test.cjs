@@ -16,7 +16,7 @@ function simulate(options = {}) {
   const native = [];
   const inputs = [];
   const ctx = {
-    URL, location: {href: BASE},
+    URL, location: {href: BASE, origin: new URL(BASE).origin, pathname: new URL(BASE).pathname},
     window: {},
     navigator: {
       clipboard: options.clipboardDenied ? undefined : {writeText: async value => {clipboard.push(value);}},
