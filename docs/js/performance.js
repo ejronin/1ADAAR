@@ -126,9 +126,15 @@
       const option=el('option','',label);option.value=value;select.append(option);
     }
     select.value=range===Infinity?'all':String(range);
-    select.addEventListener('change',()=>{range=select.value==='all'?Infinity:Number(select.value);update();});
+    select.addEventListener('change',()=>{
+      if(select.disabled)return;
+      range=select.value==='all'?Infinity:Number(select.value);
+      update();
+    });
     selectLabel.append(select);
     toolbar.append(tabs,selectLabel);host.append(toolbar);
+    const coverage=el('p','perf-coverage');
+    host.append(coverage);
     const summary=el('div','perf-summary'),canvas=el('div','perf-canvas'),
       empty=el('div','perf-empty'),legend=el('div','perf-legend'),
       inspector=el('div','perf-inspector'),footnote=el('p','perf-footnote'),
@@ -159,7 +165,25 @@
     }
     function update(){
       const full=metric==='career'?careers:matches;
+      const total=full.length;
+      // Do not leave a live selector enabled when every option renders the same data.
+      // Each metric may have different match and career sample sizes.
+      if(total<=10)range=10;
+      else if(total<=25&&range===25)range=Infinity;
+      select.disabled=total<=10;
+      for(const option of select.children){
+        if(option.value==='10')option.textContent='Last 10';
+        if(option.value==='25'){
+          option.textContent='Last 25';
+          option.disabled=total<=25;
+        }
+        if(option.value==='all')option.textContent='All '+total+' available';
+      }
+      select.value=range===Infinity?'all':String(range);
       const rows=M.windowed(full,range);
+      coverage.textContent=total===0?'No completed observations yet':
+        total<=10?'Only '+total+' observations available · More windows unlock as data grows':
+        rows.length+' of '+total+' '+(metric==='career'?'career snapshots':'completed matches')+' in view';
       for(const button of tabs.children)button.setAttribute('aria-pressed',String(button.dataset.metric===metric));
       for(const node of [summary,canvas,empty,legend,inspector])node.replaceChildren();
       empty.hidden=true;inspector.hidden=true;footnote.hidden=false;details.hidden=false;
@@ -176,6 +200,10 @@
         summary.append(tile('SNAPSHOTS',String(rows.length),'changed daily observations'),
           tile('LATEST CAREER K/D',M.format(last.kd),'WARCON career totals'),
           tile('TRACKED SINCE',M.tickDate(rows[0].date),'no estimated history'));
+      }else if(metric==='kills'){
+        summary.append(tile('MATCHES IN VIEW',String(rows.length),'completed match records'),
+          tile('KILLS IN VIEW',String(rows.reduce((sum,row)=>sum+row.kills,0)),'verified kills in selected matches'),
+          tile('DEATHS IN VIEW',String(rows.reduce((sum,row)=>sum+row.deaths,0)),'verified deaths in selected matches'));
       }else{
         summary.append(tile('MATCHES IN VIEW',String(rows.length),'completed match records'),
           tile('LATEST MATCH K/D',M.format(last.kd),'most recent match'),
