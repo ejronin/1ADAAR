@@ -152,3 +152,23 @@ footer b{color:#72db88}
   .rail .nav{font-size:10px}
   .filters input,.filters select{min-height:44px}
 }
+
+/* Simple onboarding, no extra sidebar navigation. */
+.join-panel{display:flex;align-items:center;gap:19px;margin:36px 0 0;padding:22px 25px;border:1px solid #356849;border-radius:7px;background:linear-gradient(110deg,#102218 0%,#101b16 70%,#14271b 100%);box-shadow:0 8px 27px #0002}
+.join-panel-icon{height:52px;width:52px;flex:none;display:grid;place-items:center;border:1px solid #538766;border-radius:10px;color:#81e89a;font-size:24px;background:#182f20}
+.join-panel-copy{flex:1;min-width:0}
+.join-panel h2{font:800 clamp(25px,2.6vw,35px) 'Barlow Condensed',sans-serif;text-transform:uppercase;margin:5px 0 6px;color:#f0f7f0}
+.join-panel p{font-size:12px;line-height:1.7;margin:0;color:#bed3c3;max-width:530px}
+.join-panel-link{display:inline-flex;align-items:center;justify-content:center;gap:10px;flex:none;min-height:47px;padding:12px 17px;background:#50c677;color:#0b1710;border:1px solid #8be4a4;border-radius:5px;text-decoration:none;text-transform:uppercase;letter-spacing:.02em;font-weight:800;font-size:11px}
+.join-panel-link img{filter:brightness(0)}
+.join-panel-link:hover{background:#8cecaa}
+.join-panel-link:focus-visible,.dialog-actions button:focus-visible{outline:2px solid #a3f9b1;outline-offset:3px}
+.dialog-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px}
+.dialog-actions button{min-height:40px}
+#share-match{white-space:nowrap}
+.share-status{padding:10px 12px;margin:13px 0;color:#b6f0c5;font-size:12px;border:1px solid #386446;background:#11291a;border-radius:5px;overflow-wrap:anywhere}
+.share-status[hidden]{display:none}
+.share-status input{display:block;width:100%;min-height:42px;margin:7px 0 0;padding:10px;color:#fff;background:#0e1a15;border:1px solid #477452;border-radius:4px}
+@media(max-width:950px){.join-panel{align-items:flex-start;flex-wrap:wrap}.join-panel-link{margin-left:70px}}
+@media(max-width:720px){.join-panel{gap:11px;padding:18px 15px;margin:27px 0 0}.join-panel-icon{width:43px;height:43px}.join-panel-copy{flex-basis:calc(100% - 58px)}.join-panel-link{width:100%;margin:4px 0 0;min-height:48px}.dialog-actions button{padding:9px 11px;font-size:11px}}
+@media(max-width:380px){.dialog-actions{gap:5px}#share-match{font-size:10px}}
