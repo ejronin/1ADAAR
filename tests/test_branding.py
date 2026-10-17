@@ -40,7 +40,7 @@ class TestBranding(unittest.TestCase):
         parsed = AssetParser()
         parsed.feed((DOCS / "index.html").read_text(encoding="utf-8"))
         for asset in parsed.assets + ["assets/tactical-terrain.svg", "assets/discord.svg"]:
-            full = DOCS / asset
+            full = DOCS / asset.split('?', 1)[0]  # Browser cache-busting query is not part of the file path
             self.assertTrue(full.is_file(), asset)
             if full.suffix == ".svg":
                 self.assertEqual(ET.parse(full).getroot().tag.rsplit('}', 1)[-1], "svg")
