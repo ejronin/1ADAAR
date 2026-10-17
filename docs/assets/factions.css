@@ -1,0 +1,36 @@
+/* 1ADAAR official faction identity: source-derived emblems; faction colors, never generic stat green. */
+.faction-identity{--faction-accent:#9ea99f;display:inline-flex;align-items:center;gap:9px;min-width:0;max-width:100%;line-height:1.35;font-weight:750;color:#ecf7ee;overflow-wrap:anywhere}
+.faction-identity .faction-emblem{display:block;flex:none;width:25px;height:25px;object-fit:contain;filter:drop-shadow(0 2px 6px #0006)}
+.faction-identity>span{min-width:0;overflow-wrap:anywhere}
+.faction-lonestar{--faction-accent:#465eff}
+.faction-valkyra{--faction-accent:#ee4138}
+.faction-manticore{--faction-accent:#3eba42}
+.faction-lonestar .faction-emblem{filter:drop-shadow(0 0 6px #465eff55)}
+.faction-valkyra .faction-emblem{filter:drop-shadow(0 0 6px #ee413855)}
+.faction-manticore .faction-emblem{filter:drop-shadow(0 0 6px #3eba4255)}
+.faction-breakdown .breakdown-row{grid-template-columns:minmax(0,1fr) 67px 64px;gap:8px}
+.faction-breakdown .breakdown-row>div:first-child{min-width:0}
+.faction-breakdown .breakdown-row .mini-meter{background:#26372d;height:5px;margin:10px 0 0}
+.faction-breakdown .breakdown-row .mini-meter i{background:var(--faction-accent,#5bd77b);box-shadow:0 0 8px color-mix(in srgb,var(--faction-accent,#5bd77b) 45%,transparent)}
+.faction-breakdown .breakdown-row>span{font-variant-numeric:tabular-nums}
+.faction-breakdown .breakdown-row>em{font-weight:800;font-size:12px;color:#d9f8df;font-variant-numeric:tabular-nums}
+.faction-breakdown .faction-identity{font-size:13px}
+.faction-breakdown .faction-identity .faction-emblem{width:29px;height:29px}
+.faction-breakdown .breakdown-row{padding:12px 0}
+.recent-table .faction-identity .faction-emblem{width:20px;height:20px}
+.recent-table .faction-identity{font-size:12px;white-space:nowrap}
+.match-card .winner{display:flex;align-items:center;gap:7px}
+.match-card .winner .faction-identity{font-size:12px;color:var(--faction-accent,#80eb9a)}
+.match-card .winner .faction-identity .faction-emblem{width:20px;height:20px}
+.match-card .winner .faction-identity>span{color:#f7fff9}
+.scores .faction-identity{font-size:11px}
+.scores .faction-identity .faction-emblem{width:18px;height:18px}
+.scores .track>span{background:var(--faction-accent,#56ce71)}
+.detail .faction-identity .faction-emblem{width:21px;height:21px}
+.detail td .faction-identity{white-space:nowrap}
+@media(max-width:720px){
+ .faction-breakdown .breakdown-row{grid-template-columns:minmax(0,1fr) 58px 60px;gap:7px}
+ .faction-breakdown .faction-identity{font-size:12px;gap:7px}
+ .faction-breakdown .faction-identity .faction-emblem{width:25px;height:25px}
+ .faction-breakdown .breakdown-row>em{font-size:11px}
+}
