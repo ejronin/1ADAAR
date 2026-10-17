@@ -8,7 +8,7 @@ class ShareAndJoinTests(unittest.TestCase):
         html=(ROOT/'index.html').read_text()
         self.assertIn('<section id="join-wardogs"', html)
         self.assertIn('New to WARDOGS?', html)
-        self.assertIn('grab the server join code in Discord', html)
+        self.assertIn('Find the server join code in the 1AD Discord', html)
         self.assertEqual(html.count('href="https://discord.gg/e9B69UkE53"'),2)
         sidebar=html.split('<aside class="rail"',1)[1].split('</aside>',1)[0]
         self.assertNotIn('join-wardogs',sidebar)
