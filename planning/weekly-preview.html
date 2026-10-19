@@ -17,13 +17,13 @@ p {color:var(--muted);} a {color:var(--gold2);}
 .note {font-size:.9rem;color:#aeb7b9;margin-bottom:14px;}
 .canvas {overflow:hidden; background:var(--surface); border:1px solid #6e5731; border-radius:15px; box-shadow:0 22px 58px #0008;}
 .canvas-header {background:linear-gradient(90deg,#080d11eb,#12191ded),url('../docs/assets/wardogs-official-hero.webp') center/cover; border-bottom:2px solid var(--gold); padding:24px 26px 20px;}
-.brand {display:flex; align-items:center; gap:16px;}
-.brand img {width:84px;height:84px; object-fit:contain;flex-shrink:0; filter:drop-shadow(0 3px 12px #000b);}
+.brand {display:flex; flex-direction:column; align-items:center; text-align:center; gap:11px;}
+.brand img {width:98px;height:98px; object-fit:contain;flex-shrink:0; filter:drop-shadow(0 3px 12px #000b);}
 .overline {text-transform:uppercase; font-size:.72rem;letter-spacing:.16em;color:var(--gold2);font-weight:800;}
 .brand-name {font-weight:900;letter-spacing:.04em;font-size:clamp(.88rem,2.1vw,1.04rem);line-height:1.35;}
 .subline {font-size:.73rem;color:#d7d9d9;margin-top:5px;}
-.hero-title {font-size:clamp(1.7rem,3.4vw,2.2rem);font-weight:950;line-height:1.1;letter-spacing:.035em;margin:22px 0 8px;}
-.meta {font-size:.86rem;color:#ead3aa;display:flex;gap:10px;flex-wrap:wrap;}
+.hero-title {font-size:clamp(1.7rem,3.4vw,2.2rem);font-weight:950;line-height:1.1;letter-spacing:.035em;margin:22px 0 8px;text-align:center;}
+.meta {font-size:.86rem;color:#ead3aa;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
 .pill {display:inline-block;border:1px solid #b88c4c;border-radius:50px;padding:4px 9px;font-size:.72rem;letter-spacing:.03em;font-weight:750;}
 .body {padding:22px 26px 20px;}
 .stats {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
@@ -50,7 +50,7 @@ p {color:var(--muted);} a {color:var(--gold2);}
 .screen-label {font-size:.73rem;letter-spacing:.14em;color:var(--gold);font-weight:900;text-transform:uppercase;margin-bottom:7px;}
 .footnote {border-top:1px solid #293038;margin-top:34px;padding-top:20px;font-size:.86rem;}
 @media(max-width:850px){.columns{grid-template-columns:1fr}.columns > section{max-width:670px;margin:0 auto;width:100%;}main{padding:22px 13px 64px;}}
-@media(max-width:410px){.canvas-header,.body,.footer{padding-left:15px;padding-right:15px}.brand img{width:65px;height:65px}.faction{grid-template-columns:75px 1fr 26px;gap:6px}.stats{gap:7px}.stat{padding:12px}.value{font-size:1.45rem}}
+@media(max-width:410px){.canvas-header,.body,.footer{padding-left:15px;padding-right:15px}.brand img{width:84px;height:84px}.faction{grid-template-columns:75px 1fr 26px;gap:6px}.stats{gap:7px}.stat{padding:12px}.value{font-size:1.45rem}}
 </style>
 </head>
 <body>
@@ -64,7 +64,7 @@ p {color:var(--muted);} a {color:var(--gold2);}
 <p class="note">Muted amber and charcoal differentiate a weekly recap from green match reports. Only selected winners and concise activity metrics appear in Discord.</p>
 <article class="canvas">
 <header class="canvas-header">
-<div class="brand"><img src="../docs/assets/1ad-logo.svg" alt="1AD emblem"><div><div class="overline">1ADAAR / OneAverageDan</div><div class="brand-name">WARDOGS COMMUNITY SERVER</div><div class="subline">Community-operated · not a developer server</div></div></div>
+<div class="brand"><img src="../docs/assets/1ad-logo.svg" alt="Official 1AD emblem"><div><div class="overline">1ADAAR / COMMUNITY INTELLIGENCE</div><div class="brand-name">ONEAVERAGEDAN WARDOGS<br>COMMUNITY SERVER</div><div class="subline">Community-operated · not a developer server</div></div></div>
 <div class="hero-title">WEEKLY<br>INTELLIGENCE</div>
 <div class="meta"><span class="pill">SEASON 2</span><span class="pill">WEEK ENDING OCT 18, 2026</span></div>
 </header>
