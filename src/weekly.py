@@ -8,6 +8,7 @@ from collections import Counter
 from datetime import date, datetime, time, timedelta, timezone
 from zoneinfo import ZoneInfo
 import re
+from src.player_index import safe_name
 
 EASTERN = ZoneInfo("America/New_York")
 UTC = timezone.utc
@@ -78,12 +79,13 @@ def _segment(matches, start, end):
         for p in m["players"]:
             if not isinstance(p, dict) or not isinstance(p.get("key"), str) or not KEY.fullmatch(p["key"]):
                 continue
-            if p["key"] in seen or not isinstance(p.get("name"), str) or not p["name"].strip():
+            name = safe_name(p.get("name"))
+            if p["key"] in seen or not name:
                 continue
             seen.add(p["key"])
             v = stats.setdefault(p["key"], {"name": "", "matches": 0, "kills": 0,
                 "deaths": 0, "wins": 0, "seconds": 0, "headshots": 0, "longestM": 0})
-            v["name"] = p["name"].strip()[:64]
+            v["name"] = name
             v["matches"] += 1
             if p.get("result") == "win":
                 v["wins"] += 1
@@ -138,7 +140,7 @@ def summarize_week(matches, ending_sunday, *, seasons=OFFICIAL_SEASONS):
     seasons = _season_list(seasons)
     if not seasons:
         raise ValueError("Official season metadata required")
-    picked = {}
+    picked, conflicted = {}, set()
     for m in matches:
         if not isinstance(m, dict) or m.get("schemaVersion") != 2 or type(m.get("id")) is not int:
             continue
@@ -148,8 +150,15 @@ def summarize_week(matches, ending_sunday, *, seasons=OFFICIAL_SEASONS):
             ended, begun = parse_utc(m["endedAt"]), parse_utc(m["startedAt"])
         except (KeyError, ValueError, TypeError, OverflowError):
             continue
-        if start <= ended < end and begun <= ended:
-            picked[m["id"]] = (ended, m)
+        if start <= ended < end and begun <= ended and m["id"] not in conflicted:
+            entry = (ended, m)
+            if m["id"] in picked and picked[m["id"]] != entry:
+                # A conflicting duplicate makes the match unverifiable. Exclude
+                # the ID entirely rather than rewarding whichever record came last.
+                del picked[m["id"]]
+                conflicted.add(m["id"])
+            else:
+                picked[m["id"]] = entry
     rows = sorted(picked.values(), key=lambda item: (item[0], item[1]["id"]))
     segments = []
     for i, (key, name, begins) in enumerate(seasons):
@@ -167,6 +176,7 @@ def summarize_week(matches, ending_sunday, *, seasons=OFFICIAL_SEASONS):
         "publicationEnabled": False, "source": SOURCE,
         "weekEndingEastern": str(ending_sunday), "fromUtc": iso(start),
         "toUtc": iso(end), "segments": segments,
+        "conflictingMatchIdsExcluded": len(conflicted),
         "qualifier": "Captured completed matches only; incomplete archives possible.",
         "seasonKdOver20": None, "characterLevelAwards": None,
         "actualFactionJoinCounts": None,
