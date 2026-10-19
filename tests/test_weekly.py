@@ -79,6 +79,27 @@ class WeeklyStagingTests(unittest.TestCase):
         for value in ("76561190000000001", "secret joining code", A, B):
             self.assertNotIn(value, summary)
 
+    def test_conflicting_match_id_is_excluded_not_last_write_wins(self):
+        normal = match(21, "2026-10-16T20:30:00Z")
+        tampered = match(21, "2026-10-16T20:30:00Z")
+        tampered["players"][0]["kills"] = 9999
+        summary = summarize_week([normal, tampered], "2026-10-18")
+        self.assertEqual(summary["conflictingMatchIdsExcluded"], 1)
+        season = summary["segments"][1]
+        self.assertEqual(season["completedMatchesInArchive"], 0)
+        self.assertIsNone(season["awards"]["mostKills"])
+
+    def test_weekly_award_names_are_sanitized_again(self):
+        candidate = match(22, "2026-10-16T20:30:00Z")
+        candidate["players"][0]["name"] = "@<script>First\\nName</script>"
+        candidate["players"][1]["name"] = "76561190000000001"
+        summary = summarize_week([candidate], "2026-10-18")
+        serialized = json.dumps(summary)
+        self.assertNotIn("<script>", serialized)
+        self.assertNotIn("@", serialized)
+        self.assertNotIn("76561190000000001", serialized)
+        self.assertEqual(summary["segments"][1]["uniqueRecordedPlayers"], 1)
+
     def test_invalid_season_order_rejected(self):
         with self.assertRaises(ValueError):
             summarize_week([], "2026-10-18", seasons=OFFICIAL_SEASONS[::-1])
