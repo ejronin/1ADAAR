@@ -1,0 +1,90 @@
+"""Stage-only weekly intelligence acceptance checks."""
+import json
+import unittest
+from src.weekly import OFFICIAL_SEASONS, sunday_window, summarize_week
+
+A = "a" * 64
+B = "b" * 64
+
+
+def match(mid, when, *, team="Lonestar", feed=True, players=None):
+    return {
+        "schemaVersion": 2, "id": mid, "startedAt": "2026-10-11T15:00:00Z",
+        "endedAt": when, "map": "Bakurani", "winner": team,
+        "scores": [{"name": team, "score": 100}], "hasFeed": feed,
+        "players": players if players is not None else [
+            {"key": A, "name": "Player A", "faction": team, "result": "win",
+             "kills": 15, "deaths": 8, "seconds": 1800, "headshots": 4, "longestM": 270},
+            {"key": B, "name": "Player B", "faction": team, "result": "loss",
+             "kills": 3, "deaths": 10, "seconds": 1000, "headshots": 0, "longestM": 0}],
+    }
+
+
+class WeeklyStagingTests(unittest.TestCase):
+    def test_normal_and_dst_eastern_sundays(self):
+        begin, end = sunday_window("2026-10-18")
+        self.assertEqual(begin.isoformat(), "2026-10-11T16:00:00+00:00")
+        self.assertEqual(end.isoformat(), "2026-10-18T16:00:00+00:00")
+        fall = sunday_window("2026-11-01")
+        spring = sunday_window("2027-03-14")
+        self.assertEqual((fall[1]-fall[0]).total_seconds()/3600, 169)
+        self.assertEqual((spring[1]-spring[0]).total_seconds()/3600, 167)
+        with self.assertRaises(ValueError):
+            sunday_window("2026-10-19")
+
+    def test_season_2_boundary_and_no_mixed_awards(self):
+        report = summarize_week([
+            match(1, "2026-10-15T15:59:59Z"),
+            match(2, "2026-10-15T16:00:00Z")], "2026-10-18")
+        self.assertFalse(report["publicationEnabled"])
+        self.assertEqual([s["seasonKey"] for s in report["segments"]], ["wardogs-1", "wardogs-2"])
+        self.assertEqual([s["completedMatchesInArchive"] for s in report["segments"]], [1, 1])
+        self.assertEqual(report["segments"][1]["fromUtc"], "2026-10-15T16:00:00Z")
+        self.assertTrue(all(s["coverage"] == "archive-limited" for s in report["segments"]))
+
+    def test_factions_awards_dedup_and_participation(self):
+        extra = [{"key": A, "name": "Player A", "faction": "Valkyra",
+                  "result": "win", "kills": 2, "deaths": 1, "seconds": 500,
+                  "headshots": 1, "longestM": 310}]
+        x = match(6, "2026-10-17T20:30:00Z", team="Valkyra", players=extra)
+        report = summarize_week([match(5, "2026-10-16T20:30:00Z"), x, x], "2026-10-18")
+        s = report["segments"][1]
+        self.assertEqual(s["completedMatchesInArchive"], 2)
+        self.assertEqual(s["uniqueRecordedPlayers"], 2)
+        self.assertEqual(s["factions"], [
+            {"name": "Lonestar", "appearances": 2, "recordedPlayerSeconds": 2800, "matchesWon": 1},
+            {"name": "Valkyra", "appearances": 1, "recordedPlayerSeconds": 500, "matchesWon": 1}])
+        self.assertEqual(s["awards"]["mostMatches"]["name"], "Player A")
+        self.assertEqual(s["awards"]["mostHeadshots"]["value"], 5)
+        self.assertEqual(s["awards"]["longestShot"]["value"], 310)
+
+    def test_missing_feed_no_fabricated_combat_award(self):
+        report = summarize_week([match(8, "2026-10-16T21:00:00Z", feed=False)],
+                                "2026-10-18")
+        self.assertIsNone(report["segments"][1]["awards"]["longestShot"])
+        self.assertIsNone(report["segments"][1]["awards"]["mostHeadshots"])
+
+    def test_no_completed_matches_no_awards(self):
+        m = match(8, "2026-10-16T21:00:00Z")
+        m["scores"] = []
+        report = summarize_week([m], "2026-10-18")
+        self.assertEqual(report["segments"][1]["completedMatchesInArchive"], 0)
+        self.assertIsNone(report["segments"][1]["awards"]["mostKills"])
+
+    def test_no_private_identifiers(self):
+        m = match(9, "2026-10-16T21:00:00Z")
+        m["players"][0]["steamId"] = "76561190000000001"
+        m["players"][0]["joinCode"] = "secret joining code"
+        summary = json.dumps(summarize_week([m], "2026-10-18"))
+        for value in ("76561190000000001", "secret joining code", A, B):
+            self.assertNotIn(value, summary)
+
+    def test_invalid_season_order_rejected(self):
+        with self.assertRaises(ValueError):
+            summarize_week([], "2026-10-18", seasons=OFFICIAL_SEASONS[::-1])
+
+    def test_character_level_season_kd_and_join_events_not_inferred(self):
+        summary = summarize_week([match(10, "2026-10-16T21:00:00Z")], "2026-10-18")
+        self.assertIsNone(summary["seasonKdOver20"])
+        self.assertIsNone(summary["characterLevelAwards"])
+        self.assertIsNone(summary["actualFactionJoinCounts"])
