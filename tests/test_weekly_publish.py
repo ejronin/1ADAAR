@@ -100,7 +100,7 @@ class WeeklyReleaseTests(unittest.TestCase):
 
     def test_render_weekly_png_and_season_separation(self):
         report=summarize_week([sample()], "2026-10-25")
-        self.assertTrue(render_weekly_card(report).startswith(b"\\x89PNG\\r\\n\\x1a\\n"))
+        self.assertTrue(render_weekly_card(report).startswith(bytes((137,80,78,71,13,10,26,10))))
         with self.assertRaises(ValueError):
             render_weekly_card(summarize_week([], "2026-10-25"))
 
@@ -114,7 +114,6 @@ class WeeklyReleaseTests(unittest.TestCase):
         self.assertIn('assets/1ad-logo.svg',weekly)
         self.assertIn('assets/weekly.css',weekly)
         self.assertIn('js/weekly.js',weekly)
-        self.assertIn('COMPLETE', "COMPLETE")  # Explicitly never infer coverage from empty data.
 
 
 if __name__ == "__main__":
