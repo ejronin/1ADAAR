@@ -1,0 +1,119 @@
+/* 1ADAAR v1.0.1 / launch polish
+ * Last stylesheet in the cascade. Keep approved 1AD/ WARDOGS source artwork,
+ * the standard green dashboard, and the separate amber weekly identity.
+ * Readable small type, calm states, low-cost CSS-only HUD decoration.
+ */
+:root{
+  --ui-text:#f1f7f2;
+  --ui-secondary:#c0d0c5;
+  --ui-tertiary:#adbfaf;
+  --ui-focus:#c3ffd1;
+  color-scheme:dark;
+}
+html{scroll-padding-top:24px}
+body{font-size:15px;line-height:1.55;text-rendering:optimizeLegibility}
+main, .main {min-width:0}
+button,select,a,input{touch-action:manipulation}
+a,button,summary{ -webkit-tap-highlight-color:rgba(129,235,155,.18) }
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,
+.match-card:focus-visible,.candidate:focus-visible{outline:3px solid var(--ui-focus);outline-offset:3px}
+button:disabled,select:disabled{cursor:not-allowed}
+.hero h1,.section-head h2,.profile-heading h2,.detail h2,.join-panel h2{ text-wrap:balance }
+.hero p,.join-panel p,.profile-disclaimer{line-height:1.65}
+.hero p{font-size:15px;max-width:490px;color:#d9e5dc}
+.eyebrow,.rail-label,.hero .eyebrow{font-size:12px;letter-spacing:.095em;line-height:1.45}
+.brand small{font-size:11px;letter-spacing:.09em}
+.brand strong{line-height:1.1}
+.nav{font-size:13.5px;line-height:1.35;min-height:46px}
+.rail-footer strong,.rail-footer small{font-size:12px;line-height:1.4}
+.breadcrumb{font-size:11px;line-height:1.5}
+.source-tag{font-size:12px;letter-spacing:.05em;line-height:1.5;color:#c1dbc7}
+.hero-actions .primary,.hero-actions .secondary,.join-panel-link{font-size:12.5px;line-height:1.3}
+.hero-actions .primary,.hero-actions .secondary{min-height:48px}
+.server-status .eyebrow{font-size:12px;letter-spacing:.065em}
+.server-status-updated,.server-status-community{font-size:12px;line-height:1.55}
+.server-status-cell span{font-size:12px;letter-spacing:.07em}
+.server-status-source{font-size:12px;min-height:48px}
+.kpi span{font-size:12px;line-height:1.4;letter-spacing:.08em}
+.kpi small{font-size:12px;line-height:1.5;color:var(--ui-secondary)}
+.kpi strong{font-variant-numeric:tabular-nums}
+.section-head p{font-size:14px;line-height:1.55;color:var(--ui-secondary)}
+.filters input,.filters select{font-size:14px;min-height:44px}
+.filters .filter-hint{font-size:12px;line-height:1.5;color:var(--ui-tertiary)}
+.filters select:disabled{opacity:.85;color:#b9c9bd}
+.notice,.empty-insight{font-size:14px;line-height:1.55}
+.card-id,.card-time{font-size:12px;letter-spacing:.05em}
+.card-line,.winner,.score,.score strong,.card-foot{font-size:12.5px;line-height:1.4}
+.match-card{min-height:250px;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.match-card:hover,.match-card:focus-visible{box-shadow:0 9px 28px #0007,inset 0 1px 0 #9dfdb71a}
+.detail .detail-sub,.detail .data-grid span,.detail .award{font-size:13px}
+.detail .report-link{font-size:13px;min-height:44px}
+.detail table,.detail th{font-size:12.5px}
+.detail th,.detail td{line-height:1.4;padding:11px 8px}
+.profile-subtitle,.profile-disclaimer,.panel-heading span,.candidate small{font-size:13px;line-height:1.55}
+.player-hero .search-footnote{font-size:12.5px}
+.metric-tile span,.metric-tile small{font-size:12px;line-height:1.4}
+.new-search,.profile-actions .new-search{font-size:12.5px;min-height:44px}
+.breakdown-row,.recent-table,.recent-table th{font-size:12.5px}
+.recent-table th{letter-spacing:.04em}
+.perf-heading .eyebrow,.perf-source,.perf-mini-stat span,.perf-mini-stat small,.perf-window-label{font-size:12px;letter-spacing:.04em;line-height:1.35}
+.perf-tab{font-size:12.5px;line-height:1.35;min-height:44px}
+.perf-subtitle,.perf-coverage,.perf-legend-item,.perf-inspector,.perf-empty p,.perf-details,.perf-details summary,.perf-footnote{font-size:12.5px;line-height:1.55}
+.perf-table,.perf-table th{font-size:12px}
+.perf-axis-label{font-size:12px}
+.analytics-section-label span,.analytics-section-label small{font-size:12px;line-height:1.45}
+.join-panel p{font-size:14px}
+footer{font-size:11.5px;line-height:1.75;letter-spacing:.045em;color:#b4c3b9}
+.share-status{font-size:13px}
+/* No strobing red. Static offline is clearer, calmer and more accessible. */
+.server-status[data-state="offline"] .server-status-lamp{animation:none;box-shadow:0 0 0 5px #ff515b27,0 0 11px #ff515b33}
+/* CSS-only tactical readout. Adds motion only on capable devices, never data. */
+.hero{isolation:isolate}
+.hero::after{
+  content:"";position:absolute;inset:-12% -20%;z-index:1;pointer-events:none;
+  background:linear-gradient(104deg,transparent 43%,rgba(161,255,187,.06) 50%,transparent 57%);
+  transform:translateX(-125%);animation:adaar-sweep 22s ease-in-out infinite;
+}
+@keyframes adaar-sweep{0%,73%{transform:translateX(-125%)}84%,100%{transform:translateX(125%)}}
+/* Improve hero legibility without obscuring verified imagery. */
+.hero h1{text-shadow:0 3px 18px #000b}
+.hero .hero-text{z-index:2}
+/* Contrast and generous line spacing for densely packed analytical content. */
+.perf-mini-stat small,.metric-tile small,.profile-panel .panel-heading span{color:#aec9b6}
+.perf-window-label,.perf-footnote,.analytics-section-label small{color:#afc8b5}
+.profile-disclaimer{color:#c0d6c6}
+@media(max-width:1100px){
+  .nav{font-size:12.5px}
+  .rail .nav{font-size:12.5px}
+}
+@media(max-width:720px){
+  .rail .nav,.rail .nav:not(.active){font-size:12px;min-height:51px;line-height:1.35;letter-spacing:0}
+  .rail .nav-glyph{min-width:16px}
+  .hero .eyebrow{font-size:11.5px}
+  .hero p{font-size:14.5px;line-height:1.55}
+  .breadcrumb{font-size:11px}
+  .kpi span{font-size:11px}
+  .kpi small{font-size:11.5px}
+  .perf-tab{font-size:12px;min-height:48px}
+  .perf-mini-stat span{font-size:11px;letter-spacing:0}
+  .perf-mini-stat small{font-size:11px}
+  .perf-legend-item,.perf-source,.perf-window-label{font-size:12px}
+  .source-tag{font-size:11.5px}
+  .server-status-updated,.server-status-community{font-size:12px}
+  .hero-actions .primary,.hero-actions .secondary{font-size:12px;min-height:48px}
+  .detail table{font-size:12.5px}
+  .join-panel-link{min-height:48px}
+}
+@media(max-width:380px){
+  .rail{gap:7px;padding-inline:10px}
+  .rail .nav,.rail .nav:not(.active){font-size:11.5px;padding:10px 8px;gap:5px}
+  .rail .nav-glyph{font-size:15px;min-width:14px}
+  .perf-tab{font-size:11.5px;min-height:48px}
+  .kpi span{letter-spacing:.025em}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero::after{content:none;animation:none}
+  .server-status-lamp,.match-card,.primary,.pill-link{animation:none!important;transition:none!important}
+  *,*::before,*::after{scroll-behavior:auto!important}
+}
+@media(hover:none){.match-card:hover{transform:none}}
