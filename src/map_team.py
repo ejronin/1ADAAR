@@ -118,12 +118,20 @@ def build_map_team(archive_directory: Path, output_directory: Path) -> dict:
                 raise ValueError("Match is stored under the wrong official season or month")
             seen_match_ids.add(ident)
             count += 1
-            in_match = set()
+            # One public match can contain several faction/score lines for
+            # the same player. Their meaning is not verified. Exclude only that
+            # player's ambiguous lines rather than guessing a team or blocking
+            # legitimate collector/Discord delivery for everybody else.
+            counts = {}
+            for row in match["players"]:
+                key = row["key"]
+                if not HEX_KEY.fullmatch(key):
+                    raise ValueError("Invalid public player lookup key")
+                counts[key] = counts.get(key, 0) + 1
             for player in match["players"]:
                 key = player["key"]
-                if not HEX_KEY.fullmatch(key) or key in in_match:
-                    raise ValueError("Invalid or duplicated player identity in one match")
-                in_match.add(key)
+                if counts[key] != 1:
+                    continue
                 name = safe_name(player.get("name"))
                 if not name:
                     continue
