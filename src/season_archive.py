@@ -171,8 +171,32 @@ def archive_captured_matches(directory: Path, matches: list[dict],
 
     # Validate all before writing. Atomic per-file replacements; a later CI
     # failure can retry without duplicating or deleting archived matches.
-    if to_write:
-        from src.recap import atomic_write_json
-        for path, doc in to_write.items():
-            atomic_write_json(path, doc)
+    from src.recap import atomic_write_json, read_json
+    for path, doc in to_write.items():
+        atomic_write_json(path, doc)
+
+    # Small public manifest makes it possible to browse saved seasons in v2
+    # without loading every match shard into a phone.
+    manifest_rows = []
+    for key, season_name, _ in season_rows:
+        folder = directory / key
+        months = []
+        if folder.is_dir():
+            for file in sorted(folder.glob("????-??.json"), reverse=True):
+                shard = json.loads(file.read_text(encoding="utf-8"))
+                if (shard.get("schemaVersion") != 1 or shard.get("seasonKey") != key
+                        or shard.get("month") != file.stem or not isinstance(shard.get("matches"), list)):
+                    raise ValueError("Invalid archived month while building season index")
+                months.append({"month": file.stem, "capturedMatches": len(shard["matches"]),
+                               "file": f"data/seasons/{key}/{file.name}"})
+        if months:
+            manifest_rows.append({"seasonKey": key, "seasonName": season_name,
+                                  "capturedMatches": sum(item["capturedMatches"] for item in months),
+                                  "months": months})
+    manifest = {"schemaVersion": 1,
+                "source": "Completed matches captured by 1ADAAR from public WARCON data",
+                "coverage": "captured-only", "seasons": manifest_rows}
+    manifest_path = directory / "index.json"
+    if read_json(manifest_path, {}) != manifest:
+        atomic_write_json(manifest_path, manifest)
     return {"newMatches": changed, "changedFiles": len(to_write)}
