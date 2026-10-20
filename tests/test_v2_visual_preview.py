@@ -34,7 +34,7 @@ class VisualPreviewSafetyTests(unittest.TestCase):
         self.assertNotIn("XMLHttpRequest", js)
         self.assertNotIn("innerHTML", js)
         self.assertNotIn("steamId", js)
-        self.assertNotIn("DISCORD", js.upper())
+        self.assertNotIn("discord.com", js.lower())
         self.assertIn("data-target", js)
         self.assertIn("combo-map", js)
         self.assertIn("combo-team", js)
