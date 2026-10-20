@@ -267,13 +267,14 @@ def run(*, webhook: str = "", dry_run: bool = False) -> dict:
         except (RuntimeError, urllib.error.HTTPError) as error:
             # Never publish half-populated latest match when detailed result is unavailable.
             raise RuntimeError(f"WARCON match {match_id} detail unavailable") from error
-    latest = sorted(old_matches.values(), key=lambda x: x["endedAt"], reverse=True)[:MAX_MATCHES]
+    all_captured = sorted(old_matches.values(), key=lambda x: x["endedAt"], reverse=True)
+    latest = all_captured[:MAX_MATCHES]
     # v2: preserve every captured public match in permanent season/month files.
     # The homepage remains a fast, bounded 120-match window. Past captures are
     # never deleted when the window moves forward. No extra WARCON request.
     if not dry_run:
         from src.season_archive import archive_captured_matches
-        archive_captured_matches(DATA / "seasons", latest)
+        archive_captured_matches(DATA / "seasons", all_captured)
     if not dry_run and old.get("matches") != latest:
         atomic_write_json(db_file, {"schemaVersion": 1, "source": "WARCON public matches API",
                                     "lastCheckedAt": dt.datetime.now(dt.timezone.utc).isoformat(),
