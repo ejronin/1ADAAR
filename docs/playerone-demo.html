@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="assets/factions.css?v=1" />
   <link rel="stylesheet" href="assets/players.css?v=9" />
   <link rel="stylesheet" href="assets/performance.css?v=3" />
+  <link rel="stylesheet" href="assets/demo-v11.css?v=1" />
   <script defer src="js/performance-core.js?v=1"></script>
   <script defer src="js/performance.js?v=4"></script>
   <script defer src="js/factions.js?v=1"></script>
@@ -60,15 +61,40 @@
         <div class="profile-actions"><button type="button" class="new-search" id="share-demo">↗ Share demo profile</button><a class="new-search" href="players.html">Find a real player ↗</a></div>
       </div>
       <div id="demo-share-status" class="share-status" role="status" aria-live="polite" hidden></div>
-      <div class="metric-grid" id="profile-metrics"><div class="metric-tile"><span>Kills</span><strong>634</strong><small>DEMO / FICTIONAL</small></div>
+      <div class="metric-grid" id="profile-metrics"><div class="metric-tile"><span>Matches played</span><strong>48</strong><small>DEMO / FICTIONAL</small></div>
 <div class="metric-tile"><span>Deaths</span><strong>332</strong><small>DEMO / FICTIONAL</small></div>
 <div class="metric-tile"><span>K/D</span><strong>1.91</strong><small>DEMO / FICTIONAL</small></div>
-<div class="metric-tile"><span>Matches</span><strong>48</strong><small>DEMO / FICTIONAL</small></div>
+<div class="metric-tile"><span>Total kills</span><strong>634</strong><small>DEMO / FICTIONAL</small></div>
 <div class="metric-tile"><span>Wins</span><strong>27</strong><small>DEMO / FICTIONAL</small></div>
 <div class="metric-tile"><span>Win rate</span><strong>56.3%</strong><small>DEMO / FICTIONAL</small></div>
 <div class="metric-tile"><span>Playtime</span><strong>37h 0m</strong><small>DEMO / FICTIONAL</small></div>
 <div class="metric-tile"><span>Seeding time</span><strong>3h 0m</strong><small>DEMO / FICTIONAL</small></div></div>
-      <section id="performance-module" class="performance-module" aria-label="Performance over time"><p class="perf-empty-static">Performance trends will appear after completed matches are recorded.</p></section>
+      <div class="demo-v11-insights">
+        <div class="demo-chart-panel">
+          <div class="panel-heading"><h3>Performance over time</h3><span>32 fictional match observations</span></div>
+          <section id="performance-module" class="performance-module" aria-label="Performance over time"><p class="perf-empty-static">Loading PlayerOne's sample match trend…</p></section>
+        </div>
+        <aside class="demo-ring-panel" aria-label="Sample player statistics at a glance">
+          <div class="panel-heading"><h3>At a glance</h3><span>SAMPLE DATA</span></div>
+          <div class="demo-rings">
+            <div class="demo-main-ring"><div class="demo-donut" style="--arc:#69e6a0">
+              <svg viewBox="0 0 120 120" role="img" aria-label="Fictional win rate 56.3 percent, 27 wins in 48 matches"><circle class="track" cx="60" cy="60" r="45" pathLength="100"/><circle class="filled" cx="60" cy="60" r="45" pathLength="100" stroke-dasharray="56.25 100"/></svg>
+              <div class="donut-text"><strong>56.3%</strong><small>Win rate</small></div>
+            </div><p>27 wins / 48 sample matches</p></div>
+            <div class="demo-two-rings">
+              <div><div class="demo-donut small" style="--arc:#465eff">
+                <svg viewBox="0 0 120 120" role="img" aria-label="Fictional Lonestar participation in four of the latest ten matches, 40 percent"><circle class="track" cx="60" cy="60" r="45" pathLength="100"/><circle class="filled" cx="60" cy="60" r="45" pathLength="100" stroke-dasharray="40 100"/></svg>
+                <div class="donut-text"><strong>40%</strong></div>
+              </div><p>Lonestar · 4 of 10 recent matches</p></div>
+              <div><div class="demo-donut small" style="--arc:#a989e7">
+                <svg viewBox="0 0 120 120" role="img" aria-label="Fictional Bakurani participation in four of the latest ten matches, 40 percent"><circle class="track" cx="60" cy="60" r="45" pathLength="100"/><circle class="filled" cx="60" cy="60" r="45" pathLength="100" stroke-dasharray="40 100"/></svg>
+                <div class="donut-text"><strong>40%</strong></div>
+              </div><p>Bakurani · 4 of 10 recent matches</p></div>
+            </div>
+          </div>
+          <p class="demo-ring-caveat">All numbers come from the existing fictional PlayerOne example. This is not a WARCON profile.</p>
+        </aside>
+      </div>
       <section id="combat-panel" class="profile-panel">
         <div class="panel-heading"><h3>Extra combat stats</h3><span>SAMPLE ONLY — not real player results</span></div>
         <div class="metric-grid compact"><div class="metric-tile"><span>Headshots</span><strong>128</strong><small>DEMO / FICTIONAL</small></div>
