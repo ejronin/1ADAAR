@@ -135,6 +135,26 @@ def archive_captured_matches(directory: Path, matches: list[dict],
             raise ValueError("Conflicting duplicate match in incoming capture")
         incoming[key][cleaned["id"]] = cleaned
 
+    # A match ID identifies one WARCON match globally. Never allow the same
+    # ID to appear in another month or season (e.g. a changed timestamp).
+    incoming_partition = {}
+    for partition, additions in incoming.items():
+        for ident in additions:
+            if ident in incoming_partition and incoming_partition[ident] != partition:
+                raise ValueError("One match ID appears in multiple season/month groups")
+            incoming_partition[ident] = partition
+    for existing_file in directory.glob("*/*.json"):
+        archived_partition = (existing_file.parent.name, existing_file.stem)
+        doc = json.loads(existing_file.read_text(encoding="utf-8"))
+        if not isinstance(doc, dict) or not isinstance(doc.get("matches"), list):
+            raise ValueError("Malformed preexisting season match file")
+        for item in doc["matches"]:
+            if not isinstance(item, dict) or type(item.get("id")) is not int:
+                raise ValueError("Invalid preexisting archived match")
+            if (item["id"] in incoming_partition and
+                    incoming_partition[item["id"]] != archived_partition):
+                raise ValueError("Match ID already saved in another season or month")
+
     to_write = {}
     changed = 0
     for (season, month), additions in incoming.items():
