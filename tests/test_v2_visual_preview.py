@@ -48,7 +48,12 @@ class VisualPreviewSafetyTests(unittest.TestCase):
         self.assertIn('@media(max-width:680px)', css)
         self.assertIn('prefers-reduced-motion', css)
         self.assertIn(':focus-visible', css)
-        self.assertIn('conic-gradient', css)
+        self.assertIn('donut-fill', css)
+        self.assertIn('stroke-dasharray="58.3 100"', html)
+        self.assertIn('stroke-dasharray="62.5 100"', html)
+        self.assertIn('stroke-dasharray="37.5 100"', html)
+        self.assertIn('14 wins / 24 known results', html)
+        self.assertNotIn('75%</strong>', html)
         self.assertIn('.podium', css)
 
 
