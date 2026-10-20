@@ -23,7 +23,7 @@
       metric==='career'?
       [{label:'Career K/D',key:'kd',color:'#86f4a4',fill:true}]:
       [{label:'Match K/D',key:'kd',color:'#86f4a4',fill:true},
-       {label:'Five-match rolling',key:'rolling',color:'#e4c47d',fill:false}];
+       {label:'Last 5 matches',key:'rolling',color:'#e4c47d',fill:false}];
     const raw=rows.flatMap(row=>series.map(s=>row[s.key]).filter(v=>typeof v==='number'&&Number.isFinite(v)));
     const isCount=metric==='kills';
     const peak=Math.max(1,...raw)*1.14;
@@ -112,7 +112,7 @@
     host.append(header);
     const toolbar=el('div','perf-toolbar'),tabs=el('div','perf-tabs');
     tabs.setAttribute('role','group');
-    tabs.setAttribute('aria-label','Select a performance metric');
+    tabs.setAttribute('aria-label','Choose a stat to view');
     for(const [key,label] of [['kd','K/D OVER TIME'],['kills','KILLS / DEATHS'],['career','ALL-TIME K/D']]){
       const button=el('button','perf-tab',label);
       button.type='button';button.dataset.metric=key;
@@ -140,7 +140,7 @@
       inspector=el('div','perf-inspector'),footnote=el('p','perf-footnote'),
       details=el('details','perf-details'),scroller=el('div','perf-data-scroll');
     inspector.setAttribute('role','status');inspector.setAttribute('aria-live','polite');
-    details.append(el('summary','','View exact chart data'),scroller);
+    details.append(el('summary','','See the numbers in a table'),scroller);
     host.append(summary,canvas,empty,legend,inspector,footnote,details);
     function tile(label,value,caption){
       const card=el('div','perf-mini-stat');
@@ -217,11 +217,11 @@
         indicator.append(dot,document.createTextNode(s.label));legend.append(indicator);
       }
       inspector.hidden=false;
-      inspector.textContent='Focus or tap a point to inspect its exact recorded result.';
+      inspector.textContent='Select or tap a point to see its saved result.';
       footnote.textContent=metric==='career'?
-        'Dated WARCON career snapshots. Up to 60 changed daily observations within the past 180 days; no inferred past values.':
+        'WARCON all-time stats saved on different days. We keep up to 60 updates from the past 180 days and do not make up earlier numbers.':
         metric==='kills'?
-        'Kills and deaths are from completed WARCON match records in the available 1ADAAR archive.':
+        'Kills and deaths come from completed matches saved in 1ADAAR.':
         'Five-match K/D is total kills divided by total deaths over five matches. If there are no deaths, we show the kill count. If there are no kills or deaths, we show a dash.';
       if(config.demo)footnote.textContent='DEMO / FICTIONAL — '+footnote.textContent;
       table(rows);
