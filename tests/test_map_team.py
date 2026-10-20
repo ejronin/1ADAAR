@@ -86,6 +86,15 @@ class MapTeamTests(unittest.TestCase):
         self.assertIsNone(row["winRate"])
         self.assertIsNone(row["kd"])
 
+    def test_ambiguous_duplicate_player_lines_are_not_counted_twice(self):
+        same = completed(27)
+        same["players"].append(dict(same["players"][0], faction="Valkyra"))
+        archive_captured_matches(self.archive, [same])
+        outcome = build_map_team(self.archive, self.output)
+        self.assertEqual(outcome["capturedMatches"], 1)
+        self.assertEqual(outcome["players"], 0)
+        self.assertEqual(json.loads((self.output / "a.json").read_text())["players"], {})
+
     def test_safe_links_and_accessible_controls(self):
         root = Path(__file__).resolve().parents[1] / "docs"
         page = (root / "map-team.html").read_text()
