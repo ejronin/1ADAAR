@@ -9,7 +9,7 @@
   <title>1ADAAR — WARDOGS Match Results</title>
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="1ADAAR · OneAverageDan WARDOGS Community Server" />
-  <meta property="og:title" content="1ADAAR — WARDOGS Match Intelligence" />
+  <meta property="og:title" content="1ADAAR — WARDOGS Match Results" />
   <meta property="og:description" content="WARDOGS match results and player stats from public WARCON records." />
   <meta property="og:image" content="https://ejronin.github.io/1ADAAR/assets/wardogs-official-hero.webp" />
   <meta property="og:image:alt" content="Official WARDOGS promotional battlefield artwork" />
@@ -54,7 +54,7 @@
       <div class="server-status-cell"><span>PLAYERS ONLINE</span><strong id="server-status-players">—</strong></div>
       <div class="server-status-cell"><span>CURRENT MAP</span><strong id="server-status-map">—</strong></div>
     </section>
-    <section aria-label="Match summary" class="kpi-grid"><div class="kpi"><span>MATCHES SAVED</span><strong id="stat-matches">—</strong><small>the latest saved results</small></div><div class="kpi"><span>LAST MATCH WINNER</span><strong id="stat-winner" class="text-value">—</strong><small>last saved match</small></div><div class="kpi"><span>LAST PLAYED MAP</span><strong id="stat-map" class="text-value">—</strong><small>last saved match</small></div><div class="kpi"><span>MATCH HISTORY</span><strong id="stat-feed" class="text-value">WAITING</strong><small id="stat-sync">WARCON public API</small></div></section>
+    <section aria-label="Match summary" class="kpi-grid"><div class="kpi"><span>MATCHES SAVED</span><strong id="stat-matches">—</strong><small>the latest saved results</small></div><div class="kpi"><span>LAST MATCH WINNER</span><strong id="stat-winner" class="text-value">—</strong><small>last saved match</small></div><div class="kpi"><span>LAST PLAYED MAP</span><strong id="stat-map" class="text-value">—</strong><small>last saved match</small></div><div class="kpi"><span>MATCH HISTORY</span><strong id="stat-feed" class="text-value">WAITING</strong><small id="stat-sync">Waiting for saved results</small></div></section>
     <section id="reports" class="reports" aria-labelledby="reports-heading"><div class="section-head"><div><div class="eyebrow">MATCH RESULTS</div><h2 id="reports-heading">Match history</h2><p>Only completed matches are shown. We keep the latest 120 matches we have saved, which may not include every match played.</p></div><div class="filters"><label class="sr-only" for="find-match">Search matches</label><input id="find-match" type="search" placeholder="Search map or winner…" autocomplete="off" /><label class="sr-only" for="sort-matches">Sort match results</label><select id="sort-matches" disabled aria-describedby="sort-explanation"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select><small class="filter-hint" id="sort-explanation" role="status">Sorting becomes available after 2 completed matches.</small></div></div>
     <div id="feedback" class="notice" role="status">Retrieving published match history…</div><div id="match-grid" class="match-grid" aria-live="polite"></div></section>
     <section id="join-wardogs" class="join-panel" aria-labelledby="join-wardogs-heading">
