@@ -105,15 +105,15 @@
     host.replaceChildren();
     const header=el('header','perf-header'),
       left=el('div','perf-heading');
-    left.append(el('span','eyebrow','02 / PERFORMANCE INTELLIGENCE'),
+    left.append(el('span','eyebrow','PLAYER RESULTS OVER TIME'),
       el('h3','','Performance over time'),
-      el('p','perf-subtitle','Actual match results, recent form and career progression.'));
-    header.append(left,el('span','perf-source',config.demo?'DEMO / FICTIONAL':'WARCON / VERIFIED DATA'));
+      el('p','perf-subtitle','See recent results and how your overall stats have changed.'));
+    header.append(left,el('span','perf-source',config.demo?'SAMPLE / MADE-UP STATS':'DATA FROM WARCON'));
     host.append(header);
     const toolbar=el('div','perf-toolbar'),tabs=el('div','perf-tabs');
     tabs.setAttribute('role','group');
     tabs.setAttribute('aria-label','Select a performance metric');
-    for(const [key,label] of [['kd','K/D TREND'],['kills','KILLS / DEATHS'],['career','CAREER K/D']]){
+    for(const [key,label] of [['kd','K/D OVER TIME'],['kills','KILLS / DEATHS'],['career','ALL-TIME K/D']]){
       const button=el('button','perf-tab',label);
       button.type='button';button.dataset.metric=key;
       button.addEventListener('click',()=>{metric=key;update();});
@@ -181,7 +181,7 @@
       }
       select.value=range===Infinity?'all':String(range);
       const rows=M.windowed(full,range);
-      coverage.textContent=total===0?'No completed observations yet':
+      coverage.textContent=total===0?'No saved results yet':
         total<=10?'Only '+total+' observations available · More windows unlock as data grows':
         rows.length+' of '+total+' '+(metric==='career'?'career snapshots':'completed matches')+' in view';
       for(const button of tabs.children)button.setAttribute('aria-pressed',String(button.dataset.metric===metric));
@@ -189,24 +189,24 @@
       empty.hidden=true;inspector.hidden=true;footnote.hidden=false;details.hidden=false;
       if(!rows.length){
         empty.hidden=false;footnote.hidden=true;details.hidden=true;
-        empty.append(el('strong','',metric==='career'?'Career history starts with recorded activity':'Waiting for completed match data'),
+        empty.append(el('strong','',metric==='career'?'All-time changes will appear here':'Waiting for saved match results'),
           el('p','',metric==='career'?
-            'Career progression begins when WARCON records player activity after tracking starts. Past K/D values cannot be reconstructed.':
-            'Completed matches with verified individual kills and deaths will appear here automatically.'));
+            'We can show changes starting when we began saving WARCON data. Earlier totals are not available.':
+            'Kills and deaths from saved completed matches will show here when available.'));
         return;
       }
       const last=rows[rows.length-1];
       if(metric==='career'){
-        summary.append(tile('SNAPSHOTS',String(rows.length),'changed daily observations'),
+        summary.append(tile('SNAPSHOTS',String(rows.length),'saved daily updates'),
           tile('LATEST CAREER K/D',M.format(last.kd),'WARCON career totals'),
-          tile('TRACKED SINCE',M.tickDate(rows[0].date),'no estimated history'));
+          tile('TRACKED SINCE',M.tickDate(rows[0].date),'from saved results only'));
       }else if(metric==='kills'){
         summary.append(tile('MATCHES IN VIEW',String(rows.length),'completed match records'),
-          tile('KILLS IN VIEW',String(rows.reduce((sum,row)=>sum+row.kills,0)),'verified kills in selected matches'),
-          tile('DEATHS IN VIEW',String(rows.reduce((sum,row)=>sum+row.deaths,0)),'verified deaths in selected matches'));
+          tile('KILLS IN VIEW',String(rows.reduce((sum,row)=>sum+row.kills,0)),'kills in shown matches'),
+          tile('DEATHS IN VIEW',String(rows.reduce((sum,row)=>sum+row.deaths,0)),'deaths in shown matches'));
       }else{
         summary.append(tile('MATCHES IN VIEW',String(rows.length),'completed match records'),
-          tile('LATEST MATCH K/D',M.format(last.kd),'most recent match'),
+          tile('LATEST MATCH K/D',M.format(last.kd),'last saved match'),
           tile('FIVE-MATCH K/D',M.format(last.rolling),last.rolling===null?'unlocks after 5 matches':'total kills / total deaths'));
       }
       const graphSeries=graph(canvas,rows,metric,inspector);
@@ -222,7 +222,7 @@
         'Dated WARCON career snapshots. Up to 60 changed daily observations within the past 180 days; no inferred past values.':
         metric==='kills'?
         'Kills and deaths are from completed WARCON match records in the available 1ADAAR archive.':
-        'Five-match K/D uses the total kills and total deaths across five matches, not the average of five K/D ratios. Zero-death matches display kills as K/D; 0/0 is unavailable.';
+        'Five-match K/D is total kills divided by total deaths over five matches. If there are no deaths, we show the kill count. If there are no kills or deaths, we show a dash.';
       if(config.demo)footnote.textContent='DEMO / FICTIONAL — '+footnote.textContent;
       table(rows);
     }
