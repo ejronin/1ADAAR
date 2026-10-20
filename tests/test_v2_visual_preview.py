@@ -9,7 +9,7 @@ PREVIEW = ROOT / "docs" / "v2-preview"
 class VisualPreviewSafetyTests(unittest.TestCase):
     def test_preview_is_isolated_and_marked_fictional(self):
         page = (PREVIEW / "index.html").read_text(encoding="utf-8")
-        self.assertIn("V2.0 DESIGN PREVIEW", page)
+        self.assertIn("V1.1.0 DESIGN PREVIEW", page)
         self.assertIn("fictional examples", page)
         self.assertIn("Nothing here comes from a real player", page)
         self.assertIn('href="../index.html"', page)
@@ -25,7 +25,7 @@ class VisualPreviewSafetyTests(unittest.TestCase):
             self.assertIn(asset, page)
             self.assertTrue((PREVIEW / asset).is_file(), asset)
         self.assertIn('src="preview.js?v=1"', page)
-        self.assertIn('href="preview.css?v=1"', page)
+        self.assertIn('href="preview.css?v=2"', page)
 
     def test_js_only_uses_demonstration_records(self):
         js = (PREVIEW / "preview.js").read_text(encoding="utf-8")
@@ -48,7 +48,12 @@ class VisualPreviewSafetyTests(unittest.TestCase):
         self.assertIn('@media(max-width:680px)', css)
         self.assertIn('prefers-reduced-motion', css)
         self.assertIn(':focus-visible', css)
-        self.assertIn('conic-gradient', css)
+        self.assertIn('donut-fill', css)
+        self.assertIn('stroke-dasharray="58.3 100"', html)
+        self.assertIn('stroke-dasharray="62.5 100"', html)
+        self.assertIn('stroke-dasharray="37.5 100"', html)
+        self.assertIn('14 wins / 24 known results', html)
+        self.assertNotIn('75%</strong>', html)
         self.assertIn('.podium', css)
 
 

@@ -37,10 +37,10 @@ button,select{font:inherit}button{cursor:pointer}a{color:inherit}a:hover{text-de
 .page-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin:38px 0 24px}
 .page-heading h1,.weekly-hero h1{font:800 clamp(35px,4vw,57px)/1.05 'Barlow Condensed',Impact,sans-serif;text-transform:uppercase;letter-spacing:.015em;margin:8px 0 9px;color:#fff}
 .page-heading h1 em{font-style:normal;color:#79f0a7}.page-heading p{margin:0;font-size:14px;color:#a9c0b0;line-height:1.6}
-.eyebrow{color:#81e7a7;letter-spacing:.14em;font-size:10px;font-weight:800}
+.eyebrow{color:#81e7a7;letter-spacing:.14em;font-size:11px;font-weight:800}
 .heading-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-.source-pill,.sub-chip{font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#a4f0c0;border:1px solid #2f6645;padding:7px 9px;border-radius:4px;white-space:nowrap}
-.outline-btn,.text-btn{min-height:41px;padding:9px 12px;background:#1b3022;border:1px solid #407653;border-radius:5px;color:#d5ffe1;font-size:12px;font-weight:750}
+.source-pill,.sub-chip{font-size:11px;font-weight:800;letter-spacing:.05em;color:#a4f0c0;border:1px solid #2f6645;padding:7px 9px;border-radius:4px;white-space:nowrap}
+.outline-btn,.text-btn{min-height:44px;padding:9px 12px;background:#1b3022;border:1px solid #407653;border-radius:5px;color:#d5ffe1;font-size:12px;font-weight:750}
 .outline-btn:hover,.text-btn:hover{background:#2c4a34}.text-btn{border:none;background:transparent;color:#9df0b9}
 .profile-identity{display:flex;align-items:center;gap:15px;border:1px solid #3a5743;border-radius:9px;padding:17px 20px;margin:0 0 15px;
 background:linear-gradient(120deg,#182b1f,#17211b),url('../assets/wardogs-official-hero.webp') center/cover}
@@ -54,27 +54,34 @@ background:linear-gradient(120deg,#182b1f,#17211b),url('../assets/wardogs-offici
 .stat-card:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 115%,#2cd67c18,transparent 60%);pointer-events:none}
 .stat-icon{float:right;font-size:21px;color:#82b793}.stat-card small{display:block;font-size:12px;color:#b0c5b6;font-weight:700;margin:0 0 9px}
 .stat-card>strong{display:block;font:800 clamp(27px,3.1vw,45px)/1.1 'Barlow Condensed',sans-serif;letter-spacing:.02em;color:#fff;overflow-wrap:anywhere}
-.stat-card .unit{font-size:24px;color:#a7ebc0}.stat-card>span:not(.unit){display:block;margin-top:8px;color:#84a590;font-size:10px;line-height:1.5}
+.stat-card .unit{font-size:24px;color:#a7ebc0}.stat-card>span:not(.unit){display:block;margin-top:8px;color:#b7d5c0;font-size:12px;line-height:1.5}
 .stat-card>strong.word-value{font-size:clamp(24px,2.4vw,36px);overflow-wrap:anywhere}
 .feature-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(260px,.88fr);gap:15px;margin-bottom:16px}
 .panel{min-width:0;border:1px solid #35483b;background:linear-gradient(145deg,#191f1c,#151b17);border-radius:9px;padding:20px;box-shadow:0 6px 20px #0002;margin-bottom:15px}
 .feature-grid .panel,.lower-grid .panel,.map-layout .panel{margin:0}
 .panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
 .panel-head h3{font:800 25px/1.04 'Barlow Condensed',sans-serif;letter-spacing:.02em;margin:0 0 7px;color:#f5fff7;text-transform:uppercase}
-.panel-head p{font-size:12px;color:#99b2a1;line-height:1.5;margin:0}
+.panel-head p{font-size:13px;color:#b9d0be;line-height:1.5;margin:0}
 .chart-panel{padding-bottom:13px}.chart-wrap{margin:10px 0 0}.chart{width:100%;height:auto;display:block}
-.chart-labels{display:flex;justify-content:space-between;padding:5px 4px 8px 33px;color:#82a08c;font-size:9px}
-.panel-footer{display:flex;justify-content:space-between;color:#9fb9a4;font-size:10px;gap:12px;border-top:1px solid #2f4334;padding-top:12px}
+.chart-labels{display:flex;justify-content:space-between;padding:5px 4px 8px 33px;color:#bad3c0;font-size:11px}
+.panel-footer{display:flex;justify-content:space-between;color:#b9d0be;font-size:12px;gap:12px;border-top:1px solid #2f4334;padding-top:12px}
 .key-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#41e894;margin-right:5px}
-.radial-layout{display:flex;flex-direction:column;align-items:center;gap:5px}
-.radial-two{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
-.radial-feature{text-align:center;min-width:0}.radial-feature>span{display:block;font-size:10px;color:#afc9b5;margin-top:8px}
-.ring{width:150px;height:150px;display:grid;place-items:center;border-radius:50%;margin:auto;
- background:conic-gradient(var(--ring) var(--value),#344338 0);position:relative}
-.ring:before{content:"";position:absolute;inset:14px;border-radius:50%;background:#1b241e}
-.ring>div{position:relative;text-align:center}.ring strong{display:block;font:800 36px/1 'Barlow Condensed',sans-serif}.ring small{font-size:10px;color:#abc6b0}
-.ring.compact{width:91px;height:91px}.ring.compact:before{inset:9px}.ring.compact strong{font-size:24px}
-.card-footnote{text-align:center;line-height:1.6;color:#8ba996;font-size:10px;margin:16px 0 0}
+.radial-layout{display:flex;flex-direction:column;align-items:center;gap:13px}
+.radial-two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:18px;width:100%}
+.radial-feature{text-align:center;min-width:0}
+.radial-feature>span{display:block;font-size:11px;font-weight:650;color:#c5dccc;line-height:1.6;margin:9px auto 0;max-width:175px}
+.ring{--ring:#59dda2;position:relative;width:166px;height:166px;display:grid;place-items:center;margin:auto;isolation:isolate}
+.ring .donut-svg{display:block;position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.donut-track,.donut-fill{fill:none;stroke-width:14}
+.donut-track{stroke:#35463b}
+.donut-fill{stroke:var(--ring);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;filter:drop-shadow(0 0 4px #4ade8d42)}
+.ring>div{position:relative;z-index:1;text-align:center;pointer-events:none}
+.ring strong{display:block;font:800 39px/1 'Barlow Condensed',sans-serif;color:#fff}
+.ring small{font-size:11px;color:#c3e3cb;font-weight:650}
+.ring.compact{width:119px;height:119px}
+.ring.compact strong{font-size:29px}
+.ring.compact .donut-track,.ring.compact .donut-fill{stroke-width:16}
+.card-footnote{text-align:center;line-height:1.6;color:#b9d0be;font-size:12px;margin:16px 0 0}
 .lower-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-bottom:15px}
 .mini-row,.team-item{display:grid;grid-template-columns:minmax(78px,1fr) minmax(65px,2fr) 70px;gap:12px;align-items:center;border-top:1px solid #2b3f32;padding:16px 0;font-size:12px}
 .mini-row>strong,.team-item>strong{text-align:right;color:#e2ffe9;font-variant-numeric:tabular-nums}.mini-track{background:#39463b;border-radius:50px;height:7px;overflow:hidden}
@@ -113,7 +120,7 @@ background:linear-gradient(120deg,#182b1f,#17211b),url('../assets/wardogs-offici
 .podium-card p{color:#d4c6b0;font-size:12px;margin:0 0 16px}
 .podium-card strong{display:block;font-size:13px;color:var(--podium);margin-bottom:8px}
 .podium-card small{display:block;font-size:10px;color:#aeb4a9;line-height:1.5}
-.podium-note{font-size:11px;line-height:1.6;color:#bcafa0;margin:23px 0 0;text-align:center}
+.podium-note{font-size:12px;line-height:1.6;color:#d6c4a8;margin:23px 0 0;text-align:center}
 .weekly-two{display:grid;grid-template-columns:1fr 1fr;gap:15px}
 .weekly-big{font:800 54px 'Barlow Condensed',sans-serif;color:#f5d18e;display:flex;gap:14px;align-items:center;margin:9px 0 16px}
 .weekly-big span{max-width:160px;font:600 12px/1.5 Inter,sans-serif;color:#d3c3a8}
