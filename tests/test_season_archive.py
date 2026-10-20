@@ -75,6 +75,13 @@ class SeasonArchiveTests(unittest.TestCase):
             archive_captured_matches(self.archive, [bad, finished_match(9)])
         self.assertEqual([m["id"] for m in self.records("wardogs-2", "2026-10")], [8])
 
+    def test_same_id_cannot_move_to_another_month_or_season(self):
+        archive_captured_matches(self.archive, [finished_match(60, "2026-10-16T20:30:00Z")])
+        with self.assertRaises(ValueError):
+            archive_captured_matches(self.archive, [finished_match(60, "2026-11-02T20:30:00Z")])
+        self.assertEqual(len(self.records("wardogs-2", "2026-10")), 1)
+        self.assertFalse((self.archive/"wardogs-2"/"2026-11.json").exists())
+
     def test_unknown_or_unfinished_matches_are_rejected(self):
         bad = finished_match(5)
         bad["scores"] = []
