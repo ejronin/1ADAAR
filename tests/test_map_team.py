@@ -110,7 +110,10 @@ class MapTeamTests(unittest.TestCase):
         self.assertIn("textContent", script)
         self.assertNotIn("innerHTML", script)
         style = (root / "assets/map-team.css").read_text()
-        self.assertIn("conic-gradient", style)
+        self.assertIn("mt-donut-svg", style)
+        self.assertIn("mt-donut-fill", style)
+        self.assertIn("createElementNS", script)
+        self.assertIn("stroke-dasharray", script)
 
 
 if __name__ == "__main__":
