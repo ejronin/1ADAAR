@@ -27,6 +27,15 @@ class VisualPreviewSafetyTests(unittest.TestCase):
         self.assertIn('src="preview.js?v=1"', page)
         self.assertIn('href="preview.css?v=2"', page)
 
+    def test_weekly_preview_has_no_fake_player_winners_or_report(self):
+        page = (PREVIEW / "index.html").read_text(encoding="utf-8")
+        weekly = page.split('id="view-weekly"', 1)[1].split("</section>", 1)[0]
+        for name in ("RavenActual", "SentinelSeven", "VortexEcho", "EXAMPLE PODIUM",
+                     "example completed matches", "Week 1 concept"):
+            self.assertNotIn(name, weekly)
+        self.assertIn("No player selected", weekly)
+        self.assertIn("There is no demonstration weekly recap", weekly)
+
     def test_js_only_uses_demonstration_records(self):
         js = (PREVIEW / "preview.js").read_text(encoding="utf-8")
         self.assertIn("Every number and name is fictional", js)
