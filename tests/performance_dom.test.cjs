@@ -47,7 +47,7 @@ const point=find(plot,n=>n.attrs.role==='button');
 assert.ok(point);
 point.events.focus();
 const inspector=find(host,n=>n.className==='perf-inspector');
-assert.match(inspector.textContent,/(K\/D|rolling)/);
+assert.match(inspector.textContent,/(K\/D|Last 5 matches)/);
 tabs.children[1].events.click();
 assert.equal(tabs.children[1].attrs['aria-pressed'],'true');
 assert.ok(find(host,n=>n.textContent==='Deaths'));
