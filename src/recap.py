@@ -275,6 +275,8 @@ def run(*, webhook: str = "", dry_run: bool = False) -> dict:
     if not dry_run:
         from src.season_archive import archive_captured_matches
         archive_captured_matches(DATA / "seasons", all_captured)
+        from src.map_team import build_map_team
+        build_map_team(DATA / "seasons", DATA / "map-team")
     if not dry_run and old.get("matches") != latest:
         atomic_write_json(db_file, {"schemaVersion": 1, "source": "WARCON public matches API",
                                     "lastCheckedAt": dt.datetime.now(dt.timezone.utc).isoformat(),
