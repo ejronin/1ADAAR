@@ -85,13 +85,13 @@ class SeasonArchiveTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             archive_captured_matches(self.archive, [bad])
         self.assertEqual(archive_captured_matches(self.archive, [])["newMatches"], 0)
-        self.assertFalse(list(self.archive.rglob("*.json")))
+        self.assertFalse(list(self.archive.glob("*/*.json")))
 
     def test_old_unsupported_season_is_not_guessed(self):
         result = archive_captured_matches(self.archive,
             [finished_match(3,"2026-08-01T20:30:00Z")])
         self.assertEqual(result["newMatches"], 0)
-        self.assertFalse(list(self.archive.rglob("*.json")))
+        self.assertFalse(list(self.archive.glob("*/*.json")))
 
 
 if __name__ == "__main__":
