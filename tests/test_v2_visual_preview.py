@@ -9,7 +9,7 @@ PREVIEW = ROOT / "docs" / "v2-preview"
 class VisualPreviewSafetyTests(unittest.TestCase):
     def test_preview_is_isolated_and_marked_fictional(self):
         page = (PREVIEW / "index.html").read_text(encoding="utf-8")
-        self.assertIn("V2.0 DESIGN PREVIEW", page)
+        self.assertIn("V1.1.0 DESIGN PREVIEW", page)
         self.assertIn("fictional examples", page)
         self.assertIn("Nothing here comes from a real player", page)
         self.assertIn('href="../index.html"', page)
