@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101713">
+  <meta name="description" content="Interactive visual design preview of 1ADAAR v2.0. Fictional player names and statistics only. Production is unchanged.">
+  <title>1ADAAR v2.0 — Interactive Design Preview</title>
+  <link rel="icon" href="../assets/1ad-logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="preview.css?v=1">
+  <script defer src="preview.js?v=1"></script>
+</head>
+<body>
+  <a href="#content" class="skip">Skip to preview content</a>
+  <div class="preview-notice" role="note">
+    <span class="notice-label">V2.0 DESIGN PREVIEW</span>
+    <span>All player names, avatars, awards and statistics below are <strong>fictional examples</strong>. Nothing here comes from a real player.</span>
+    <a href="../index.html">Open live v1.0.1 ↗</a>
+  </div>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="side-brand">
+        <img src="../assets/1ad-logo.svg" width="57" height="57" alt="Official 1AD emblem">
+        <div><strong>1ADAAR</strong><small>WARDOGS ANALYTICS</small></div>
+      </div>
+      <div class="side-server"><span class="status-dot"></span> ONEAVERAGEDAN <span>COMMUNITY SERVER</span></div>
+      <div class="nav-heading">EXPLORE V2</div>
+      <nav class="primary-nav" aria-label="Preview sections">
+        <button type="button" class="nav-item selected" data-target="profile" aria-pressed="true"><span aria-hidden="true">▦</span> Player profile</button>
+        <button type="button" class="nav-item" data-target="maps" aria-pressed="false"><span aria-hidden="true">◫</span> Map &amp; team results</button>
+        <button type="button" class="nav-item" data-target="weekly" aria-pressed="false"><span aria-hidden="true">♛</span> Weekly roundup</button>
+      </nav>
+      <div class="nav-heading second">ALSO IN V2 STAGING</div>
+      <div class="sidebar-future"><span>↔</span> Compare players <small>Already coded in PR #22</small></div>
+      <div class="sidebar-future"><span>▤</span> Saved match archive <small>Already coded in PR #22</small></div>
+      <div class="side-bottom"><img src="../assets/wardogs-fullmark.png" alt="Official WARDOGS wordmark"><small>Independent community server<br>Not operated by the game developers</small></div>
+    </aside>
+    <main class="main" id="content">
+      <header class="topbar">
+        <div class="topbar-title">1ADAAR <span>/</span> <span id="breadcrumb">PLAYER PROFILE</span></div>
+        <div class="topbar-right"><span class="demo-chip">● SAMPLE DATA</span><div class="mini-avatar" aria-label="Fictional avatar">R</div><span class="mini-user">Example Player</span></div>
+      </header>
+
+      <section id="view-profile" class="view" aria-labelledby="profile-heading">
+        <div class="page-heading">
+          <div><div class="eyebrow">YOUR WARDOGS PERFORMANCE</div><h1 id="profile-heading">Your season. <em>Your stats.</em></h1><p>One place to see your progress and dig into each match.</p></div>
+          <div class="heading-actions"><span class="source-pill">● ALL-TIME WARCON TOTALS · EXAMPLE</span><button class="outline-btn" type="button" id="share-preview">↗ Share concept</button></div>
+        </div>
+        <div class="profile-identity">
+          <div class="portrait"><span aria-hidden="true">R</span><span class="portrait-dot"></span></div>
+          <div><small>PLAYER PROFILE · EXAMPLE ONLY</small><h2>RavenActual</h2><p>ONEAVERAGEDAN WARDOGS COMMUNITY SERVER</p></div>
+          <span class="tag">SEASON 2 DESIGN</span>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-icon">▦</div><small>Matches played</small><strong>24</strong><span>All-time WARCON · example</span></div>
+          <div class="stat-card"><div class="stat-icon">◎</div><small>Win rate</small><strong>58.3<span class="unit">%</span></strong><span>All-time WARCON · example</span></div>
+          <div class="stat-card"><div class="stat-icon">◈</div><small>K/D</small><strong>1.87</strong><span>All-time WARCON · example</span></div>
+          <div class="stat-card"><div class="stat-icon">✣</div><small>Total kills</small><strong>362</strong><span>All-time WARCON · example</span></div>
+        </div>
+        <div class="feature-grid">
+          <div class="panel chart-panel">
+            <div class="panel-head"><div><h3>Performance over time</h3><p>How your K/D changes across captured matches</p></div><span class="sub-chip">RECENT SAVED MATCHES</span></div>
+            <div class="chart-wrap">
+              <svg class="chart" viewBox="0 0 660 267" role="img" aria-label="Illustrative line chart showing an upward trend in player K/D over seven matches. This data is fictional.">
+                <defs><linearGradient id="chartshade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#35e78c" stop-opacity=".33"/><stop offset="1" stop-color="#35e78c" stop-opacity="0"/></linearGradient></defs>
+                <g stroke="#334139" stroke-dasharray="3 7" stroke-width="1"><path d="M50 32H642 M50 88H642 M50 144H642 M50 200H642 M50 248H642"/></g>
+                <g fill="#98ab9e" font-size="12" font-family="system-ui"><text x="9" y="36">2.4</text><text x="9" y="92">1.8</text><text x="9" y="148">1.2</text><text x="9" y="204">0.6</text><text x="9" y="252">0</text></g>
+                <path d="M51 192 L148 166 L245 181 L342 106 L439 130 L536 82 L633 51 L633 248 L51 248Z" fill="url(#chartshade)"/>
+                <path d="M51 192 L148 166 L245 181 L342 106 L439 130 L536 82 L633 51" fill="none" stroke="#42ec91" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+                <g fill="#44ed93" stroke="#12291c" stroke-width="3"><circle cx="51" cy="192" r="5"/><circle cx="148" cy="166" r="5"/><circle cx="245" cy="181" r="5"/><circle cx="342" cy="106" r="5"/><circle cx="439" cy="130" r="5"/><circle cx="536" cy="82" r="5"/><circle cx="633" cy="51" r="5"/></g>
+              </svg>
+              <div class="chart-labels"><span>Match 1</span><span>Match 5</span><span>Match 10</span><span>Match 15</span><span>Match 20</span><span>Match 24</span></div>
+            </div>
+            <div class="panel-footer"><span><i class="key-dot"></i> Recorded K/D (example)</span><span>Match-by-match trend</span></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><div><h3>At a glance</h3><p>Simple visual summaries</p></div></div>
+            <div class="radial-layout">
+              <div class="radial-feature"><div class="ring" style="--value:58.3;--ring:#5af2a4"><div><strong>58%</strong><small>Win rate</small></div></div><span>Known results</span></div>
+              <div class="radial-two"><div class="radial-feature"><div class="ring compact" style="--value:62;--ring:#465eff"><div><strong>62%</strong></div></div><span>Lonestar games</span></div><div class="radial-feature"><div class="ring compact" style="--value:75;--ring:#e0c78a"><div><strong>75%</strong></div></div><span>Recorded results</span></div></div>
+            </div>
+            <p class="card-footnote">Rings will only display statistics supported by actual WARCON match data.</p>
+          </div>
+        </div>
+        <div class="lower-grid">
+          <div class="panel">
+            <div class="panel-head"><div><h3>Results by map</h3><p>From saved completed matches</p></div><button class="text-btn go-maps" type="button">Detailed view ↗</button></div>
+            <div class="mini-row"><span>Bakurani</span><div class="mini-track"><div style="width:67%;background:#55d39a"></div></div><strong>4W / 2L</strong></div>
+            <div class="mini-row"><span>Ozeti</span><div class="mini-track"><div style="width:50%;background:#9777d9"></div></div><strong>3W / 3L</strong></div>
+            <div class="mini-row"><span>Zestafona</span><div class="mini-track"><div style="width:33%;background:#eca967"></div></div><strong>2W / 4L</strong></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><div><h3>Results by team</h3><p>Team appearances in saved matches</p></div><button class="text-btn go-maps" type="button">Detailed view ↗</button></div>
+            <div class="team-item"><img src="../assets/factions/lonestar.svg" alt=""><span>Lonestar</span><div class="mini-track"><div style="width:62%;background:#465eff"></div></div><strong>62%</strong></div>
+            <div class="team-item"><img src="../assets/factions/valkyra.svg" alt=""><span>Valkyra</span><div class="mini-track"><div style="width:25%;background:#ee4138"></div></div><strong>25%</strong></div>
+            <div class="team-item"><img src="../assets/factions/manticore.svg" alt=""><span>Manticore</span><div class="mini-track"><div style="width:13%;background:#3eba42"></div></div><strong>13%</strong></div>
+          </div>
+        </div>
+        <div class="panel recent-panel">
+          <div class="panel-head"><div><h3>Recent match performance</h3><p>Recorded results, not estimated matches</p></div><span class="sub-chip">SAMPLE RECORDS</span></div>
+          <div class="table-scroll"><table><thead><tr><th>MAP</th><th>TEAM</th><th>RESULT</th><th>KILLS</th><th>DEATHS</th><th>K/D</th></tr></thead><tbody>
+            <tr><td>Bakurani</td><td>Lonestar</td><td><span class="win">Win</span></td><td>23</td><td>11</td><td>2.09</td></tr>
+            <tr><td>Ozeti</td><td>Valkyra</td><td><span class="loss">Loss</span></td><td>16</td><td>12</td><td>1.33</td></tr>
+            <tr><td>Zestafona</td><td>Manticore</td><td><span class="win">Win</span></td><td>21</td><td>9</td><td>2.33</td></tr>
+          </tbody></table></div>
+        </div>
+      </section>
+
+      <section id="view-maps" class="view" aria-labelledby="maps-heading" hidden>
+        <div class="page-heading">
+          <div><div class="eyebrow">YOUR CAPTURED MATCH RECORDS</div><h1 id="maps-heading">Map &amp; <em>team performance.</em></h1><p>The deeper drill-down, designed around your second reference image.</p></div>
+          <div class="heading-actions"><span class="source-pill">● SAVED MATCH DATA · EXAMPLE</span></div>
+        </div>
+        <div class="filters">
+          <label>Season <select id="season-filter"><option>Season 2 (example)</option><option>All saved seasons (example)</option></select></label>
+          <label>Sort maps by <select id="map-sort"><option value="matches">Most matches</option><option value="winrate">Highest win rate</option><option value="kills">Most kills</option></select></label>
+        </div>
+        <div class="stats-grid map-stats">
+          <div class="stat-card"><small>Matches saved</small><strong>24</strong><span>Example matches</span></div>
+          <div class="stat-card"><small>Maps played</small><strong>3</strong><span>Named maps</span></div>
+          <div class="stat-card"><small>Recorded win rate</small><strong>58.3<span class="unit">%</span></strong><span>Example outcomes</span></div>
+          <div class="stat-card"><small>Best qualifying map</small><strong class="word-value">Bakurani</strong><span>Requires 5 known results</span></div>
+        </div>
+        <div class="map-layout">
+          <div class="panel">
+            <div class="panel-head"><div><h3>Map performance</h3><p>How you play on each map</p></div></div>
+            <div id="map-bars" class="map-rows"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><div><h3>Team performance</h3><p>Three official WARDOGS factions</p></div></div>
+            <div id="faction-bars" class="map-rows"></div>
+            <div class="callout">A faction appearance means one saved match, not a confirmed faction switch or join event.</div>
+          </div>
+        </div>
+        <div class="panel combinations">
+          <div class="panel-head"><div><h3>Map + team breakdown</h3><p>Filter combinations to find your strongest recorded setup</p></div></div>
+          <div class="filters in-panel">
+            <label>Map <select id="combo-map"><option value="all">All maps</option><option>Bakurani</option><option>Ozeti</option><option>Zestafona</option></select></label>
+            <label>Team <select id="combo-team"><option value="all">All teams</option><option>Lonestar</option><option>Valkyra</option><option>Manticore</option></select></label>
+          </div>
+          <div class="table-scroll"><table><thead><tr><th>MAP</th><th>TEAM</th><th>MATCHES</th><th>WINS</th><th>WIN RATE</th><th>K/D</th></tr></thead><tbody id="combination-rows"></tbody></table></div>
+        </div>
+      </section>
+
+      <section id="view-weekly" class="view weekly-theme" aria-labelledby="weekly-heading" hidden>
+        <div class="weekly-hero">
+          <img src="../assets/1ad-logo.svg" width="83" height="83" alt="Official 1AD emblem">
+          <div class="eyebrow">ONEAVERAGEDAN WARDOGS COMMUNITY SERVER</div>
+          <h1 id="weekly-heading">Weekly <em>roundup.</em></h1>
+          <p>Top players, match results, and a permanent history of each week.</p>
+          <div class="weekly-week">WEEK ENDING OCTOBER 25, 2026 • DESIGN EXAMPLE</div>
+        </div>
+        <div class="panel weekly-panel">
+          <div class="panel-head"><div><h3>Community players of the week</h3><p>Spotlight only for verified members of Dan's Discord</p></div><span class="sub-chip gold-chip">EXAMPLE PODIUM</span></div>
+          <div class="podium">
+            <div class="podium-card silver"><div class="podium-rank">02</div><div class="podium-portrait">S</div><h4>SentinelSeven</h4><p>Second place</p><strong>Silver highlight</strong><small>Discord verification required</small></div>
+            <div class="podium-card gold"><div class="crown">♛</div><div class="podium-rank">01</div><div class="podium-portrait">R</div><h4>RavenActual</h4><p>Player of the week</p><strong>Gold highlight</strong><small>Discord verification required</small></div>
+            <div class="podium-card bronze"><div class="podium-rank">03</div><div class="podium-portrait">V</div><h4>VortexEcho</h4><p>Third place</p><strong>Bronze highlight</strong><small>Discord verification required</small></div>
+          </div>
+          <p class="podium-note">Avatars shown are letter placeholders. Real Discord/Steam profile pictures require voluntary account verification and permission. Rankings will use actual saved match results.</p>
+        </div>
+        <div class="weekly-two">
+          <div class="panel weekly-panel"><div class="panel-head"><div><h3>Week at a glance</h3><p>Saved matches only</p></div></div><div class="weekly-big">18 <span>example completed matches saved</span></div><div class="award-row"><span>Most matches</span><strong>RavenActual — 8</strong></div><div class="award-row"><span>Most kills</span><strong>SentinelSeven — 104</strong></div><div class="award-row"><span>Longest shot</span><strong>Not available without verified feed</strong></div></div>
+          <div class="panel weekly-panel"><div class="panel-head"><div><h3>Seasons &amp; history</h3><p>Keep each week available for browsing</p></div></div><div class="archive-row"><span>Season 2 · Oct 25</span><strong>Week 1 concept</strong></div><div class="archive-row"><span>Season 2 · Nov 1</span><strong>Future roundup</strong></div><div class="callout amber">The actual weekly board stays empty until genuine match results are recorded.</div></div>
+        </div>
+      </section>
+
+      <footer><span>1ADAAR <b>◆</b> ONEAVERAGEDAN WARDOGS COMMUNITY SERVER</span><span>DESIGN PREVIEW ONLY • NOT LIVE GAME STATISTICS</span></footer>
+    </main>
+  </div>
+  <div id="feedback" aria-live="polite" class="feedback" hidden></div>
+</body>
+</html>
