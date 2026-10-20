@@ -60,10 +60,17 @@ class TestCollector(unittest.TestCase):
     def test_discord_primary_link_opens_github_report_for_completed_match(self):
         m=recap.public_match(SAMPLE,DETAIL)
         payload=recap.discord_payload(m)
-        embed=payload['embeds'][0]
-        self.assertEqual(embed['url'], f"{recap.SITE_URL}#match-812")
-        self.assertIn('1ADAAR', embed['fields'][-1]['name'])
-        self.assertIn(m['warconUrl'], embed['fields'][-1]['value'])
+        self.assertEqual(payload['flags'],32768)
+        self.assertNotIn('embeds',payload)
+        self.assertNotIn('content',payload)
+        layout=payload['components'][0]
+        self.assertEqual(layout['type'],17)
+        self.assertEqual(layout['components'][0]['content'],'## MATCH RECAP')
+        self.assertEqual(layout['components'][1]['type'],12)
+        self.assertIn('attachment://match-recap.png',json.dumps(layout))
+        self.assertIn("We'll post the next map",json.dumps(layout))
+        self.assertEqual(payload['components'][1]['components'][0]['url'],
+                         f"{recap.SITE_URL}#match-812")
         self.assertEqual(payload['allowed_mentions'],{'parse':[]})
     def test_match_must_end_with_final_scores_before_posting(self):
         self.assertFalse(recap.usable_match({**SAMPLE, 'endedAt':None}))
