@@ -8,7 +8,7 @@ on:
       - 'src/**'
       - '.github/workflows/collect.yml'
       - 'docs/js/server-status.js'
-      - 'docs/assets/server-status.css'
+      - 'docs/**'
   schedule:
     # Ten-minute target, offset from busy top-of-hour GitHub Actions queues.
     - cron: '4,14,24,34,44,54 * * * *'
@@ -53,6 +53,9 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Read WARCON public API and publish new match cards
         if: steps.workload.outputs.full == 'true'
+        # A release deployment must not depend on WARCON being online at merge
+        # time. Scheduled runs still fail visibly if collection fails.
+        continue-on-error: ${{ github.event_name == 'push' }}
         id: collect
         env:
           DISCORD_MATCH_WEBHOOK: ${{ secrets.DISCORD_MATCH_WEBHOOK }}
