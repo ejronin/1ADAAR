@@ -25,8 +25,8 @@ class NavigationAccessibilityTests(unittest.TestCase):
         self.assertIn('#latest-match-link[hidden]{display:none!important}',css)
         for filename in ('index.html','players.html','playerone-demo.html'):
             page=(ROOT/filename).read_text(encoding='utf-8')
-            self.assertIn('Match reports</a>',page)
-            self.assertIn('Player lookup</a>',page)
+            self.assertIn('Match history</a>',page)
+            self.assertIn('Find a player</a>',page)
     def test_player_dossiers_have_mobile_table_scrolling(self):
         css=(ROOT/'assets/players.css').read_text(encoding='utf-8')
         self.assertIn('.recent-table{min-width:540px}',css)
