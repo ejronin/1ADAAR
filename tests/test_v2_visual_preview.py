@@ -25,7 +25,7 @@ class VisualPreviewSafetyTests(unittest.TestCase):
             self.assertIn(asset, page)
             self.assertTrue((PREVIEW / asset).is_file(), asset)
         self.assertIn('src="preview.js?v=1"', page)
-        self.assertIn('href="preview.css?v=1"', page)
+        self.assertIn('href="preview.css?v=2"', page)
 
     def test_js_only_uses_demonstration_records(self):
         js = (PREVIEW / "preview.js").read_text(encoding="utf-8")
