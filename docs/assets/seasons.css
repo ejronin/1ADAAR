@@ -1,0 +1,42 @@
+/* Saved matches by season and month. Plain English; no invented results. */
+.season-hero{margin:24px 0;padding:36px clamp(20px,4vw,46px);border-radius:8px;
+ border:1px solid #456a4c;border-top:4px solid #7de2a4;
+ background:linear-gradient(115deg,#0d1610f5,#122217e8),
+ url('wardogs-official-hero.webp') center/cover}
+.season-hero h1{font:800 clamp(40px,5vw,65px)/1.08 'Barlow Condensed',sans-serif;text-transform:uppercase;
+ color:#fff;margin:12px 0}
+.season-hero h1 em{font-style:normal;color:#8aefac}
+.season-hero p{max-width:750px;font-size:16px;color:#e5f2e8;line-height:1.6;margin:8px 0}
+.season-hero .season-warning{color:#c9d9ce;font-size:13px;line-height:1.6}
+.season-content h2{font:800 clamp(26px,3vw,36px)/1.1 'Barlow Condensed',sans-serif;text-transform:uppercase;margin:20px 0 10px}
+.season-controls{display:grid;grid-template-columns:1fr 1fr auto;gap:14px;align-items:end;margin:21px 0}
+.season-controls div{min-width:0}
+.season-controls label{display:block;color:#d5eedc;font-size:14px;font-weight:750;margin-bottom:7px}
+.season-controls select{width:100%;min-height:50px;padding:12px;background:#18221c;color:#f5fff6;
+ border:1px solid #60866a;border-radius:5px;font-size:15px}
+.season-controls button,.season-more{min-height:50px;padding:12px 19px;
+ border-radius:5px;border:1px solid #81d99d;background:#78d899;color:#102013;font-size:14px;
+ font-weight:800;cursor:pointer}
+.season-match{background:#151c17;border:1px solid #385e44;border-left:4px solid #69cc86;
+ border-radius:6px;margin:12px 0;padding:17px 21px;min-width:0}
+.season-match-header,.season-match-details{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+.season-match-header strong{font:800 23px 'Barlow Condensed',sans-serif;color:#d0ffd8}
+.season-match-header time{font-size:12.5px;color:#bfcec4}
+.season-match-details{margin-top:9px;font-size:14px;color:#e2efe5}
+.season-scores{font-size:13px;color:#bdcfbf;margin:12px 0}
+.season-match-link{display:inline-flex;align-items:center;min-height:44px;padding:10px 13px;
+ border:1px solid #4f8a5f;border-radius:4px;font-size:13px;color:#b8ffd0;text-decoration:none}
+.season-match-link:hover{text-decoration:underline}
+.season-more{margin:15px 0 10px;display:block}
+.season-more[hidden]{display:none}
+.season-source{font-size:12.5px;line-height:1.6;color:#c4d7ca;margin:24px 0}
+.season-controls select:focus-visible,.season-controls button:focus-visible,.season-more:focus-visible,.season-match-link:focus-visible{
+ outline:3px solid #b9ffd0;outline-offset:3px}
+@media(max-width:760px){
+ .season-controls{grid-template-columns:1fr;gap:11px}
+ .season-controls button{width:100%}
+ .season-hero{padding:26px 18px}
+ .season-hero p{font-size:15px}
+ .season-match{padding:14px 15px}
+ .season-match-header,.season-match-details{gap:6px}
+}
