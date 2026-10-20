@@ -75,11 +75,41 @@
           </div>
           <div class="panel">
             <div class="panel-head"><div><h3>At a glance</h3><p>Simple visual summaries</p></div></div>
-            <div class="radial-layout">
-              <div class="radial-feature"><div class="ring" style="--value:58.3%;--ring:#5af2a4"><div><strong>58%</strong><small>Win rate</small></div></div><span>Known results</span></div>
-              <div class="radial-two"><div class="radial-feature"><div class="ring compact" style="--value:62%;--ring:#465eff"><div><strong>62%</strong></div></div><span>Lonestar games</span></div><div class="radial-feature"><div class="ring compact" style="--value:75%;--ring:#e0c78a"><div><strong>75%</strong></div></div><span>Recorded results</span></div></div>
+            <div class="radial-layout" aria-label="Three sample saved-match donut charts">
+              <div class="radial-feature">
+                <div class="ring" style="--ring:#5af2a4">
+                  <svg class="donut-svg" viewBox="0 0 120 120" role="img" aria-label="Win rate: 58.3 percent. 14 wins out of 24 known results. Illustrative only.">
+                    <circle class="donut-track" cx="60" cy="60" r="45" pathLength="100"/>
+                    <circle class="donut-fill" cx="60" cy="60" r="45" pathLength="100" stroke-dasharray="58.3 100"/>
+                  </svg>
+                  <div><strong>58%</strong><small>Win rate</small></div>
+                </div>
+                <span>14 wins / 24 known results</span>
+              </div>
+              <div class="radial-two">
+                <div class="radial-feature">
+                  <div class="ring compact" style="--ring:#465eff">
+                    <svg class="donut-svg" viewBox="0 0 120 120" role="img" aria-label="Lonestar participation: 62.5 percent. 15 of 24 captured appearances. Illustrative only.">
+                      <circle class="donut-track" cx="60" cy="60" r="45" pathLength="100"/>
+                      <circle class="donut-fill" cx="60" cy="60" r="45" pathLength="100" stroke-dasharray="62.5 100"/>
+                    </svg>
+                    <div><strong>63%</strong></div>
+                  </div>
+                  <span>Lonestar · 15 of 24</span>
+                </div>
+                <div class="radial-feature">
+                  <div class="ring compact" style="--ring:#a989e7">
+                    <svg class="donut-svg" viewBox="0 0 120 120" role="img" aria-label="Bakurani map share: 37.5 percent. 9 of 24 captured matches. Illustrative only.">
+                      <circle class="donut-track" cx="60" cy="60" r="45" pathLength="100"/>
+                      <circle class="donut-fill" cx="60" cy="60" r="45" pathLength="100" stroke-dasharray="37.5 100"/>
+                    </svg>
+                    <div><strong>38%</strong></div>
+                  </div>
+                  <span>Bakurani · 9 of 24</span>
+                </div>
+              </div>
             </div>
-            <p class="card-footnote">Rings will only display statistics supported by actual WARCON match data.</p>
+            <p class="card-footnote">Each donut shows a real type of measurable result, with sample percentages clearly labeled. No invented skill scores.</p>
           </div>
         </div>
         <div class="lower-grid">
