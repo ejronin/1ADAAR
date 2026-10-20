@@ -9,7 +9,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="1ADAAR · OneAverageDan WARDOGS Community Server" />
   <meta property="og:title" content="1ADAAR — Find Your WARDOGS Stats" />
-  <meta property="og:description" content="Public WARCON player statistics, performance trends and captured match reports for the OneAverageDan community server." />
+  <meta property="og:description" content="Find your WARDOGS stats, recent saved matches and how your totals have changed." />
   <meta property="og:image" content="https://ejronin.github.io/1ADAAR/assets/wardogs-official-hero.webp" />
   <meta property="og:image:alt" content="Official WARDOGS promotional battlefield artwork" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -44,7 +44,7 @@
       <div class="hero-glow" aria-hidden="true"></div>
       <div class="hero-text"><div class="eyebrow">◆ WARDOGS COMMUNITY SERVER · ONEAVERAGEDAN PLAYER STATS</div><h1 id="player-hero-title">Find your <em>stats.</em></h1><p>Search by in-game name or SteamID64 to review WARDOGS stats saved from WARCON. Player pages do not show Steam IDs.</p>
         <form id="player-search" class="player-search" role="search"><label class="sr-only" for="player-query">Player name or SteamID64</label><input id="player-query" type="search" autocomplete="off" spellcheck="false" placeholder="Player name or 17-digit SteamID64" maxlength="80" required /><button type="submit">Find player →</button></form>
-        <a id="view-demo" class="demo-button" href="playerone-demo.html" aria-label="Open standalone PlayerOne demonstration profile, fictional statistics">🧪 See a sample player page →</a><p class="search-footnote">Searches use WARCON's public player rankings, which show up to 1,000 players. Steam IDs are not shown in search results or saved in shared links.</p>
+        <a id="view-demo" class="demo-button" href="playerone-demo.html" aria-label="See an example player page with made-up stats">🧪 See a sample player page →</a><p class="search-footnote">Searches use WARCON's public player rankings, which show up to 1,000 players. Steam IDs are not shown in search results or saved in shared links.</p>
       </div>
       <img class="player-hero-logo" src="assets/1ad-logo.svg" width="166" height="166" alt="" aria-hidden="true" />
     </section>
@@ -54,7 +54,7 @@
       <div class="profile-header"><div class="profile-emblem"><img src="assets/1ad-logo.svg" alt="" width="58" height="58" /></div><div class="profile-heading"><span class="eyebrow"><span id="profile-source-text">PLAYER STATS / FROM WARCON</span></span><h2 id="dossier-title"></h2><div id="profile-subtitle" class="profile-subtitle"></div><div id="demo-warning" class="demo-warning" hidden>SAMPLE PLAYER — MADE-UP STATS · NOT REAL RESULTS</div></div><div class="profile-actions"><button type="button" id="share-player" class="new-search" aria-label="Share this player stats profile">↗ Share these stats</button><button type="button" id="new-search" class="new-search">New search</button></div></div>
       <div id="player-share-status" class="share-status" role="status" aria-live="polite" hidden></div>
       <div class="metric-grid" id="profile-metrics"></div>
-      <section id="performance-module" class="performance-module" aria-label="Performance over time"><p class="perf-empty-static">Performance trends will appear after completed matches are recorded.</p></section>
+      <section id="performance-module" class="performance-module" aria-label="Performance over time"><p class="perf-empty-static">Your results over time will appear when matches are saved.</p></section>
       <div id="combat-panel" class="profile-panel" hidden><div class="panel-heading"><h3>Extra combat stats</h3><span>Shown only when WARCON has these results</span></div><div class="metric-grid compact" id="combat-metrics"></div></div>
       <div class="analytics-section-label"><span>MATCHES BY MAP AND TEAM</span><small>Map and faction effectiveness · completed matches only</small></div>
       <div class="profile-columns"><section class="profile-panel"><div class="panel-heading"><h3>Results by map</h3><span>Only saved matches</span></div><div id="map-breakdown"></div></section><section class="profile-panel faction-breakdown"><div class="panel-heading"><h3>Results by team</h3><span>Recent archived matches only</span></div><div id="faction-breakdown"></div></section></div>
