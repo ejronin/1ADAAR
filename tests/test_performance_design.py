@@ -10,7 +10,7 @@ class PerformanceDesignTests(unittest.TestCase):
             text=(DOCS/name).read_text(encoding="utf-8")
             self.assertIn('id="performance-module"',text)
             self.assertIn('src="js/performance-core.js?v=1"',text)
-            self.assertIn('src="js/performance.js?v=3"',text)
+            self.assertIn('src="js/performance.js?v=4"',text)
             self.assertIn('assets/performance.css?v=3"',text)
             self.assertIn('MATCHES BY MAP AND TEAM',text)
             self.assertIn('Recent completed matches',text)
