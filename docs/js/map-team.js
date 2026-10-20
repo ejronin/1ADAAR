@@ -35,13 +35,28 @@
   }
   function ring(parent,rate,label,color,caption){
     const wrap=make(parent,'div',undefined,'mt-team-group');
-    const c=make(wrap,'div',undefined,'mt-ring');
+    const holder=make(wrap,'div',undefined,'mt-ring');
     const valid=typeof rate==='number'&&Number.isFinite(rate)&&rate>=0&&rate<=1;
-    c.style.setProperty('--ring-angle',valid?(rate*360)+'deg':'0deg');
-    c.style.setProperty('--ring-color',color);
-    c.setAttribute('role','img');
-    c.setAttribute('aria-label',label+': '+(valid?winPct(rate):'no recorded data'));
-    make(c,'strong',valid?Math.round(rate*100)+'%':'—');
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('viewBox','0 0 120 120');
+    svg.setAttribute('class','mt-donut-svg');
+    svg.setAttribute('role','img');
+    svg.setAttribute('aria-label',label+': '+(valid?winPct(rate):'no recorded data')+
+      (caption?' · '+caption:''));
+    const circle=(cls)=>{
+      const el=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      el.setAttribute('class',cls);
+      el.setAttribute('cx','60');el.setAttribute('cy','60');
+      el.setAttribute('r','45');el.setAttribute('pathLength','100');
+      svg.append(el);return el;
+    };
+    circle('mt-donut-track');
+    const fill=circle('mt-donut-fill');
+    fill.style.stroke=color;
+    fill.setAttribute('stroke-dasharray',(valid?(rate*100).toFixed(2):'0')+' 100');
+    holder.append(svg);
+    const value=make(holder,'strong',valid?Math.round(rate*100)+'%':'—');
+    value.setAttribute('aria-hidden','true');
     if(label)make(wrap,'div',label,'mt-ring-caption');
     if(caption)make(wrap,'small',caption);
   }
