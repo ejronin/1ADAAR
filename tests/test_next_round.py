@@ -44,7 +44,7 @@ class NextRoundTests(unittest.TestCase):
         detail=confirmed_next_round(STATUS,MATCH,now=NOW)
         payload=next_map_post(MATCH,detail)
         self.assertEqual(payload["flags"],32768)
-        content=json.dumps(payload)
+        content=json.dumps(payload,ensure_ascii=False)
         self.assertIn("NEXT MAP: Ozeti",content)
         self.assertIn("Morning • Fog",content)
         self.assertIn(JOIN_CODE,content)
