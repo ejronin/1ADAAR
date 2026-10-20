@@ -6,7 +6,7 @@
 
 **How the data gets there:** WARCON records game activity. GitHub periodically copies approved public stats, makes the website available, and posts a Discord recap after a newly completed match. Opening a player profile **does not start a GitHub job or query WARCON**; the charts are calculated in your browser using the published data.
 
-**Server-status accuracy:** WARCON's own page is the freshest place to check whether the server is running. The 1ADAAR indicator uses the last successful GitHub update and will show **Status unavailable** when it has no recent reading. GitHub's schedule is not a real-time guarantee. You can use **Check live WARCON** next to the indicator for an authoritative view. If the public server-status API is disabled by its administrator, 1ADAAR cannot read it, even if WARCON's logged-in panel shows the server as live.
+**Server-status accuracy:** WARCON's own page is the freshest place to check whether the server is running. The 1ADAAR indicator uses the last successful GitHub update and will show **Status unknown** when it has no recent reading. GitHub's schedule is not a real-time guarantee. You can use **Check status on WARCON** next to the indicator for an authoritative view. If the public server-status API is disabled by its administrator, 1ADAAR cannot read it, even if WARCON's logged-in panel shows the server as live.
 
 **Privacy:** SteamID64 values, RCON passwords, Discord webhook URLs and administrative logs do not belong in the public website. Player names, totals and hashed lookup keys are intentionally public; hashed keys are pseudonymous, **not truly anonymous**. Anyone with access to GitHub can view files committed to this public repository, even if they aren't linked on the website.
 
@@ -195,3 +195,9 @@ This is the **OneAverageDan WARDOGS Community Server**, operated by the communit
 The fictional PlayerOne demo includes 32 completed match observations and 32 aligned career snapshots. Its chart's Last 10 / Last 25 / All Available views show 10 / 25 / 32 genuinely different data points (the static recent-match table intentionally stays at ten). The current window and metric totals update with the selection. The live dashboard never manufactures player observations: a window without enough actual history is disabled with an explanation.
 
 Match-report sorting uses verified completion timestamps and changes the actual report order. With zero or one report visible, sorting is disabled and the reason is shown; it automatically activates when two or more real reports are available. Fictional sample matches stay out of the production WARCON archive and Discord recaps.
+
+## Staged v1.0.1: more frequent, lighter status polling
+
+The proposed v1.0.1 schedule keeps all existing match/player collection and Discord recaps at their current approximately 10-minute interval, plus one **status-only WARCON request at the five-minute midpoint**. GitHub may still delay or skip a scheduled job; this is **not a real-time uptime monitor**. A missing or stale reading becomes neutral **STATUS UNKNOWN**, never red/offline or green/live. The link to WARCON's own live page remains visible. Only changes of status are committed; individual player counts and observation timestamps are published to Pages without committing new data on every check.
+
+Production v1.0.0 continues running unchanged until a reviewed PR is merged. Work planned for weekly intelligence is tracked in `planning/V1.0.1.md` and must not publish fictional reports or auto-post a weekly message before first-match validation.

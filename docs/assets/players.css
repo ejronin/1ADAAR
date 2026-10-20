@@ -45,3 +45,19 @@
 .profile-actions #share-player{border-color:#69a57a;color:#b8f8cb}
 @media(max-width:720px){.profile-actions{width:100%;justify-content:flex-end;gap:8px}.profile-actions .new-search{min-height:44px}}
 @media(max-width:380px){.profile-actions .new-search{flex:1;min-width:0;white-space:normal}}
+
+
+/* Player lookup: readable labels, visible hierarchy and full-size controls. */
+.profile-heading h2{text-wrap:balance}
+.profile-subtitle,.profile-disclaimer,.panel-heading span,.candidate small{font-size:13px;line-height:1.55}
+.player-hero .search-footnote{font-size:12.5px}
+.metric-tile span,.metric-tile small{font-size:12px;line-height:1.4}
+.new-search,.profile-actions .new-search{font-size:12.5px;min-height:44px}
+.breakdown-row,.recent-table,.recent-table th{font-size:12.5px}
+.recent-table th{letter-spacing:.04em}
+.profile-disclaimer{color:#c0d6c6;line-height:1.65}
+.empty-insight{font-size:14px;line-height:1.55}
+.profile-panel .panel-heading span,.metric-tile small{color:#aec9b6}
+#dossier .analytics-section-label{border-bottom:1px solid #346447}
+.player-results .section-head{border-left:3px solid #67dc8b;padding-left:17px}
+#performance-module{scroll-margin-top:22px}

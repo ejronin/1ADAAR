@@ -127,3 +127,22 @@
 .perf-coverage{margin:-5px 0 14px;color:#bfead0;font-size:11px;letter-spacing:.035em;font-weight:700;line-height:1.5}
 .perf-window:disabled{color:#a0c0ac;background:#18271d;border-color:#31543d;cursor:not-allowed;opacity:.72}
 .perf-window option:disabled{color:#90aa98}
+
+
+/* Readable chart controls, labels and the source explanation. */
+.perf-heading .eyebrow,.perf-source,.perf-mini-stat span,.perf-mini-stat small,.perf-window-label{font-size:12px;letter-spacing:.04em;line-height:1.35}
+.perf-tab{font-size:12.5px;line-height:1.35;min-height:44px}
+.perf-subtitle,.perf-coverage,.perf-legend-item,.perf-inspector,.perf-empty p,.perf-details,.perf-details summary,.perf-footnote{font-size:12.5px;line-height:1.55}
+.perf-table,.perf-table th{font-size:12px}
+.perf-axis-label{font-size:12px}
+.analytics-section-label span,.analytics-section-label small{font-size:12px;line-height:1.45}
+.perf-mini-stat small,.perf-window-label,.perf-footnote,.analytics-section-label small{color:#afc8b5}
+@media(max-width:720px){
+  .perf-tab{font-size:12px;min-height:48px}
+  .perf-mini-stat span{font-size:11px;letter-spacing:0}
+  .perf-mini-stat small{font-size:11px}
+  .perf-legend-item,.perf-source,.perf-window-label{font-size:12px}
+}
+@media(max-width:380px){
+  .perf-tab{font-size:11.5px;min-height:48px}
+}

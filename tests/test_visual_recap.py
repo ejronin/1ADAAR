@@ -50,5 +50,5 @@ class VisualRecapTest(unittest.TestCase):
         self.assertEqual(fixture["player"]["name"],"PlayerOne")
         self.assertNotIn("demo-playerone",json.dumps(players))
         self.assertNotIn("demo-playerone",json.dumps(matches))
-        self.assertIn("DEMO PROFILE", (ROOT/"docs/players.html").read_text())
+        self.assertIn("SAMPLE PLAYER — MADE-UP STATS", (ROOT/"docs/players.html").read_text())
         self.assertIn("id=\"view-demo\"", (ROOT/"docs/players.html").read_text())

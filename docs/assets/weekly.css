@@ -1,0 +1,66 @@
+/* Separate amber weekly report identity. The everyday 1ADAAR dashboard remains green. */
+.weekly-page{--gold:#e4bd78;--gold-light:#ffdf9a;--weekly-edge:#60513b;--text:#f5f0e7;background:#101114}
+.weekly-page .rail{background:#151518;border-right-color:#4a4233}
+.weekly-page .rail .nav.active{color:#ffe0a4;background:#322a1d;border:1px solid #7e6641}
+.weekly-page .rail .nav:hover,.weekly-page .rail .nav:focus-visible{background:#352d20;color:#fff}
+.weekly-page .rail .brand-emblem{filter:drop-shadow(0 0 8px #e4bd7847)}
+.weekly-page .breadcrumb span{color:#e4bd78}
+.weekly-page .topbar{border-color:#514734}
+.weekly-page .eyebrow{color:#e4bd78}
+.weekly-page footer{border-top-color:#463e31}
+.weekly-page footer b{color:#e4bd78}
+.weekly-hero{position:relative;overflow:hidden;isolation:isolate;text-align:center;margin:24px 0 28px;
+  border:1px solid var(--weekly-edge);border-top:5px solid #b98a47;border-radius:8px;
+  background:linear-gradient(135deg,rgba(21,22,24,.97),rgba(31,29,25,.92)),
+    url('wardogs-official-hero.webp') center/cover no-repeat;
+  padding:35px 28px 33px;box-shadow:0 16px 45px #0006}
+.weekly-hero:before{content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;opacity:.3;
+  background:repeating-linear-gradient(110deg,transparent 0 47px,#e4bd780d 48px,transparent 49px)}
+.weekly-emblem{display:block;object-fit:contain;margin:0 auto 15px;filter:drop-shadow(0 6px 12px #0008)}
+.weekly-eyebrow{font-size:13px;font-weight:800;letter-spacing:.08em;color:#f0e4d1}
+.weekly-hero h1{font:800 clamp(46px,6vw,76px)/1 'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.018em;
+  margin:16px 0 12px;color:#fff}
+.weekly-hero h1 em{font-style:normal;color:#e4bd78}
+.weekly-hero p{max-width:650px;margin:0 auto;font-size:16px;line-height:1.65;color:#e5dbc9}
+.weekly-source{margin:23px auto 0;color:#c6b797;font-size:12px;font-weight:700;letter-spacing:.05em;line-height:1.5}
+.weekly-main .section-head{border-left:3px solid #d9a958;padding-left:17px}
+.weekly-main .section-head p{color:#d2c8b8}
+.weekly-page .notice{background:#221f1b;border-color:#63513b;color:#f0dfc1;font-size:14px}
+.weekly-overview{margin-top:20px;padding:23px;border:1px solid #69563c;border-radius:7px;
+  background:linear-gradient(110deg,#27251f,#17191a)}
+.weekly-overview h3{font:800 clamp(27px,3vw,37px) 'Barlow Condensed',sans-serif;text-transform:uppercase;margin:0 0 7px}
+.weekly-overview p{font-size:14px;color:#ddcfb9;line-height:1.6;margin:0 0 13px}
+.weekly-count{font:800 48px 'Barlow Condensed',sans-serif;color:#f0cc8b}
+.weekly-count-label{font-size:14px;color:#dbcbb0;margin-left:12px}
+.weekly-season{margin:16px 0 0;padding:24px;border:1px solid #5d503d;border-radius:6px;background:#1a1c1d}
+.weekly-season h4{margin:0 0 5px;font:800 30px 'Barlow Condensed',sans-serif;color:#f9dfab;text-transform:uppercase}
+.weekly-season .weekly-caveat{font-size:13px;line-height:1.55;color:#cbbfae}
+.weekly-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px 0}
+.weekly-metric{border:1px solid #554734;border-radius:5px;background:#282723;padding:14px 16px;min-width:0}
+.weekly-metric span{display:block;color:#d0c1a7;text-transform:uppercase;font-size:12px;font-weight:700;letter-spacing:.035em}
+.weekly-metric strong{display:block;overflow-wrap:anywhere;color:#ffdf9a;font:800 27px 'Barlow Condensed',sans-serif;margin-top:5px}
+.weekly-season h5{color:#f7e2c2;font:800 21px 'Barlow Condensed',sans-serif;text-transform:uppercase;margin:24px 0 9px}
+.weekly-awards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.weekly-award{background:#252524;border:1px solid #534733;border-radius:5px;padding:12px 14px;min-width:0}
+.weekly-award span{display:block;color:#d5c6af;font-size:12px;line-height:1.4}
+.weekly-award strong{display:block;color:#fff;font-size:16px;line-height:1.45;overflow-wrap:anywhere;margin-top:5px}
+.weekly-award small{color:#ffdf9a;font-size:13px}
+.weekly-list{margin-top:10px;padding:0;list-style:none}
+.weekly-list li{border-bottom:1px solid #453e30;display:flex;justify-content:space-between;gap:15px;padding:10px 2px;
+  font-size:14px;color:#e5d9c6}
+.weekly-list li strong{color:#f4d093;white-space:nowrap}
+#weekly-history{margin:28px 0;border-top:1px solid #4c4336;padding-top:17px}
+#weekly-history h3{font:800 26px 'Barlow Condensed',sans-serif;text-transform:uppercase;margin:0 0 12px;color:#f4ddb4}
+.weekly-week-links{display:flex;flex-wrap:wrap;gap:9px}
+.weekly-week-links a{display:inline-flex;align-items:center;min-height:44px;padding:10px 14px;border-radius:5px;
+  border:1px solid #756043;background:#28241f;text-decoration:none;font-size:14px;color:#ffdfad}
+.weekly-week-links a[aria-current="page"]{background:#e4bd78;color:#19150f;border-color:#fff0be;font-weight:800}
+.weekly-week-links a:hover,.weekly-week-links a:focus-visible{outline:2px solid #f6d9a4;outline-offset:3px}
+@media(max-width:720px){
+  .weekly-hero{padding:29px 17px}
+  .weekly-hero p{font-size:15px}
+  .weekly-metrics,.weekly-awards{grid-template-columns:1fr}
+  .weekly-overview,.weekly-season{padding:17px}
+  .weekly-list li{font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){.weekly-hero:before{animation:none}}
