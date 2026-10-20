@@ -23,7 +23,7 @@ LIGHTING = {
 MAX_AGE = dt.timedelta(minutes=3)
 
 
-def clean_next_map(status: dict | None, ended_at: str) -> dict | None:
+def clean_next_map(status: dict | None, ended_at: str, finished_map: str) -> dict | None:
     """Use only an explicit ordered next rotation entry, verified near match end."""
     if not isinstance(status, dict) or status.get("ok") is not True:
         return None
@@ -45,7 +45,7 @@ def clean_next_map(status: dict | None, ended_at: str) -> dict | None:
     if rotation.get("mode") != "ordered":
         return None
     current = status.get("map")
-    if MAPS.get(current) is None:
+    if MAPS.get(current) is None or MAPS.get(current) != MAPS.get(finished_map):
         return None
     entries = rotation.get("entries")
     if not isinstance(entries, list) or not (1 <= len(entries) <= 100):
