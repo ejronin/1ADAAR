@@ -160,34 +160,9 @@ def public_match(raw: dict, detail: dict | None = None) -> dict:
 
 
 def discord_payload(match: dict) -> dict:
-    scores = match["scores"]
-    score_text = "\n".join(f"**{r['name']}**  ·  {r['score']:g}" for r in scores) or "Unavailable"
-    duration = match["durationSeconds"]
-    mm = f"{duration // 3600}h {duration % 3600 // 60}m" if duration >= 3600 else f"{duration // 60}m"
-    awards = match.get("awards") or []
-    fields = [
-        {"name": "🗺️ Map", "value": match["map"], "inline": True},
-        {"name": "⏱ Duration", "value": mm, "inline": True},
-        {"name": "👥 Peak players", "value": str(match["peakPlayers"]), "inline": True},
-        {"name": "FINAL FACTION SCORES", "value": score_text[:1024], "inline": False},
-    ]
-    if awards:
-        summary = "\n".join(f"**{a['label']}** · {a['name']} — {a['value']}" for a in awards[:4])
-        fields.append({"name": "🎖 Match awards", "value": summary[:1024], "inline": False})
-    fields.append({"name": "📊 View the detailed 1ADAAR match report", "value":
-                   f"[Open 1ADAAR]({SITE_URL}#match-{match['id']}) · [WARCON source]({match['warconUrl']})",
-                   "inline": False})
-    winner = match["winner"] or "Draw"
-    return {"username": "1ADAAR | WARDOGS", "allowed_mentions": {"parse": []},
-            "embeds": [{"title": f"WARDOGS MATCH COMPLETE · {winner}",
-                        "url": f"{SITE_URL}#match-{match['id']}", "color": {
-                            "lonestar": 0x465EFF, "valkyra": 0xEE4138,
-                            "manticore": 0x3EBA42
-                        }.get(match["winner"].strip().lower(), 0x56CE71),
-                        "description": "**OneAverageDan WARDOGS Community Server** · Verified completed-match results from WARCON",
-                        "image": {"url": "attachment://match-recap.png"},
-                        "fields": fields, "footer": {"text": f"1ADAAR • Match #{match['id']} • Data: WARCON"},
-                        "timestamp": match["endedAt"]}]}
+    """One image-first Discord recap; next round posts separately."""
+    from src.discord_layout import match_recap
+    return match_recap(match)
 
 
 def send_discord(url: str, payload: dict, *, image_bytes: bytes | None = None) -> str:
@@ -195,7 +170,10 @@ def send_discord(url: str, payload: dict, *, image_bytes: bytes | None = None) -
     if parsed.scheme != "https" or parsed.hostname not in {"discord.com", "discordapp.com"} or \
        not re.fullmatch(r"/api/webhooks/\d+/[A-Za-z0-9_-]+/?", parsed.path):
         raise ValueError("Invalid Discord webhook URL")
+    # Components V2 requires both the message flag and this webhook parameter.
     url = url.rstrip("/") + "?wait=true"
+    if payload.get("flags", 0) & 32768:
+        url += "&with_components=true"
     if image_bytes is None:
         body = json.dumps(payload).encode("utf-8")
         content_type = "application/json"
@@ -281,8 +259,9 @@ def run(*, webhook: str = "", dry_run: bool = False) -> dict:
         atomic_write_json(db_file, {"schemaVersion": 1, "source": "WARCON public matches API",
                                     "lastCheckedAt": dt.datetime.now(dt.timezone.utc).isoformat(),
                                     "matches": latest})
-    # Public status is independent of completed matches and never touches Discord.
-    # Always deploy a fresh snapshot but persist only state changes in Git history.
+    # Public status is independent of completed matches.
+    # Capture a fresh, ephemeral observation for any later next-round post.
+    observed_round = None
     if not dry_run:
         state_file = DATA / "server-status-state.json"
         state_info = read_json(state_file, {"schemaVersion": 1, "state": "unknown"})
@@ -290,6 +269,7 @@ def run(*, webhook: str = "", dry_run: bool = False) -> dict:
         try:
             result = fetch_json(PUBLIC_STATUS)
             status = project_server_status(result.get("server"), previous_state)
+            observed_round = result.get("server")
         except (RuntimeError, ValueError, urllib.error.HTTPError, TypeError) as exc:
             print(f"1ADAAR server status unavailable: {type(exc).__name__}", file=sys.stderr)
             status = unknown_server_status()
@@ -325,6 +305,25 @@ def run(*, webhook: str = "", dry_run: bool = False) -> dict:
             message_id = send_discord(webhook, discord_payload(match), image_bytes=render_match_card(match))
             ledger["posted"][str(match["id"])] = message_id
             atomic_write_json(ledger_file, ledger)
+    # A SECOND message is sent only after the server actually switches to a
+    # different map and public WARCON confirms both the map and conditions.
+    # No predicted maps, guessed weather or repeated announcements.
+    if not dry_run and webhook and latest and ledger.get("initialized", False):
+        from src.next_round import confirmed_next_round
+        from src.discord_layout import next_map_post
+        latest_match = latest[0]
+        ident = str(latest_match["id"])
+        if ledger["posted"].get(ident) not in (None, "baseline"):
+            next_path = DATA / "next-round-delivery.json"
+            next_ledger = read_json(next_path, {"schemaVersion": 1, "posted": {}})
+            if not isinstance(next_ledger, dict) or not isinstance(next_ledger.get("posted"), dict):
+                raise ValueError("Invalid next-round delivery checkpoint")
+            if ident not in next_ledger["posted"]:
+                confirmed = confirmed_next_round(observed_round, latest_match)
+                if confirmed:
+                    msg_id = send_discord(webhook, next_map_post(latest_match, confirmed))
+                    next_ledger["posted"][ident] = msg_id
+                    atomic_write_json(next_path, next_ledger)
     # Keep checkpoint data bounded, but preserve recent delivery information.
     if not dry_run:
         recent = {str(m["id"]) for m in latest}
