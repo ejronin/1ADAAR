@@ -14,7 +14,7 @@
     online:'ONLINE / LIVE',
     offline:'OFFLINE',
     reconnecting:'RECONNECTING',
-    unknown:'STATUS NOT VERIFIED'
+    unknown:'STATUS UNKNOWN'
   };
   // GitHub Actions scheduled workflows are best-effort, and may be delayed.
   const MAX_SNAPSHOT_AGE_MS=20*60*1000;
@@ -35,8 +35,8 @@
     target.map.textContent=online&&typeof doc.map==='string'&&doc.map.trim()?
       doc.map.slice(0,55):'—';
     target.updated.textContent=valid?
-      'WARCON observed '+new Date(doc.observedAt).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'}):
-      'No recent verified WARCON observation · Check live WARCON ↗';
+      'WARCON last updated '+new Date(doc.observedAt).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'}):
+      'No recent server update. Check WARCON for current status.';
     card.setAttribute('aria-label','Server status: '+line+
       (online?', '+target.players.textContent+' players, map '+target.map.textContent:''));
   }
