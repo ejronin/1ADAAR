@@ -8,10 +8,10 @@ Preserve a restrained tactical command-center appearance: green/black for the no
 
 ### Implemented in staging
 
-- Shared `docs/assets/polish.css` applied **after** existing styles on both main pages; improves compact labels and chart typography, title balance, input and touch targets, focus outlines, contrast on secondary notes, responsive mobile nav and reduced-motion support.
+- Readability and layout improvements now live in `docs/assets/brand.css` (shared design), `server-status.css` (server panel), `players.css` (player pages) and `performance.css` (charts). The redundant `polish.css` layer was removed; all three web pages use the same component styles, with bigger labels, usable touch controls and reduced-motion support.
 - One lightweight CSS-only HUD sweep across the existing WARDOGS press-pack hero art. Does not claim live telemetry, load remote assets, alter scoreboard data or run per-viewer WARCON requests; completely disabled under `prefers-reduced-motion`.
 - Static offline server status indicator no longer flashes/strobes. Offline/unknown/reconnecting remain distinct and data-driven.
-- Homepage headline and match-history descriptions no longer imply exhaustive coverage. Status KPI is now `REPORT ARCHIVE / AVAILABLE`, not a misleading `SYNCED` claim based on match-file modification time. Archive remains bounded to 120 matches.
+- Homepage and player pages use everyday terms such as **Match history**, **Find a player**, **Results by map**, and **Sample player**. The match history still holds up to 120 completed matches. The match-history status no longer says `SYNCED` when no match history is present.
 - Same-site generic Open Graph share metadata and image using the existing 43 KiB official press-pack hero; hashed profile links cannot provide dynamic per-player social images on GitHub Pages. Avoid claiming personalized preview cards.
 - Explicit fallback when a saved/shared profile hash cannot be found in the bounded leaderboard. Reduced-motion setting also controls automatic profile scroll.
 - Unit contract checks validate loading order, semantic navigation and skip links, social metadata, bounded-archive copy and motion controls. Existing Python + JS CI also runs.
@@ -33,7 +33,7 @@ Ensure search, navigation, dialogs, and share operate using mouse, touch and key
 
 - [ ] At least one **real** completed WARCON match ingested and visibly rendered with correct season/source, once in `#match-recap` and no duplicate delivery.
 - [ ] Verify live WARCON public endpoint and 1ADAAR freshness, without exposing any secret or raw SteamID in public JSON. If data absent, dashboard must accurately state absence.
-- [ ] Verify actual scheduled-run cadence and published Pages timestamp freshness over a representative 24–48h window (issue #21). Cron declarations do not prove five-minute operation; maintain neutral `STATUS NOT VERIFIED` when stale.
+- [ ] Verify actual scheduled-run cadence and published Pages timestamp freshness over a representative 24–48h window (issue #21). Cron declarations do not prove five-minute operation; maintain neutral `STATUS UNKNOWN` when stale.
 - [ ] Check Pages deployments do not regress status timestamps because of concurrency, delayed cron, GITHUB_TOKEN commits, or out-of-order deployment.
 - [ ] Latest staging HEAD CI all green, PR mergeable with current `main` and no accidental overwrite of live generated `docs/data/` snapshots. Recheck immediately before merge.
 - [ ] Human screenshot/mobile/typeface pass and official logo fidelity signoff.
@@ -48,7 +48,7 @@ A passing CI run proves source checks, **not** live game ingestion, screenshot q
 
 - Precomputed static activity sparklines and data-driven week archive navigation **only** when coverage/provenance is defensible. No fabricated populated graphs for an empty archive.
 - A build-time image export for each *real* match report's link preview; GitHub Pages hash-based player URLs do not support arbitrary dynamic metadata. Do not create per-player public HTML/dossiers without privacy review.
-- Maintainable refactor to consolidate `style.css`, `brand.css` and polish overrides after the launch is stable, backed by screenshot regression comparisons.
+- After launch, consider a wider stylesheet refactor to reduce older repeated rules between `style.css` and `brand.css`, supported by screenshots. The extra `polish.css` file has already been removed and its rules put in the correct stylesheets.
 - Low-noise admin-only incident alerts when reliable status provenance exists, without community-channel spam.
 
 ### Review evidence limits
