@@ -70,7 +70,7 @@ background:linear-gradient(120deg,#182b1f,#17211b),url('../assets/wardogs-offici
 .radial-two{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
 .radial-feature{text-align:center;min-width:0}.radial-feature>span{display:block;font-size:10px;color:#afc9b5;margin-top:8px}
 .ring{width:150px;height:150px;display:grid;place-items:center;border-radius:50%;margin:auto;
- background:conic-gradient(var(--ring) calc(var(--value)*1%),#344338 0);position:relative}
+ background:conic-gradient(var(--ring) var(--value),#344338 0);position:relative}
 .ring:before{content:"";position:absolute;inset:14px;border-radius:50%;background:#1b241e}
 .ring>div{position:relative;text-align:center}.ring strong{display:block;font:800 36px/1 'Barlow Condensed',sans-serif}.ring small{font-size:10px;color:#abc6b0}
 .ring.compact{width:91px;height:91px}.ring.compact:before{inset:9px}.ring.compact strong{font-size:24px}
