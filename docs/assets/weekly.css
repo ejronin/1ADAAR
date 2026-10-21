@@ -85,3 +85,14 @@
  .weekly-podium-place{padding:13px 5px}.weekly-podium-place.gold{padding:20px 5px 18px}
  .weekly-avatar{width:48px;height:48px}.weekly-podium-place h3{font-size:17px}
  .weekly-podium-place p{font-size:11px}}
+
+/* In gold-themed reports, faction data retains its actual blue/red/green identity. */
+.weekly-list li.weekly-team-entry{border-left:3px solid var(--faction-accent,#82928b);padding-left:12px;align-items:center}
+.weekly-team-label{min-width:0;display:flex;align-items:center}
+.weekly-team-label .faction-identity{color:#f5f1e9;font-size:14px}
+.weekly-team-label .faction-emblem{width:27px;height:27px}
+@media(max-width:650px){
+ .weekly-list li.weekly-team-entry{gap:7px;flex-wrap:wrap}
+ .weekly-team-label .faction-emblem{width:24px;height:24px}
+ .weekly-list li.weekly-team-entry>strong{white-space:normal}
+}
