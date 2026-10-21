@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+"""Render real Chromium screenshots from editable design files. No live WARCON requests."""
+from __future__ import annotations
+from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
+from pathlib import Path
+import json
+import os
+import threading
+import datetime
+from playwright.sync_api import sync_playwright
+
+ROOT = Path(__file__).resolve().parents[4]
+BASE = ROOT / "design" / "v1.1.0"
+SCREENS = ["home", "player", "map-team", "weekly", "recap", "activity"]
+WIDTHS = (320, 375, 390, 768, 1024, 1440)
+OUT = BASE / "screenshots"
+OUT.mkdir(exist_ok=True)
+
+class SilentHandler(SimpleHTTPRequestHandler):
+    def log_message(self, *_):
+        pass
+
+def capture():
+    os.chdir(ROOT)
+    server = ThreadingHTTPServer(("127.0.0.1", 0), SilentHandler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    root_url = f"http://127.0.0.1:{server.server_port}/design/v1.1.0/prototypes"
+    errors = []
+    report = ["# Browser QA of editable design candidates", "",
+              "Source: design/v1.1.0/prototypes/*.html (not current implementation pages).",
+              "These are browser screenshots, not native Discord-app screenshots. All data in mockups is explicit fictional fixture or no-data.",
+              "",
+              "| Screen | CSS width | Page JS errors | Body overflow px | Result |",
+              "|---|---:|---:|---:|---|"]
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"])
+            for name in SCREENS:
+                for width in WIDTHS:
+                    page = browser.new_page(viewport={"width": width, "height": 870},
+                                            device_scale_factor=1,
+                                            reduced_motion="reduce" if width == 320 else "no-preference")
+                    js_errors = []
+                    page.on("pageerror", lambda e, sink=js_errors: sink.append(str(e)))
+                    response = page.goto(f"{root_url}/{name}.html", wait_until="domcontentloaded", timeout=30000)
+                    if response is None or response.status != 200:
+                        errors.append(f"{name}-{width} unexpected status")
+                    page.wait_for_timeout(1750)  # let once-only art motion finish in normal-motion modes
+                    delta = page.evaluate("Math.max(0, document.documentElement.scrollWidth - window.innerWidth)")
+                    if delta > 2 or js_errors:
+                        errors.append(f"{name}-{width}: {delta}px overflow, JS={js_errors}")
+                    report.append(f"| {name} | {width} | {len(js_errors)} | {delta} | {'PASS' if not js_errors and delta<=2 else 'FAIL'} |")
+                    if width in (390,1440):
+                        target = OUT / f"{name}-{width}.png"
+                        page.screenshot(path=str(target), full_page=True, animations="disabled")
+                        if not target.is_file() or target.stat().st_size < 3000:
+                            errors.append(f"{target} screenshot missing or too small")
+                    if width == 1440 and name in ("weekly", "activity"):
+                        selector = "#weekly-demo" if name == "weekly" else "#demo-heat"
+                        page.locator(selector).check()
+                        page.wait_for_timeout(200)
+                        page.screenshot(path=str(OUT / f"{name}-fictional-interaction-1440.png"),
+                                        full_page=True, animations="disabled")
+                    page.close()
+            browser.close()
+    finally:
+        server.shutdown()
+        server.server_close()
+    manifest_path = BASE / "screen-manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    for row in manifest["screens"]:
+        name = row["id"]
+        screenshots = {
+            "mobile390": f"design/v1.1.0/screenshots/{name}-390.png",
+            "desktop1440": f"design/v1.1.0/screenshots/{name}-1440.png",
+        }
+        if all((ROOT / path).is_file() for path in screenshots.values()):
+            row["screenshots"] = screenshots
+            row["deliveryStatus"] = "editable_prototype_and_chromium_screenshots_committed"
+        else:
+            row["deliveryStatus"] = "browser_capture_failed"
+    manifest["status"] = "owner_visual_review_pending" if not errors else "qa_issues_awaiting_fix"
+    manifest["browserQA"] = {"viewportWidths": list(WIDTHS),
+                              "screenshotsAreFromEditableSource": True,
+                              "nativeDiscordClientVerified": False,
+                              "errors": errors}
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    report += ["", "## Data acceptance caveats",
+               "The activity heatmap has zero actual saved match starts and is neutral by default.",
+               "The fictional interaction captures deliberately show sample-only states, not live data.",
+               "The six-role radar has no filled role-level data polygon.",
+               "A first real WARCON source and actual Discord desktop/mobile visual acceptance are separate release gates.",
+               "", "## Errors", *(["- " + e for e in errors] if errors else ["- None in source/prototype browser checks"])]
+    (OUT / "BROWSER_QA.md").write_text("\n".join(report) + "\n", encoding="utf-8")
+    if errors:
+        raise SystemExit("Prototype screenshots contain QA failures: " + "; ".join(errors))
+
+if __name__ == "__main__":
+    capture()
