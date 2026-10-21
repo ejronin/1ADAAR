@@ -18,13 +18,13 @@
   function graph(container,rows,metric,report) {
     container.replaceChildren();
     const series=metric==='kills'?
-      [{label:'Kills',key:'kills',color:'#70e6a0',fill:true},
-       {label:'Deaths',key:'deaths',color:'#eac765',fill:false}]:
+      [{label:'Kills per match',key:'kills',color:'#70e6a0',fill:true},
+       {label:'Deaths per match',key:'deaths',color:'#eac765',fill:false}]:
       metric==='career'?
-      [{label:'Career K/D',key:'kd',color:'#86f4a4',fill:true}]:
+      [{label:'Career K/D snapshot',key:'kd',color:'#86f4a4',fill:true}]:
       metric==='rolling'?
-      [{label:'Five-match rolling K/D',key:'rolling',color:'#86f4a4',fill:true}]:
-      [{label:'Match K/D',key:'kd',color:'#86f4a4',fill:true}];
+      [{label:'Rolling K/D (5 matches)',key:'rolling',color:'#86f4a4',fill:true}]:
+      [{label:'K/D per match',key:'kd',color:'#86f4a4',fill:true}];
     const raw=rows.flatMap(row=>series.map(s=>row[s.key]).filter(v=>typeof v==='number'&&Number.isFinite(v)));
     const isCount=metric==='kills';
     const peak=Math.max(1,...raw)*1.14;
@@ -34,7 +34,7 @@
     const x=i=>box.x+(rows.length===1?box.w/2:box.w*i/(rows.length-1));
     const y=value=>box.y+box.h*(1-Math.max(0,value)/ymax);
     const svg=se('svg',{viewBox:'0 0 780 323',class:'perf-svg',role:'img',
-      'aria-label':(metric==='career'?'Career K/D':isCount?'Kills versus deaths':metric==='rolling'?'Five-match rolling K/D':'Match K/D')+' for '+rows.length+' observations'});
+      'aria-label':(metric==='career'?'Tracked WARCON career K/D':isCount?'Kills and deaths per match':metric==='rolling'?'Rolling five-match K/D':'Per-match K/D')+' for '+rows.length+' observations, ordered oldest to newest'});
     svg.append(se('title',{},'WARDOGS player performance'));
     svg.append(se('desc',{},'Exact values are available in the data table beneath this interactive graph.'));
     const gradientId='aarPerf'+(++identity),defs=se('defs'),
@@ -74,7 +74,7 @@
           class:s.key==='rolling'?'perf-dashed':'perf-stroke'}));
         for(const p of points){
           const group=se('g',{class:'perf-point'});
-          const label=M.tickDate(rows[p.i].date)+' · '+(rows[p.i].map||'Career snapshot')+' · '+s.label+': '+
+          const label=M.tickDate(rows[p.i].date)+' · '+(metric==='career'?'Career snapshot':rows[p.i].map||'Map not recorded')+' · '+s.label+': '+
             (isCount?String(p.value):p.value.toFixed(2));
           group.append(se('circle',{cx:p.px,cy:p.py,r:4.7,fill:'#0c1710',stroke:s.color,'stroke-width':2.4,class:'perf-dot'}));
           const hit=se('circle',{cx:p.px,cy:p.py,r:16,fill:'transparent',tabindex:'0',role:'button',
@@ -114,16 +114,16 @@
     const toolbar=el('div','perf-toolbar'),tabs=el('div','perf-tabs');
     tabs.setAttribute('role','group');
     tabs.setAttribute('aria-label','Choose a stat to view');
-    for(const [key,label] of [['kills','Kills and deaths'],['kd','Match K/D'],['rolling','Five-match average'],['career','Career K/D']]){
+    for(const [key,label] of [['kills','Kills & deaths'],['kd','K/D per match'],['rolling','Rolling K/D · 5 matches'],['career','Career K/D history']]){
       const button=el('button','perf-tab',label);
       button.type='button';button.dataset.metric=key;
       button.addEventListener('click',()=>{metric=key;update();});
       tabs.append(button);
     }
-    const selectLabel=el('label','perf-window-label','WINDOW');
+    const selectLabel=el('label','perf-window-label','POINTS SHOWN');
     const select=el('select','perf-window');
-    select.setAttribute('aria-label','Number of recent observations');
-    for(const [value,label] of [['10','Last 10'],['25','Last 25'],['all','All available']]){
+    select.setAttribute('aria-label','Number of observations plotted, newest records selected, shown oldest to newest');
+    for(const [value,label] of [['10','Last 10 points'],['25','Last 25 points'],['all','All available points']]){
       const option=el('option','',label);option.value=value;select.append(option);
     }
     select.value=range===Infinity?'all':String(range);
@@ -136,6 +136,9 @@
     toolbar.append(tabs,selectLabel);host.append(toolbar);
     const coverage=el('p','perf-coverage');
     host.append(coverage);
+    const explanation=el('p','perf-explanation');
+    explanation.setAttribute('role','note');
+    host.append(explanation);
     const summary=el('div','perf-summary'),canvas=el('div','perf-canvas'),
       empty=el('div','perf-empty'),legend=el('div','perf-legend'),
       inspector=el('div','perf-inspector'),footnote=el('p','perf-footnote'),
@@ -175,19 +178,26 @@
       else if(total<=25&&range===25)range=Infinity;
       select.disabled=total<=10;
       for(const option of select.children){
-        if(option.value==='10')option.textContent='Last 10';
+        if(option.value==='10')option.textContent='Last 10 points';
         if(option.value==='25'){
-          option.textContent='Last 25';
+          option.textContent='Last 25 points';
           option.disabled=total<=25;
         }
-        if(option.value==='all')option.textContent='All '+total+' available';
+        if(option.value==='all')option.textContent='All '+total+' available points';
       }
       select.value=range===Infinity?'all':String(range);
       const rows=M.windowed(full,range);
       coverage.textContent=total===0?'No saved results yet':
         total<=10?'Only '+total+' observations available · More windows unlock as data grows':
-        rows.length+' of '+total+' '+(metric==='career'?'career snapshots':'completed matches')+' in view';
+        rows.length+' of '+total+' '+(metric==='career'?'saved career snapshots':'saved completed-match records')+' shown · Oldest → newest';
       for(const button of tabs.children)button.setAttribute('aria-pressed',String(button.dataset.metric===metric));
+      explanation.textContent=metric==='kills'?
+        'Each point represents one saved completed match. Green = kills; yellow = deaths. Dates run from oldest on the left to newest on the right.':
+        metric==='kd'?
+        'Each point is that single match’s K/D (kills ÷ deaths). The newest selected matches are shown in chronological order.':
+        metric==='rolling'?
+        'Each point uses that match and the four preceding saved matches (5 total): combined kills ÷ combined deaths. “Last 10 points” displays ten rolling results, not just five matches. Earlier matches may contribute to the first point shown. Oldest → newest.':
+        'Each point is the WARCON all-time career K/D captured on that date, not a match result. These are saved snapshots, not a complete career timeline. Oldest → newest.';
       for(const node of [summary,canvas,empty,legend,inspector])node.replaceChildren();
       empty.hidden=true;inspector.hidden=true;footnote.hidden=false;details.hidden=false;
       if(!rows.length){
@@ -202,14 +212,14 @@
       if(metric==='career'){
         summary.append(tile('SNAPSHOTS',String(rows.length),'saved daily updates'),
           tile('LATEST CAREER K/D',M.format(last.kd),'WARCON career totals'),
-          tile('TRACKED SINCE',M.tickDate(rows[0].date),'from saved results only'));
+          tile('EARLIEST DATE SHOWN',M.tickDate(rows[0].date),'saved career snapshot'));
       }else if(metric==='kills'){
         summary.append(tile('MATCHES IN VIEW',String(rows.length),'completed match records'),
           tile('KILLS IN VIEW',String(rows.reduce((sum,row)=>sum+row.kills,0)),'kills in shown matches'),
           tile('DEATHS IN VIEW',String(rows.reduce((sum,row)=>sum+row.deaths,0)),'deaths in shown matches'));
       }else{
         summary.append(tile('MATCHES IN VIEW',String(rows.length),'completed match records'),
-          tile(metric==='rolling'?'LATEST FIVE-MATCH K/D':'LATEST MATCH K/D',M.format(metric==='rolling'?last.rolling:last.kd),'latest saved match sample'),
+          tile(metric==='rolling'?'LATEST ROLLING K/D (5)':'LATEST MATCH K/D',M.format(metric==='rolling'?last.rolling:last.kd),'latest saved match sample'),
           tile('DATE RANGE',M.tickDate(rows[0].date)+' – '+M.tickDate(last.date),'saved match dates'));
       }
       const graphSeries=graph(canvas,rows,metric,inspector);
@@ -226,8 +236,8 @@
         metric==='kills'?
         'Green is kills. Yellow is deaths. Both come from completed matches saved by 1ADAAR.':
         metric==='rolling'?
-        'Five-match K/D uses the recorded kills and deaths of five consecutive saved matches; earlier points are unavailable.':
-        'Match K/D uses the recorded kills and deaths in each saved completed match.';
+        'Rolling K/D uses the combined kills and deaths from five consecutive saved matches; first four observations have no rolling value. The selected point range does not change that five-match calculation.':
+        'Match K/D is recorded kills divided by deaths for each completed saved match. See the exact figures in the data table.';
       if(config.demo)footnote.textContent='DEMO / FICTIONAL — '+footnote.textContent;
       table(rows);
     }
