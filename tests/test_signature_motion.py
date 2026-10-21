@@ -47,8 +47,8 @@ class SignatureMotionTests(unittest.TestCase):
         self.assertIn('background-position:0% 50%', css)
         # Keep first-place ranking separate from the crown even at 320px.
         self.assertIn('.weekly-podium-place.gold .weekly-rank{', css)
-        self.assertIn('position:relative;padding-top:60px', css)
-        self.assertIn('width:56px;height:42px;margin:0 auto 4px', css)
+        self.assertIn('.weekly-podium-place{display:flex;flex-direction:column;align-items:center', css)
+        self.assertIn('width:42px;height:32px;margin:0 auto 3px', css)
         self.assertNotIn('margin:-18px auto -3px', css)
         # The circular portrait sheen starts at .12s, ends at .97s;
         # the crown must not start until AFTER that orbit is complete.
