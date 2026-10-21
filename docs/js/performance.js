@@ -19,7 +19,10 @@
     container.replaceChildren();
     const series=metric==='kills'?
       [{label:'Kills',key:'kills',color:'#86f4a4',fill:true},
-       {label:'Deaths',key:'deaths',color:'#e7ad96',fill:false}]:
+       {label:'Deaths',key:'deaths',color:'#f5c84b',fill:false}]:
+      metric==='averages'?
+      [{label:'Average kills (last 5)',key:'avgKills',color:'#86f4a4',fill:false},
+       {label:'Average deaths (last 5)',key:'avgDeaths',color:'#f5c84b',fill:false}]:
       metric==='career'?
       [{label:'Career K/D',key:'kd',color:'#86f4a4',fill:true}]:
       [{label:'Match K/D',key:'kd',color:'#86f4a4',fill:true},
@@ -33,7 +36,7 @@
     const x=i=>box.x+(rows.length===1?box.w/2:box.w*i/(rows.length-1));
     const y=value=>box.y+box.h*(1-Math.max(0,value)/ymax);
     const svg=se('svg',{viewBox:'0 0 780 323',class:'perf-svg',role:'img',
-      'aria-label':(metric==='career'?'Career K/D':isCount?'Kills versus deaths':'Match K/D and five-match rolling trend')+' for '+rows.length+' observations'});
+      'aria-label':(metric==='career'?'Career K/D':metric==='averages'?'Five-match average kills and deaths':isCount?'Kills versus deaths':'Match K/D and five-match rolling trend')+' for '+rows.length+' observations'});
     svg.append(se('title',{},'WARDOGS player performance'));
     svg.append(se('desc',{},'Exact values are available in the data table beneath this interactive graph.'));
     const gradientId='aarPerf'+(++identity),defs=se('defs'),
@@ -100,7 +103,7 @@
     // Preserve a visitor's selected view while the background history shard loads.
     const oldMetric=host.querySelector('.perf-tab[aria-pressed="true"]')?.dataset.metric;
     const oldRange=host.querySelector('.perf-window')?.value;
-    let metric=['kd','kills','career'].includes(oldMetric)?oldMetric:'kd';
+    let metric=['kd','kills','averages','career'].includes(oldMetric)?oldMetric:'kd';
     let range=oldRange==='25'?25:oldRange==='all'?Infinity:10;
     host.replaceChildren();
     const header=el('header','perf-header'),
@@ -113,7 +116,7 @@
     const toolbar=el('div','perf-toolbar'),tabs=el('div','perf-tabs');
     tabs.setAttribute('role','group');
     tabs.setAttribute('aria-label','Choose a stat to view');
-    for(const [key,label] of [['kd','K/D OVER TIME'],['kills','KILLS / DEATHS'],['career','ALL-TIME K/D']]){
+    for(const [key,label] of [['kd','K/D OVER TIME'],['kills','KILLS / DEATHS'],['averages','5-MATCH AVERAGES'],['career','ALL-TIME K/D']]){
       const button=el('button','perf-tab',label);
       button.type='button';button.dataset.metric=key;
       button.addEventListener('click',()=>{metric=key;update();});
@@ -151,6 +154,7 @@
       scroller.replaceChildren();
       const headings=metric==='career'?['Date','Career K/D','Kills','Deaths','Matches']:
         metric==='kills'?['Date','Map','Kills','Deaths']:
+        metric==='averages'?['Date','Map','5-match avg kills','5-match avg deaths','Kills','Deaths']:
         ['Date','Map','Match K/D','5-game K/D','Kills','Deaths'];
       const t=el('table','perf-table'),head=el('thead'),line=el('tr');
       headings.forEach(v=>line.append(el('th','',v)));head.append(line);t.append(head);
@@ -158,6 +162,7 @@
       for(const row of rows){
         const cols=metric==='career'?[M.tickDate(row.date),M.format(row.kd),row.kills,row.deaths,row.matches]:
           metric==='kills'?[M.tickDate(row.date),row.map,row.kills,row.deaths]:
+          metric==='averages'?[M.tickDate(row.date),row.map,M.format(row.avgKills),M.format(row.avgDeaths),row.kills,row.deaths]:
           [M.tickDate(row.date),row.map,M.format(row.kd),M.format(row.rolling),row.kills,row.deaths];
         const tr=el('tr');cols.forEach(v=>tr.append(el('td','',v)));body.append(tr);
       }
@@ -204,6 +209,10 @@
         summary.append(tile('MATCHES IN VIEW',String(rows.length),'completed match records'),
           tile('KILLS IN VIEW',String(rows.reduce((sum,row)=>sum+row.kills,0)),'kills in shown matches'),
           tile('DEATHS IN VIEW',String(rows.reduce((sum,row)=>sum+row.deaths,0)),'deaths in shown matches'));
+      }else if(metric==='averages'){
+        summary.append(tile('MATCHES IN VIEW',String(rows.length),'completed match records'),
+          tile('AVG KILLS / MATCH',M.format(rows.reduce((n,r)=>n+r.kills,0)/rows.length),'in selected completed matches'),
+          tile('AVG DEATHS / MATCH',M.format(rows.reduce((n,r)=>n+r.deaths,0)/rows.length),'in selected completed matches'));
       }else{
         summary.append(tile('MATCHES IN VIEW',String(rows.length),'completed match records'),
           tile('LATEST MATCH K/D',M.format(last.kd),'last saved match'),
@@ -221,7 +230,9 @@
       footnote.textContent=metric==='career'?
         'WARCON all-time stats saved on different days. We keep up to 60 updates from the past 180 days and do not make up earlier numbers.':
         metric==='kills'?
-        'Kills and deaths come from completed matches saved in 1ADAAR.':
+        'Kills (green) and deaths (yellow) come from completed matches saved in 1ADAAR.':
+        metric==='averages'?
+        'Green = mean kills and yellow = mean deaths across each consecutive five saved completed matches. The first four observations have no five-match average. Summary averages use every displayed match.':
         'Five-match K/D is total kills divided by total deaths over five matches. If there are no deaths, we show the kill count. If there are no kills or deaths, we show a dash.';
       if(config.demo)footnote.textContent='DEMO / FICTIONAL — '+footnote.textContent;
       table(rows);
