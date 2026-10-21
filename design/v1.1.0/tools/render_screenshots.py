@@ -9,7 +9,7 @@ import threading
 import datetime
 from playwright.sync_api import sync_playwright
 
-ROOT = Path(__file__).resolve().parents[4]
+ROOT = Path(__file__).resolve().parents[3]
 BASE = ROOT / "design" / "v1.1.0"
 SCREENS = ["home", "player", "map-team", "weekly", "recap", "activity"]
 WIDTHS = (320, 375, 390, 768, 1024, 1440)
