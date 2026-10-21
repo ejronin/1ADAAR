@@ -255,6 +255,9 @@ def run(*, webhook: str = "", dry_run: bool = False) -> dict:
         archive_captured_matches(DATA / "seasons", all_captured)
         from src.map_team import build_map_team
         build_map_team(DATA / "seasons", DATA / "map-team")
+        # Server-wide match start pattern; intentionally no per-player hour grid.
+        from src.recorded_activity import build_recorded_activity
+        build_recorded_activity(DATA / "seasons", DATA / "recorded-activity.json")
     if not dry_run and old.get("matches") != latest:
         atomic_write_json(db_file, {"schemaVersion": 1, "source": "WARCON public matches API",
                                     "lastCheckedAt": dt.datetime.now(dt.timezone.utc).isoformat(),
