@@ -85,3 +85,7 @@
  .weekly-podium-place{padding:13px 5px}.weekly-podium-place.gold{padding:20px 5px 18px}
  .weekly-avatar{width:48px;height:48px}.weekly-podium-place h3{font-size:17px}
  .weekly-podium-place p{font-size:11px}}
+
+/* Stage facelift: mobile footers are distinct information lines, never concatenated. */
+@media(max-width:720px){.weekly-page footer{display:grid;gap:8px;line-height:1.6}
+ .weekly-page footer span{display:block;overflow-wrap:anywhere}}
