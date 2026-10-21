@@ -210,7 +210,7 @@
       }else{
         summary.append(tile('MATCHES IN VIEW',String(rows.length),'completed match records'),
           tile(metric==='rolling'?'LATEST FIVE-MATCH K/D':'LATEST MATCH K/D',M.format(metric==='rolling'?last.rolling:last.kd),'latest saved match sample'),
-          tile('OBSERVATIONS',String(rows.length),'saved matches in this chart'));
+          tile('DATE RANGE',M.tickDate(rows[0].date)+' – '+M.tickDate(last.date),'saved match dates'));
       }
       const graphSeries=graph(canvas,rows,metric,inspector);
       for(const s of graphSeries){
