@@ -82,12 +82,17 @@ class LayoutContractTests(unittest.TestCase):
         self.assertIn("textContent",snap)
         self.assertNotIn("innerHTML",snap)
         js=(DOCS/"js/performance.js").read_text()
-        for label in ("Kills and deaths","Match K/D","Five-match average","Career K/D",
+        for label in ("Kills & deaths","K/D per match","Rolling K/D · 5 matches","Career K/D history",
                       "Last 10","Last 25","All available","See the numbers in a table"):
             self.assertIn(label,js)
         self.assertIn("color:'#70e6a0'",js)
         self.assertIn("color:'#eac765'",js)
         self.assertIn("tabindex:'0'",js)
+        self.assertIn("POINTS SHOWN",js)
+        self.assertIn("oldest to newest",js.lower())
+        self.assertIn("five consecutive saved matches",js.lower())
+        self.assertIn("perf-explanation",js)
+        self.assertIn('href="activity.html"',html)
         self.assertIn("prefers-reduced-motion",(DOCS/"assets/player-v11.css").read_text())
         release=(ROOT/"planning/V1.1.0_RELEASE_GATES.md").read_text()
         self.assertIn("one career win-rate SVG donut",release)
