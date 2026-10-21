@@ -28,7 +28,7 @@ async def capture():
     subprocess.run([sys.executable, "-c",
         'from src.discord_smoke import DEMO_MATCH; from src.recap_card import render_match_card; '
         'from pathlib import Path; Path("visual-review/discord-recap-v11-FICTIONAL.png").write_bytes('
-        'render_match_card(DEMO_MATCH, demo=True))'],
+        'render_match_card({**DEMO_MATCH, "winner": "Lonestar"}, demo=True))'],
         cwd=ROOT,check=True)
     handler=functools.partial(http.server.SimpleHTTPRequestHandler,directory=str(ROOT/"docs"))
     server=http.server.ThreadingHTTPServer(("127.0.0.1",0),handler)
