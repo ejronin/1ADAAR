@@ -1,6 +1,6 @@
 # 1ADAAR v1.1.0 — digital IA/UX/UI handoff
 
-**Status: EDITABLE DESIGN CANDIDATES COMMITTED — browser screenshot capture in progress; owner approval PENDING.** Source is a proposed direction, NOT the approved final design. Production `main` and staging implementation are untouched.
+**Status: EDITABLE DIGITAL HANDOFF COMMITTED — Chromium desktop/mobile screenshots and browser QA complete; OWNER APPROVAL PENDING.** Source is a proposed direction, NOT the approved final design. Production `main` and staging implementation are untouched.
 
 ## Where to work
 
@@ -79,7 +79,7 @@ Optional review UI (source branch through a third-party proxy, **not** productio
 
 Code and changes: GitHub draft PR from `design/v1.1.0-ia-handoff` into `staging/v2.0-foundation`. Screenshots included under `design/v1.1.0/screenshots/` and linked by the manifest.
 
-The review site now contains six real editable design candidates, shared CSS/JS, source-gated chart research, and exact component specs. The branch-scoped GitHub Actions screenshot workflow must generate actual Chromium captures and update the manifest before the digital package is ready for owner review. **Design delivery does not imply owner approval or staging implementation.**
+The review site now contains six real editable design candidates, shared CSS/JS, source-gated chart research, and exact component specs. The branch-scoped GitHub Actions screenshot workflow generated actual 390px and 1440px Chromium captures for all six screens and updated the manifest with tested viewports. The digital package is ready for OWNER VISUAL REVIEW, not self-approved or staged. **Design delivery does not imply owner approval or staging implementation.**
 
 ## Chart research and high-end rendering decisions
 
