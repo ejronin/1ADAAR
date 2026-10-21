@@ -114,6 +114,11 @@ class MapTeamTests(unittest.TestCase):
         self.assertIn("mt-donut-fill", style)
         self.assertIn("createElementNS", script)
         self.assertIn("stroke-dasharray", script)
+        # Source-defined faction marks/colors are present on the rings as well as rows.
+        self.assertIn("OneADAARFactions.label(label)", script)
+        self.assertIn("OneADAARFactions?.identify(name)?.color", script)
+        self.assertIn("known-team appearances", script)
+        self.assertIn(".mt-team-rings .mt-ring-caption .faction-identity", style)
 
 
 if __name__ == "__main__":
