@@ -154,6 +154,9 @@ async def capture():
                   crown:getComputedStyle(document.querySelector('#test-champion .weekly-crown')).display,
                   championSheen:getComputedStyle(document.querySelector('#test-champion .weekly-avatar'),'::before').animationName,
                   logo:document.querySelector('.hero-logo-halo img')?.getAttribute('src'),
+                  logoOpacity:Number(getComputedStyle(document.querySelector('.hero-graphic')).opacity),
+                  logoTop:document.querySelector('.hero-logo-halo').getBoundingClientRect().top,
+                  heroTextBottom:document.querySelector('.motion-hero .hero-text').getBoundingClientRect().bottom,
                   mainSource:document.querySelector('.lab-banner')?.textContent
                 })""")
                 assert motion_info["root"]<=width+2, f"Motion lab overflow {width}px: {motion_info}"
@@ -162,7 +165,23 @@ async def capture():
                 assert motion_info["crown"]=="grid"
                 assert "champion-avatar-orbit-once" in motion_info["championSheen"]
                 assert motion_info["logo"]=="assets/1ad-logo.svg"
+                if width<=720:
+                    assert motion_info["logoOpacity"]>=.9, "Original 1AD emblem invisible on mobile"
+                    assert motion_info["logoTop"]>=motion_info["heroTextBottom"]-2, \
+                        f"Logo overlaps headline/copy at {width}px: {motion_info}"
                 assert "STAGING-ONLY" in motion_info["mainSource"]
+                # A replay button must restart BOTH the crown and its preceding
+                # circular portrait highlight, not only the crown element.
+                await motion.locator("#replay-crown").click()
+                await motion.wait_for_timeout(130)
+                restarted=await motion.evaluate("""() => {
+                  const animations=[...document.querySelector('#test-champion').getAnimations({subtree:true})];
+                  const time=name=>animations.filter(a=>a.animationName===name).map(a=>a.currentTime);
+                  return {orbit:time('champion-avatar-orbit-once'),crown:time('weekly-crown-arrive')};
+                }""")
+                assert restarted["orbit"] and restarted["crown"],f"Champion replay missing animations: {restarted}"
+                assert all(t is not None and t<500 for t in restarted["orbit"]+restarted["crown"]), \
+                    f"Champion replay failed to reset its sheen or crown: {restarted}"
                 await motion.goto(origin+"/weekly.html",wait_until="domcontentloaded",timeout=30000)
                 await motion.wait_for_timeout(250)
                 no_crown=await motion.evaluate("""() => ({
