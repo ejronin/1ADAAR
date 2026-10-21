@@ -23,7 +23,8 @@ class SignatureMotionTests(unittest.TestCase):
         css = (DOCS / "assets/motion-v11.css").read_text()
         for key in ("laser-outline-once", "laser-tip-once",
                     "logo-orbit-once", "logo-glint-once",
-                    "weekly-crown-arrive", "weekly-champion-glow"):
+                    "weekly-crown-arrive", "weekly-champion-glow",
+                    "champion-avatar-orbit-once"):
             self.assertIn(key, css)
         self.assertIn("prefers-reduced-motion:reduce", css)
         self.assertIn("stroke-dasharray:0 100", css)
