@@ -71,3 +71,7 @@
 .map-team-jump a:hover{text-decoration:underline;background:#294733}
 .map-team-jump a:focus-visible{outline:3px solid #b9ffd0;outline-offset:3px}
 .map-team-jump a[hidden]{display:none}
+
+/* The authentic 1AD emblem is circular. Its frame and any sheen must follow that silhouette. */
+.profile-emblem{border-radius:50%;overflow:hidden;isolation:isolate;box-shadow:inset 0 1px 2px #eafff01c,0 4px 16px #0005}
+.profile-emblem img{display:block;object-fit:contain;max-width:80%;max-height:80%;filter:drop-shadow(0 2px 4px #0006)}
