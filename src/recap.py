@@ -282,7 +282,18 @@ def run(*, webhook: str = "", dry_run: bool = False) -> dict:
     player_count = None
     if not dry_run:
         try:
-            index = collect_players(fetch_json, PUBLIC_BOARD)
+            from src.steam_avatars import resolve_avatars
+            player_file = DATA / "players.json"
+            previous_index = read_json(player_file, {})
+            old_profiles = previous_index.get("players", []) if isinstance(previous_index, dict) else []
+            if not isinstance(old_profiles, list):
+                old_profiles = []
+            # The Steam key stays in GitHub Actions. Identifiers live only
+            # in ephemeral RAM and are NEVER written to Pages or to Git.
+            def avatar_resolver(ids_by_key):
+                return resolve_avatars(ids_by_key, old_profiles,
+                                       os.environ.get("STEAM_WEB_API_KEY", ""))
+            index = collect_players(fetch_json, PUBLIC_BOARD, avatar_resolver=avatar_resolver)
             # Capture bounded daily career history after a successful public index fetch.
             # No extra WARCON requests and no history update when its feed is unavailable.
             record_snapshots(DATA / "history", index)
