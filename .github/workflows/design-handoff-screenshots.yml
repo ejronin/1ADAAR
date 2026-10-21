@@ -41,5 +41,9 @@ jobs:
           git add design/v1.1.0/screenshots/ design/v1.1.0/screen-manifest.json
           if ! git diff --cached --quiet; then
             git commit -m 'design(qa): capture real Chromium screens at 390/1440 and test six widths'
+            # Design review contributions can land while capture runs.
+            # Rebase screenshots onto the newest design-branch head, never force push.
+            git fetch origin design/v1.1.0-ia-handoff
+            git rebase origin/design/v1.1.0-ia-handoff
             git push origin HEAD:design/v1.1.0-ia-handoff
           fi
