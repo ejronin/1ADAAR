@@ -1,0 +1,98 @@
+/* 1ADAAR v1.1: signature-motion treatment.
+   One-time sequences, CSS/SVG only, no timers or endless GPU churn.
+   Accessible static fallback for reduced motion. */
+.hero.motion-hero{position:relative;isolation:isolate;border-radius:9px}
+.hero.motion-hero::after{content:none!important;animation:none!important}
+.hero.motion-hero .hero-laser-svg{position:absolute;inset:0;width:100%;height:100%;
+  z-index:3;pointer-events:none;overflow:visible;display:block}
+.hero-laser-outline{fill:none;stroke:#a8f8bc;stroke-opacity:.38;stroke-width:1.4;
+  vector-effect:non-scaling-stroke}
+.hero-laser-trace{fill:none;stroke:#7fffae;stroke-width:2.3;
+  vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:0 100;filter:drop-shadow(0 0 6px #45ff92);
+  animation:laser-outline-once 2.1s cubic-bezier(.26,.01,.42,1) .18s 1 both}
+.hero-laser-head{fill:none;stroke:#e0ffe8;stroke-width:4.2;
+  vector-effect:non-scaling-stroke;stroke-linecap:round;
+  stroke-dasharray:1.2 98.8;stroke-dashoffset:100;
+  filter:drop-shadow(0 0 8px #5cff8e);opacity:0;
+  animation:laser-tip-once 2.1s linear .18s 1 both}
+@keyframes laser-outline-once{
+  0%{stroke-dasharray:0 100;opacity:0}
+  5%{opacity:1}
+  76%{stroke-dasharray:100 0;opacity:1}
+  100%{stroke-dasharray:100 0;opacity:.44}}
+@keyframes laser-tip-once{
+  0%{stroke-dashoffset:100;opacity:0}
+  5%{opacity:1}
+  90%{opacity:1}
+  100%{stroke-dashoffset:0;opacity:0}}
+.hero.motion-hero .hero-logo-halo{position:relative;display:grid;place-items:center;
+  width:min(80%,266px);aspect-ratio:1;isolation:isolate;overflow:visible}
+.hero.motion-hero .hero-logo-halo .hero-logo{width:88%;max-width:235px;height:auto;
+  display:block;position:relative;z-index:1;opacity:1}
+.hero-logo-halo::before{content:"";position:absolute;inset:0;border-radius:50%;
+  padding:2px;pointer-events:none;z-index:2;
+  background:conic-gradient(from -90deg,transparent 0deg,transparent 265deg,
+    #d0ffda 294deg,#78fba6 315deg,transparent 344deg,transparent 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  opacity:0;transform:rotate(-120deg);
+  filter:drop-shadow(0 0 7px #52f887);
+  animation:logo-orbit-once 1.35s ease-out 2.3s 1 both}
+.hero-logo-halo::after{content:"";position:absolute;z-index:3;pointer-events:none;
+  inset:6%;border-radius:50%;clip-path:circle(50% at 50%);
+  background:linear-gradient(112deg,transparent 32%,rgba(212,255,223,.05) 42%,
+    rgba(237,255,240,.52) 50%,rgba(139,255,180,.12) 55%,transparent 66%);
+  opacity:0;transform:translateX(-140%);
+  animation:logo-glint-once 1.25s cubic-bezier(.2,.7,.15,1) 2.46s 1 both}
+@keyframes logo-orbit-once{
+  0%{opacity:0;transform:rotate(-120deg)}
+  18%{opacity:1}
+  74%{opacity:.9}
+  100%{opacity:0;transform:rotate(240deg)}}
+@keyframes logo-glint-once{
+  0%{transform:translateX(-140%);opacity:0}
+  15%{opacity:.87}
+  80%{opacity:.68}
+  100%{transform:translateX(140%);opacity:0}}
+/* Weekly champion adornment is NEVER enabled by empty placeholders.
+   Only rendering a verified eligible winner should set data-award-verified=true. */
+.weekly-podium-place.gold{position:relative}
+.weekly-podium-place.gold .weekly-crown{display:none}
+.weekly-podium-place.gold[data-award-verified="true"] .weekly-crown{
+  position:relative;z-index:2;display:grid;place-items:center;
+  width:56px;height:42px;margin:-18px auto -3px;color:#f5d88c;
+  opacity:0;transform:translateY(9px) scale(.87);
+  filter:drop-shadow(0 0 9px #eebc6060);
+  animation:weekly-crown-arrive .8s cubic-bezier(.16,.89,.18,1.15) .46s 1 forwards}
+.weekly-podium-place.gold[data-award-verified="true"] .weekly-crown svg{
+  width:52px;height:37px;fill:#f0c975;stroke:#fff0b4;stroke-width:1.4}
+.weekly-podium-place.gold[data-award-verified="true"] .weekly-avatar{
+  box-shadow:0 0 0 3px #edcc8d28,0 0 18px #e2b8664a;
+  animation:weekly-champion-glow .9s ease-out .25s 1 both}
+@keyframes weekly-crown-arrive{
+  from{opacity:0;transform:translateY(9px) scale(.87)}
+  to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes weekly-champion-glow{
+  from{box-shadow:0 0 0 0 #edcc8d00,0 0 0 #e2b86600}
+  to{box-shadow:0 0 0 3px #edcc8d28,0 0 18px #e2b8664a}}
+/* Demo replay is only enabled inside the non-production motion review page. */
+.motion-replay .hero-laser-trace,
+.motion-replay .hero-laser-head,
+.motion-replay .hero-logo-halo::before,
+.motion-replay .hero-logo-halo::after{animation:none!important}
+.motion-replay .weekly-crown{animation:none!important}
+@media(max-width:720px){
+  .hero.motion-hero .hero-laser-svg{z-index:3}
+  .hero.motion-hero .hero-logo-halo{width:min(96%,240px)}
+  .hero.motion-hero .hero-logo-halo .hero-logo{width:90%}}
+@media(prefers-reduced-motion:reduce){
+  .hero-laser-trace,.hero-laser-head,.hero-logo-halo::before,
+  .hero-logo-halo::after,.weekly-podium-place.gold .weekly-crown,
+  .weekly-podium-place.gold .weekly-avatar{animation:none!important;transition:none!important}
+  .hero-laser-trace{stroke-dasharray:100 0;stroke-opacity:.22;opacity:.55}
+  .hero-laser-head{opacity:0}
+  .hero-logo-halo::before,.hero-logo-halo::after{opacity:0}
+  .weekly-podium-place.gold[data-award-verified="true"] .weekly-crown{
+    display:grid;opacity:1;transform:none}
+}
