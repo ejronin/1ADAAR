@@ -126,6 +126,59 @@ async def capture():
                 assert not activity_errors, f"Activity page Javascript errors at {width}: {activity_errors}"
                 report.setdefault("serverActivity",[]).append({"width":width,**result})
                 await activity.close()
+                # Homepage laser/light sweep, isolated sample crown, and empty
+                # production-bound podium are all reviewed at the same widths.
+                motion=await browser.new_page(viewport={"width":width,"height":900},device_scale_factor=1)
+                motion_errors=[]
+                motion.on("pageerror",lambda error:motion_errors.append(str(error)))
+                await motion.goto(origin+"/motion-review.html",wait_until="domcontentloaded",timeout=30000)
+                await motion.locator(".hero-laser-trace").wait_for(timeout=15000)
+                await motion.wait_for_timeout(3200)
+                await motion.screenshot(path=str(ARTIFACT/f"motion-review-{width}px.png"),
+                                        full_page=True,animations="disabled")
+                motion_info=await motion.evaluate("""() => ({
+                  width:innerWidth,root:document.documentElement.scrollWidth,
+                  laser:getComputedStyle(document.querySelector('.hero-laser-trace')).animationName,
+                  orbit:getComputedStyle(document.querySelector('.hero-logo-halo'),'::before').animationName,
+                  crown:getComputedStyle(document.querySelector('#test-champion .weekly-crown')).display,
+                  logo:document.querySelector('.hero-logo-halo img')?.getAttribute('src'),
+                  mainSource:document.querySelector('.lab-banner')?.textContent
+                })""")
+                assert motion_info["root"]<=width+2, f"Motion lab overflow {width}px: {motion_info}"
+                assert "laser-outline-once" in motion_info["laser"]
+                assert "logo-orbit-once" in motion_info["orbit"]
+                assert motion_info["crown"]=="grid"
+                assert motion_info["logo"]=="assets/1ad-logo.svg"
+                assert "STAGING-ONLY" in motion_info["mainSource"]
+                await motion.goto(origin+"/weekly.html",wait_until="domcontentloaded",timeout=30000)
+                await motion.wait_for_timeout(250)
+                no_crown=await motion.evaluate("""() => ({
+                  winner:document.querySelector('.weekly-podium-place.gold').getAttribute('data-award-verified'),
+                  crown:getComputedStyle(document.querySelector('.weekly-podium-place.gold .weekly-crown')).display,
+                  overflow:document.documentElement.scrollWidth-innerWidth
+                })""")
+                assert no_crown["winner"]=="false" and no_crown["crown"]=="none",no_crown
+                assert no_crown["overflow"]<=2,no_crown
+                await motion.screenshot(path=str(ARTIFACT/f"weekly-unawarded-{width}px.png"),
+                                        full_page=True,animations="disabled")
+                assert not motion_errors, f"Motion or weekly error at {width}: {motion_errors}"
+                report.setdefault("motion",[]).append({"width":width,**motion_info,**no_crown})
+                await motion.close()
+            # Reduced-motion fallback and CSS-keyframe replay are checked in a
+            # real browser; never require motion to read the actual content.
+            reduced=await browser.new_page(viewport={"width":390,"height":844},device_scale_factor=1,
+                                           reduced_motion="reduce")
+            await reduced.goto(origin+"/motion-review.html",wait_until="domcontentloaded")
+            reduced_styles=await reduced.evaluate("""() => ({
+              laser:getComputedStyle(document.querySelector('.hero-laser-trace')).animationName,
+              orbit:getComputedStyle(document.querySelector('.hero-logo-halo'),'::before').animationName,
+              crown:getComputedStyle(document.querySelector('#test-champion .weekly-crown')).animationName,
+              crownVisible:getComputedStyle(document.querySelector('#test-champion .weekly-crown')).display
+            })""")
+            assert reduced_styles["laser"]=="none" and reduced_styles["orbit"]=="none",reduced_styles
+            assert reduced_styles["crown"]=="none" and reduced_styles["crownVisible"]=="grid",reduced_styles
+            report["reducedMotion"]=reduced_styles
+            await reduced.close()
             # Track keyboard accessibility with ordinary tab traversal on a narrow viewport.
             page=await browser.new_page(viewport={"width":390,"height":844})
             await page.goto(origin+"/playerone-demo.html",wait_until="domcontentloaded",timeout=30000)
