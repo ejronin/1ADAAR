@@ -26,10 +26,11 @@ class FactionRecapArtworkTests(unittest.TestCase):
         with Image.open(io.BytesIO(raw)) as im:
             self.assertEqual(im.mode,"RGB")
             self.assertEqual(im.size[0],1080)
-            # Bar interiors at x=80, y=465+37+8, then next rows; team-specific RGB.
-            self.assertEqual(im.getpixel((80,510)),(238,65,56))
-            self.assertEqual(im.getpixel((80,593)),(70,94,255))
-            self.assertEqual(im.getpixel((80,676)),(62,186,66))
+            # v1.1 redesigned scoreboard: bar runs under each factual faction row.
+            self.assertEqual(im.getpixel((140,549)),(238,65,56))
+            self.assertEqual(im.getpixel((140,631)),(70,94,255))
+            self.assertEqual(im.getpixel((140,713)),(62,186,66))
+            self.assertEqual(im.size[1],816)
         self.assertEqual(discord_payload({
             **make(scores),"warconUrl":"https://console.warcon.app/s/demo/matches/127",
             "peakPlayers":32,"endedAt":"2026-10-16T20:10:00Z"
