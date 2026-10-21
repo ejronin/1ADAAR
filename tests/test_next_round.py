@@ -32,7 +32,7 @@ class NextRoundTests(unittest.TestCase):
     def test_match_recap_has_no_next_map_guess_or_join_code(self):
         data=match_recap(MATCH)
         self.assertEqual(data["flags"],32768)
-        self.assertEqual(data["components"][0]["components"][0]["content"],"## MATCH RECAP")
+        self.assertEqual(data["components"][0]["components"][0]["content"],"## AFTER ACTION REPORT")
         self.assertIn("attachment://match-recap.png",json.dumps(data))
         self.assertIn("We'll post the next map",json.dumps(data))
         self.assertIn("See more on 1ADAAR",json.dumps(data))
