@@ -1,0 +1,76 @@
+{
+  "status": "CANDIDATE_PENDING_OWNER_APPROVAL",
+  "version": "1.1.0",
+  "typefaces": {
+    "display": "Barlow Condensed, Arial Narrow, sans-serif",
+    "body": "Inter, system-ui, sans-serif",
+    "numeric": "Barlow Condensed, sans-serif"
+  },
+  "typeScalePx": {
+    "heroTitle": 64,
+    "sectionTitle": 30,
+    "metricValue": 43,
+    "body": 14,
+    "caption": 12,
+    "chartCenterValue": 27,
+    "chartCenterLabel": 11
+  },
+  "weights": {
+    "metric": 750,
+    "chartCenter": 700,
+    "body": 450
+  },
+  "strokesPx": {
+    "cardBorder": 1,
+    "chartGrid": 1,
+    "chartDataLine": 2.5,
+    "donutRing": 11,
+    "avatarOutline": 2,
+    "separator": 1
+  },
+  "geometryPx": {
+    "cardRadius": 11,
+    "buttonRadius": 7,
+    "donutDiameter": 140,
+    "donutCenterSpacing": 7,
+    "kpiGap": 12
+  },
+  "spacingScalePx": [
+    4,
+    8,
+    12,
+    16,
+    24,
+    32,
+    48
+  ],
+  "colors": {
+    "background": "#090e0c",
+    "surface": "#121d16",
+    "text": "#f2f6f1",
+    "secondaryText": "#b1c5b7",
+    "analyticsAccent": "#86f4a4",
+    "kills": "#86f4a4",
+    "deaths": "#f5c84b",
+    "lonestar": "#465eff",
+    "valkyra": "#ee4138",
+    "manticore": "#3eba42",
+    "awardGold": "#e4bd78",
+    "awardSilver": "#bec9c7",
+    "awardBronze": "#c78d62"
+  },
+  "breakpointsPx": [
+    320,
+    375,
+    390,
+    768,
+    1024,
+    1440
+  ],
+  "motion": {
+    "heroTraceMs": 1450,
+    "emblemSheenMs": 1100,
+    "crownFadeMs": 650,
+    "reducedMotionFallback": "All elements visible and static; no timed or infinite animations."
+  }
+}
