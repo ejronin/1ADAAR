@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="assets/factions.css?v=1" />
   <link rel="stylesheet" href="assets/players.css?v=9" />
   <link rel="stylesheet" href="assets/performance.css?v=3" />
-  <link rel="stylesheet" href="assets/demo-v11.css?v=1" />
+  <link rel="stylesheet" href="assets/player-v11.css?v=1" />
   <script defer src="js/performance-core.js?v=1"></script>
   <script defer src="js/performance.js?v=4"></script>
   <script defer src="js/factions.js?v=1"></script>
@@ -51,7 +51,7 @@
     </section>
     <section id="dossier" aria-labelledby="dossier-title">
       <div class="profile-header">
-        <div class="profile-emblem"><img src="assets/1ad-logo.svg" alt="" width="58" height="58" /></div>
+        <div class="profile-emblem" role="img" aria-label="Fictional PlayerOne initials"><span class="avatar-initials" aria-hidden="true">PO</span></div>
         <div class="profile-heading">
           <span class="eyebrow">SAMPLE PLAYER / MADE-UP STATS</span>
           <h2 id="dossier-title">PlayerOne</h2>
@@ -61,56 +61,66 @@
         <div class="profile-actions"><button type="button" class="new-search" id="share-demo">↗ Share demo profile</button><a class="new-search" href="players.html">Find a real player ↗</a></div>
       </div>
       <div id="demo-share-status" class="share-status" role="status" aria-live="polite" hidden></div>
-      <div class="metric-grid" id="profile-metrics"><div class="metric-tile"><span>Matches played</span><strong>48</strong><small>DEMO / FICTIONAL</small></div>
-<div class="metric-tile"><span>Deaths</span><strong>332</strong><small>DEMO / FICTIONAL</small></div>
-<div class="metric-tile"><span>K/D</span><strong>1.91</strong><small>DEMO / FICTIONAL</small></div>
-<div class="metric-tile"><span>Total kills</span><strong>634</strong><small>DEMO / FICTIONAL</small></div>
-<div class="metric-tile"><span>Wins</span><strong>27</strong><small>DEMO / FICTIONAL</small></div>
-<div class="metric-tile"><span>Win rate</span><strong>56.3%</strong><small>DEMO / FICTIONAL</small></div>
-<div class="metric-tile"><span>Playtime</span><strong>37h 0m</strong><small>DEMO / FICTIONAL</small></div>
-<div class="metric-tile"><span>Seeding time</span><strong>3h 0m</strong><small>DEMO / FICTIONAL</small></div></div>
-      <div class="demo-v11-insights">
-        <div class="demo-chart-panel">
-          <div class="panel-heading"><h3>Performance over time</h3><span>32 fictional match observations</span></div>
-          <section id="performance-module" class="performance-module" aria-label="Performance over time"><p class="perf-empty-static">Loading PlayerOne's sample match trend…</p></section>
-        </div>
-        <aside class="demo-ring-panel" aria-label="Sample player statistics at a glance">
-          <div class="panel-heading"><h3>At a glance</h3><span>SAMPLE DATA</span></div>
-          <div class="demo-rings">
-            <div class="demo-main-ring"><div class="demo-donut" style="--arc:#69e6a0">
-              <svg viewBox="0 0 120 120" role="img" aria-label="Fictional win rate 56.3 percent, 27 wins in 48 matches"><circle class="track" cx="60" cy="60" r="45" pathLength="100"/><circle class="filled" cx="60" cy="60" r="45" pathLength="100" stroke-dasharray="56.25 100"/></svg>
-              <div class="donut-text"><strong>56.3%</strong><small>Win rate</small></div>
-            </div><p>27 wins / 48 sample matches</p></div>
-            <div class="demo-two-rings">
-              <div><div class="demo-donut small" style="--arc:#465eff">
-                <svg viewBox="0 0 120 120" role="img" aria-label="Fictional Lonestar participation in four of the latest ten matches, 40 percent"><circle class="track" cx="60" cy="60" r="45" pathLength="100"/><circle class="filled" cx="60" cy="60" r="45" pathLength="100" stroke-dasharray="40 100"/></svg>
-                <div class="donut-text"><strong>40%</strong></div>
-              </div><p>Lonestar · 4 of 10 recent matches</p></div>
-              <div><div class="demo-donut small" style="--arc:#a989e7">
-                <svg viewBox="0 0 120 120" role="img" aria-label="Fictional Bakurani participation in four of the latest ten matches, 40 percent"><circle class="track" cx="60" cy="60" r="45" pathLength="100"/><circle class="filled" cx="60" cy="60" r="45" pathLength="100" stroke-dasharray="40 100"/></svg>
-                <div class="donut-text"><strong>40%</strong></div>
-              </div><p>Bakurani · 4 of 10 recent matches</p></div>
+      <h3 class="career-primary-title">Player statistics</h3>
+      <div class="metric-grid" id="profile-metrics" aria-label="PlayerOne fictional career statistics">
+        <div class="metric-tile"><span>K/D</span><strong>1.91</strong><small>FICTIONAL · ALL-TIME SAMPLE</small></div>
+        <div class="metric-tile"><span>Kills</span><strong>634</strong><small>FICTIONAL · ALL-TIME SAMPLE</small></div>
+        <div class="metric-tile"><span>Deaths</span><strong>332</strong><small>FICTIONAL · ALL-TIME SAMPLE</small></div>
+        <div class="metric-tile"><span>Matches</span><strong>48</strong><small>FICTIONAL · ALL-TIME SAMPLE</small></div>
+      </div>
+      <div id="profile-secondary" class="career-secondary" aria-label="Secondary fictional PlayerOne statistics">
+        <div class="career-secondary-card"><span>Wins</span><strong>27</strong><small>FICTIONAL</small></div>
+        <div class="career-secondary-card"><span>Playtime</span><strong>37h 0m</strong><small>FICTIONAL</small></div>
+        <div class="career-secondary-card"><span>Seeding time</span><strong>3h 0m</strong><small>FICTIONAL</small></div>
+      </div>
+      <div class="profile-analysis-grid">
+        <section id="performance-module" class="performance-module" aria-label="Performance trends">
+          <p class="perf-empty-static">Loading PlayerOne's fictional match chart…</p>
+        </section>
+        <aside id="player-snapshot" aria-label="Player snapshot">
+          <div class="snapshot-heading"><h3>Player snapshot</h3><p>Fictional career and recent match records</p></div>
+          <section class="snapshot-win">
+            <h4>Career win rate</h4>
+            <div class="profile-win-donut">
+              <svg viewBox="0 0 120 120" role="img" aria-label="Fictional PlayerOne win rate 56.3 percent, 27 wins in 48 matches">
+                <circle class="donut-track" cx="60" cy="60" r="45" pathLength="100"/>
+                <circle class="donut-progress" cx="60" cy="60" r="45" pathLength="100" stroke-dasharray="56.25 100"/>
+              </svg>
+              <div class="donut-center"><strong>56.3%</strong><small>Win rate</small></div>
             </div>
-          </div>
-          <p class="demo-ring-caveat">All numbers come from the existing fictional PlayerOne example. This is not a WARCON profile.</p>
+            <p class="snapshot-count">27 wins / 48 career results</p><p class="snapshot-explain">FICTIONAL PlayerOne career</p>
+          </section>
+          <section class="snapshot-insight">
+            <h4>Most-played faction</h4>
+            <div class="snapshot-insight-heading"><span class="faction-identity faction-lonestar"><img class="faction-emblem" src="assets/factions/lonestar.svg" alt="" width="28" height="28"/>Lonestar</span></div>
+            <div class="snapshot-track" role="img" aria-label="Lonestar: 4 out of 10 fictional recent faction appearances"><div class="snapshot-fill" style="width:40%;background:#465eff"></div></div>
+            <p class="snapshot-count">4 of 10 recent appearances · 40%</p><p class="snapshot-explain">Participation, not win rate</p>
+          </section>
+          <section class="snapshot-insight">
+            <h4>Most-played map</h4><div class="snapshot-insight-heading"><strong>Bakurani</strong></div>
+            <div class="snapshot-track" role="img" aria-label="Bakurani: 4 out of 10 fictional recent map appearances"><div class="snapshot-fill" style="width:40%"></div></div>
+            <p class="snapshot-count">4 of 10 recent appearances · 40%</p><p class="snapshot-explain">Participation, not win rate</p>
+          </section>
+          <p class="snapshot-disclaimer">Only the win-rate donut uses the fictional career totals. Map and faction bars use the most recent ten fictional matches.</p>
         </aside>
       </div>
       <section id="combat-panel" class="profile-panel">
-        <div class="panel-heading"><h3>Extra combat stats</h3><span>SAMPLE ONLY — not real player results</span></div>
+        <div class="panel-heading"><h3>Combat detail</h3><span>SAMPLE ONLY — not real player results</span></div>
         <div class="metric-grid compact"><div class="metric-tile"><span>Headshots</span><strong>128</strong><small>DEMO / FICTIONAL</small></div>
 <div class="metric-tile"><span>Vehicle kills</span><strong>19</strong><small>DEMO / FICTIONAL</small></div>
-<div class="metric-tile"><span>Best kill streak</span><strong>14</strong><small>DEMO / FICTIONAL</small></div></div>
+<div class="metric-tile"><span>Best kill streak</span><strong>14</strong><small>DEMO / FICTIONAL</small></div>
+<div class="metric-tile"><span>Team kills</span><strong>3</strong><small>DEMO / FICTIONAL</small></div></div>
       </section>
-      <div class="analytics-section-label"><span>MATCHES BY MAP AND TEAM</span><small>Map and team results · sample matches only</small></div>
+      <div class="analytics-section-label"><span>MAP AND FACTION PERFORMANCE</span><small>Map and team results · sample matches only</small></div>
       <div class="profile-columns">
         <section class="profile-panel">
-          <div class="panel-heading"><h3>Results by map</h3><span>Ten fictional recent matches</span></div>
-          <div class="breakdown-row"><div><strong>Bakurani</strong><div class="mini-meter"><i style="width:100%"></i></div></div><span>4 matches</span><em>2 wins</em></div>
-<div class="breakdown-row"><div><strong>Ozeti</strong><div class="mini-meter"><i style="width:50%"></i></div></div><span>3 matches</span><em>1 win</em></div>
-<div class="breakdown-row"><div><strong>Zestafona</strong><div class="mini-meter"><i style="width:50%"></i></div></div><span>3 matches</span><em>2 wins</em></div>
+          <div class="panel-heading"><h3>Performance by map</h3><span>Ten fictional recent matches</span></div>
+          <div class="breakdown-row"><div><strong>Bakurani</strong><div class="mini-meter" role="img" aria-label="Bakurani saved win rate 50.0%; 2 of 4"><i style="width:50%"></i></div></div><span>4 matches</span><em>2 wins</em></div>
+<div class="breakdown-row"><div><strong>Ozeti</strong><div class="mini-meter" role="img" aria-label="Ozeti saved win rate 33.3%; 1 of 3"><i style="width:33.333%"></i></div></div><span>3 matches</span><em>1 win</em></div>
+<div class="breakdown-row"><div><strong>Zestafona</strong><div class="mini-meter" role="img" aria-label="Zestafona saved win rate 66.7%; 2 of 3"><i style="width:66.667%"></i></div></div><span>3 matches</span><em>2 wins</em></div>
         </section>
         <section class="profile-panel faction-breakdown">
-          <div class="panel-heading"><h3>Results by team</h3><span>Ten fictional recent matches</span></div>
+          <div class="panel-heading"><h3>Faction performance</h3><span>Ten fictional recent matches</span></div>
           <div class="breakdown-row"><div><strong class="faction-identity faction-lonestar"><img class="faction-emblem" src="assets/factions/lonestar.svg" width="29" height="29" alt="" /><span>Lonestar</span></strong><div class="mini-meter"><i style="width:100%"></i></div></div><span>4 matches</span><em>2 wins</em></div>
 <div class="breakdown-row"><div><strong class="faction-identity faction-valkyra"><img class="faction-emblem" src="assets/factions/valkyra.svg" width="29" height="29" alt="" /><span>Valkyra</span></strong><div class="mini-meter"><i style="width:50%"></i></div></div><span>3 matches</span><em>1 win</em></div>
 <div class="breakdown-row"><div><strong class="faction-identity faction-manticore"><img class="faction-emblem" src="assets/factions/manticore.svg" width="29" height="29" alt="" /><span>Manticore</span></strong><div class="mini-meter"><i style="width:50%"></i></div></div><span>3 matches</span><em>2 wins</em></div>
