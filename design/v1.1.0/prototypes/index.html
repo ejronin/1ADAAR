@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>1ADAAR v1.1.0 | IA Design Handoff</title>
+<style>
+:root{color-scheme:dark;--bg:#0b120e;--panel:#16211a;--edge:#344b3a;--accent:#86f4a4;--text:#edf6ef;--muted:#b9cbbd;font-family:system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text)}
+main{max-width:1100px;margin:auto;padding:24px clamp(16px,4vw,46px) 64px}
+header{display:flex;align-items:center;gap:18px;flex-wrap:wrap;border-bottom:1px solid var(--edge);padding-bottom:24px}
+header img{width:68px;height:68px;object-fit:contain}h1{font-size:clamp(30px,4vw,46px);line-height:1.08;margin:12px 0}
+h2{font-size:23px}p{line-height:1.6;max-width:900px;color:var(--muted)}
+.tag{display:inline-block;background:#4c3821;color:#ffe7ad;border:1px solid #8f7848;border-radius:4px;padding:7px 11px;font-size:12px;font-weight:800;letter-spacing:.055em}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:14px;margin-top:25px}
+article{padding:20px;background:var(--panel);border:1px solid var(--edge);border-radius:9px}
+article h3{font-size:20px;margin:0 0 9px}article p{font-size:14px;margin:0 0 17px;min-height:56px}
+a{color:var(--accent);text-underline-offset:3px}
+code{overflow-wrap:anywhere}
+small{font-size:12px;color:var(--muted)}
+.note{border-left:3px solid var(--accent);background:#14271a;padding:18px;margin:30px 0}
+kbd{font:inherit;background:#2c3f31;border-radius:4px;padding:1px 5px}
+@media(max-width:430px){header img{width:50px;height:50px}main{padding:20px 16px 50px}}
+</style></head>
+<body><main>
+<header><img src="../../../docs/assets/1ad-logo.svg" alt="Official 1AD logo"><div><span class="tag">DESIGN HANDOFF WORKSPACE · NOT AN APPROVED MOCKUP</span><h1>1ADAAR — v1.1.0 facelift</h1><small>Independent IA/UX/UI artifacts · staging-only branch · production unchanged</small></div></header>
+<h2>Digital design handoff</h2>
+<p>This is the source-controlled location where the IA engineer will submit actual editable prototypes, screenshots, design tokens and exact implementation specs. No revised screens have been handed over through this workspace yet. Reference links below open existing staging screens only.</p>
+<div class="cards">
+<article><h3>01 / Home briefing</h3><p>Hero, navigation, server status, summary cards and recent matches.</p><small>Editable mockup: NOT SUBMITTED</small><p><a href="https://raw.githack.com/ejronin/1ADAAR/v11motionpreview/docs/index.html">View current staging screen →</a></p></article>
+<article><h3>02 / Player dossier</h3><p>Win-rate donut weight, charts, career metrics, player identity and chart controls.</p><small>Editable mockup: NOT SUBMITTED</small><p><a href="https://raw.githack.com/ejronin/1ADAAR/v11motionpreview/docs/playerone-demo.html">View current sample screen →</a></p></article>
+<article><h3>03 / Map and team</h3><p>Season filters, faction icons, charts, results and empty-state structure.</p><small>Editable mockup: NOT SUBMITTED</small><p><a href="https://raw.githack.com/ejronin/1ADAAR/v11motionpreview/docs/map-team.html">View current staging screen →</a></p></article>
+<article><h3>04 / Weekly podium</h3><p>Consistent 1/2/3 ranks, avatar, winner-only crown and amber visual system.</p><small>Editable mockup: NOT SUBMITTED</small><p><a href="https://raw.githack.com/ejronin/1ADAAR/v11motionpreview/docs/weekly.html">View current staging screen →</a></p></article>
+<article><h3>05 / Discord AAR</h3><p>Exact revised Python-generated PNG, Discord Components V2 layout and next-map follow-up.</p><small>Editable mockup: NOT SUBMITTED</small><p><a href="https://github.com/ejronin/1ADAAR/actions/runs/39649263547">View prior actual renderer QA →</a></p></article>
+<article><h3>06 / Recorded activity</h3><p>Server-wide captured match heatmap, source labels, keyboard and mobile views.</p><small>Editable mockup: NOT SUBMITTED</small><p><a href="https://raw.githack.com/ejronin/1ADAAR/v11motionpreview/docs/activity.html">View current staging screen →</a></p></article>
+</div>
+<div class="note"><strong>How to submit a design:</strong><p>Commit `prototypes/{screen}.html`, its CSS/JS, matching `screenshots/{screen}-390.png` and `screenshots/{screen}-1440.png`, plus a component spec. Then update <code>screen-manifest.json</code> to link the exact files. Screenshots alone do not count as editable implementation instructions.</p></div>
+<p>Source rules: original official 1AD, WARDOGS and faction assets remain unchanged. No fictional live players, invented scores, Steam IDs or secrets. This workspace does not deploy or post to Discord.</p>
+<p><a href="https://github.com/ejronin/1ADAAR/tree/design/v1.1.0-ia-handoff/design/v1.1.0">Browse editable source and handoff rules on GitHub →</a></p>
+</main></body></html>
