@@ -1,0 +1,40 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><meta name="theme-color" content="#111b15">
+<title>1ADAAR v1.1.0 — Staging Design Review</title>
+<link rel="icon" href="assets/1ad-logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css"><link rel="stylesheet" href="assets/brand.css?v=9">
+<style>
+body{background:#0c140f;color:#ecfff2;margin:0;font-family:system-ui,sans-serif}
+.review{max-width:940px;margin:0 auto;padding:clamp(22px,5vw,55px)}
+.review-banner{padding:13px 17px;border-radius:7px;color:#ffe9b1;background:#493116;border:1px solid #ab8e52;font-weight:800;font-size:14px}
+.review-brand{display:flex;align-items:center;gap:15px;margin:35px 0 20px}
+.review-brand img{width:66px;height:66px;object-fit:contain}
+.review h1{font:800 clamp(40px,6vw,68px) 'Barlow Condensed',sans-serif;line-height:1.05;margin:0 0 15px}
+.review p{color:#c5dfcb;font-size:15px;line-height:1.7}
+.review-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:32px 0}
+.review-card{display:flex;flex-direction:column;min-height:153px;padding:24px;text-decoration:none;border:1px solid #43684f;
+ border-radius:8px;background:linear-gradient(145deg,#1b3022,#152019);transition:border-color .18s,transform .18s}
+.review-card:hover,.review-card:focus-visible{border-color:#9cf6b6;transform:translateY(-3px);text-decoration:none}
+.review-card strong{font-size:21px;color:#fff}.review-card span{margin-top:10px;font-size:13px;line-height:1.5;color:#bbd2c1}
+.review-card em{font-style:normal;margin-top:auto;padding-top:12px;color:#8af0aa;font-weight:800;font-size:13px}
+.review-note{padding:16px;border-left:3px solid #73e49d;background:#15291b}
+.review-footer img{max-width:190px;height:auto;margin-top:30px}
+@media(max-width:640px){.review-grid{grid-template-columns:1fr}.review-card{min-height:130px}.review-brand img{width:49px;height:49px}}
+@media(prefers-reduced-motion:reduce){.review-card{transition:none}.review-card:hover{transform:none}}
+</style></head>
+<body><main class="review"><div class="review-banner">STAGING ONLY · v1.1.0 IN REVIEW · PRODUCTION UNCHANGED</div>
+<div class="review-brand"><img src="assets/1ad-logo.svg" alt="Official 1AD emblem"><div><strong>1ADAAR</strong><p>OneAverageDan WARDOGS Community Server</p></div></div>
+<h1>Review the new player experience.</h1>
+<p>Choose a working staging screen to inspect. PlayerOne contains the original fictional sample data.
+Real player profiles display saved WARCON data when available. Nothing on this staging branch is approved for production.</p>
+<div class="review-grid">
+<a class="review-card" href="playerone-demo.html"><strong>PlayerOne sample profile</strong><span>Review the new career cards, four trend controls, one win-rate donut and two labeled participation bars.</span><em>Open sample →</em></a>
+<a class="review-card" href="players.html"><strong>Find a real player</strong><span>Search real WARCON records. Steam portraits appear only when the private collector has verified and saved the correct avatar.</span><em>Open player search →</em></a>
+<a class="review-card" href="map-team.html"><strong>Map &amp; Team Performance</strong><span>Season selection, per-map records, official faction identities and detailed filters.</span><em>Open drill-down →</em></a>
+<a class="review-card" href="weekly.html"><strong>Weekly Roundup</strong><span>Real saved results only. The community podium remains empty without verified award recipients.</span><em>Open weekly view →</em></a>
+<a class="review-card" href="compare.html"><strong>Compare players</strong><span>Compare two public WARCON career records without sharing raw Steam IDs.</span><em>Open comparisons →</em></a>
+<a class="review-card" href="seasons.html"><strong>Older matches</strong><span>Browse completed matches preserved from the WARCON feed, organized by season.</span><em>Open archive →</em></a>
+</div>
+<p class="review-note"><strong>Design review rule:</strong> Existing data may be incomplete. A dash means unavailable, not zero. No invented season, match, podium or player results are represented as actual achievements.</p>
+<div class="review-footer"><img src="assets/wardogs-fullmark.png" alt="Official WARDOGS mark"></div>
+</main></body></html>
