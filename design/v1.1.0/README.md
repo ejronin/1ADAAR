@@ -62,9 +62,19 @@ design/v1.1.0/
 4. Lead produces browser screenshots from implemented staging at matching widths and a discrepancy matrix. IA engineer compares visual output with approved source until deviations are resolved.
 5. Owner signs off the entire release after visual, automated, live-source, and native Discord app QA. The design branch is never merged into production as part of a documentation-only approval.
 
+## Running the prototypes locally (works without GitHub Pages)
+
+In a checked-out copy of the design branch, run from the **repository root**:
+
+```bash
+python -m http.server 8000
+```
+
+Open `http://localhost:8000/design/v1.1.0/prototypes/index.html`. This loads the approved original game/1AD artwork from the same checkout and avoids browser `file://` limitations. No paid host, cloud secrets or live WARCON access is needed.
+
 ## Link and review protocol
 
-Review UI (source branch, third-party raw-file preview, **not** production):
+Optional review UI (source branch through a third-party proxy, **not** production; availability must be checked):
 `https://raw.githack.com/ejronin/1ADAAR/design/v1.1.0-ia-handoff/design/v1.1.0/prototypes/index.html`
 
 Code and changes: GitHub draft PR from `design/v1.1.0-ia-handoff` into `staging/v2.0-foundation`. Screenshots included under `design/v1.1.0/screenshots/` and linked by the manifest.
