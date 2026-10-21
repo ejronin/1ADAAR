@@ -162,6 +162,10 @@ async def capture():
                   imgWidth:document.querySelector('.hero-logo-halo img').getBoundingClientRect().width,
                   imgHeight:document.querySelector('.hero-logo-halo img').getBoundingClientRect().height,
                   rankBadgePosition:getComputedStyle(document.querySelector('#test-champion .weekly-rank')).position,
+                  rankCentered:Math.abs(document.querySelector('#test-champion .weekly-rank').getBoundingClientRect().left+
+                    document.querySelector('#test-champion .weekly-rank').getBoundingClientRect().width/2-
+                    document.querySelector('#test-champion').getBoundingClientRect().left-
+                    document.querySelector('#test-champion').getBoundingClientRect().width/2)<2,
                   crownClearOfRank:document.querySelector('#test-champion .weekly-rank').getBoundingClientRect().bottom+4 <=
                     document.querySelector('#test-champion .weekly-crown').getBoundingClientRect().top,
                   crownAboveAvatar:document.querySelector('#test-champion .weekly-crown').getBoundingClientRect().bottom <=
@@ -184,7 +188,8 @@ async def capture():
                     f"Metal sweep width does not match SVG at {width}px: {motion_info}"
                 assert abs(motion_info["glintHeight"]-motion_info["imgHeight"])<1, \
                     f"Metal sweep height does not match SVG at {width}px: {motion_info}"
-                assert motion_info["rankBadgePosition"]=="absolute"
+                assert motion_info["rankBadgePosition"]=="static"
+                assert motion_info["rankCentered"],f"First rank not centered at {width}px: {motion_info}"
                 assert motion_info["crownClearOfRank"],f"1 and crown collide at {width}px: {motion_info}"
                 assert motion_info["crownAboveAvatar"],f"Crown crosses avatar at {width}px: {motion_info}"
                 if width<=720:
