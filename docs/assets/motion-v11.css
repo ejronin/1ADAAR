@@ -64,7 +64,7 @@
   width:56px;height:42px;margin:-18px auto -3px;color:#f5d88c;
   opacity:0;transform:translateY(9px) scale(.87);
   filter:drop-shadow(0 0 9px #eebc6060);
-  animation:weekly-crown-arrive .8s cubic-bezier(.16,.89,.18,1.15) .46s 1 forwards}
+  animation:weekly-crown-arrive .8s cubic-bezier(.16,.89,.18,1.15) 1.05s 1 forwards}
 .weekly-podium-place.gold[data-award-verified="true"] .weekly-crown svg{
   width:52px;height:37px;fill:#f0c975;stroke:#fff0b4;stroke-width:1.4}
 .weekly-podium-place.gold[data-award-verified="true"] .weekly-avatar{
@@ -97,11 +97,21 @@
 .motion-replay .hero-laser-head,
 .motion-replay .hero-logo-halo::before,
 .motion-replay .hero-logo-halo::after{animation:none!important}
-.motion-replay .weekly-crown{animation:none!important}
+.motion-replay .weekly-crown,
+.motion-replay .weekly-avatar,
+.motion-replay .weekly-avatar::before{animation:none!important}
+/* On phones the badge must remain visible, not fade behind the headline and copy.
+   Put the official emblem in its own footer row inside the SAME real hero card. */
 @media(max-width:720px){
+  .hero.motion-hero{display:flex;flex-direction:column;align-items:stretch;min-height:0}
   .hero.motion-hero .hero-laser-svg{z-index:3}
-  .hero.motion-hero .hero-logo-halo{width:min(96%,240px)}
-  .hero.motion-hero .hero-logo-halo .hero-logo{width:90%}}
+  .hero.motion-hero .hero-text{width:100%;max-width:none;padding:30px 22px 8px}
+  .hero.motion-hero .hero-graphic{position:relative;top:auto;right:auto;
+    width:100%;height:155px;min-height:155px;opacity:.94;filter:none;
+    display:grid;place-items:center;pointer-events:none}
+  .hero.motion-hero .hero-logo-halo{width:136px;height:136px}
+  .hero.motion-hero .hero-logo-halo .hero-logo{width:90%}
+}
 @media(prefers-reduced-motion:reduce){
   .hero-laser-trace,.hero-laser-head,.hero-logo-halo::before,
   .hero-logo-halo::after,.weekly-podium-place.gold .weekly-crown,
