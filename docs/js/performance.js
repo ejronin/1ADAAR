@@ -18,12 +18,13 @@
   function graph(container,rows,metric,report) {
     container.replaceChildren();
     const series=metric==='kills'?
-      [{label:'Kills',key:'kills',color:'#86f4a4',fill:true},
-       {label:'Deaths',key:'deaths',color:'#e7ad96',fill:false}]:
+      [{label:'Kills',key:'kills',color:'#70e6a0',fill:true},
+       {label:'Deaths',key:'deaths',color:'#eac765',fill:false}]:
       metric==='career'?
       [{label:'Career K/D',key:'kd',color:'#86f4a4',fill:true}]:
-      [{label:'Match K/D',key:'kd',color:'#86f4a4',fill:true},
-       {label:'Last 5 matches',key:'rolling',color:'#e4c47d',fill:false}];
+      metric==='rolling'?
+      [{label:'Five-match rolling K/D',key:'rolling',color:'#86f4a4',fill:true}]:
+      [{label:'Match K/D',key:'kd',color:'#86f4a4',fill:true}];
     const raw=rows.flatMap(row=>series.map(s=>row[s.key]).filter(v=>typeof v==='number'&&Number.isFinite(v)));
     const isCount=metric==='kills';
     const peak=Math.max(1,...raw)*1.14;
@@ -33,7 +34,7 @@
     const x=i=>box.x+(rows.length===1?box.w/2:box.w*i/(rows.length-1));
     const y=value=>box.y+box.h*(1-Math.max(0,value)/ymax);
     const svg=se('svg',{viewBox:'0 0 780 323',class:'perf-svg',role:'img',
-      'aria-label':(metric==='career'?'Career K/D':isCount?'Kills versus deaths':'Match K/D and five-match rolling trend')+' for '+rows.length+' observations'});
+      'aria-label':(metric==='career'?'Career K/D':isCount?'Kills versus deaths':metric==='rolling'?'Five-match rolling K/D':'Match K/D')+' for '+rows.length+' observations'});
     svg.append(se('title',{},'WARDOGS player performance'));
     svg.append(se('desc',{},'Exact values are available in the data table beneath this interactive graph.'));
     const gradientId='aarPerf'+(++identity),defs=se('defs'),
@@ -100,20 +101,20 @@
     // Preserve a visitor's selected view while the background history shard loads.
     const oldMetric=host.querySelector('.perf-tab[aria-pressed="true"]')?.dataset.metric;
     const oldRange=host.querySelector('.perf-window')?.value;
-    let metric=['kd','kills','career'].includes(oldMetric)?oldMetric:'kd';
+    let metric=['kd','kills','rolling','career'].includes(oldMetric)?oldMetric:'kd';
     let range=oldRange==='25'?25:oldRange==='all'?Infinity:10;
     host.replaceChildren();
     const header=el('header','perf-header'),
       left=el('div','perf-heading');
     left.append(el('span','eyebrow','PLAYER RESULTS OVER TIME'),
-      el('h3','','Performance over time'),
+      el('h3','','Performance trends'),
       el('p','perf-subtitle','See recent results and how your overall stats have changed.'));
-    header.append(left,el('span','perf-source',config.demo?'SAMPLE / MADE-UP STATS':'DATA FROM WARCON'));
+    header.append(left,el('span','perf-source',config.demo?'SAMPLE / MADE-UP STATS':'SAVED MATCHES / WARCON'));
     host.append(header);
     const toolbar=el('div','perf-toolbar'),tabs=el('div','perf-tabs');
     tabs.setAttribute('role','group');
     tabs.setAttribute('aria-label','Choose a stat to view');
-    for(const [key,label] of [['kd','K/D OVER TIME'],['kills','KILLS / DEATHS'],['career','ALL-TIME K/D']]){
+    for(const [key,label] of [['kills','Kills and deaths'],['kd','Match K/D'],['rolling','Five-match average'],['career','Career K/D']]){
       const button=el('button','perf-tab',label);
       button.type='button';button.dataset.metric=key;
       button.addEventListener('click',()=>{metric=key;update();});
@@ -151,14 +152,16 @@
       scroller.replaceChildren();
       const headings=metric==='career'?['Date','Career K/D','Kills','Deaths','Matches']:
         metric==='kills'?['Date','Map','Kills','Deaths']:
-        ['Date','Map','Match K/D','5-game K/D','Kills','Deaths'];
+        metric==='rolling'?['Date','Map','5-match K/D','Match K/D','Kills','Deaths']:
+        ['Date','Map','Match K/D','Kills','Deaths'];
       const t=el('table','perf-table'),head=el('thead'),line=el('tr');
       headings.forEach(v=>line.append(el('th','',v)));head.append(line);t.append(head);
       const body=el('tbody');
       for(const row of rows){
         const cols=metric==='career'?[M.tickDate(row.date),M.format(row.kd),row.kills,row.deaths,row.matches]:
           metric==='kills'?[M.tickDate(row.date),row.map,row.kills,row.deaths]:
-          [M.tickDate(row.date),row.map,M.format(row.kd),M.format(row.rolling),row.kills,row.deaths];
+          metric==='rolling'?[M.tickDate(row.date),row.map,M.format(row.rolling),M.format(row.kd),row.kills,row.deaths]:
+          [M.tickDate(row.date),row.map,M.format(row.kd),row.kills,row.deaths];
         const tr=el('tr');cols.forEach(v=>tr.append(el('td','',v)));body.append(tr);
       }
       t.append(body);scroller.append(t);
@@ -206,8 +209,8 @@
           tile('DEATHS IN VIEW',String(rows.reduce((sum,row)=>sum+row.deaths,0)),'deaths in shown matches'));
       }else{
         summary.append(tile('MATCHES IN VIEW',String(rows.length),'completed match records'),
-          tile('LATEST MATCH K/D',M.format(last.kd),'last saved match'),
-          tile('FIVE-MATCH K/D',M.format(last.rolling),last.rolling===null?'unlocks after 5 matches':'total kills / total deaths'));
+          tile(metric==='rolling'?'LATEST FIVE-MATCH K/D':'LATEST MATCH K/D',M.format(metric==='rolling'?last.rolling:last.kd),'latest saved match sample'),
+          tile('OBSERVATIONS',String(rows.length),'saved matches in this chart'));
       }
       const graphSeries=graph(canvas,rows,metric,inspector);
       for(const s of graphSeries){
@@ -221,8 +224,10 @@
       footnote.textContent=metric==='career'?
         'WARCON all-time stats saved on different days. We keep up to 60 updates from the past 180 days and do not make up earlier numbers.':
         metric==='kills'?
-        'Kills and deaths come from completed matches saved in 1ADAAR.':
-        'Five-match K/D is total kills divided by total deaths over five matches. If there are no deaths, we show the kill count. If there are no kills or deaths, we show a dash.';
+        'Green is kills. Yellow is deaths. Both come from completed matches saved by 1ADAAR.':
+        metric==='rolling'?
+        'Five-match K/D uses the recorded kills and deaths of five consecutive saved matches; earlier points are unavailable.':
+        'Match K/D uses the recorded kills and deaths in each saved completed match.';
       if(config.demo)footnote.textContent='DEMO / FICTIONAL — '+footnote.textContent;
       table(rows);
     }
