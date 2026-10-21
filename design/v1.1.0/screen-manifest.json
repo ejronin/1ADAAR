@@ -1,111 +1,156 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "project": "1ADAAR",
   "release": "1.1.0",
-  "status": "awaiting_design_handoff",
+  "status": "screenshots_awaiting_automated_capture",
   "baselineStagingCommit": "26da372ea9c076bfe3751a0716ee8382161e811d",
+  "designBranch": "design/v1.1.0-ia-handoff",
+  "designTokensFile": "design/v1.1.0/tokens.final.json",
+  "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+  "research": "design/v1.1.0/research/CHART_METHODS_AND_FIELD_GATE.md",
+  "discrepancyRegister": "design/v1.1.0/research/DESIGN_DISCREPANCY_REGISTER.md",
   "isProductionReady": false,
+  "productionModified": false,
   "screens": [
     {
       "id": "home",
-      "title": "Main dashboard / hero",
+      "title": "Main briefing",
+      "description": "Hero, official marks, real-status modules, empty captured-match states",
       "source": [
         "docs/index.html",
         "docs/assets/brand.css",
-        "docs/assets/motion-v11.css"
+        "docs/assets/motion-v11.css",
+        "docs/js/app.js"
       ],
-      "prototype": null,
+      "prototype": "design/v1.1.0/prototypes/home.html",
+      "editableFiles": [
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/prototypes/shared.js",
+        "design/v1.1.0/prototypes/home.html"
+      ],
       "screenshots": {
         "mobile390": null,
         "desktop1440": null
       },
-      "componentSpec": null,
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "ownerApproval": "pending",
-      "deliveryStatus": "not_started"
+      "deliveryStatus": "editable_source_committed_capture_pending"
     },
     {
       "id": "player",
-      "title": "Player dossier, chart, donut",
+      "title": "Player dossier",
+      "description": "Steam portrait treatment, career KPIs, five trend modes, one donut, appearance bars",
       "source": [
         "docs/players.html",
         "docs/playerone-demo.html",
-        "docs/assets/players.css",
-        "docs/assets/performance.css"
+        "docs/js/players.js",
+        "docs/js/performance.js",
+        "docs/js/player-snapshot.js"
       ],
-      "prototype": null,
+      "prototype": "design/v1.1.0/prototypes/player.html",
+      "editableFiles": [
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/prototypes/shared.js",
+        "design/v1.1.0/prototypes/player.html"
+      ],
       "screenshots": {
         "mobile390": null,
         "desktop1440": null
       },
-      "componentSpec": null,
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "ownerApproval": "pending",
-      "deliveryStatus": "not_started"
+      "deliveryStatus": "editable_source_committed_capture_pending"
     },
     {
       "id": "map-team",
-      "title": "Map and faction analytics",
+      "title": "Maps and factions",
+      "description": "Faction outcome fingerprint, ranked dots, map/team crosstab",
       "source": [
         "docs/map-team.html",
+        "docs/js/map-team.js",
         "docs/assets/map-team.css"
       ],
-      "prototype": null,
+      "prototype": "design/v1.1.0/prototypes/map-team.html",
+      "editableFiles": [
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/prototypes/shared.js",
+        "design/v1.1.0/prototypes/map-team.html"
+      ],
       "screenshots": {
         "mobile390": null,
         "desktop1440": null
       },
-      "componentSpec": null,
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "ownerApproval": "pending",
-      "deliveryStatus": "not_started"
+      "deliveryStatus": "editable_source_committed_capture_pending"
     },
     {
       "id": "weekly",
-      "title": "Weekly roundup / podium",
+      "title": "Weekly roundup",
+      "description": "Verified empty podium, isolated fictional crown reveal",
       "source": [
         "docs/weekly.html",
         "docs/assets/weekly.css",
         "docs/assets/motion-v11.css"
       ],
-      "prototype": null,
+      "prototype": "design/v1.1.0/prototypes/weekly.html",
+      "editableFiles": [
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/prototypes/shared.js",
+        "design/v1.1.0/prototypes/weekly.html"
+      ],
       "screenshots": {
         "mobile390": null,
         "desktop1440": null
       },
-      "componentSpec": null,
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "ownerApproval": "pending",
-      "deliveryStatus": "not_started"
+      "deliveryStatus": "editable_source_committed_capture_pending"
     },
     {
       "id": "recap",
-      "title": "Discord match recap / next map",
+      "title": "Discord AAR",
+      "description": "Editable desktop/mobile Discord hierarchy, original faction and game brand art",
       "source": [
         "src/recap_card.py",
         "src/discord_layout.py"
       ],
-      "prototype": null,
+      "prototype": "design/v1.1.0/prototypes/recap.html",
+      "editableFiles": [
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/prototypes/shared.js",
+        "design/v1.1.0/prototypes/recap.html"
+      ],
       "screenshots": {
         "mobile390": null,
         "desktop1440": null
       },
-      "componentSpec": null,
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "ownerApproval": "pending",
-      "deliveryStatus": "not_started"
+      "deliveryStatus": "editable_source_committed_capture_pending"
     },
     {
       "id": "activity",
-      "title": "Recorded match activity / heatmap",
+      "title": "Activity intelligence",
+      "description": "Captured match-start activity, personal-session future gate, unfilled six-role radar",
       "source": [
-        "docs/activity.html"
+        "docs/activity.html",
+        "docs/js/activity.js",
+        "docs/data/recorded-activity.json"
       ],
-      "prototype": null,
+      "prototype": "design/v1.1.0/prototypes/activity.html",
+      "editableFiles": [
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/prototypes/shared.js",
+        "design/v1.1.0/prototypes/activity.html"
+      ],
       "screenshots": {
         "mobile390": null,
         "desktop1440": null
       },
-      "componentSpec": null,
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "ownerApproval": "pending",
-      "deliveryStatus": "not_started"
+      "deliveryStatus": "editable_source_committed_capture_pending"
     }
-  ],
-  "designTokensFile": null,
-  "designReviewerNote": "The independent designer must supply editable HTML/CSS/JS, actual screenshot exports and exact specifications. No owner approvals have been issued."
+  ]
 }
