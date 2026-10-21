@@ -100,6 +100,32 @@ async def capture():
                     report.setdefault("realProfiles",[]).append({"width":width,**actual})
                 assert not real_errors, f"Real player page errors at {width}: {real_errors}"
                 await real.close()
+                # Server-wide completed-match activity is source-backed and
+                # must show a no-data notice (not fictional activity) until
+                # completed WARCON matches are actually archived.
+                activity=await browser.new_page(viewport={"width":width,"height":900},device_scale_factor=1)
+                activity_errors=[]
+                activity.on("pageerror",lambda error:activity_errors.append(str(error)))
+                await activity.goto(origin+"/activity.html",wait_until="domcontentloaded",timeout=30000)
+                await activity.locator("#act-season").wait_for(state="attached",timeout=10000)
+                await activity.wait_for_function("() => !document.querySelector('#act-season').disabled",
+                                                 timeout=10000)
+                await activity.screenshot(path=str(ARTIFACT/f"recorded-activity-{width}px.png"),
+                                          full_page=True,animations="disabled")
+                result=await activity.evaluate("""() => ({
+                    root:document.documentElement.scrollWidth,
+                    width:innerWidth,
+                    scope:document.querySelector('#act-season').value,
+                    summary:document.querySelector('#act-status').textContent,
+                    hasGrid:!!document.querySelector('.act-grid-table')
+                })""")
+                assert result["root"]<=width+2, f"Activity body overflow at {width}px: {result}"
+                assert result["scope"]=="all"
+                assert not result["hasGrid"],"A no-data archive must not render a fake heatmap"
+                assert "No completed matches" in result["summary"]
+                assert not activity_errors, f"Activity page Javascript errors at {width}: {activity_errors}"
+                report.setdefault("serverActivity",[]).append({"width":width,**result})
+                await activity.close()
             # Track keyboard accessibility with ordinary tab traversal on a narrow viewport.
             page=await browser.new_page(viewport={"width":390,"height":844})
             await page.goto(origin+"/playerone-demo.html",wait_until="domcontentloaded",timeout=30000)
