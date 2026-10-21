@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "project": "1ADAAR",
+  "release": "1.1.0",
+  "status": "awaiting_design_handoff",
+  "baselineStagingCommit": "26da372ea9c076bfe3751a0716ee8382161e811d",
+  "isProductionReady": false,
+  "screens": [
+    {
+      "id": "home",
+      "title": "Main dashboard / hero",
+      "source": [
+        "docs/index.html",
+        "docs/assets/brand.css",
+        "docs/assets/motion-v11.css"
+      ],
+      "prototype": null,
+      "screenshots": {
+        "mobile390": null,
+        "desktop1440": null
+      },
+      "componentSpec": null,
+      "ownerApproval": "pending",
+      "deliveryStatus": "not_started"
+    },
+    {
+      "id": "player",
+      "title": "Player dossier, chart, donut",
+      "source": [
+        "docs/players.html",
+        "docs/playerone-demo.html",
+        "docs/assets/players.css",
+        "docs/assets/performance.css"
+      ],
+      "prototype": null,
+      "screenshots": {
+        "mobile390": null,
+        "desktop1440": null
+      },
+      "componentSpec": null,
+      "ownerApproval": "pending",
+      "deliveryStatus": "not_started"
+    },
+    {
+      "id": "map-team",
+      "title": "Map and faction analytics",
+      "source": [
+        "docs/map-team.html",
+        "docs/assets/map-team.css"
+      ],
+      "prototype": null,
+      "screenshots": {
+        "mobile390": null,
+        "desktop1440": null
+      },
+      "componentSpec": null,
+      "ownerApproval": "pending",
+      "deliveryStatus": "not_started"
+    },
+    {
+      "id": "weekly",
+      "title": "Weekly roundup / podium",
+      "source": [
+        "docs/weekly.html",
+        "docs/assets/weekly.css",
+        "docs/assets/motion-v11.css"
+      ],
+      "prototype": null,
+      "screenshots": {
+        "mobile390": null,
+        "desktop1440": null
+      },
+      "componentSpec": null,
+      "ownerApproval": "pending",
+      "deliveryStatus": "not_started"
+    },
+    {
+      "id": "recap",
+      "title": "Discord match recap / next map",
+      "source": [
+        "src/recap_card.py",
+        "src/discord_layout.py"
+      ],
+      "prototype": null,
+      "screenshots": {
+        "mobile390": null,
+        "desktop1440": null
+      },
+      "componentSpec": null,
+      "ownerApproval": "pending",
+      "deliveryStatus": "not_started"
+    },
+    {
+      "id": "activity",
+      "title": "Recorded match activity / heatmap",
+      "source": [
+        "docs/activity.html"
+      ],
+      "prototype": null,
+      "screenshots": {
+        "mobile390": null,
+        "desktop1440": null
+      },
+      "componentSpec": null,
+      "ownerApproval": "pending",
+      "deliveryStatus": "not_started"
+    }
+  ],
+  "designTokensFile": null,
+  "designReviewerNote": "The independent designer must supply editable HTML/CSS/JS, actual screenshot exports and exact specifications. No owner approvals have been issued."
+}
