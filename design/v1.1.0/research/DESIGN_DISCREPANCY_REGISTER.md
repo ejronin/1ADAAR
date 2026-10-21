@@ -1,0 +1,20 @@
+# 1ADAAR v1.1.0 — Prioritized IA/UX/UI discrepancy register
+
+**Baseline staging commit:** 26da372ea9c076bfe3751a0716ee8382161e811d. Findings are source-supported design discrepancies; the hosted final rendering and owner sign-off are separate checks.
+
+| Screen | Component | Current / risk | Candidate correction | Severity | Production-bound files | QA test |
+|---|---|---|---|---|---|---|
+| Home | Hero, laser, 1AD sheen | Motion staged but geometry must remain conformal to circular emblem | Preserve original SVG and hero; 1.5px one-shot perimeter trace; alpha-masked sheen, no square overlay | HIGH | docs/index.html, docs/assets/motion-v11.css | Once-only 1450+1100ms, reduced motion |
+| Home | Equal-value summary tiles | Mixed site status and saved-match source labels | One clean source-dated briefing with neutral unavailable states | HIGH | docs/index.html, docs/js/app.js | No fake activity or last winner |
+| Player | Win donut center | Excess visual weight and inconsistent ring style | 140–165px diameter, 11px stroke ring & track, center 27px | HIGH | docs/js/player-snapshot.js, docs/assets/player-v11.css | 27/48=56.25%; exact denominator visible |
+| Player | Steam profile | ID matching/appearance requires source audit | Circle 88px desktop, 65px phone, genuine optional Steam avatar or initial | HIGH | docs/players.html, docs/js/players.js | Unique SteamID match, no public credentials |
+| Player | Career metrics | Redundant equal-weight numeric tiles | Four prominent career values; three secondary; win rate only in donut | HIGH | docs/assets/players.css, docs/players.html | Every original KPI retained |
+| Player | Performance tabs | K/D chart semantics easily confused with all-time ratio | Five source-explicit tabs covering raw K/D, raw counts, rolling K/D, five-match mean counts, tracked career snapshots | BLOCKER | docs/js/performance.js, performance-core.js | 32 demo samples, exact-value table, Last N acts on points only |
+| Player | K/D by map | Raw numeric cards don't support ranking | Dotplot with visible N and 0-deaths edge case | MEDIUM | docs/js/map-team.js and players.js | Order, sample counts, unknown rates |
+| Map/team | Faction identity | Redundant faction legend | Keep source SVGs only in rows; no duplicate explanation | MEDIUM | docs/js/map-team.js | Exact Lonestar/Valkyra/Manticore files |
+| Map/team | Outcome semantics | Similar-looking bars may mean appearances or win rate | W/L/D fingerprint and stacked composition, explicit denominators | HIGH | docs/map-team.html, docs/assets/map-team.css | Unknown result not coerced into loss |
+| Weekly | Podium | Rank/crown alignment needs consistent weight | Identical #1/#2/#3 typography, smaller crown between 1 and actual picture only when eligible | HIGH | docs/weekly.html, docs/assets/motion-v11.css | Empty real podium has no fake players |
+| Recap | Report design family | Python card and Discord native shell may differ | Branded 1080px Pillow/CairoSVG PNG and restrained Components V2 text/link | HIGH | src/recap_card.py, src/discord_layout.py | Actual generated PNG and native Discord client later |
+| Activity | Heatmap | Current 0 recorded matches; easily confused with player hours | Explicit server-wide match starts, zero evidence state and separate gated player-session design | BLOCKER | docs/activity.html, docs/js/activity.js | Zero grid no artificial glowing squares |
+| Activity | Six-role chart | No role fields documented | Unfilled labeled radar with no invented polygons | BLOCKER | future module | Verified role-level source needed before fill |
+| Global | Strokes/spacing | Incremental CSS sources produce inconsistent geometry | One design token set and 1px borders, 2.5px graph strokes, 11px ring, 44px controls | HIGH | shared CSS and respective production styles | 320/375/390/768/1024/1440 visual acceptance |
