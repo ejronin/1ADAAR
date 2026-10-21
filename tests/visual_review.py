@@ -59,6 +59,47 @@ async def capture():
                 assert measurements["table"]
                 assert not errors, f"JavaScript exceptions at {width}px: {errors}"
                 await page.close()
+                # Also inspect the live WARCON-backed player lookup surface,
+                # with no fake data injected into the browser or source files.
+                real=await browser.new_page(viewport={"width":width,"height":900},device_scale_factor=1)
+                real_errors=[]
+                real.on("pageerror",lambda error:real_errors.append(str(error)))
+                await real.goto(origin+"/players.html",wait_until="domcontentloaded",timeout=30000)
+                await real.wait_for_timeout(1600)
+                await real.screenshot(path=str(ARTIFACT/f"players-search-{width}px.png"),
+                                      full_page=True,animations="disabled")
+                real_overflow=await real.evaluate("document.documentElement.scrollWidth-innerWidth")
+                assert real_overflow<=2, f"Search page horizontal overflow at {width}px: {real_overflow}"
+                # When captured public data is present, exercise the entire
+                # lookup → true profile → chart → saved match chain.
+                usable=await real.evaluate("""() => {
+                  try {return typeof publicState!=='undefined' &&
+                    publicState.ready&&publicState.players.length>0} catch(_){return false}
+                }""")
+                if usable:
+                    player_name=await real.evaluate("publicState.players[0].name")
+                    await real.locator("#player-query").fill(player_name)
+                    await real.locator("#player-search button[type='submit']").click()
+                    if await real.locator("#player-candidates .candidate").count():
+                        await real.locator("#player-candidates .candidate").first.click()
+                    await real.locator("#dossier").wait_for(state="visible",timeout=15000)
+                    await real.locator("#player-snapshot .profile-win-donut").wait_for(timeout=15000)
+                    await real.screenshot(path=str(ARTIFACT/f"players-profile-{width}px.png"),
+                                          full_page=True,animations="disabled")
+                    actual=await real.evaluate("""() => ({
+                      primary:document.querySelectorAll('#profile-metrics .metric-tile').length,
+                      secondary:document.querySelectorAll('#profile-secondary .career-secondary-card').length,
+                      donuts:document.querySelectorAll('#player-snapshot .profile-win-donut').length,
+                      insights:document.querySelectorAll('#player-snapshot .snapshot-insight').length,
+                      overflow:document.documentElement.scrollWidth-innerWidth,
+                      share:!!document.querySelector('#share-player')
+                    })""")
+                    assert actual["primary"]==4 and actual["secondary"]==3
+                    assert actual["donuts"]==1 and actual["insights"]==2 and actual["share"]
+                    assert actual["overflow"]<=2, f"Live profile overflow {width}px: {actual}"
+                    report.setdefault("realProfiles",[]).append({"width":width,**actual})
+                assert not real_errors, f"Real player page errors at {width}: {real_errors}"
+                await real.close()
             # Track keyboard accessibility with ordinary tab traversal on a narrow viewport.
             page=await browser.new_page(viewport={"width":390,"height":844})
             await page.goto(origin+"/playerone-demo.html",wait_until="domcontentloaded",timeout=30000)
