@@ -1,6 +1,6 @@
 # 1ADAAR v1.1.0 — digital IA/UX/UI handoff
 
-**Status: empty handoff workspace — awaiting independent engineer's actual mockups.** This repository branch is NOT the approved final design. Production `main` is untouched.
+**Status: EDITABLE DESIGN CANDIDATES COMMITTED — browser screenshot capture in progress; owner approval PENDING.** Source is a proposed direction, NOT the approved final design. Production `main` and staging implementation are untouched.
 
 ## Where to work
 
@@ -18,17 +18,17 @@ Baseline staging commit: `26da372ea9c076bfe3751a0716ee8382161e811d`.
 design/v1.1.0/
   README.md                  — this handoff protocol
   screen-manifest.json       — status, code target and exact links per screen
-  tokens.template.json       — must become approved tokens.final.json
-  component-spec-template.md — per-component acceptance format
+  tokens.template.json       — starter reference; candidate tokens.final.json now included
+  component-spec-template.md — starter reference; components/COMPONENT_IMPLEMENTATION_SPEC.md now included
   prototypes/
-    index.html               — review portal; add REAL clickable visual prototypes
-    home.html                — homepage visual source (to be created)
-    player.html              — player dossier + charts (to be created)
-    map-team.html            — map/faction views (to be created)
-    weekly.html              — awards/podium + real empty state (to be created)
-    recap.html               — Discord recap representation (to be created)
-    shared.css               — common prototype CSS source (to be created)
-    shared.js                — interactive demo only when needed (to be created)
+    index.html               — active owner review portal with six editable prototypes
+    home.html                — editable homepage design candidate
+    player.html              — editable profile, charts and user identity
+    map-team.html            — editable map/faction outcome comparison
+    weekly.html              — verified empty podium + isolated fictional crown
+    recap.html               — editable Discord message composition
+    shared.css               — shared production-target visual tokens and styling
+    shared.js                — source-labeled interactive charts and controls
   components/
     README.md                — individual editable donut, podium, etc
   screenshots/
@@ -79,4 +79,18 @@ Optional review UI (source branch through a third-party proxy, **not** productio
 
 Code and changes: GitHub draft PR from `design/v1.1.0-ia-handoff` into `staging/v2.0-foundation`. Screenshots included under `design/v1.1.0/screenshots/` and linked by the manifest.
 
-The review site is a *skeleton* until the designer adds editable prototypes, working component files, and documented screenshots. **Do not advertise these placeholders as approved mockups.**
+The review site now contains six real editable design candidates, shared CSS/JS, source-gated chart research, and exact component specs. The branch-scoped GitHub Actions screenshot workflow must generate actual Chromium captures and update the manifest before the digital package is ready for owner review. **Design delivery does not imply owner approval or staging implementation.**
+
+## Chart research and high-end rendering decisions
+
+- See `research/CHART_METHODS_AND_FIELD_GATE.md` for the decision inventory: paired dumbbells, ranked dot plots, outcome fingerprints, score-lead timelines, time heatmaps, cohort matrices, and a properly unfilled six-role progression radar.
+- This is a **custom HTML/CSS/SVG/JS visual system** with no Bootstrap template; it is compatible with static GitHub Pages. Python Pillow/CairoSVG produces the deterministic high-resolution Discord image proof, while matplotlib is suitable for optional offline research. Kivy/Tkinter serve desktop GUI applications and are not useful for a static web/Discord-image pipeline.
+- `tools/render_screenshots.py` renders real desktop/mobile browser PNGs at 390px and 1440px for each of the six prototypes and tests 320/375/390/768/1024/1440 widths. `tools/render_recap_proof.py` generates a separate 1080px genuine Python raster design illustration. Both scripts are design-only, do not call WARCON, RCON or Discord, and never alter staging or production.
+- The workflow `.github/workflows/design-handoff-screenshots.yml` only runs against `design/v1.1.0-ia-handoff`; if successful it commits images and updates `screen-manifest.json` on that same branch. Any QA failure is a blocker, not an approved package.
+
+## Data design caveats
+
+- Saved server activity is a heatmap of captured *completed-match starts*, not personal time online. Staging's checked-in data is zero; genuine cells remain neutral until recorded matches exist. The prototype's fictional heatmap toggle exists for design evaluation only.
+- Full personal session activity requires authorized private WARCON data beyond the current bounded recent dossier; do not place privileged RCON credentials in GitHub Pages or imply verified identity from pictures.
+- Six role progression levels are not present in inspected WDRCON/WARCON schemas. The proposed radar intentionally contains no made-up player polygon.
+- Owner approval for any named screen is the required gate before implementation engineering ports the design into staging. Native Discord mobile/desktop rendering remains an implementation acceptance gate.
