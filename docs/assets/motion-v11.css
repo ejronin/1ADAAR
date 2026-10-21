@@ -39,11 +39,21 @@
   opacity:0;transform:rotate(-120deg);
   filter:drop-shadow(0 0 7px #52f887);
   animation:logo-orbit-once 1.35s ease-out 2.3s 1 both}
+/* Exact-pixel emblem glint: use the untouched original SVG's alpha as mask.
+   No circle/rectangle clipping; the sweep is visible only over painted 1AD pixels.
+   The overlay matches the actual <img> bounds and never extends beyond them. */
 .hero-logo-halo::after{content:"";position:absolute;z-index:3;pointer-events:none;
-  inset:6%;border-radius:50%;clip-path:circle(50% at 50%);
-  background:linear-gradient(112deg,transparent 32%,rgba(212,255,223,.05) 42%,
-    rgba(237,255,240,.52) 50%,rgba(139,255,180,.12) 55%,transparent 66%);
-  opacity:0;transform:translateX(-140%);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  width:88%;max-width:235px;aspect-ratio:1;
+  -webkit-mask-image:url("1ad-logo.svg");mask-image:url("1ad-logo.svg");
+  -webkit-mask-mode:alpha;mask-mode:alpha;
+  -webkit-mask-position:center;mask-position:center;
+  -webkit-mask-size:100% 100%;mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  background:linear-gradient(105deg,transparent 37%,rgba(239,255,242,.06) 45%,
+    rgba(255,255,255,.93) 50%,rgba(129,252,166,.35) 55%,transparent 63%);
+  background-size:330% 100%;background-position:100% 50%;
+  opacity:0;
   animation:logo-glint-once 1.25s cubic-bezier(.2,.7,.15,1) 2.46s 1 both}
 @keyframes logo-orbit-once{
   0%{opacity:0;transform:rotate(-120deg)}
@@ -51,17 +61,23 @@
   74%{opacity:.9}
   100%{opacity:0;transform:rotate(240deg)}}
 @keyframes logo-glint-once{
-  0%{transform:translateX(-140%);opacity:0}
-  15%{opacity:.87}
-  80%{opacity:.68}
-  100%{transform:translateX(140%);opacity:0}}
+  0%{background-position:100% 50%;opacity:0}
+  15%{opacity:.95}
+  80%{opacity:.86}
+  100%{background-position:0% 50%;opacity:0}}
 /* Weekly champion adornment is NEVER enabled by empty placeholders.
    Only rendering a verified eligible winner should set data-award-verified=true. */
-.weekly-podium-place.gold{position:relative}
+/* Reserve a separate header area for rank; its badge can never cover the crown.
+   Keep the number visible even when the real podium has no verified winner. */
+.weekly-podium-place.gold{position:relative;padding-top:60px}
+.weekly-podium-place.gold .weekly-rank{
+  position:absolute;top:12px;right:12px;z-index:2;display:grid;place-items:center;
+  width:34px;height:34px;line-height:1;font-size:23px;
+  border:1px solid #d8b16e;border-radius:50%;background:#33291d;color:#ffe5ad}
 .weekly-podium-place.gold .weekly-crown{display:none}
 .weekly-podium-place.gold[data-award-verified="true"] .weekly-crown{
   position:relative;z-index:2;display:grid;place-items:center;
-  width:56px;height:42px;margin:-18px auto -3px;color:#f5d88c;
+  width:56px;height:42px;margin:0 auto 4px;color:#f5d88c;
   opacity:0;transform:translateY(9px) scale(.87);
   filter:drop-shadow(0 0 9px #eebc6060);
   animation:weekly-crown-arrive .8s cubic-bezier(.16,.89,.18,1.15) 1.05s 1 forwards}
@@ -111,6 +127,8 @@
     display:grid;place-items:center;pointer-events:none}
   .hero.motion-hero .hero-logo-halo{width:136px;height:136px}
   .hero.motion-hero .hero-logo-halo .hero-logo{width:90%}
+  .hero.motion-hero .hero-logo-halo::after{width:90%}
+  .weekly-podium-place.gold .weekly-rank{right:8px;top:10px}
 }
 @media(prefers-reduced-motion:reduce){
   .hero-laser-trace,.hero-laser-head,.hero-logo-halo::before,
