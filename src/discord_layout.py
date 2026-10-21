@@ -28,12 +28,12 @@ def match_recap(match: dict) -> dict:
         "flags": V2_FLAG,
         "components": [
             {"type": 17, "accent_color": color, "components": [
-                {"type": 10, "content": "## MATCH RECAP"},
+                {"type": 10, "content": "## AFTER ACTION REPORT"},
                 {"type": 12, "items": [{
                     "media": {"url": "attachment://match-recap.png"},
                     "description": "WARDOGS completed match results with game map, mode, faction scores and verified awards"
                 }]},
-                {"type": 10, "content": "We'll post the next map and conditions here shortly, once confirmed."},
+                {"type": 10, "content": "Next map and conditions will be posted separately, only if WARCON confirms them."},
             ]},
             _button(SITE_URL + "#match-" + str(ident), "See more on 1ADAAR")
         ],
