@@ -65,10 +65,10 @@ class TestCollector(unittest.TestCase):
         self.assertNotIn('content',payload)
         layout=payload['components'][0]
         self.assertEqual(layout['type'],17)
-        self.assertEqual(layout['components'][0]['content'],'## MATCH RECAP')
+        self.assertEqual(layout['components'][0]['content'],'## AFTER ACTION REPORT')
         self.assertEqual(layout['components'][1]['type'],12)
         self.assertIn('attachment://match-recap.png',json.dumps(layout))
-        self.assertIn("We'll post the next map",json.dumps(layout))
+        self.assertIn("only if WARCON confirms",json.dumps(layout))
         self.assertEqual(payload['components'][1]['components'][0]['url'],
                          f"{recap.SITE_URL}#match-812")
         self.assertEqual(payload['allowed_mentions'],{'parse':[]})
