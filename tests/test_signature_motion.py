@@ -38,6 +38,15 @@ class SignatureMotionTests(unittest.TestCase):
         self.assertFalse(any("infinite" in a for a in finite))
         self.assertIn('.weekly-podium-place.gold .weekly-crown{display:none}', css)
         self.assertIn('data-award-verified="true"', css)
+        # The circular portrait sheen starts at .12s, ends at .97s;
+        # the crown must not start until AFTER that orbit is complete.
+        self.assertIn('animation:champion-avatar-orbit-once .85s ease-out .12s 1 both', css)
+        self.assertIn('animation:weekly-crown-arrive .8s cubic-bezier(.16,.89,.18,1.15) 1.05s 1 forwards', css)
+        # Replaying the crown must also restart its avatar sheen, not just the crown.
+        self.assertIn('.motion-replay .weekly-avatar::before{animation:none!important}', css)
+        # The original 1AD emblem stays legible on narrow viewports, instead
+        # of appearing semi-transparent underneath the hero headline.
+        self.assertIn('.hero.motion-hero .hero-graphic{position:relative;top:auto;right:auto;', css)
 
     def test_weekly_production_bound_podium_has_no_winner_or_crown(self):
         html = (DOCS / "weekly.html").read_text()
