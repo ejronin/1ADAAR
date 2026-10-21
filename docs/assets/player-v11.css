@@ -142,3 +142,19 @@
  .player-page .perf-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
  .player-page .perf-summary>.perf-mini-stat:nth-child(3){grid-column:1/-1}
 }
+
+
+/* Direct IA link: clearly server-level recorded match starts, never a personal activity trace. */
+.profile-activity-link{display:flex;justify-content:space-between;align-items:center;gap:17px;
+ margin:6px 0 22px;padding:17px 20px;border:1px solid #39634a;border-left:3px solid #78dea0;
+ border-radius:7px;background:linear-gradient(105deg,#1b3021,#142119)}
+.profile-activity-link>div{min-width:0}
+.profile-activity-link strong{display:block;color:#e6fff0;font-size:16px;font-weight:800}
+.profile-activity-link p{max-width:710px;color:#c1dfc9;font-size:13px;line-height:1.6;margin:6px 0 0}
+.profile-activity-link a{display:inline-flex;align-items:center;justify-content:center;flex:none;
+ min-height:45px;padding:11px 16px;border:1px solid #68be84;border-radius:5px;
+ background:#274631;color:#e6ffea;font-size:13px;font-weight:800;text-decoration:none}
+.profile-activity-link a:hover{background:#335c3f}
+.profile-activity-link a:focus-visible{outline:3px solid #c4ffd7;outline-offset:3px}
+@media(max-width:720px){.profile-activity-link{flex-direction:column;align-items:stretch;padding:14px}
+ .profile-activity-link a{width:100%}}
