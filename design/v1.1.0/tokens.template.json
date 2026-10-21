@@ -1,0 +1,58 @@
+{
+  "status": "TEMPLATE_NOT_APPROVED",
+  "howToUse": "IA designer must fill measurable values and save proposed version as tokens.final.json only after owner approves. Never imply candidate values are approved.",
+  "typefaces": {
+    "display": null,
+    "body": null,
+    "numeric": null
+  },
+  "typeScalePx": {
+    "heroTitle": null,
+    "sectionTitle": null,
+    "metricValue": null,
+    "body": null,
+    "caption": null,
+    "chartCenterValue": null,
+    "chartCenterLabel": null
+  },
+  "weights": {
+    "metric": null,
+    "chartCenter": null,
+    "body": null
+  },
+  "strokesPx": {
+    "cardBorder": null,
+    "chartGrid": null,
+    "chartDataLine": null,
+    "donutRing": null,
+    "avatarOutline": null,
+    "separator": null
+  },
+  "geometryPx": {
+    "cardRadius": null,
+    "buttonRadius": null,
+    "donutDiameter": null,
+    "donutCenterSpacing": null,
+    "kpiGap": null
+  },
+  "spacingScalePx": [],
+  "colors": {
+    "background": null,
+    "surface": null,
+    "text": null,
+    "secondaryText": null,
+    "analyticsAccent": null,
+    "kills": null,
+    "deaths": null,
+    "awardGold": null,
+    "awardSilver": null,
+    "awardBronze": null
+  },
+  "breakpointsPx": [],
+  "motion": {
+    "heroTraceMs": null,
+    "emblemSheenMs": null,
+    "crownFadeMs": null,
+    "reducedMotionFallback": null
+  }
+}
