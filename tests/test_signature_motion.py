@@ -16,7 +16,7 @@ class SignatureMotionTests(unittest.TestCase):
         self.assertIn('class="hero-laser-head"', html)
         self.assertIn('class="hero-logo-halo"', html)
         self.assertIn('src="assets/1ad-logo.svg"', html)
-        self.assertIn('href="assets/motion-v11.css?v=1"', html)
+        self.assertIn('href="assets/motion-v11.css?v=2"', html)
         self.assertNotIn("fictional-match-result", html)
 
     def test_one_time_sequenced_effects_are_optional_and_accessible(self):
@@ -38,6 +38,18 @@ class SignatureMotionTests(unittest.TestCase):
         self.assertFalse(any("infinite" in a for a in finite))
         self.assertIn('.weekly-podium-place.gold .weekly-crown{display:none}', css)
         self.assertIn('data-award-verified="true"', css)
+        # The metallic sweep must be masked to the original 1AD SVG's alpha,
+        # not clipped to a rectangular/circular element around the logo.
+        self.assertIn('-webkit-mask-image:url("1ad-logo.svg");mask-image:url("1ad-logo.svg")', css)
+        self.assertIn('width:88%;max-width:235px;aspect-ratio:1', css)
+        self.assertIn('.hero.motion-hero .hero-logo-halo::after{width:90%}', css)
+        self.assertNotIn('clip-path:circle(50% at 50%)', css)
+        self.assertIn('background-position:0% 50%', css)
+        # Keep first-place ranking separate from the crown even at 320px.
+        self.assertIn('.weekly-podium-place.gold .weekly-rank{', css)
+        self.assertIn('position:relative;padding-top:60px', css)
+        self.assertIn('width:56px;height:42px;margin:0 auto 4px', css)
+        self.assertNotIn('margin:-18px auto -3px', css)
         # The circular portrait sheen starts at .12s, ends at .97s;
         # the crown must not start until AFTER that orbit is complete.
         self.assertIn('animation:champion-avatar-orbit-once .85s ease-out .12s 1 both', css)
