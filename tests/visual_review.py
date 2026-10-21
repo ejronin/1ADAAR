@@ -133,7 +133,18 @@ async def capture():
                 motion.on("pageerror",lambda error:motion_errors.append(str(error)))
                 await motion.goto(origin+"/motion-review.html",wait_until="domcontentloaded",timeout=30000)
                 await motion.locator(".hero-laser-trace").wait_for(timeout=15000)
-                await motion.wait_for_timeout(3200)
+                if width==1440:
+                    # Preserve actual in-flight frames, not screenshots with
+                    # animations disabled, so owner can inspect the requested sequence.
+                    await motion.wait_for_timeout(800)
+                    await motion.screenshot(path=str(ARTIFACT/"hero-laser-in-flight-1440px.png"),
+                                            full_page=False)
+                    await motion.wait_for_timeout(1900)
+                    await motion.screenshot(path=str(ARTIFACT/"1ad-logo-sheen-in-flight-1440px.png"),
+                                            full_page=False)
+                    await motion.wait_for_timeout(500)
+                else:
+                    await motion.wait_for_timeout(3200)
                 await motion.screenshot(path=str(ARTIFACT/f"motion-review-{width}px.png"),
                                         full_page=True,animations="disabled")
                 motion_info=await motion.evaluate("""() => ({
