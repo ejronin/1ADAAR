@@ -1,10 +1,7 @@
 
 'use strict';
 /* Read-only fixture charts: no service calls, identities, credentials or fake live source. */
-const data={
- kills:[14,19,13,24,17,26,11,29,21,18,15,31,19,17,26,12,22,20,27,14,16,24,29,18,22,17,33,14,25,21,18,29],
- deaths:[10,14,16,12,15,10,18,12,8,15,13,11,14,18,12,16,11,12,15,19,14,10,9,13,12,17,11,14,13,9,16,12],
- maps:['Bakurani','Ozeti','Zestafona'],teams:['Lonestar','Valkyra','Manticore']};
+const data={kills:[],deaths:[],career:[],maps:['Bakurani','Ozeti','Zestafona'],teams:['Lonestar','Valkyra','Manticore']};
 const $=q=>document.querySelector(q), $$=q=>[...document.querySelectorAll(q)];
 const svg=(tag,attrs={},text='')=>{const node=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs))node.setAttribute(k,String(v));if(text)node.textContent=text;return node;};
 const format=x=>Number(x).toFixed(2);
@@ -22,7 +19,7 @@ function initPlayer(){
   const n=Number(pick.value),offset=Math.max(0,data.kills.length-n),kills=data.kills.slice(offset),deaths=data.deaths.slice(offset),d=data.kills.length;
   const kd=kills.map((k,i)=>deaths[i]===0?k:k/deaths[i]),allrolling=data.kills.map((_,i)=>i<4?null:data.kills.slice(i-4,i+1).reduce((a,b)=>a+b,0)/Math.max(1,data.deaths.slice(i-4,i+1).reduce((a,b)=>a+b,0))),roll=allrolling.slice(offset);
   const avgK=data.kills.map((_,i)=>i<4?null:data.kills.slice(i-4,i+1).reduce((a,b)=>a+b,0)/5).slice(offset),avgD=data.deaths.map((_,i)=>i<4?null:data.deaths.slice(i-4,i+1).reduce((a,b)=>a+b,0)/5).slice(offset);
-  const snapshots=data.kills.map((_,i)=>data.kills.slice(0,i+1).reduce((a,b)=>a+b,0)/Math.max(1,data.deaths.slice(0,i+1).reduce((a,b)=>a+b,0))).slice(offset);
+  const snapshots=data.career.slice(offset);
   const legendItems=active==='kills'?[['Kills','#86f4a4'],['Deaths','#f5c84b']]:active==='kd'?[['Match K/D','#86f4a4']]:active==='rolling'?[['Five-match rolling K/D','#86f4a4']]:active==='averages'?[['Five-match avg kills','#86f4a4'],['Five-match avg deaths','#f5c84b']]:[['Tracked career K/D','#86f4a4']];
   const specs=active==='kills'?[{values:kills,color:'#86f4a4'},{values:deaths,color:'#f5c84b'}]:active==='kd'?[{values:kd,color:'#86f4a4'}]:active==='rolling'?[{values:roll,color:'#86f4a4'}]:active==='averages'?[{values:avgK,color:'#86f4a4'},{values:avgD,color:'#f5c84b'}]:[{values:snapshots,color:'#86f4a4'}];
   cartesian(host,specs,Array.from({length:n},(_,i)=>String(offset+i+1)),legendItems.map(x=>x[0]).join(' versus ')+' over '+n+' fictional observations');
@@ -31,7 +28,29 @@ function initPlayer(){
   const fields=active==='kills'?[kills,deaths]:active==='averages'?[avgK,avgD]:active==='kd'?[kd]:active==='rolling'?[roll]:[snapshots];
   table.innerHTML='<tr><th>Observation</th>'+legendItems.map(x=>'<th>'+x[0]+'</th>').join('')+'</tr>'+Array.from({length:n},(_,i)=>'<tr><td>'+String(offset+i+1)+'</td>'+fields.map(f=>'<td>'+((f[i]===null||!Number.isFinite(f[i]))?'—':format(f[i]))+'</td>').join('')+'</tr>').join('');
  }
- for(const tab of tabs)tab.addEventListener('click',()=>{active=tab.dataset.trend;for(const b of tabs)b.setAttribute('aria-pressed',String(tab===b));render()});pick.addEventListener('change',render);render();
+ for(const tab of tabs)tab.addEventListener('click',()=>{active=tab.dataset.trend;for(const b of tabs)b.setAttribute('aria-pressed',String(tab===b));render()});pick.addEventListener('change',render);
+ // Single source of truth: the existing repository PlayerOne demonstration fixture.
+ // No separate chart observations or invented historical career snapshots.
+ fetch('../../../docs/data/demo-player.json',{cache:'no-store'}).then(response=>{
+   if(!response.ok)throw Error('Original demo fixture unavailable');
+   return response.json();
+ }).then(fixture=>{
+   if(fixture.kind!=='demo-only'||fixture.fictional!==true||!Array.isArray(fixture.matches)||
+      !Array.isArray(fixture.careerHistory)||fixture.matches.length!==32||fixture.careerHistory.length!==32)
+     throw Error('Original demo fixture schema changed');
+   const sorted=fixture.matches.slice().sort((a,b)=>Date.parse(a.endedAt)-Date.parse(b.endedAt));
+   const rows=sorted.map(m=>(m.players||[]).find(p=>p.key===fixture.player.key));
+   if(rows.some(p=>!p||!Number.isFinite(p.kills)||!Number.isFinite(p.deaths)))
+     throw Error('Incomplete original demo match rows');
+   data.kills=rows.map(p=>p.kills);
+   data.deaths=rows.map(p=>p.deaths);
+   data.career=fixture.careerHistory.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(p=>p.deaths>0?p.kills/p.deaths:p.kills);
+   render();
+ }).catch(error=>{
+   host.textContent='Original PlayerOne fixture could not be loaded. Do not substitute invented chart observations.';
+   summary.textContent='Source fixture unavailable — no chart is shown.';
+   legend.replaceChildren();table.replaceChildren();
+ });
 }
 function initHeat(){
  const heat=$('#heat-cells');if(!heat)return;const mode=$('#heat-mode'),detail=$('#heat-detail'),label=$('#heat-source'),demo=$('#demo-heat'),set=$('#heat-scope');const weekdays=['MON','TUE','WED','THU','FRI','SAT','SUN'];
