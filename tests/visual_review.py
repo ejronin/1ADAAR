@@ -152,6 +152,7 @@ async def capture():
                   laser:getComputedStyle(document.querySelector('.hero-laser-trace')).animationName,
                   orbit:getComputedStyle(document.querySelector('.hero-logo-halo'),'::before').animationName,
                   crown:getComputedStyle(document.querySelector('#test-champion .weekly-crown')).display,
+                  championSheen:getComputedStyle(document.querySelector('#test-champion .weekly-avatar'),'::before').animationName,
                   logo:document.querySelector('.hero-logo-halo img')?.getAttribute('src'),
                   mainSource:document.querySelector('.lab-banner')?.textContent
                 })""")
@@ -159,6 +160,7 @@ async def capture():
                 assert "laser-outline-once" in motion_info["laser"]
                 assert "logo-orbit-once" in motion_info["orbit"]
                 assert motion_info["crown"]=="grid"
+                assert "champion-avatar-orbit-once" in motion_info["championSheen"]
                 assert motion_info["logo"]=="assets/1ad-logo.svg"
                 assert "STAGING-ONLY" in motion_info["mainSource"]
                 await motion.goto(origin+"/weekly.html",wait_until="domcontentloaded",timeout=30000)
@@ -184,10 +186,12 @@ async def capture():
               laser:getComputedStyle(document.querySelector('.hero-laser-trace')).animationName,
               orbit:getComputedStyle(document.querySelector('.hero-logo-halo'),'::before').animationName,
               crown:getComputedStyle(document.querySelector('#test-champion .weekly-crown')).animationName,
-              crownVisible:getComputedStyle(document.querySelector('#test-champion .weekly-crown')).display
+              crownVisible:getComputedStyle(document.querySelector('#test-champion .weekly-crown')).display,
+              championSheen:getComputedStyle(document.querySelector('#test-champion .weekly-avatar'),'::before').animationName
             })""")
             assert reduced_styles["laser"]=="none" and reduced_styles["orbit"]=="none",reduced_styles
             assert reduced_styles["crown"]=="none" and reduced_styles["crownVisible"]=="grid",reduced_styles
+            assert reduced_styles["championSheen"]=="none",reduced_styles
             report["reducedMotion"]=reduced_styles
             await reduced.close()
             # Track keyboard accessibility with ordinary tab traversal on a narrow viewport.
