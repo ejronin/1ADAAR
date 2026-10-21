@@ -105,3 +105,40 @@
  #dossier .breakdown-row{grid-template-columns:minmax(0,1fr) 67px 73px}
  #dossier .breakdown-row>span,#dossier .breakdown-row em{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.donut-progress{transition:none}}
+
+/* Screenshot-led mobile refinement: remove nav sprawl and reclaim first-screen space. */
+.player-page .player-nav-links{display:flex;flex-direction:column}
+@media(max-width:720px){
+ .player-page .rail{padding:9px 12px 11px;min-height:0;display:block}
+ .player-page .rail .brand{padding:2px 0 8px;margin:0}
+ .player-page .rail .brand-emblem{width:39px;height:39px}
+ .player-page .rail-label,.player-page .rail-footer{display:none}
+ .player-page .player-nav-links{display:flex;flex-direction:row;gap:7px;overflow-x:auto;overflow-y:hidden;
+   max-width:100%;padding:4px 2px 7px;scrollbar-width:thin;scrollbar-color:#46845b #14231a;
+   -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+ .player-page .player-nav-links .nav{display:inline-flex;flex:none;gap:8px;align-items:center;
+   min-height:44px;white-space:nowrap;font-size:12px;padding:10px 13px;border:1px solid #355941;
+   border-radius:5px;background:#17241b}
+ .player-page .player-nav-links .nav.active{background:#244330;border-color:#71c88e}
+ .player-page .player-nav-links .nav-glyph{font-size:14px}
+ .player-page .player-hero{min-height:0;margin:12px 0 15px}
+ .player-page .player-hero .hero-text{padding:22px 21px}
+ .player-page .player-hero h1{font-size:clamp(38px,10.5vw,54px);line-height:1}
+ .player-page .player-hero p{font-size:14px;line-height:1.6}
+ .player-page #dossier .profile-header{display:grid;grid-template-columns:62px minmax(0,1fr);
+   gap:10px;padding:15px;align-items:start}
+ .player-page #dossier .profile-heading{min-width:0}
+ .player-page #dossier .profile-heading h2{font-size:33px;margin:4px 0}
+ .player-page #dossier .profile-heading .eyebrow{font-size:10.5px;letter-spacing:0}
+ .player-page #dossier .profile-subtitle{font-size:11.5px}
+ .player-page #dossier .profile-emblem{height:55px;width:55px}
+ .player-page #dossier .profile-actions{grid-column:1/-1;display:flex;width:100%;margin-top:0}
+ .player-page #dossier .profile-actions .new-search{flex:1;font-size:12px}
+ .player-page #dossier .demo-warning{font-size:10.5px;padding:7px 8px;line-height:1.4}
+ .player-page .perf-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+ .player-page .perf-tab{font-size:12px;line-height:1.35;padding:10px 6px}
+}
+@media(max-width:420px){
+ .player-page .perf-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .player-page .perf-summary>.perf-mini-stat:nth-child(3){grid-column:1/-1}
+}
