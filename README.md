@@ -10,6 +10,8 @@
 
 **Privacy:** SteamID64 values, RCON passwords, Discord webhook URLs and administrative logs do not belong in the public website. Player names, totals and hashed lookup keys are intentionally public; hashed keys are pseudonymous, **not truly anonymous**. Anyone with access to GitHub can view files committed to this public repository, even if they aren't linked on the website.
 
+**Steam player pictures (optional):** A real player's dossier can show their public Steam profile picture when an administrator configures the **optional** `STEAM_WEB_API_KEY` GitHub Actions secret. The collector obtains `avatarfull` in batches from Steam's `ISteamUser/GetPlayerSummaries/v2` endpoint, validates Steam CDN image URLs, and caches positive/negative results for at least 24 hours. Without the key or a usable avatar, a circular initial is shown; no player is given a fabricated portrait. Raw Steam IDs and the Steam key remain in the Actions process and are not written to Pages data. **An identifiable Steam picture is public identifying information** even without a displayed Steam ID, and loading the picture directly from Steam's CDN exposes the visitor's request to that CDN. This capability does not authenticate Steam account ownership and should not be used as Discord membership proof.
+
 **Want technical setup or maintainer details?** Everything below this section is documentation for administrators and contributors.
 
 ---
@@ -25,6 +27,15 @@ Production-oriented static dashboard and scheduled Discord recap workflow for th
 - Data source: `https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342/matches`
 - Repository: `https://github.com/ejronin/1ADAAR`
 - This project does **not** require the game's RCON password, 1OF1 login, WARCON API key, or a running personal computer.
+
+## Optional Steam profile-picture setup
+
+1. Obtain a Steam Web API user authentication key through Steam's official process; **do not** place it in a file or a GitHub issue.
+2. In GitHub repository **Settings → Secrets and variables → Actions**, add a secret named `STEAM_WEB_API_KEY`. No personal computer or paid hosting service is required.
+3. Once the code passes review and is released, the normal ten-minute collector will fill up to 200 expired/missing avatar records per full collection, refreshing each record at most once per 24 hours during successful Steam availability. Non-avatar collection and Discord delivery continue when the key is absent or Steam is down.
+4. Verify that an actual player profile loads the correct public image by ID, and that a non-returning Steam profile displays its initial. Test the result in the published GitHub Pages browser, not only in an isolated local mockup.
+
+Steam artwork is shown as provided by Steam, without alteration or implying a Steam account is verified. No raw SteamID or secret is published.
 
 ## One-time deployment checklist
 

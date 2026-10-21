@@ -27,7 +27,33 @@ function loadCareer(key) {
   return historyCache.get(shard).then(doc=>
     doc&&doc.schemaVersion===1&&doc.players&&Array.isArray(doc.players[key])?doc.players[key]:[]);
 }
-function openProfile(entry){publicState.selected=entry;const detailed=$('map-team-details');detailed.hidden=!!entry.demo||!(/^[a-f0-9]{64}$/.test(entry.key));if(!detailed.hidden)detailed.href='map-team.html?player='+encodeURIComponent(entry.key);$('demo-warning').hidden=!entry.demo;$('profile-source-text').textContent=entry.demo?'SAMPLE PLAYER / MADE-UP STATS':'PLAYER STATS / FROM WARCON';$('lookup-results').hidden=true;$('dossier').hidden=false;$('lookup-message').hidden=true;$('dossier-title').textContent=entry.name;$('share-player').textContent='↗ Share '+(entry.name.length>28?entry.name.slice(0,25)+'…':entry.name)+' stats';$('share-player').setAttribute('aria-label','Share '+entry.name+' stats');$('profile-subtitle').textContent=entry.demo?`SAMPLE PLAYER • Made-up stats • Example ranking #${num(entry.rank)}`:`WARDOGS server • All-time WARCON stats • Player ranking #${num(entry.rank)}`;
+// Accept only known Steam CDN image locations and hash-based full-size avatars.
+const validSteamAvatar=url=>typeof url==='string'&&(
+  /^https:\/\/(?:steamcdn-a|steamcommunity-a)\.akamaihd\.net\/steamcommunity\/public\/images\/avatars\/[a-f0-9]{2}\/[a-f0-9]{40}_full\.jpg$/.test(url)||
+  /^https:\/\/avatars\.(?:akamai\.)?steamstatic\.com\/[a-f0-9]{40}_full\.jpg$/.test(url)
+);
+function showSteamPortrait(entry){
+ const frame=$('profile-avatar'),img=$('profile-avatar-image'),fallback=$('profile-avatar-fallback');
+ const key=entry.key;
+ img.hidden=true;img.removeAttribute('src');
+ fallback.hidden=false;
+ fallback.textContent=entry.name.trim().slice(0,1).toUpperCase()||'?';
+ frame.setAttribute('aria-label','Steam profile picture unavailable for '+entry.name+'; showing initial');
+ if(!validSteamAvatar(entry.avatar))return;
+ img.alt='Steam profile picture for '+entry.name;
+ img.onload=()=>{
+   if(publicState.selected?.key!==key)return;
+   img.hidden=false;fallback.hidden=true;
+   frame.setAttribute('aria-label','Steam profile picture for '+entry.name);
+ };
+ img.onerror=()=>{
+   if(publicState.selected?.key!==key)return;
+   img.hidden=true;fallback.hidden=false;
+   frame.setAttribute('aria-label','Steam profile picture unavailable for '+entry.name+'; showing initial');
+ };
+ img.src=entry.avatar;
+}
+function openProfile(entry){publicState.selected=entry;showSteamPortrait(entry);const detailed=$('map-team-details');detailed.hidden=!!entry.demo||!(/^[a-f0-9]{64}$/.test(entry.key));if(!detailed.hidden)detailed.href='map-team.html?player='+encodeURIComponent(entry.key);$('demo-warning').hidden=!entry.demo;$('profile-source-text').textContent=entry.demo?'SAMPLE PLAYER / MADE-UP STATS':'PLAYER STATS / FROM WARCON';$('lookup-results').hidden=true;$('dossier').hidden=false;$('lookup-message').hidden=true;$('dossier-title').textContent=entry.name;$('share-player').textContent='↗ Share '+(entry.name.length>28?entry.name.slice(0,25)+'…':entry.name)+' stats';$('share-player').setAttribute('aria-label','Share '+entry.name+' stats');$('profile-subtitle').textContent=entry.demo?`SAMPLE PLAYER • Made-up stats • Example ranking #${num(entry.rank)}`:`WARDOGS server • All-time WARCON stats • Player ranking #${num(entry.rank)}`;
  const metrics=$('profile-metrics');metrics.replaceChildren(tile('Kills',num(entry.kills)),tile('Deaths',num(entry.deaths)),tile('K/D',ratio(entry.kills,entry.deaths)),tile('Matches',num(entry.matches)),tile('Wins',num(entry.wins)),tile('Win rate',percent(entry.wins,entry.wins+entry.losses+entry.draws)),tile('Playtime',duration(entry.minutes)),tile('Seeding time',duration(entry.seedMinutes)));
  const combat=$('combat-panel');combat.hidden=!entry.hasFeed;const box=$('combat-metrics');box.replaceChildren();if(entry.hasFeed)box.append(tile('Headshots',num(entry.headshots),'WARCON combat data'),tile('Vehicle kills',num(entry.vehicleKills),'Kill feed'),tile('Best kill streak',num(entry.killStreak),'Kill feed'));
  $('player-share-status').hidden=true;const recent=profileMatches(entry.key);

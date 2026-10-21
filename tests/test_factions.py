@@ -34,6 +34,15 @@ class OfficialFactionArtworkTests(unittest.TestCase):
         self.assertIn('OneADAARFactions.label',player)
         self.assertIn('OneADAARFactions.label',app)
         self.assertIn('OneADAARFactions.identify(s.name)',app)
+    def test_faction_identity_in_weekly_report(self):
+        weekly=(ROOT/'js/weekly.js').read_text()
+        self.assertIn("OneADAARFactions.label(f.name)", weekly)
+        self.assertIn("OneADAARFactions.identify(f.name)", weekly)
+        self.assertIn("'weekly-team-entry'", weekly)
+        css=(ROOT/'assets/weekly.css').read_text()
+        self.assertIn("li.weekly-team-entry",css)
+        self.assertIn("--faction-accent",css)
+
     def test_mobile_and_contrast(self):
         css=(ROOT/'assets/factions.css').read_text()
         self.assertIn('@media(max-width:720px)',css)

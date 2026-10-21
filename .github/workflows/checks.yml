@@ -1,7 +1,7 @@
 name: Validate code and publication safety
 on:
   pull_request:
-    branches: [main]
+    branches: [main, staging/v2.0-foundation]
   push:
     branches: [main]
     paths:

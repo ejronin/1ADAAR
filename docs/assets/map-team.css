@@ -72,3 +72,15 @@
  .mt-filters{grid-template-columns:1fr;gap:10px}.mt-ring{width:130px;height:130px}}
 @media(max-width:390px){.mt-team-rings .mt-ring{width:74px;height:74px}.mt-team-rings .mt-ring strong{font-size:18px}
  .mt-team-group .faction-identity{font-size:11px;gap:3px}.mt-team-group .faction-emblem{width:17px;height:17px}}
+
+/* Official faction marks stay legible beside participation labels. */
+.mt-team-rings .mt-ring-caption .faction-identity{display:inline-flex;justify-content:center;gap:8px;font-size:13px;min-height:30px}
+.mt-team-rings .mt-ring-caption .faction-emblem{width:24px;height:24px}
+@media(max-width:390px){
+ .mt-team-rings{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:10px;row-gap:19px}
+ .mt-team-rings .mt-team-group:last-child:nth-child(odd){grid-column:1 / -1}
+ .mt-team-rings .mt-ring{width:100px;height:100px}
+ .mt-team-rings .mt-ring>strong{font-size:23px}
+ .mt-team-rings .mt-ring-caption .faction-identity{font-size:12px;gap:6px}
+ .mt-team-rings .mt-ring-caption .faction-emblem{width:22px;height:22px}
+}

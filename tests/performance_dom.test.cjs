@@ -39,7 +39,7 @@ const plot=find(host,n=>n.className==='perf-canvas');
 assert.ok(plot);
 assert.ok(find(plot,n=>n.tag==='svg'));
 const tabs=find(host,n=>n.className==='perf-tabs');
-assert.equal(tabs.children.length,3);
+assert.equal(tabs.children.length,4);
 assert.equal(tabs.children[0].attrs['aria-pressed'],'true');
 const details=find(host,n=>n.className==='perf-details');
 assert.ok(find(details,n=>n.tag==='table'));
@@ -53,6 +53,9 @@ assert.equal(tabs.children[1].attrs['aria-pressed'],'true');
 assert.ok(find(host,n=>n.textContent==='Deaths'));
 tabs.children[2].events.click();
 assert.equal(tabs.children[2].attrs['aria-pressed'],'true');
+assert.ok(find(host,n=>n.textContent==='AVG KILLS / MATCH'));
+tabs.children[3].events.click();
+assert.equal(tabs.children[3].attrs['aria-pressed'],'true');
 assert.ok(find(host,n=>n.textContent==='LATEST CAREER K/D'));
 const empty=new Node('section');
 mount(empty,{key,matches:[],career:[],demo:false});
@@ -97,6 +100,9 @@ select.value='10';select.events.change();
 const tenKills=chronological.slice(-10).reduce((sum,row)=>sum+row.players[0].kills,0);
 assert.equal(killsView.children[1].children[1].textContent,String(tenKills));
 richTabs.children[2].events.click();
+assert.match(find(fullHost,n=>n.className==='perf-coverage').textContent,/10 of 32 completed matches/);
+assert.ok(find(fullHost,n=>n.textContent==='AVG DEATHS / MATCH'));
+richTabs.children[3].events.click();
 assert.match(coverage.textContent,/10 of 32 career snapshots/);
 select.value='25';select.events.change();
 assert.match(coverage.textContent,/25 of 32 career snapshots/);
@@ -112,3 +118,11 @@ assert.match(find(midHost,n=>n.className==='perf-coverage').textContent,/17 of 1
 assert.equal(find(host,n=>n.className==='perf-window').disabled,true,
  'A real profile with six matches cannot present three indistinguishable ranges');
 console.log('32-observation chart selection, reactive summaries, career ranges and sparse-data controls passed.');
+
+// The avg chart must use actual computed data and keep the established color contract.
+richTabs.children[2].events.click();
+const avgGraph=find(fullHost,n=>n.tag==='svg');
+assert.match(avgGraph.attrs['aria-label'],/average kills and deaths/);
+assert.ok(find(avgGraph,n=>n.attrs.stroke==='#86f4a4'));
+assert.ok(find(avgGraph,n=>n.attrs.stroke==='#f5c84b'));
+console.log('K/D, raw kills/deaths, five-match averages and career snapshots preserved.');

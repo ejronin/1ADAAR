@@ -17,6 +17,11 @@ assert.equal(series[2].kd,null);
 assert.equal(series[3].kd,6);
 assert.equal(series[0].rolling,null);
 assert.equal(series[4].rolling,2.32); // (10+8+0+6+20)/(5+4+0+0+10) = 44/19
+assert.equal(series[4].avgKills,8.8);
+assert.equal(series[4].avgDeaths,3.8);
+assert.equal(series[0].avgKills,null);
+assert.equal(series[5].avgKills,9.8);
+assert.equal(series[5].avgDeaths,3.8);
 assert.equal(series[5].rolling,2.58); // (8+0+6+20+15)/(4+0+0+10+5) = 49/19
 assert.equal(M.windowed(series,10).length,6);
 assert.equal(M.windowed(series,25).length,6);

@@ -59,8 +59,14 @@
       add(panel,'h5','','Teams played');
       const list=add(panel,'ul','weekly-list');
       for(const f of data.factions.slice(0,8)){
-        const item=add(list,'li');
-        add(item,'span','',f.name);
+        const item=add(list,'li','weekly-team-entry');
+        const label=add(item,'span','weekly-team-label');
+        // Official faction emblems and source palette; never recolor the asset.
+        if(window.OneADAARFactions){
+          label.append(window.OneADAARFactions.label(f.name));
+          const faction=window.OneADAARFactions.identify(f.name);
+          if(faction)item.style.setProperty('--faction-accent',faction.color);
+        }else label.textContent=f.name;
         add(item,'strong','',f.appearances+' player appearances');
       }
     }
