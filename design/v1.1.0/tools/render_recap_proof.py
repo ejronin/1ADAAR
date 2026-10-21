@@ -6,7 +6,7 @@ import math
 from PIL import Image, ImageDraw, ImageFont, ImageEnhance
 import cairosvg
 
-ROOT = Path(__file__).resolve().parents[4]
+ROOT = Path(__file__).resolve().parents[3]
 ART = ROOT / "docs" / "assets"
 OUT = ROOT / "design" / "v1.1.0" / "screenshots"
 OUT.mkdir(exist_ok=True)
