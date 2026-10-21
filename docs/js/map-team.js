@@ -57,7 +57,13 @@
     holder.append(svg);
     const value=make(holder,'strong',valid?Math.round(rate*100)+'%':'—');
     value.setAttribute('aria-hidden','true');
-    if(label)make(wrap,'div',label,'mt-ring-caption');
+    if(label){
+      const captionEl=make(wrap,'div',undefined,'mt-ring-caption');
+      // Match the branded team labels in the rows and cross-tab. A donut
+      // still has readable text when faction metadata is unavailable.
+      if(window.OneADAARFactions?.identify(label))captionEl.append(window.OneADAARFactions.label(label));
+      else captionEl.textContent=label;
+    }
     if(caption)make(wrap,'small',caption);
   }
   function sortRows(rows){
@@ -145,13 +151,18 @@
     ring($('mt-win-ring'),total.winRate,'Wins from recorded results','#74df9d',
       number(total.wins)+' wins from '+number(total.knownOutcomes)+' known results');
     const rings=$('mt-team-rings');rings.replaceChildren();
-    const knownTeams=[['Lonestar','#465eff'],['Valkyra','#ee4138'],['Manticore','#3eba42']];
+    // Reuse the single official faction palette; never invent/recolor emblems.
+    const knownTeams=['Lonestar','Valkyra','Manticore'].map(name=>[
+      name,window.OneADAARFactions?.identify(name)?.color||'#9ea99f'
+    ]);
     const available=(data.factions||[]).filter(f=>knownTeams.some(t=>t[0]===f.name))
       .reduce((sum,f)=>sum+f.matches,0);
     for(const [name,color] of knownTeams){
       const item=(data.factions||[]).find(f=>f.name===name);
       const share=available>0?(item?.matches||0)/available:null;
-      ring(rings,share,name,color,number(item?.matches||0)+' saved appearances');
+      ring(rings,share,name,color,available>0?
+        number(item?.matches||0)+' of '+number(available)+' known-team appearances':
+        'No recorded recognized-team appearances');
     }
     bars('mt-maps',data.maps||[],false);
     bars('mt-factions',data.factions||[],true);
