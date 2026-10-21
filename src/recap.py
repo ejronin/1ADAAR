@@ -282,7 +282,36 @@ def run(*, webhook: str = "", dry_run: bool = False) -> dict:
     player_count = None
     if not dry_run:
         try:
-            index = collect_players(fetch_json, PUBLIC_BOARD)
+            # SteamID64s are handled in memory by the private Actions collector.
+            # Images are public, vetted Steam CDN URLs attached to the existing
+            # pseudonymous lookup keys. With no key, initials remain the fallback.
+            from src.steam_avatars import fetch_steam_avatars, safe_avatar
+            prior = read_json(DATA / "players.json", {"players": []})
+            existing = {p["key"]: p["avatar"] for p in prior.get("players", [])
+                        if isinstance(p, dict) and isinstance(p.get("key"), str)
+                        and safe_avatar(p.get("avatar"))}
+            key = os.environ.get("STEAM_WEB_API_KEY", "").strip()
+            refresh = read_json(DATA / "avatar-refresh-state.json", {})
+            last_avatar_refresh = refresh.get("refreshedAt")
+            try:
+                elapsed = (dt.datetime.now(dt.timezone.utc) - parse_time(last_avatar_refresh)).total_seconds()
+            except (ValueError, TypeError):
+                elapsed = 10**9
+            should_refresh = bool(key) and elapsed >= 86400
+            def lookup_avatar_map(private_ids):
+                if not should_refresh:
+                    return {k: v for k, v in existing.items() if k in private_ids}
+                try:
+                    update = fetch_steam_avatars(private_ids, key)
+                    # Cache successful public images but never private Steam IDs.
+                    existing.update(update)
+                    atomic_write_json(DATA / "avatar-refresh-state.json", {
+                        "schemaVersion": 1, "refreshedAt": dt.datetime.now(dt.timezone.utc).isoformat()})
+                except Exception as exc:
+                    # Do not log exceptions: HTTPError text may include the secret in its URL.
+                    print("Steam avatar refresh unavailable: "+type(exc).__name__, file=sys.stderr)
+                return {k: v for k, v in existing.items() if k in private_ids}
+            index = collect_players(fetch_json, PUBLIC_BOARD, avatar_lookup=lookup_avatar_map)
             # Capture bounded daily career history after a successful public index fetch.
             # No extra WARCON requests and no history update when its feed is unavailable.
             record_snapshots(DATA / "history", index)
