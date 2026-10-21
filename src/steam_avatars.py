@@ -51,9 +51,15 @@ def steam_summaries(steam_ids: list[str], key: str) -> dict:
     request = urllib.request.Request(STEAM_API + "?" + query, headers={
         "Accept": "application/json", "User-Agent": "1ADAAR-static-avatar-snapshot/1.0"
     })
-    # API keys travel only over HTTPS and are never logged or stored.
-    with urllib.request.urlopen(request, timeout=15) as response:
-        if urllib.parse.urlsplit(response.geturl()).hostname != "api.steampowered.com":
+    # The key appears in a query string: disable redirects before any cross-host
+    # request could occur. Never log Steam exception strings containing URLs.
+    class NoRedirect(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, req, fp, code, msg, headers, newurl):
+            return None
+    opener = urllib.request.build_opener(NoRedirect)
+    with opener.open(request, timeout=15) as response:
+        final = urllib.parse.urlsplit(response.geturl())
+        if final.scheme != "https" or final.hostname != "api.steampowered.com":
             raise ValueError("Unexpected Steam API redirect")
         data = response.read(MAX_RESPONSE_BYTES + 1)
         if len(data) > MAX_RESPONSE_BYTES:
