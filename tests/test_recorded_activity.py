@@ -103,7 +103,7 @@ class RecordedActivityTests(unittest.TestCase):
         js=(docs/"js/activity.js").read_text()
         assert "not individual player schedules" in page
         self.assertIn("No completed matches have been saved",js)
-        self.assertIn("Captured completed match",js)
+        self.assertIn("captured completed match",js)
         self.assertNotIn("steamId",js)
         self.assertNotIn("innerHTML",js)
         self.assertIn("document.createElement",js)
