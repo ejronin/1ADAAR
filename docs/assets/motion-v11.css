@@ -70,6 +70,22 @@
 .weekly-podium-place.gold[data-award-verified="true"] .weekly-avatar{
   box-shadow:0 0 0 3px #edcc8d28,0 0 18px #e2b8664a;
   animation:weekly-champion-glow .9s ease-out .25s 1 both}
+/* Verified champion portrait: a brief, gold circular sheen precedes crown entry. */
+.weekly-podium-place.gold[data-award-verified="true"] .weekly-avatar{
+  position:relative;isolation:isolate;overflow:visible}
+.weekly-podium-place.gold[data-award-verified="true"] .weekly-avatar::before{
+  content:"";position:absolute;inset:-6px;border-radius:50%;padding:2px;
+  background:conic-gradient(from -90deg,transparent 0deg,transparent 265deg,
+    #fff5cd 296deg,#e8b967 320deg,transparent 348deg,transparent 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  pointer-events:none;opacity:0;transform:rotate(-100deg);
+  animation:champion-avatar-orbit-once .85s ease-out .12s 1 both}
+@keyframes champion-avatar-orbit-once{
+  0%{opacity:0;transform:rotate(-100deg)}
+  23%{opacity:1}
+  75%{opacity:.9}
+  100%{opacity:0;transform:rotate(240deg)}}
 @keyframes weekly-crown-arrive{
   from{opacity:0;transform:translateY(9px) scale(.87)}
   to{opacity:1;transform:translateY(0) scale(1)}}
@@ -93,6 +109,7 @@
   .hero-laser-trace{stroke-dasharray:100 0;stroke-opacity:.22;opacity:.55}
   .hero-laser-head{opacity:0}
   .hero-logo-halo::before,.hero-logo-halo::after{opacity:0}
+  .weekly-podium-place.gold[data-award-verified="true"] .weekly-avatar::before{animation:none!important;opacity:0}
   .weekly-podium-place.gold[data-award-verified="true"] .weekly-crown{
     display:grid;opacity:1;transform:none}
 }
