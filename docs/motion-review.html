@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101811"><meta name="robots" content="noindex">
+<title>1ADAAR v1.1.0 — Signature Motion Review (Staging)</title>
+<link rel="icon" href="assets/1ad-logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/brand.css?v=9">
+<link rel="stylesheet" href="assets/weekly.css?v=1">
+<link rel="stylesheet" href="assets/motion-v11.css?v=1">
+<style>
+body{background:#0c130e;color:#f0fff4;min-width:320px}
+.motion-lab{max-width:1250px;margin:0 auto;padding:clamp(16px,3.5vw,38px)}
+.lab-banner{border:1px solid #8d7646;background:#3a2c19;color:#ffe6b6;padding:13px 17px;
+ border-radius:5px;font-weight:800;letter-spacing:.02em}
+.lab-heading{margin:20px 0 18px}
+.lab-heading h1{font:800 clamp(35px,5vw,55px) 'Barlow Condensed',sans-serif;margin:0 0 7px}
+.lab-heading p{font-size:14px;color:#c1d9c8;line-height:1.65;max-width:860px}
+.lab-options{display:flex;gap:12px;flex-wrap:wrap;margin:15px 0 21px}
+.lab-options button{border:1px solid #75cf92;background:#20442d;color:#ebfff1;border-radius:5px;
+ min-height:46px;padding:10px 16px;font-weight:800;cursor:pointer}
+.lab-options button:hover,.lab-options button:focus-visible{background:#346543;outline:2px solid #b9ffcf;outline-offset:2px}
+.motion-lab .hero{margin:18px 0 24px}
+.motion-lab .hero-text{width:72%;max-width:730px}
+.motion-lab .hero-graphic{right:1%;top:23%;width:24%;height:57%;opacity:.92}
+.lab-caption{color:#c9e7d0;font-size:13px;line-height:1.6}
+.lab-crown{margin:22px 0;padding:25px;display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,320px);
+ gap:20px;align-items:center;border:1px solid #69573e;border-radius:9px;background:#1b1c19}
+.lab-crown h2{font:800 29px 'Barlow Condensed',sans-serif;color:#ffe2ac;margin:0 0 12px}
+.lab-crown p{font-size:14px;line-height:1.65;color:#e3d4be}
+.lab-crown .weekly-podium-place{margin:14px auto;width:min(100%,280px)}
+.lab-crown .weekly-avatar{font-size:20px}
+.lab-crown .weekly-crown{margin-top:-12px}
+.lab-foot{padding:21px 0;border-top:1px solid #3a5940;margin-top:30px;color:#b6d7c1;font-size:13px;line-height:1.55}
+@media(max-width:700px){
+ .lab-crown{grid-template-columns:1fr;padding:17px}
+ .motion-lab .hero-text{width:100%;padding:30px 20px}
+ .motion-lab .hero-graphic{opacity:.17;right:-12%;width:46%}
+ .lab-options button{flex:1}}
+</style>
+<script defer src="js/motion-review.js?v=1"></script>
+</head>
+<body><a href="#motion-content" class="skip">Skip to visual motion review</a>
+<main class="motion-lab" id="motion-content">
+<div class="lab-banner">STAGING-ONLY MOTION PROTOTYPE · NOT THE LIVE 1ADAAR SITE · NO WEEKLY AWARD HAS BEEN GIVEN</div>
+<div class="lab-heading"><h1>1ADAAR — Signature Motion Review</h1>
+<p>Real official 1AD and WARDOGS artwork. This page demonstrates the new hero border trace and logo sheen. The crown is shown in a clearly labeled isolated design test, not on the real Weekly Roundup.</p></div>
+<div class="lab-options"><button id="replay-hero" type="button">Replay hero trace + logo sheen</button>
+<button id="replay-crown" type="button">Replay sample crown</button>
+</div>
+<section class="hero motion-hero" aria-labelledby="lab-hero-title">
+<svg class="hero-laser-svg" viewBox="0 0 1000 480" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+<rect class="hero-laser-outline" x="2" y="2" width="996" height="476" rx="10" pathLength="100"/>
+<rect class="hero-laser-trace" x="2" y="2" width="996" height="476" rx="10" pathLength="100"/>
+<rect class="hero-laser-head" x="2" y="2" width="996" height="476" rx="10" pathLength="100"/></svg>
+<div class="hero-glow" aria-hidden="true"></div>
+<div class="hero-text">
+<div class="eyebrow">◆ ONEAVERAGEDAN WARDOGS COMMUNITY SERVER</div>
+<h1 id="lab-hero-title">Match results.<br><em>Player stats.</em></h1>
+<p>The bright line traces the complete hero perimeter; a separate circular highlight then sweeps the original 1AD emblem. Both settle to a quiet static state.</p>
+<div class="source-tag"><span class="signal" aria-hidden="true"></span> INTERFACE EFFECT · NO GAMEPLAY DATA</div>
+</div>
+<div class="hero-graphic" aria-hidden="true"><span class="hero-logo-halo">
+<img class="hero-logo" src="assets/1ad-logo.svg" width="246" height="246" alt=""></span></div>
+</section>
+<p class="lab-caption">The main production-bound hero uses this same effect. Motion runs once per page load and is disabled where reduced motion is requested.</p>
+<section class="lab-crown" aria-labelledby="crown-title">
+<div><h2 id="crown-title">Champion crown — visual behavior only</h2>
+<p>This is a <strong>fictional presentation test</strong>, not a weekly report or awarded player. The gold crown fades into place above a placeholder avatar to demonstrate its size, timing and contrast.</p>
+<p>On the actual Weekly Roundup, the crown remains completely hidden until membership and first-place eligibility are verified. There are no fictional winners on the real podium.</p>
+</div>
+<div class="weekly-podium-place gold" id="test-champion" data-award-verified="true" aria-label="Fictional example of verified-champion visual styling, no actual winner">
+<span class="weekly-rank">1</span>
+<span class="weekly-crown" aria-hidden="true">
+<svg viewBox="0 0 64 46" focusable="false"><path d="M6 35 3 11 19 23 32 4 45 23 61 11 58 35Z" stroke-linejoin="round"/><path d="M8 39H56V44H8Z"/><circle cx="32" cy="24" r="3.5" fill="#fff0bb"/><circle cx="19" cy="30" r="2.5" fill="#e5a65c"/><circle cx="45" cy="30" r="2.5" fill="#e5a65c"/></svg>
+</span>
+<span class="weekly-avatar" aria-hidden="true">—</span>
+<h3>Design placeholder</h3><p>Not a real winner</p>
+</div>
+</section>
+<div class="lab-foot"><strong>Motion acceptance:</strong> One-time sequence, official logo unchanged, no invented score or identity, reduced-motion fallback, and verified-winner gating in the real Weekly Roundup. This is not a v1.1.0 release authorization. <a href="staging-review.html">Back to staging review →</a></div>
+</main></body></html>
