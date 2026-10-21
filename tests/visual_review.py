@@ -154,6 +154,18 @@ async def capture():
                   crown:getComputedStyle(document.querySelector('#test-champion .weekly-crown')).display,
                   championSheen:getComputedStyle(document.querySelector('#test-champion .weekly-avatar'),'::before').animationName,
                   logo:document.querySelector('.hero-logo-halo img')?.getAttribute('src'),
+                  logoLoaded:document.querySelector('.hero-logo-halo img')?.naturalWidth>0,
+                  logoMask:getComputedStyle(document.querySelector('.hero-logo-halo'),'::after').maskImage,
+                  logoMaskClip:getComputedStyle(document.querySelector('.hero-logo-halo'),'::after').clipPath,
+                  glintWidth:parseFloat(getComputedStyle(document.querySelector('.hero-logo-halo'),'::after').width),
+                  glintHeight:parseFloat(getComputedStyle(document.querySelector('.hero-logo-halo'),'::after').height),
+                  imgWidth:document.querySelector('.hero-logo-halo img').getBoundingClientRect().width,
+                  imgHeight:document.querySelector('.hero-logo-halo img').getBoundingClientRect().height,
+                  rankBadgePosition:getComputedStyle(document.querySelector('#test-champion .weekly-rank')).position,
+                  crownClearOfRank:document.querySelector('#test-champion .weekly-rank').getBoundingClientRect().bottom+4 <=
+                    document.querySelector('#test-champion .weekly-crown').getBoundingClientRect().top,
+                  crownAboveAvatar:document.querySelector('#test-champion .weekly-crown').getBoundingClientRect().bottom <=
+                    document.querySelector('#test-champion .weekly-avatar').getBoundingClientRect().top+2,
                   logoOpacity:Number(getComputedStyle(document.querySelector('.hero-graphic')).opacity),
                   logoTop:document.querySelector('.hero-logo-halo').getBoundingClientRect().top,
                   heroTextBottom:document.querySelector('.motion-hero .hero-text').getBoundingClientRect().bottom,
@@ -165,6 +177,16 @@ async def capture():
                 assert motion_info["crown"]=="grid"
                 assert "champion-avatar-orbit-once" in motion_info["championSheen"]
                 assert motion_info["logo"]=="assets/1ad-logo.svg"
+                assert motion_info["logoLoaded"],f"Official logo image failed to load at {width}px"
+                assert "1ad-logo.svg" in motion_info["logoMask"],f"Metallic sheen is not masked to emblem at {width}px"
+                assert motion_info["logoMaskClip"]=="none",f"Unexpected geometric clipping at {width}px"
+                assert abs(motion_info["glintWidth"]-motion_info["imgWidth"])<1, \
+                    f"Metal sweep width does not match SVG at {width}px: {motion_info}"
+                assert abs(motion_info["glintHeight"]-motion_info["imgHeight"])<1, \
+                    f"Metal sweep height does not match SVG at {width}px: {motion_info}"
+                assert motion_info["rankBadgePosition"]=="absolute"
+                assert motion_info["crownClearOfRank"],f"1 and crown collide at {width}px: {motion_info}"
+                assert motion_info["crownAboveAvatar"],f"Crown crosses avatar at {width}px: {motion_info}"
                 if width<=720:
                     assert motion_info["logoOpacity"]>=.9, "Original 1AD emblem invisible on mobile"
                     assert motion_info["logoTop"]>=motion_info["heroTextBottom"]-2, \
