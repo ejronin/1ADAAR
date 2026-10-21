@@ -129,6 +129,14 @@
 .perf-window option:disabled{color:#90aa98}
 
 
+/* Approved chart semantics: metric is distinct from the number of plotted points. */
+.perf-explanation{padding:13px 16px;margin:-4px 0 17px;background:#14281b;
+ border-left:3px solid #7be3a0;border-radius:4px;color:#d3e9d9;
+ font-size:13px;line-height:1.65;max-width:100%}
+.perf-coverage{font-size:13px;font-weight:800;letter-spacing:0;color:#d7f5df}
+.perf-window-label{font-size:12.5px;letter-spacing:.02em}
+@media(max-width:720px){.perf-explanation{padding:11px 12px;font-size:12.5px}
+ .perf-window-label{justify-content:flex-start}}
 /* Readable chart controls, labels and the source explanation. */
 .perf-heading .eyebrow,.perf-source,.perf-mini-stat span,.perf-mini-stat small,.perf-window-label{font-size:12px;letter-spacing:.04em;line-height:1.35}
 .perf-tab{font-size:12.5px;line-height:1.35;min-height:44px}
