@@ -59,6 +59,7 @@ jobs:
         id: collect
         env:
           DISCORD_MATCH_WEBHOOK: ${{ secrets.DISCORD_MATCH_WEBHOOK }}
+          STEAM_WEB_API_KEY: ${{ secrets.STEAM_WEB_API_KEY }}
         run: python -m src.recap
       # The collector owns the match-delivery checkpoint. A weekly failure
       # must never roll back successful per-match Discord deliveries.
