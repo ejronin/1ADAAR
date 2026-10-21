@@ -12,8 +12,38 @@ const setMessage=s=>{$('lookup-message').textContent=s;$('lookup-message').hidde
 function tile(label,value,note=publicState.selected?.demo?'DEMO / FICTIONAL':'All-time WARCON stats'){const el=escapeFree('div','metric-tile');el.append(escapeFree('span','',label),escapeFree('strong','',value),escapeFree('small','',note));return el;}
 async function keyForSteamId(id){const data=new TextEncoder().encode(`1ADAAR:v1:${id}`);const hash=await crypto.subtle.digest('SHA-256',data);return Array.from(new Uint8Array(hash),c=>c.toString(16).padStart(2,'0')).join('');}
 function profileMatches(key){return (publicState.selected?.demo?publicState.demoMatches:publicState.matches).filter(m=>(m.players||[]).some(p=>p.key===key)).sort((a,b)=>new Date(b.endedAt)-new Date(a.endedAt));}
-function breakdown(items,field,parentId){const parent=$(parentId);parent.replaceChildren();const groups=new Map();for(const x of items){const player=(x.players||[]).find(p=>p.key===publicState.selected?.key);if(!player)continue;const label=field==='map'?x.map:player.faction||'Unassigned';const curr=groups.get(label)||{matches:0,wins:0};curr.matches+=1;curr.wins+=Number(player.result==='win');groups.set(label,curr);}if(!groups.size){parent.append(escapeFree('div','empty-insight','No saved matches yet for this player.'));return;}const max=Math.max(...[...groups.values()].map(v=>v.matches));for(const [label,row] of [...groups.entries()].sort((a,b)=>b[1].matches-a[1].matches)){const item=escapeFree('div','breakdown-row');if(field==='faction'){const faction=window.OneADAARFactions.identify(label);if(faction)item.style.setProperty('--faction-accent',faction.color);}const left=escapeFree('div');if(field==='faction')left.append(window.OneADAARFactions.label(label));else left.append(escapeFree('strong','',label));const bar=escapeFree('div','mini-meter');const fill=escapeFree('i');fill.style.width=`${100*row.matches/max}%`;bar.append(fill);left.append(bar);item.append(left,escapeFree('span','',`${row.matches} matches`),escapeFree('em','',`${row.wins} wins`));parent.append(item);}}
-function recentTable(matches,key){const wrap=$('recent-match-table');wrap.replaceChildren();if(!matches.length){wrap.append(escapeFree('div','empty-insight','This player’s recent matches will show here after we save completed results.'));return;}const table=escapeFree('table','recent-table'),thead=document.createElement('thead'),tr=document.createElement('tr');['Date','Map','Faction','Result','K','D','Time'].forEach(h=>tr.append(escapeFree('th','',h)));thead.append(tr);table.append(thead);const tbody=document.createElement('tbody');for(const m of matches.slice(0,15)){const p=m.players.find(x=>x.key===key),row=document.createElement('tr');row.append(escapeFree('td','',dateText(m.endedAt)));const map=document.createElement('td');if(publicState.selected?.demo){map.append(escapeFree('span','',m.map));}else{const link=escapeFree('a','',m.map);link.href=`index.html#match-${Number(m.id)}`;map.append(link);}row.append(map);const factionCell=document.createElement('td');factionCell.append(window.OneADAARFactions.label(p.faction||'—'));row.append(factionCell);row.append(escapeFree('td',`result-${p.result||'draw'}`,(p.result||'—').toUpperCase()));row.append(escapeFree('td','',p.kills),escapeFree('td','',p.deaths),escapeFree('td','',`${Math.floor(p.seconds/60)}m`));tbody.append(row);}table.append(tbody);wrap.append(table);}
+function breakdown(items,field,parentId) {
+ const parent=$(parentId);parent.replaceChildren();const groups=new Map();
+ for(const match of items) {
+   const p=(match.players||[]).find(player=>player.key===publicState.selected?.key);
+   if(!p)continue;
+   const label=field==='map'?match.map:p.faction||'Unassigned';
+   const stats=groups.get(label)||{matches:0,wins:0,known:0};
+   stats.matches++;
+   if(['win','loss','draw'].includes(p.result)){stats.known++;if(p.result==='win')stats.wins++;}
+   groups.set(label,stats);
+ }
+ if(!groups.size) {parent.append(escapeFree('div','empty-insight','No saved completed matches for this player yet.'));return;}
+ for(const [label,row] of [...groups].sort((a,b)=>b[1].matches-a[1].matches||a[0].localeCompare(b[0]))) {
+   const item=escapeFree('div','breakdown-row');
+   if(field==='faction') {
+      const faction=window.OneADAARFactions.identify(label);
+      if(faction)item.style.setProperty('--faction-accent',faction.color);
+   }
+   const left=escapeFree('div');
+   if(field==='faction')left.append(window.OneADAARFactions.label(label));
+   else left.append(escapeFree('strong','',label));
+   const bar=escapeFree('div','mini-meter');
+   bar.setAttribute('role','img');
+   bar.setAttribute('aria-label',label+' win rate: '+(row.known?percent(row.wins,row.known):'not recorded'));
+   const fill=escapeFree('i');fill.style.width=row.known?100*row.wins/row.known+'%':'0%';
+   bar.append(fill);left.append(bar);
+   item.append(left,escapeFree('span','',row.matches+' matches'),
+     escapeFree('em','',row.known?percent(row.wins,row.known)+' wins ('+row.wins+'/'+row.known+')':'Result unavailable'));
+   parent.append(item);
+ }
+}
+function recentTable(matches,key){const wrap=$('recent-match-table');wrap.replaceChildren();if(!matches.length){wrap.append(escapeFree('div','empty-insight','This player’s recent matches will show here after we save completed results.'));return;}const table=escapeFree('table','recent-table'),thead=document.createElement('thead'),tr=document.createElement('tr');['Date','Map','Faction','Result','K','D','Time'].forEach(h=>tr.append(escapeFree('th','',h)));thead.append(tr);table.append(thead);const tbody=document.createElement('tbody');for(const m of matches.slice(0,15)){const p=m.players.find(x=>x.key===key),row=document.createElement('tr');row.append(escapeFree('td','',dateText(m.endedAt)));const map=document.createElement('td');if(publicState.selected?.demo){map.append(escapeFree('span','',m.map));}else{const link=escapeFree('a','',m.map);link.href=`index.html#match-${Number(m.id)}`;map.append(link);}row.append(map);const factionCell=document.createElement('td');factionCell.append(window.OneADAARFactions.label(p.faction||'—'));row.append(factionCell);row.append(escapeFree('td',p.result?'result-'+p.result:'result-unknown',(p.result||'Not recorded').toUpperCase()));row.append(escapeFree('td','',p.kills),escapeFree('td','',p.deaths),escapeFree('td','',`${Math.floor(p.seconds/60)}m`));tbody.append(row);}table.append(tbody);wrap.append(table);}
 /* Cache history by the first hex nibble so only one small shard loads per player. */
 const historyCache=new Map();
 function loadCareer(key) {
@@ -28,15 +58,24 @@ function loadCareer(key) {
     doc&&doc.schemaVersion===1&&doc.players&&Array.isArray(doc.players[key])?doc.players[key]:[]);
 }
 function openProfile(entry){publicState.selected=entry;const detailed=$('map-team-details');detailed.hidden=!!entry.demo||!(/^[a-f0-9]{64}$/.test(entry.key));if(!detailed.hidden)detailed.href='map-team.html?player='+encodeURIComponent(entry.key);$('demo-warning').hidden=!entry.demo;$('profile-source-text').textContent=entry.demo?'SAMPLE PLAYER / MADE-UP STATS':'PLAYER STATS / FROM WARCON';$('lookup-results').hidden=true;$('dossier').hidden=false;$('lookup-message').hidden=true;$('dossier-title').textContent=entry.name;$('share-player').textContent='↗ Share '+(entry.name.length>28?entry.name.slice(0,25)+'…':entry.name)+' stats';$('share-player').setAttribute('aria-label','Share '+entry.name+' stats');$('profile-subtitle').textContent=entry.demo?`SAMPLE PLAYER • Made-up stats • Example ranking #${num(entry.rank)}`:`WARDOGS server • All-time WARCON stats • Player ranking #${num(entry.rank)}`;
- const metrics=$('profile-metrics');metrics.replaceChildren(tile('Kills',num(entry.kills)),tile('Deaths',num(entry.deaths)),tile('K/D',ratio(entry.kills,entry.deaths)),tile('Matches',num(entry.matches)),tile('Wins',num(entry.wins)),tile('Win rate',percent(entry.wins,entry.wins+entry.losses+entry.draws)),tile('Playtime',duration(entry.minutes)),tile('Seeding time',duration(entry.seedMinutes)));
- const combat=$('combat-panel');combat.hidden=!entry.hasFeed;const box=$('combat-metrics');box.replaceChildren();if(entry.hasFeed)box.append(tile('Headshots',num(entry.headshots),'WARCON combat data'),tile('Vehicle kills',num(entry.vehicleKills),'Kill feed'),tile('Best kill streak',num(entry.killStreak),'Kill feed'));
+ window.OneADAARProfile.career($('profile-metrics'),$('profile-secondary'),entry);
+ window.OneADAARProfile.avatar($('player-avatar'),entry);
+ $('player-avatar').setAttribute('aria-label','Player profile picture for '+entry.name+', or initials if unavailable');
+ const combat=$('combat-panel');combat.hidden=!entry.hasFeed;const box=$('combat-metrics');box.replaceChildren();if(entry.hasFeed){
+   for(const [label,value] of [['Headshots',entry.headshots],['Vehicle kills',entry.vehicleKills],
+                                ['Best kill streak',entry.killStreak],['Team kills',entry.teamKills]]) {
+     if(Number.isSafeInteger(value)&&value>=0)box.append(tile(label,num(value),'WARCON · confirmed feed'));
+   }
+   combat.hidden=box.children.length===0;
+ }
  $('player-share-status').hidden=true;const recent=profileMatches(entry.key);
  window.OneADAARPerformance.mount($('performance-module'),{key:entry.key,matches:recent,career:[],demo:false});
  loadCareer(entry.key).then(points=>{
    if(publicState.selected?.key!==entry.key)return;
    window.OneADAARPerformance.mount($('performance-module'),{key:entry.key,matches:recent,career:points,demo:false});
  });
-breakdown(recent,'map','map-breakdown');breakdown(recent,'faction','faction-breakdown');recentTable(recent,entry.key);
+window.OneADAARProfile.snapshot($('player-snapshot'),entry,recent);
+ breakdown(recent,'map','map-breakdown');breakdown(recent,'faction','faction-breakdown');recentTable(recent,entry.key);
  if(!entry.demo)history.replaceState(null,'',`#player-${entry.key}`);$('dossier').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
 }
 function showCandidates(rows){$('lookup-results').hidden=false;$('dossier').hidden=true;$('lookup-message').hidden=true;const list=$('player-candidates');list.replaceChildren();for(const entry of rows.slice(0,40)){const btn=escapeFree('button','candidate');btn.type='button';btn.append(escapeFree('strong','',entry.name),escapeFree('small','',`${num(entry.kills)} kills · ${num(entry.matches)} matches · rank #${num(entry.rank)}`));btn.addEventListener('click',()=>openProfile(entry));list.append(btn);}if(rows.length>40)list.append(escapeFree('p','empty-insight','Showing the first 40 matches. Refine the name to narrow your search.'));$('lookup-results').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});}
