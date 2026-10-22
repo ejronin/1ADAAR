@@ -51,9 +51,9 @@ When a profile is private, missing or unsynced, leave the numbers empty and offe
 
 Keep raw SteamIDs and any login details out of Pages assets. The match collector may privately match the already-known player ID to a public Tracker response, but account ownership and permission need their own verified process. Never calculate role levels from kills, cash, faction or rank.
 
-## Still to be done
+## What remains uncertain
 
-The implementation engineer needs to confirm the endpoint with a consenting synced profile, check its current terms and privacy behavior, validate the level scale and choose an approved consent/storage method. A permanent connection across browsers also needs proper authentication; Tracker hasn't documented an automatic third-party return callback.
+The documented endpoint still needs a real test with a consenting, synchronized player. Its terms, privacy behavior, level scale and data storage options are also unverified for 1ADAAR. A lasting connection across browsers needs proper identity verification; Tracker hasn't documented an automatic third-party return callback.
 
 Six-role **progression** is possible in principle through Tracker. Six-role **gameplay contribution** (healing, logistics, recon work, piloting effectiveness and so on) is still unproven and must not be drawn as a performance radar.
 

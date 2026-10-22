@@ -1,95 +1,100 @@
-# 1ADAAR v1.1.0 design handoff
+# 1ADAAR v1.1.0
+### The next version of the WARDOGS after-action report
 
-This folder has the editable designs, screenshots and implementation notes for the next 1ADAAR release. The six screens are ready for review, **not yet approved for production**.
+[1ADAAR today](https://ejronin.github.io/1ADAAR/) · [Six-screen design preview](prototypes/index.html) · [Screenshots](screenshots/) · [Design PR #28](https://github.com/ejronin/1ADAAR/pull/28)
 
-- [Design PR #28](https://github.com/ejronin/1ADAAR/pull/28)
-- Design branch: `design/v1.1.0-ia-handoff`
-- Implementation base: `staging/v2.0-foundation`
-- Original staging reference: `26da372ea9c076bfe3751a0716ee8382161e811d`
+The next version is about making the information we've been collecting more useful—and making the site feel like it belongs to **OneAverageDan and WARDOGS**, rather than a standard statistics template.
 
-Use the source files here to build the approved changes in staging. Don't merge this folder wholesale into the live site.
+I wanted the match history and career totals to be easy to understand at a glance, with the deeper details there when someone wants them. That means fewer disconnected number cards, better explanations for charts, and a consistent look from the home page through Discord recaps.
 
-## Start here
+These are **editable design previews**. The working implementation, live data integration and final approval are separate steps. Nothing here should be mistaken for a feature already running in production.
 
-1. Open `prototypes/index.html` to review the six screens: home, player, map/faction, weekly, recap and activity.
-2. Use `screen-manifest.json` to find each component's HTML/CSS/JS/SVG source, screenshots, implementation target and approval status.
-3. Check `tokens.final.json` and `components/COMPONENT_IMPLEMENTATION_SPEC.md` for measurements and interaction details. The token file is a **candidate**, not a signed-off design.
-4. Compare `screenshots/*-390.png` and `*-1440.png` with the browser implementation. The browser checks also cover 320, 375, 768 and 1024 CSS pixels.
-5. Read the integration and chart notes before adding new API calls or dependencies.
+## A clearer look at each player
 
-The design package is editable. Screenshots are evidence of what the current prototypes rendered, not a substitute for their source files or proof of native Discord behavior.
+![Player profile design, desktop](screenshots/player-1440.png)
 
-## What's in the folder
+The player page keeps the figures people usually look for first: K/D, kills, deaths and matches. It then shows recorded results over time, wins, map and faction performance, combat details where WARCON has them, and a more useful record of recent matches.
 
-| Location | Contents |
+The trend charts have specific jobs. Raw kills and deaths can be compared match by match with a paired-dot chart. A **trailing five-match K/D** point combines the current match with the four before it. The 10/20/all selector changes how many points are visible, not the five-match calculation. A control disappears when it doesn't apply to the selected chart.
+
+PlayerOne appears in the screenshots because it is a **fictional test profile**, used to test the layout and calculations without passing sample figures off as real player records.
+
+## The map and faction picture
+
+The map page compares **recorded K/D by map**, wins and losses, faction appearances and match outcomes. The important detail is the denominator: a good ratio across three recorded matches isn't the same as one built from dozens.
+
+Where a control changes only one part of the page, it sits with that section. Original Lonestar, Valkyra and Manticore emblems and colors stay consistent throughout.
+
+[See the map and faction design](prototypes/map-team.html)
+
+## A weekly report worth looking back at
+
+![Weekly podium design, desktop](screenshots/weekly-1440.png)
+
+The weekly view brings the familiar podium back: silver second place, a taller gold first-place card with the small crown, and bronze third place. The metal finish is subtle instead of flashy. Names and pictures appear only when the saved matches actually support the result.
+
+The archive should be something the community can return to, not just a message that disappears up a Discord channel. An empty week stays empty; a sample crown animation doesn't manufacture a winner.
+
+[See the weekly design](prototypes/weekly.html)
+
+## More life in the home page, less visual noise
+
+The home screen keeps the real 1AD emblem and WARDOGS artwork. A short laser traces the hero border once and disappears. A metallic light passes **within the actual shape of the 1AD logo**; it does not move an oversized copy across the banner.
+
+The rest of the layout is quieter so the current server information, recorded match results and player lookup remain easy to find. Animations can be disabled for reduced motion.
+
+[See the home design](prototypes/home.html)
+
+## Activity that means something
+
+The activity view shows when **completed matches were recorded as starting**. It's useful for spotting patterns across days and hours, but it isn't a measure of when one particular person was online.
+
+A personal online-time heatmap is a separate possibility. It needs actual join and leave times, reasonable history coverage and permission to use those records. Without that, there's no reason to color in a calendar and pretend we know.
+
+[See the activity design](prototypes/activity.html)
+
+## Optional account progression
+
+WARDOGS Tracker documents a separate public API for players who sign in with Steam and synchronize their game profile. That opens the door to an optional section showing **six role levels and XP, overall WARDOG level, career XP, and account cash/gold when visible**.
+
+It would be a player choice, not a requirement for using 1ADAAR. The six-role radar remains empty until real values can be retrieved and matched to a consenting player. Cash and gold stay hidden when the source hides them. The external sync link already exists in the design, but an automatic account connection or return flow has **not** been established.
+
+The [role-data research](research/ROLE_PROGRESSION_ACCESS_VALIDATION.md) explains what was found, and the [connection plan](research/PLAYER_PROGRESSION_OPT_IN_IMPLEMENTATION.md) covers the remaining identity and privacy work.
+
+## The Discord side
+
+The after-action recap is meant to work **inside Discord**, not just resemble a Discord message in a browser. The design includes the report image, a genuine link-button specification for opening 1ADAAR, and a top recorded-kills player for each faction when the completed-match data supports it.
+
+The finished message still needs to be rendered and checked in real Discord clients.
+
+[See the recap design](prototypes/recap.html)
+
+## How the next version is built
+
+1ADAAR keeps the existing GitHub approach. WARCON supplies recorded match data, Python jobs prepare the public results, GitHub Pages serves the site, and browser JavaScript/SVG handles the charts. Python also draws the Discord recap artwork.
+
+I've looked at Sass, Vite, D3, ECharts and other libraries for improving the experience. The point isn't to add technology for its own sake. The [technology review](research/FRONTEND_GRAPHICS_TECHNOLOGY_ASSESSMENT.md) explains which tools would actually help and why desktop GUI libraries such as Kivy or Tkinter don't fit a GitHub Pages website.
+
+### Inside this folder
+
+The design is kept here as editable source, not just screenshots:
+
+| Folder or file | What's there |
 |---|---|
-| `prototypes/` | Full HTML pages, shared CSS/JS and a clickable review index |
-| `components/` | Standalone SVGs, chart code, progression adapter, Python tests and component specifications |
-| `screenshots/` | Captured desktop/mobile layouts and clearly labeled fictional interaction states |
-| `assets/` | New licensed design assets only; existing logos remain in `docs/assets/` |
-| `research/` | Data-source notes, chart choices, technical options and player connection requirements |
-| `screen-manifest.json` | The list of screens/components, their files, targets and review status |
-| `tools/` | Screenshot and Python-image generators, plus unit tests |
+| [prototypes/](prototypes/) | Six HTML pages with shared CSS and JavaScript |
+| [screenshots/](screenshots/) | Real desktop/mobile browser captures and labeled sample interactions |
+| [components/](components/) | SVG artwork, charts, data adapters and tests |
+| [screen-manifest.json](screen-manifest.json) | The relationship between designs, source files and implementation files |
+| [tokens.final.json](tokens.final.json) | Proposed fonts, colors, spacing and other shared styles |
+| [research/](research/) | Findings on charts, data access, player connections and frontend tools |
+| [tools/](tools/) | Screenshot and image generators, plus validation tests |
 
-To view the pages locally, run this from the repository root:
+The prototypes can be viewed from a local repository checkout with `python -m http.server 8000`, then opening `http://localhost:8000/design/v1.1.0/prototypes/index.html`.
 
-```sh
-python -m http.server 8000
-```
+The screenshots come from browser runs at 390px and 1440px, with layout checks at 320, 375, 768 and 1024px as well. Those checks confirm how the **design source** renders; they don't prove that the implementation matches or that live Discord and WARCON connections are working.
 
-Then visit `http://localhost:8000/design/v1.1.0/prototypes/index.html`. The local server is important because the pages load images and sample data from other repository folders. Opening an HTML file directly may not work.
+For exact measurements, data rules and component behavior, the [component specifications](components/COMPONENT_IMPLEMENTATION_SPEC.md) and [chart notes](research/CHART_METHODS_AND_FIELD_GATE.md) have the detail.
 
-There's also an optional [browser preview through raw.githack](https://raw.githack.com/ejronin/1ADAAR/design/v1.1.0-ia-handoff/design/v1.1.0/prototypes/index.html). That's a third-party proxy, not the live site; check it before relying on it.
+---
 
-## What the design covers
-
-The site keeps its WARDOGS look: original 1AD and WARDOGS logos, Lonestar blue, Valkyra red, Manticore green, and restrained green/charcoal throughout the normal dashboard. Gold, silver and bronze belong to the weekly podium. Don't redraw or recolor the original artwork.
-
-The six screens cover:
-
-- **Home:** a clean server briefing, a short border laser that goes dark when finished, and a metallic sheen clipped to the original 1AD mark.
-- **Player:** career totals, recent results, properly labeled chart controls, map/faction comparisons, Steam portrait treatment and an optional progression panel.
-- **Maps and factions:** win/loss/draw breakdowns, recorded K/D by map and selectors that sit inside the panel they change.
-- **Weekly:** the owner's preferred silver/gold/bronze podium, honest empty places and a crown effect reserved for a real qualified first-place player. The sample winner is only a demo.
-- **Discord recap:** the image and text hierarchy, per-faction top-kill leaders where the match lines support them, and a real link-button implementation contract. The HTML preview still needs a check inside Discord itself.
-- **Activity:** the recorded **match-start** heatmap, separate from any future player-session calendar. Missing session history isn't treated as zero activity.
-
-Keep career totals, archived matches, season data and account progression labeled separately. A five-match trailing K/D point combines the **current match and preceding four**, regardless of whether the chart shows 10, 20 or all points. Raw kills/deaths can use paired dots; that option should disappear for ratio-only charts.
-
-All PlayerOne figures are fictional test data. Live winners, match outcomes, role levels and activity should never be made up to fill a chart.
-
-## External progression: what can actually be connected
-
-The optional WARDOGS Tracker connection is for four things only: **six role levels and XP, overall WARDOG level, career XP, and account cash/gold when visible**. There is no loadout builder or unlock gallery.
-
-WARDOGS Tracker documents a public API for player-synced profiles, but that does **not** mean 1ADAAR can automatically sign someone in or retrieve every visitor's progression. The outbound sync link opens the Tracker site in a separate tab. A persistent connection across browsers needs verified Steam ownership, the player's consent and private storage through an approved backend.
-
-Start with [the connection instructions](research/PLAYER_PROGRESSION_OPT_IN_IMPLEMENTATION.md) and [the API investigation](research/ROLE_PROGRESSION_ACCESS_VALIDATION.md). The Python adapter and six-role radar renderer are in `components/`. Never publish raw Steam IDs, login credentials or hidden account-economy values in GitHub Pages.
-
-Weapon kills-with/died-by charts are a separate possible WARCON kill-feed task, **not part of this release** until attribution is verified.
-
-## Data and release rules
-
-- WARCON provides server and match data. Game-account progression comes from a separately synced public Tracker profile when permitted.
-- Only captured completed matches may count toward a saved-match report or server-wide activity heatmap.
-- Personal online-time analysis needs authorized complete session timestamps and a privacy review. The existing bounded session list isn't full lifetime history.
-- Keep test screenshots, empty states and fictional examples clearly marked.
-- No RCON passwords, private WARCON keys, Steam credentials, webhook secrets or real player IDs in the design assets.
-- Nobody posts a demo recap to the live Discord channel or activates extra data collection from this folder.
-- The implementation engineer builds the actual site in staging; the owner inspects that **working preview**, not just static pictures, before approving deployment.
-
-## Notes worth reading
-
-- [Chart choices and the data each one needs](research/CHART_METHODS_AND_FIELD_GATE.md)
-- [WARCON and RCON fields](research/RCON_WARCON_FIELD_INVENTORY.md)
-- [Six-role progression research](research/ROLE_PROGRESSION_ACCESS_VALIDATION.md)
-- [Player connection and storage](research/PLAYER_PROGRESSION_OPT_IN_IMPLEMENTATION.md)
-- [Frameworks, CSS, Python image tools and GitHub builds](research/FRONTEND_GRAPHICS_TECHNOLOGY_ASSESSMENT.md)
-- [What needs changing in staging](research/DESIGN_DISCREPANCY_REGISTER.md)
-- [Examples from other gaming dashboards](research/COMPETITIVE_CHART_UX_REFERENCES.md)
-
-## Review and sign-off
-
-An approved design is not automatically working code. The implementation engineer ports the approved pieces to staging, runs the data and browser tests, and returns a hosted preview with screenshots at matching sizes. Check that preview against the design source and record any mismatches.
-
-Only the owner can approve the screens and the production release. Keep `ownerApproval` in the manifest pending until that decision is explicit. Don't merge into `main` because a screenshot job passed.
+**Current status:** design handoff in [PR #28](https://github.com/ejronin/1ADAAR/pull/28). The implementation is being handled separately in staging. The existing public site remains live while the next version is built and reviewed.

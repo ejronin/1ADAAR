@@ -1,6 +1,6 @@
 # Optional player progression: implementation notes
 
-The owner wants **six role levels and XP, overall WARDOG level, career XP, and account cash/gold when visible**. That's the whole external-progression scope for v1.1.0. No loadout builder, unlock gallery or weapon charts. Keep WARCON server stats and the player activity heatmap separate.
+The v1.1.0 progression feature covers **six role levels and XP, overall WARDOG level, career XP, and account cash/gold when visible**. It doesn't include a loadout builder, unlock gallery or weapon charts. WARCON's server statistics and the activity heatmap remain separate.
 
 ## Source and limits
 
@@ -22,13 +22,13 @@ The next action, implemented as part of the secure connection, is **I've synced 
 
 **Tracker does not document a third-party OAuth callback or automatic return URL.** Don't invent `redirect_uri` support or suggest a link click verifies ownership. A real login/return to 1ADAAR would be a separate 1ADAAR-controlled sign-in flow.
 
-## What “connected” should mean
+## What a connection would mean
 
 There are two ways to stage this feature:
 
 **Simple link-only version:** add the external Tracker link and honest empty/progression-available messaging. No persistent account claim. Browser `localStorage` or a typed SteamID is not account verification. This is the only option that needs no new private backend.
 
-**Full optional connection:** if the owner approves a free-tier identity/storage provider, add secure Steam OpenID verification for 1ADAAR and store a private account/consent link. GitHub Pages cannot process a secure on-demand login callback or maintain a private writable database by itself. The engineer must show the provider, ongoing limits/cost, retention policy and failure cases before it is enabled.
+**Full optional connection:** A lasting, cross-device connection would use secure Steam OpenID verification through a separately approved private identity/storage service. GitHub Pages can't process an on-demand private login callback or operate a writable private database. The provider, usage limits, cost, data retention and failure behavior need to be clear before it is enabled.
 
 For the full connection:
 
@@ -57,7 +57,7 @@ Never publish a private roster, session record or hidden cash/gold simply becaus
 
 Reusable source is already in `design/v1.1.0/components/progression_adapter.py`, `role_radar.js`, and `role_radar.schema.json`. The adapter checks the private SteamID association and returns a normalized record without that identifier. Its tests are in `design/v1.1.0/tools/test_progression_adapter.py`. The editable UI is `design/v1.1.0/prototypes/player.html#progression`.
 
-## Tests before owner approval
+## What a working connection has to prove
 
 Use one **consenting, actually synced player** to prove the endpoint and exact fields. Check that:
 - That person can connect only their own player dossier, with no exposed SteamID or sensitive URL.
@@ -68,4 +68,4 @@ Use one **consenting, actually synced player** to prove the endpoint and exact f
 - A returning user on another device sees only records they're still authorized to see.
 - The phone layout, keyboard controls and first-party callback pass the same security and visual checks as the rest of staging.
 
-The engineer should return a working staging page, the provider/setup decision, tests and any unresolved source limits. Do not enable production until the owner has seen the **actual working site** and approved both its behavior and any new service.
+The working staging page, chosen provider, tests and any remaining data limitations are part of the release record. Production stays unchanged until the finished site and any new service have been reviewed and approved.
