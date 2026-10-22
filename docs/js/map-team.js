@@ -104,7 +104,7 @@
     host.replaceChildren();
     const list=(Array.isArray(rows)?rows:[]).filter(r=>
       r&&typeof r.name==='string'&&known(r.kills)&&known(r.deaths)&&known(r.matches)&&r.matches>0)
-      .map(r=>({...r,aggregate:r.deaths===0?(r.kills===0?null:r.kills):r.kills/r.deaths}));
+      .map(r=>({...r,aggregate:r.deaths>0?r.kills/r.deaths:null}));
     if(!list.length){make(host,'p','No completed, recorded per-map kills and deaths yet.','mt-empty');return;}
     const peak=Math.max(1,...list.map(r=>r.aggregate??0));
     for(const r of [...list].sort((a,b)=>(b.aggregate??-1)-(a.aggregate??-1))){
@@ -112,12 +112,12 @@
       make(line,'strong',r.name,'mt-kd-label');
       const track=make(line,'div',undefined,'mt-kd-track');
       const dot=make(track,'span',undefined,'mt-kd-dot');
-      dot.style.left=((r.aggregate??0)/peak*100)+'%';
-      const caption=r.aggregate===null?'—':r.aggregate.toFixed(2);
+      if(r.aggregate===null){dot.hidden=true;}else{dot.style.left=(r.aggregate/peak*100)+'%';}
+      const caption=r.aggregate===null?'— (zero recorded deaths)':r.aggregate.toFixed(2);
       make(line,'span',caption+' K/D · '+number(r.matches)+' matches','mt-kd-value');
       line.setAttribute('aria-label',r.name+': '+caption+' K/D from '+
         r.kills+' kills and '+r.deaths+' deaths over '+r.matches+' recorded matches'+
-        (r.deaths===0?' (zero deaths, WARCON display convention)':''));
+        (r.deaths===0?' (ratio undefined)':''));
     }
   }
   function fillChoice(select,values,first){
