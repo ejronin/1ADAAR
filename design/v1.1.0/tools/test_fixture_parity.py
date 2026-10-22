@@ -24,6 +24,8 @@ class FixtureParityTest(unittest.TestCase):
             self.assertIn(number,self.player)
         self.assertEqual((p["wins"],p["losses"],p["draws"]),(27,17,4))
         self.assertEqual(len(self.f["matches"]),32)
+        for label in ("Headshots","Vehicle kills","Best kill streak","Team kills"):
+            self.assertIn(label,self.player)
 
     def test_original_last_ten_match_rows_match_player_table(self):
         for m in self.latest:
