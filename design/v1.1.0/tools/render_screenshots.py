@@ -46,6 +46,25 @@ def capture():
                     if response is None or response.status != 200:
                         errors.append(f"{name}-{width} unexpected status")
                     page.wait_for_timeout(1750)  # let once-only art motion finish in normal-motion modes
+                    # Genuinely load repository branding, not only layout boxes.
+                    for img in page.locator("img").all():
+                        if img.evaluate("(el) => el.complete && el.naturalWidth === 0"):
+                            errors.append(f"{name}-{width}: original image unavailable: {img.get_attribute('src')}")
+                    # Verify interactive designs against the canonical PlayerOne data.
+                    if name == "player":
+                        if page.locator("#performance-chart svg.chart").count() != 1:
+                            errors.append(f"player-{width}: canonical data chart absent")
+                        if page.locator("#chart-data tr").count() != 33:
+                            errors.append(f"player-{width}: expected 32 sourced rows")
+                        if "2026-10-15" not in page.locator("#chart-data").inner_text():
+                            errors.append(f"player-{width}: canonical last observation missing")
+                    if name == "map-team":
+                        outcome_text = page.locator("#map-insight").inner_text()
+                        if not all(term in outcome_text for term in ("Wins", "5 of 10", "Losses", "4 of 10", "Draws", "1 of 10")):
+                            errors.append(f"map-team-{width}: outcome view not grounded in fixture")
+                    if name == "activity":
+                        if page.locator("#heat-cells button[data-b='1']").count() != 0:
+                            errors.append(f"activity-{width}: real empty state has fabricated colored cells")
                     delta = page.evaluate("Math.max(0, document.documentElement.scrollWidth - window.innerWidth)")
                     if delta > 2 or js_errors:
                         errors.append(f"{name}-{width}: {delta}px overflow, JS={js_errors}")
@@ -53,6 +72,30 @@ def capture():
                     if width in (390,1440):
                         target = OUT / f"{name}-{width}.png"
                         page.screenshot(path=str(target), full_page=True, animations="disabled")
+                        if name == "player":
+                            page.locator("#kills-encoding").select_option("paired")
+                            if "paired comparison" not in page.locator("#performance-chart svg").get_attribute("aria-label").lower():
+                                errors.append(f"player-{width}: paired dumbbell encoding not active")
+                            page.screenshot(path=str(OUT / f"player-paired-{width}.png"),
+                                            full_page=True, animations="disabled")
+                            page.locator("#point-window").select_option("10")
+                            if page.locator("#chart-data tr").count() != 11:
+                                errors.append(f"player-{width}: Last 10 fails to change plotted points")
+                            page.locator("[data-trend='career']").click()
+                            if "careerhistory" not in page.locator("#trend-context").inner_text().lower():
+                                errors.append(f"player-{width}: career snapshots not correctly labeled")
+                            page.locator("[data-trend='rolling']").click()
+                            if "overlapping" not in page.locator("#trend-context").inner_text().lower():
+                                errors.append(f"player-{width}: rolling average denominator unclear")
+                        if name == "map-team":
+                            page.locator("[data-map='factions']").click()
+                            if "Lonestar" not in page.locator("#map-insight").inner_text():
+                                errors.append(f"map-team-{width}: faction-share control nonfunctional")
+                            page.screenshot(path=str(OUT / f"map-team-faction-share-{width}.png"),
+                                            full_page=True, animations="disabled")
+                            page.locator("[data-map='maps']").click()
+                            if "Bakurani" not in page.locator("#map-insight").inner_text():
+                                errors.append(f"map-team-{width}: map-share control nonfunctional")
                         if not target.is_file() or target.stat().st_size < 3000:
                             errors.append(f"{target} screenshot missing or too small")
                     if width == 1440 and name in ("weekly", "activity"):
@@ -89,6 +132,7 @@ def capture():
                "The activity heatmap has zero actual saved match starts and is neutral by default.",
                "The fictional interaction captures deliberately show sample-only states, not live data.",
                "The six-role radar has no filled role-level data polygon.",
+               "Sourced PlayerOne plot / 32 rows, Last 10 selector, paired-dot encoding, historical snapshots and faction/map switch tested.",
                "A first real WARCON source and actual Discord desktop/mobile visual acceptance are separate release gates.",
                "", "## Errors", *(["- " + e for e in errors] if errors else ["- None in source/prototype browser checks"])]
     (OUT / "BROWSER_QA.md").write_text("\n".join(report) + "\n", encoding="utf-8")
