@@ -82,7 +82,7 @@ class LaunchUXContractTests(unittest.TestCase):
         self.assertIn("latest 120 matches we have saved", index)
         self.assertIn("may not include every match played", index)
         self.assertIn("older matches may be missing", players)
-        self.assertIn("Every match.", index)  # IA-approved editorial hero phrase
+        self.assertNotIn("A clearer story.", index)  # Reject retired generic marketing copy
         self.assertIn("Match history saved", app)
         self.assertIn("VIEW MATCH", app)
         self.assertNotIn("VIEW DOSSIER", app)
