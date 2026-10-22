@@ -396,3 +396,91 @@
 
 /* Long implementation filenames in the Discord technical note must wrap on narrow phones. */
 .panel code{overflow-wrap:anywhere;word-break:break-word;white-space:normal}
+
+/* Optional progression proposal: all values absent unless the exact
+   identity-bound synced public account and display consent are verified. */
+.progression-teaser{
+  border-color:#446b4c;
+  background:linear-gradient(126deg,#15251b,#0f1b16);
+}
+.progression-teaser .panel-head{align-items:start}
+.progression-teaser .progression-layout{
+  grid-template-columns:minmax(260px,.84fr) minmax(0,1.16fr);
+  align-items:stretch;
+  gap:18px;
+}
+.progression-radar-box{
+  border:1px solid #36513e;
+  background:linear-gradient(158deg,#18271d,#101d16);
+  border-radius:9px;
+  padding:13px 14px 15px;
+  min-width:0;
+}
+.progression-empty-radar{
+  width:min(100%,390px);
+  height:auto;
+  max-height:272px;
+  object-fit:contain;
+  display:block;
+  margin:auto;
+}
+.progression-rows{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin-top:14px;
+}
+.progression-rows>span{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:7px;
+  border:1px solid #3c5645;
+  border-radius:5px;
+  padding:9px;
+  color:#c3ddc9;
+  font-size:11px;
+}
+.progression-rows b{color:#d3e5d6;font-size:15px}
+.progression-info{display:flex;flex-direction:column;gap:14px;min-width:0}
+.progression-metrics{gap:9px}
+.progression-metrics .metric{
+  min-width:0;
+  padding:12px 14px;
+}
+.progression-metrics .metric strong{font-size:36px}
+.progression-connect{
+  background:#1d3323;
+  border:1px solid #47654e;
+  padding:17px;
+  border-radius:9px;
+}
+.progression-connect h3{font-size:24px}
+.progression-connect p{
+  font-size:12px;
+  color:#bbd7c1;
+  margin:7px 0 13px;
+}
+.progression-connect .btn{
+  background:#266139;
+  border-color:#6aa77d;
+}
+.progression-connect .btn:hover{background:#327748}
+.progression-connect .source{
+  font-size:11px;
+  line-height:1.5;
+  margin:12px 0 0;
+  color:#a7c4ae;
+}
+.progression-info>.source{line-height:1.7}
+@media(max-width:1059px){
+ .progression-teaser .progression-layout{grid-template-columns:1fr}
+ .progression-rows{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:440px){
+ .progression-teaser .progression-layout{gap:12px}
+ .progression-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .progression-rows{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .progression-connect{padding:13px}
+ .progression-empty-radar{max-height:255px}
+}
