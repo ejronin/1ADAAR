@@ -59,7 +59,7 @@ assert.match(find(host,n=>n.className==='perf-explanation').textContent,/four pr
 assert.match(find(host,n=>n.className==='perf-explanation').textContent,/Last 10 points/);
 assert.ok(find(host,n=>n.textContent==='Rolling K/D (5 matches)'));
 tabs.children[4].events.click();
-assert.equal(tabs.children[3].attrs['aria-pressed'],'true');
+assert.equal(tabs.children[4].attrs['aria-pressed'],'true');
 assert.ok(find(host,n=>n.textContent==='LATEST CAREER K/D'));
 const empty=new Node('section');
 mount(empty,{key,matches:[],career:[],demo:false});
