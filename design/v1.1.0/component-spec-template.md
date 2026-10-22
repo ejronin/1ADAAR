@@ -1,34 +1,34 @@
-# Component specification — COPY THIS TEMPLATE FOR EACH IMPLEMENTATION COMPONENT
+# Component notes template
 
-**ID / screen / status**: [e.g. player.win-rate-donut] / [page] / DESIGN DRAFT
+Copy this only when a new component needs its own spec. Existing components are documented in `components/COMPONENT_IMPLEMENTATION_SPEC.md` and `screen-manifest.json`.
 
-**Current implementation source**: file(s), CSS selectors and JS renderer.
-**Editable prototype source**: relative HTML/CSS/JS/SVG file references.
-**Screenshots**: 390px and 1440px actual rendered frame paths.
-**Owner approval**: Pending (must never self-approve).
+**Component:** [name and screen]  
+**Status:** Pending owner review  
+**Source:** [editable HTML/CSS/JS/SVG paths]  
+**Implementation:** [the existing page, module or stylesheet to change]  
+**Screenshots:** [390px and 1440px captures]
 
-## Visual measurements
-- Component bounds (desktop/mobile), placement, alignment:
-- Typeface and precise weight/size/line-height/tracking:
-- Border, ring and stroke thickness in CSS px, including relationship to component diameter:
-- Spacing, padding, radii, shadows:
-- Semantic colors and disabled/focus/hover states:
-- Long names, no data, loading, error state treatment:
-- Animation timing and prefers-reduced-motion behavior:
+## Appearance
 
-## Data / functionality that MUST remain correct
-- Input source / denominator / data freshness:
-- Inputs, controls, keyboard navigation:
-- Explicit data that is NOT supported and must not be shown:
-- Breakpoints at 320, 375, 390, 768, 1024, 1440:
+- Desktop and phone dimensions; alignment and spacing:
+- Fonts, number sizes, colors and border/ring thickness:
+- Loading, empty, error and long-name states:
+- Hover/focus behavior and reduced-motion fallback:
 
-## Implementation mapping
-- **KEEP**:
-- **REPLACE**:
-- **REMOVE**:
-- Files / functions / selectors to change:
-- Tests and acceptance screenshots:
-- Owner review comment / decision:
+## Data and controls
 
-## Comparison
-Before image | Proposed image | Gap | Severity | Pixel/selector-level correction
+- Source fields, calculation and denominator:
+- Period or match range:
+- What the control actually changes:
+- Missing/zero handling and accessibility:
+- What the available source **cannot** support:
+
+## Handoff check
+
+- Keep:
+- Change:
+- Remove:
+- Tests, mobile screenshots and source files:
+- Owner's comments and approval date:
+
+A component is ready to build only after the owner approves its design. A passing screenshot test isn't approval.
