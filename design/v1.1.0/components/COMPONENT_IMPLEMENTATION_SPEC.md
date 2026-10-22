@@ -31,3 +31,29 @@ All public browser charts must use precomputed sanitized sources. Historical per
 
 ## Approval and final verification
 Each screenshot filename in screen-manifest.json must refer to real rendered browser evidence from identical prototype source. Browser QA at 320,375,390,768,1024,1440px and keyboard focus is mandatory. Owner decides whether each screen is approved. Then and only then the implementation engineer ports changes to staging; visual-fidelity review compares actual implementation screenshots with this design before production approval.
+
+## Weekly podium restoration — owner-supplied previous design reference
+
+The owner identified the earlier **“COMMUNITY PLAYERS OF THE WEEK”** three-place composition as the preferred weekly podium reference on 2026-10-21. Restore that arrangement in design and require the implementation engineer to follow the *committed browser screenshots*, not the flatter prior v1.1.0 podium illustration.
+
+**Source of truth:** `design/v1.1.0/prototypes/weekly.html`, the scoped `.weekly-spotlight`/`.weekly-podium` classes in `prototypes/shared.css`, and the fully editable crown vector `components/weekly-crown.svg`. Visual evidence: `screenshots/weekly-1440.png`, `screenshots/weekly-390.png`, and `screenshots/weekly-fictional-interaction-1440.png`, regenerated from those sources.
+
+**Geometry:** 3-column horizontal podium at desktop: silver (02) / elevated gold (01) / bronze (03), with a **slightly wider and 22px taller** central gold card. Equal rank-number family and weight, ranks top-left within each card, centered circular portraits below. Gold crown **above the first-place card** aligned to the portrait midpoint. Visible empty-state wording:
+
+- Section title: **Community players of the week**
+- Supporting copy: “Top three places remain unassigned until players and Discord eligibility are verified.”
+- Status: **Awaiting results**
+- Each vacant card: **Awaiting results** / **Second place**, **Player of the week**, or **Third place** / **No player selected**
+- Eligibility note: “These are empty places, not awards. Member eligibility and profile-picture verification must be confirmed before activating the spotlight.”
+
+**Material treatment:** Silver uses cool-grey metallic border (`#B9CBD3`) and charcoal-grey background; first uses muted gold (`#E5BC70`); third uses warm bronze (`#C18A6D`). Metallic appearance comes from **a restrained one-pixel upper rim highlight, cool/warm color-specific gradient, and subtle inset reflection**, not neon glows or continuous shimmer. Borders remain readable in reduced motion and screenshots. Current empty-state avatar circle has matching metal stroke; no invented image or recipient name.
+
+**Crown states:** The unoccupied gold slot has a static emblematic crown at the top center—it signals *placement*, not a winner. When a legitimate and identity-verified first-place player populates that slot, the same-sized crown fades in once over **650 ms**, positioned above the actual avatar (no oversized crown or title obstruction). Under `prefers-reduced-motion: reduce`, the crown is shown statically without fade or translation. The design-only checkbox reveals **clearly fictional** recipient names exclusively for animation review; production must not include that demo switch.
+
+**Mobile:** Three places remain in silver/gold/bronze order; avatar and typography reduce at <=680px, 320px layout must neither clip names nor force body horizontal scroll. Long verified gamer tags need wrapping/ellipsis rules with full accessible names. Empty cards never imply eligibility confirmed.
+
+**Data gates:** **Do not assign winners** until weekly period, top-three eligibility, Discord identity constraints, and actual qualifying match data are verified. Do not confuse “highest WARDOGS player score” with unauthorized, estimated role rank. All displayed player photographs must be sourced from the correct authorized/public Steam association.
+
+**Implementation targets:** `docs/weekly.html`, `docs/assets/weekly.css`, `docs/assets/motion-v11.css`, and the existing weekly data-rendering code. Preserve the rest of the weekly roundup analytics. No production changes in this design revision.
+
+**Acceptance:** Compare final desktop/mobile implementation against `weekly-1440.png` and `weekly-390.png` side by side; test real empty archives, three full winners, only one/two available winners, motion/reduced motion, long nicknames, Steam-avatar fallback, 320px viewport, and keyboard/screen reader labels.
