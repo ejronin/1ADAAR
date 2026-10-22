@@ -52,6 +52,22 @@ def capture():
                             errors.append(f"{name}-{width}: original image unavailable: {img.get_attribute('src')}")
                     # Verify interactive designs against the canonical PlayerOne data.
                     if name == "player":
+                        panel=page.locator("#progression")
+                        if panel.count()!=1:
+                            errors.append(f"player-{width}: missing optional progression connection proposal")
+                        else:
+                            if panel.locator(".progression-rows span").count()!=6:
+                                errors.append(f"player-{width}: not all six exact role axes have empty-state rows")
+                            if panel.locator(".progression-metrics .metric").count()!=4:
+                                errors.append(f"player-{width}: missing WARDOG level / career XP / cash / gold")
+                            link=panel.locator('a[href="https://wardogstracker.gg/stats"]')
+                            if link.count()!=1 or link.get_attribute("target")!="_blank":
+                                errors.append(f"player-{width}: missing real tracker sync external link")
+                            if not all(k in panel.inner_text() for k in
+                                       ("WARDOG level","Career XP","Account cash","Gold",
+                                        "Assault","Medic","Support","Recon","Driver","Pilot")):
+                                errors.append(f"player-{width}: missing approved exact role/economy language")
+                    if name == "player":
                         if page.locator("#performance-chart svg.chart").count() != 1:
                             errors.append(f"player-{width}: canonical data chart absent")
                         if page.locator("#chart-data tr").count() != 33:
