@@ -13,4 +13,4 @@ AUTH_ORIGIN = "https://REPLACE-WITH-YOUR-WORKER.workers.dev"
 [[d1_databases]]
 binding = "DB"
 database_name = "1adaar-steam-consent"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_UUID"
+database_id = "6c7600ec-f1d8-4973-8738-849a188356ff"
