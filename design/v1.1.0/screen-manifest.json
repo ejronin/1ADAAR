@@ -200,8 +200,7 @@
     ],
     "screenshotsAreFromEditableSource": true,
     "nativeDiscordClientVerified": false,
-    "errors": [],
-    "componentSourceAndScreenshotsVerified": true
+    "errors": []
   },
   "components": [
     {
@@ -345,7 +344,7 @@
         "design/v1.1.0/components/win-rate-ring.svg",
         "design/v1.1.0/prototypes/shared.css"
       ],
-      "technicalSpecification": "165px SVG; identical 11px stroke for track and value; 56.25% from 27/48, centered 27–31px figure, literal numerator denominator",
+      "technicalSpecification": "165px SVG; identical 11px stroke for track and value; 56.25% from 27/48, centered 27\u201331px figure, literal numerator denominator",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/player-390.png",
@@ -492,7 +491,7 @@
         "design/v1.1.0/prototypes/map-team.html",
         "design/v1.1.0/prototypes/shared.css"
       ],
-      "technicalSpecification": "Three aligned map aggregate K/D dots, zero-index count axis 0–2.5, numeric values and N beside dots",
+      "technicalSpecification": "Three aligned map aggregate K/D dots, zero-index count axis 0\u20132.5, numeric values and N beside dots",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/map-team-390.png",
@@ -512,7 +511,7 @@
       "editableSourceFiles": [
         "design/v1.1.0/prototypes/map-team.html"
       ],
-      "technicalSpecification": "Canonical map×faction pair counts, all unobserved combinations dashed, not coerced to zero",
+      "technicalSpecification": "Canonical map\u00d7faction pair counts, all unobserved combinations dashed, not coerced to zero",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/map-team-390.png",
@@ -645,7 +644,7 @@
         "design/v1.1.0/prototypes/activity.html",
         "design/v1.1.0/prototypes/shared.js"
       ],
-      "technicalSpecification": "7×24 Eastern grid showing counts of captured completed-match starts, neutral zero-evidence state and optional explicitly fictional demo toggle",
+      "technicalSpecification": "7\u00d724 Eastern grid showing counts of captured completed-match starts, neutral zero-evidence state and optional explicitly fictional demo toggle",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/activity-390.png",
