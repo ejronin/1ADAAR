@@ -80,41 +80,44 @@ def alpha_paste(im: Image.Image, icon: Image.Image, xy: tuple[int, int]) -> None
 
 
 def draw_header(im: Image.Image, draw: ImageDraw.ImageDraw, match: dict, demo: bool) -> None:
-    """Hero art and brand are sourced from approved, unchanged repo assets."""
+    """IA-directed editorial recap masthead; approved source art remains unchanged."""
     if ART.exists():
         with Image.open(ART) as original:
             battlefield = ImageOps.fit(original.convert("RGB"), (WIDTH, 294),
                                         method=Image.Resampling.LANCZOS,
                                         centering=(.54, .44))
         im.paste(battlefield, (0, 0))
-    # An intentionally strong dark scrim makes the report readable on mobile.
     scrim = Image.new("RGBA", (WIDTH, 294), (0, 0, 0, 0))
     shade = ImageDraw.Draw(scrim)
     for y in range(294):
-        opacity = min(241, 132 + int(y * .38))
-        shade.line((0, y, WIDTH, y), fill=(3, 10, 6, opacity), width=1)
+        opacity = min(247, 145 + int(y * .36))
+        shade.line((0, y, WIDTH, y), fill=(3, 11, 7, opacity), width=1)
     im.paste(Image.alpha_composite(im.crop((0, 0, WIDTH, 294)).convert("RGBA"),
                                    scrim).convert("RGB"), (0, 0))
-    alpha_paste(im, community_emblem(), (LEFT, 25))
-    draw.text((147, 35), "1ADAAR", fill=LIGHT, font=font(29, True))
-    draw.text((147, 76), "ONEAVERAGEDAN COMMUNITY SERVER", fill=GREEN, font=font(16, True))
+    # Small authentic brand lockup; the report title, not the game map, leads.
+    alpha_paste(im, community_emblem(), (LEFT, 18))
+    draw.text((149, 29), "1ADAAR", fill=LIGHT, font=font(29, True))
+    draw.text((149, 67), "ONEAVERAGEDAN / WARDOGS COMMUNITY SERVER",
+              fill=GREEN, font=font(15, True))
     if WORDMARK.exists():
         with Image.open(WORDMARK) as original:
             mark = original.convert("RGBA")
-            mark.thumbnail((257, 80), Image.Resampling.LANCZOS)
-            alpha_paste(im, mark, (RIGHT - mark.width, 26))
-    draw.line((LEFT, 124, RIGHT, 124), fill="#699d76", width=2)
-    draw.text((LEFT, 146), "AFTER ACTION REPORT / COMPLETED MATCH",
-              fill=GREEN, font=font(19, True))
+            mark.thumbnail((230, 65), Image.Resampling.LANCZOS)
+            alpha_paste(im, mark, (RIGHT - mark.width, 30))
+    draw.line((LEFT, 112, RIGHT, 112), fill="#699d76", width=2)
+    draw.text((LEFT, 133), "AFTER ACTION", fill=LIGHT, font=font(64, True))
+    draw.text((LEFT, 194), "REPORT", fill=LIGHT, font=font(78, True))
+    # The map/mode are actual source-qualified identifiers of this record.
     map_name = truncate(draw, str(match.get("map") or "Unknown map").upper(),
-                        font(62, True), 965)
-    draw.text((LEFT, 183), map_name, fill=LIGHT, font=font(62, True))
-    mode = truncate(draw, match.get("mode") or "Mode unavailable", font(22), 600)
-    draw.text((LEFT, 259), mode, fill="#dfebdf", font=font(22))
+                        font(25, True), 505)
+    mode = truncate(draw, str(match.get("mode") or "Unknown mode"), font(19), 250)
+    draw.text((616, 205), "COMPLETED MATCH", fill=GREEN, font=font(14, True))
+    draw.text((616, 230), map_name, fill=LIGHT, font=font(25, True))
+    draw.text((616, 261), mode, fill=MUTED, font=font(19))
     if demo:
-        draw.rounded_rectangle((696, 253, RIGHT, 288), radius=6, fill="#a46928")
-        draw.text((709, 259), "FICTIONAL SAMPLE • NOT LIVE", fill="#10120e",
-                  font=font(16, True))
+        draw.rounded_rectangle((LEFT, 266, 457, 290), radius=4, fill="#795327")
+        draw.text((LEFT + 9, 269), "FICTIONAL SAMPLE — NEVER POST",
+                  fill="#fff0bd", font=font(15, True))
     draw.rectangle((0, 292, WIDTH, 295), fill=GREEN)
 
 
