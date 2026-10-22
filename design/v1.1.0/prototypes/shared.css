@@ -299,3 +299,25 @@
 @media(prefers-reduced-motion:reduce){
   .hero .laser,.hero-logo-sheen{animation:none!important;opacity:0!important}
 }
+
+/* Chart encoding controls are contextual — native hidden must beat toolbar display. */
+.toolbar[hidden],#kills-chart-picker[hidden]{display:none!important}
+.result-breakdown-selectors{
+  margin:5px 0 10px;
+  gap:7px;
+  flex-wrap:wrap;
+}
+.result-breakdown-selectors .tab{
+  min-height:42px;
+  white-space:normal;
+}
+.result-composition .result-count{
+  display:block;
+  font:800 clamp(34px,3.4vw,44px)/1 'Barlow Condensed','Arial Narrow',Arial,sans-serif;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.015em;
+  margin:0 auto 5px;
+}
+@media(max-width:520px){
+  .result-breakdown-selectors .tab{font-size:10px;flex:1;min-width:90px}
+}
