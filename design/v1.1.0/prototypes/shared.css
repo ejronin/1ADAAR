@@ -358,3 +358,38 @@
  align-items:center;
 }
 .discord .action:focus-visible{outline:2px solid #fff;outline-offset:3px}
+
+/* Final narrow viewport fidelity after 320px Chromium QA. */
+@media(max-width:520px){
+ .discord-leader{
+   flex-wrap:wrap;
+   align-items:flex-start;
+   max-width:100%;
+   gap:4px 10px;
+ }
+ .discord-leader .faction{flex-shrink:0}
+ .discord-leader>span:last-child{
+   min-width:0;
+   overflow-wrap:anywhere;
+   flex:1 1 125px;
+ }
+ .discord-faction-leaders{
+   padding:10px 9px;
+   width:100%;
+   min-width:0;
+   max-width:100%;
+ }
+ .discord{min-width:0;max-width:100%}
+ .discord-art{min-width:0;max-width:100%}
+}
+@media(max-width:350px){
+ .weekly-podium .weekly-place,
+ .weekly-podium .weekly-place.first{
+   min-height:255px;
+ }
+ .weekly-podium .weekly-place--gold.first{
+   min-height:309px;
+ }
+ .weekly-podium .weekly-place h3{font-size:15px}
+ .weekly-podium .weekly-place .weekly-unassigned{font-size:9.5px}
+}
