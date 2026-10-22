@@ -10,6 +10,8 @@ class FictionalProgressionContractTests(unittest.TestCase):
         radar=(ROOT/"js/role-radar.js").read_text()
         live=(ROOT/"players.html").read_text()
         assert 'data-fictional-demo="true"' in page
+        assert page.index('id="demo-progression-panel"') < page.index('id="performance-module"')
+        assert live.index('id="progression-panel"') < live.index('id="performance-module"')
         assert 'data-role-demo="true"' in page
         assert 'id="demo-role-radar"' in page
         assert 'id="demo-progression-connect"' in page
