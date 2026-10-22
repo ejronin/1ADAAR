@@ -46,6 +46,7 @@ These are browser screenshots, not native Discord-app screenshots. All data in m
 The activity heatmap has zero actual saved match starts and is neutral by default.
 The fictional interaction captures deliberately show sample-only states, not live data.
 The six-role radar has no filled role-level data polygon.
+Sourced PlayerOne plot / 32 rows, Last 10 selector, paired-dot encoding, historical snapshots and faction/map switch tested.
 A first real WARCON source and actual Discord desktop/mobile visual acceptance are separate release gates.
 
 ## Errors
