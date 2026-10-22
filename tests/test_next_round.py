@@ -30,7 +30,7 @@ class NextRoundTests(unittest.TestCase):
         self.assertIsNone(confirmed_next_round({**STATUS,"lighting":"TotallyUnknownWeather"},MATCH,now=NOW))
 
     def test_match_recap_has_no_next_map_guess_or_join_code(self):
-        data=match_recap(MATCH)
+        data=match_recap({**MATCH, 'verifiedCompleted':True})
         self.assertEqual(data["flags"],32768)
         self.assertEqual(data["components"][0]["components"][0]["content"],"## AFTER ACTION REPORT")
         self.assertIn("attachment://match-recap.png",json.dumps(data))
