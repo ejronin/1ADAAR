@@ -153,7 +153,9 @@ async def capture():
                     await real.locator("#progression-panel").wait_for(state="visible",timeout=10000)
                     assert await real.locator("#progression-role-radar").count()==1
                     assert await real.locator("#progression-role-radar [data-role-profile]").count()==0
-                    assert "No 1ADAAR Steam ownership" in await real.locator("#progression-status").inner_text()
+                    assert "Steam connection service is not deployed yet" in await real.locator("#progression-status").inner_text()
+                assert await real.locator('#progression-check').is_disabled()
+                assert await real.locator('#progression-consent-panel').is_hidden()
                     report.setdefault("realProfiles",[]).append({"width":width,**actual,
                         "progressionEmpty":True})
                 assert not real_errors, f"Real player page errors at {width}: {real_errors}"
