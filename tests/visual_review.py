@@ -64,7 +64,7 @@ async def capture():
                 assert measurements["secondaryCards"]==3
                 assert measurements["donuts"]==1
                 assert measurements["insights"]==2
-                assert len(measurements["tabs"])==4
+                assert len(measurements["tabs"])==5
                 assert measurements["table"]
                 assert not errors, f"JavaScript exceptions at {width}px: {errors}"
                 await page.close()
