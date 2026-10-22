@@ -231,3 +231,12 @@ body{background:var(--ia-bg);color:var(--ia-ink)}
     justify-content:flex-start;gap:8px;line-height:1.5}
   main.main > footer span{display:block;max-width:100%;overflow-wrap:anywhere}
 }
+
+/* Hero art: center the authentic 1AD badge on the banner's vertical axis. */
+.player-hero .player-hero-logo{
+  top:50%;
+  transform:translateY(-50%);
+}
+@media (max-width:720px){
+  .player-hero .player-hero-logo{top:50%;transform:translateY(-50%);}
+}
