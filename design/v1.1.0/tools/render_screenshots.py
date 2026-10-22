@@ -56,7 +56,7 @@ def capture():
                             errors.append(f"player-{width}: canonical data chart absent")
                         if page.locator("#chart-data tr").count() != 33:
                             errors.append(f"player-{width}: expected 32 sourced rows")
-                        if "2026-10-15" not in page.locator("#chart-data").inner_text():
+                        if "2026-10-15" not in (page.locator("#chart-data").text_content() or ""):
                             errors.append(f"player-{width}: canonical last observation missing")
                     if name == "map-team":
                         outcome_text = page.locator("#map-insight").inner_text()
