@@ -159,3 +159,19 @@ body{background:var(--ia-bg);color:var(--ia-ink)}
  .ia-reports-panel,.ia-home-activity{padding:16px}
  .ia-home-hour-row{gap:1.5px}
 }
+
+/* Source-neutral activity empty state: structure without invented observation. */
+.ia-activity-empty{max-width:100%;padding:24px;margin:18px 0 20px;
+ border:1px solid #3d5945;border-radius:11px;
+ background:linear-gradient(120deg,#14241a,#101a14)}
+.ia-activity-empty[hidden]{display:none}
+.ia-activity-empty h3{font:800 26px/1 'Barlow Condensed',Arial,sans-serif;
+ color:#effaf0;margin:9px 0}
+.ia-activity-empty>p{font-size:12px;line-height:1.65;color:#b1c5b7;margin:8px 0 17px}
+.ia-activity-empty .ia-home-heatmap{max-width:760px;padding:14px;
+ border:1px solid #314c39;border-radius:8px;background:#0e1911}
+.ia-activity-empty .ia-home-hour-cell{background:#243228;border-color:#314636;opacity:.68}
+.ia-activity-empty .ia-home-hour-row{gap:4px}
+@media(max-width:520px){.ia-activity-empty{padding:14px}
+ .ia-activity-empty .ia-home-heatmap{padding:8px}
+ .ia-activity-empty .ia-home-hour-row{gap:1.5px}}
