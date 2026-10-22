@@ -75,6 +75,7 @@ function openProfile(entry){publicState.selected=entry;const detailed=$('map-tea
    window.OneADAARPerformance.mount($('performance-module'),{key:entry.key,matches:recent,career:points,demo:false});
  });
 window.OneADAARProfile.snapshot($('player-snapshot'),entry,recent);
+ if(window.OneADAARProgression)window.OneADAARProgression.mount(entry);
  breakdown(recent,'map','map-breakdown');breakdown(recent,'faction','faction-breakdown');recentTable(recent,entry.key);
  if(!entry.demo)history.replaceState(null,'',`#player-${entry.key}`);$('dossier').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
 }
