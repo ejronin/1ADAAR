@@ -19,8 +19,9 @@
       }
       matrix.append(row);
     }
+    if(window.OneADAARActivity)window.OneADAARActivity.axis(matrix);
   }
-  empty('No recorded pattern confirmed yet. Empty cells do not prove the server was inactive.');
+  empty('Data will appear as completed matches are recorded.');
   try{
     const response=await fetch('data/recorded-activity.json',{cache:'no-store'});
     if(!response.ok)throw Error('source unavailable');
@@ -50,6 +51,7 @@
       });
       matrix.append(row);
     });
+    if(window.OneADAARActivity)window.OneADAARActivity.axis(matrix);
     note.textContent=all.count.toLocaleString()+
       ' verified completed-match starts in available capture history. This is not a player activity log.';
   }catch(_){
