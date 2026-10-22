@@ -27,8 +27,8 @@ class SignatureMotionTests(unittest.TestCase):
                     "champion-avatar-orbit-once"):
             self.assertIn(key, css)
         self.assertIn("prefers-reduced-motion:reduce", css)
-        self.assertIn("stroke-dasharray:0 100", css)
-        self.assertIn("stroke-dasharray:100 0", css)
+        self.assertIn("stroke-dasharray:4.2 95.8", css)
+        self.assertIn("stroke-dashoffset:-100;opacity:0", css)
         self.assertIn("pathLength", (DOCS / "index.html").read_text())
         # Only the old generic sheen was infinite; it's expressly suppressed
         # on the new actual home hero.
