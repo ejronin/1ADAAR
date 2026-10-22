@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS login_states (
   state_hash TEXT PRIMARY KEY,
   pkce_challenge TEXT NOT NULL,
   player_key TEXT NOT NULL,
+  return_route TEXT NOT NULL DEFAULT 'players',
   expires_at INTEGER NOT NULL
 );
 CREATE TABLE IF NOT EXISTS exchange_codes (
