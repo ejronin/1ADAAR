@@ -65,6 +65,37 @@ def capture():
                     if name == "activity":
                         if page.locator("#heat-cells button[data-b='1']").count() != 0:
                             errors.append(f"activity-{width}: real empty state has fabricated colored cells")
+                    if name == "home" and width in (390, 1440):
+                        # CSS animations must conclude fully (no lingering bright laser segment).
+                        page.wait_for_timeout(1200)
+                        motion = page.evaluate("""() => {
+                          const hero = document.querySelector('.hero');
+                          const laser = hero.querySelector('.laser');
+                          const mark = hero.querySelector('.hero-logo-mark');
+                          const sheen = hero.querySelector('.hero-logo-sheen');
+                          const logo = mark.querySelector('img');
+                          const r = el => {
+                            const b=el.getBoundingClientRect();
+                            return {x:b.x,y:b.y,width:b.width,height:b.height};
+                          };
+                          return {
+                            beamOpacity:parseFloat(getComputedStyle(laser).opacity),
+                            sheenOpacity:parseFloat(getComputedStyle(sheen).opacity),
+                            laserAnimation:getComputedStyle(laser).animationName,
+                            mask:getComputedStyle(sheen).maskImage||getComputedStyle(sheen).webkitMaskImage,
+                            mark:r(mark),logo:r(logo),sheen:r(sheen)
+                          };
+                        }""")
+                        if motion["beamOpacity"] > .01 or motion["sheenOpacity"] > .01:
+                            errors.append(f"home-{width}: laser/sheens remain bright after motion: {motion}")
+                        if "1ad-logo.svg" not in motion["mask"]:
+                            errors.append(f"home-{width}: sheen is not alpha-masked to original 1AD source")
+                        for key in ("width","height","x","y"):
+                            if abs(motion["logo"][key]-motion["sheen"][key])>1:
+                                errors.append(f"home-{width}: sheen not exact displayed emblem geometry: {motion}")
+                                break
+                        if motion["laserAnimation"] == "none":
+                            errors.append(f"home-{width}: perimeter motion absent")
                     if name == "weekly":
                         cards = page.locator(".weekly-spotlight .weekly-podium .weekly-place")
                         if cards.count() != 3:
