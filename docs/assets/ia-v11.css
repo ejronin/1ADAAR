@@ -176,3 +176,51 @@ body{background:var(--ia-bg);color:var(--ia-ink)}
 @media(max-width:520px){.ia-activity-empty{padding:14px}
  .ia-activity-empty .ia-home-heatmap{padding:8px}
  .ia-activity-empty .ia-home-hour-row{gap:1.5px}}
+
+/* v1.1 recorded activity: 24 real hourly cells and just four 24H 6-hour marks.
+   Keep the markers in a separate row: no cell is removed or reinterpreted. */
+.ia-hour-axis{display:grid;grid-template-columns:31px repeat(24,minmax(0,1fr));
+ gap:2px;align-items:end;min-width:0;padding:0 0 2px;
+ font-variant-numeric:tabular-nums}
+.ia-hour-axis-label{position:relative;display:block;white-space:nowrap;
+ color:#bfdcc7;font:700 10px/1.5 system-ui,sans-serif;transform:translateX(-2px)}
+.ia-hour-axis-label::after{content:"";display:block;position:absolute;
+ left:1px;bottom:-4px;width:1px;height:5px;background:#91c99c}
+.act-analysis-layout{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(230px,.85fr);
+ gap:15px;align-items:stretch;margin:16px 0 20px}
+.act-map-panel{min-width:0}
+.act-insight-panel{min-width:0;border:1px solid #3d5945;border-radius:11px;
+ background:linear-gradient(140deg,#15231a,#101a14);padding:24px}
+.act-insight-panel .eyebrow{font:800 10px/1.4 system-ui,sans-serif;
+ letter-spacing:.1em;color:#87e7a0}
+.act-insight-panel h3{font:800 27px/1.1 'Barlow Condensed',Arial,sans-serif;
+ color:#eefaf0;margin:10px 0 17px}
+.act-insight-panel .ia-insight-grid{display:grid;gap:11px}
+.act-insight-panel .ia-insight-grid[hidden],
+.act-summary-empty[hidden],.act-summary-disclosure[hidden]{display:none!important}
+.ia-insight-item{border:1px solid #385542;border-radius:7px;padding:14px;
+ background:#192a1e;min-width:0}
+.ia-insight-item span{display:block;color:#bdd5c3;font-size:11px;line-height:1.4}
+.ia-insight-item strong{display:block;color:#f0f9f1;font:800 clamp(20px,2vw,28px)/1.2
+ 'Barlow Condensed',Arial,sans-serif;margin-top:6px;overflow-wrap:anywhere}
+.act-summary-empty{font-size:13px;color:#c5d8c9;line-height:1.65;
+ margin:8px 0 0}
+.act-summary-disclosure{font-size:11px;color:#a8c0ae;line-height:1.65;
+ margin:19px 0 0}
+.act-map-panel .ia-activity-empty{margin:0;min-height:290px}
+.act-map-panel .ia-activity-empty .ia-home-heatmap{max-width:none}
+.act-map-panel .act-metrics{gap:8px}
+.act-map-panel .act-stat{padding:11px}
+.act-map-panel .act-stat strong{font-size:clamp(17px,1.6vw,25px)}
+/* The full retained source table uses aligned major tick columns. */
+.act-grid-table th.act-major-hour{color:#b8f5c7;font-weight:800;
+ border-bottom:1px solid #618269;white-space:nowrap}
+.act-grid-table td.act-major-hour-cell .act-cell{border-left:2px solid #83b792}
+@media(max-width:1190px){.act-analysis-layout{grid-template-columns:minmax(0,1fr) minmax(220px,.85fr)}}
+@media(max-width:990px){.act-analysis-layout{grid-template-columns:minmax(0,1fr)}
+ .act-insight-panel .ia-insight-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.act-insight-panel{padding:15px}
+ .act-insight-panel .ia-insight-grid{grid-template-columns:minmax(0,1fr)}
+ .ia-home-hour-row,.ia-hour-axis{column-gap:1.5px}
+ .ia-hour-axis-label{font-size:9px;letter-spacing:-.05em}
+ .act-map-panel .ia-activity-empty{min-height:0}}
