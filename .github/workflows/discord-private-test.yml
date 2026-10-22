@@ -1,0 +1,42 @@
+name: Manual private Discord recap client test
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: "Only an owner-approved PRIVATE test-channel webhook: type SEND_FICTIONAL_TO_PRIVATE_TEST_CHANNEL"
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  private-recap-test:
+    if: github.repository == 'ejronin/1ADAAR'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 7
+    environment: discord-test
+    steps:
+      - name: Explicit owner/test-channel gate
+        env:
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          test "$CONFIRMATION" = "SEND_FICTIONAL_TO_PRIVATE_TEST_CHANNEL" ||
+          { echo "Private Discord test is not authorized"; exit 1; }
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install pinned image renderer
+        run: python -m pip install Pillow==11.3.0 CairoSVG==2.8.2
+      - name: Post one FICTIONAL Discord Components V2 test
+        env:
+          DISCORD_TEST_WEBHOOK: ${{ secrets.DISCORD_TEST_WEBHOOK }}
+        run: |
+          python -m src.discord_private_test --send --confirm SEND_FICTIONAL_TO_PRIVATE_TEST_CHANNEL
+      - name: Preserve exact attached image for mobile/desktop client comparison
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-discord-client-test-artwork
+          path: visual-review/discord-native-FICTIONAL.png
+          if-no-files-found: warn
+          retention-days: 7
