@@ -15,25 +15,29 @@
     if(value!==undefined)n.textContent=String(value);
     return n;
   }
-  function graph(container,rows,metric,report) {
+  function graph(container,rows,metric,report,encoding='trend') {
     container.replaceChildren();
-    const series=metric==='kills'?
-      [{label:'Kills',key:'kills',color:'#86f4a4',fill:true},
-       {label:'Deaths',key:'deaths',color:'#e7ad96',fill:false}]:
+    const series=metric==='averages'?
+      [{label:'Trailing 5-match average kills',key:'avgKills',color:'#86f4a4',fill:false},
+       {label:'Trailing 5-match average deaths',key:'avgDeaths',color:'#f5c84b',fill:false}]:metric==='kills'?
+      [{label:'Kills per match',key:'kills',color:'#86f4a4',fill:true},
+       {label:'Deaths per match',key:'deaths',color:'#f5c84b',fill:false}]:
       metric==='career'?
-      [{label:'Career K/D',key:'kd',color:'#86f4a4',fill:true}]:
-      [{label:'Match K/D',key:'kd',color:'#86f4a4',fill:true},
-       {label:'Last 5 matches',key:'rolling',color:'#e4c47d',fill:false}];
+      [{label:'Career K/D snapshot',key:'kd',color:'#86f4a4',fill:true}]:
+      metric==='rolling'?
+      [{label:'Rolling K/D (5 matches)',key:'rolling',color:'#86f4a4',fill:true}]:
+      [{label:'K/D per match',key:'kd',color:'#86f4a4',fill:true}];
     const raw=rows.flatMap(row=>series.map(s=>row[s.key]).filter(v=>typeof v==='number'&&Number.isFinite(v)));
-    const isCount=metric==='kills';
+    const isCount=metric==='kills'||metric==='averages';
     const peak=Math.max(1,...raw)*1.14;
     const scale=peak<=5?1:peak<=15?2:peak<=50?5:10;
     const ymax=Math.max(isCount?4:1,Math.ceil(peak/(4*scale))*4*scale);
     const box={x:67,y:24,w:684,h:247};
     const x=i=>box.x+(rows.length===1?box.w/2:box.w*i/(rows.length-1));
     const y=value=>box.y+box.h*(1-Math.max(0,value)/ymax);
+    if(metric==='kills'&&encoding==='paired')return pairedGraph(container,rows,report);
     const svg=se('svg',{viewBox:'0 0 780 323',class:'perf-svg',role:'img',
-      'aria-label':(metric==='career'?'Career K/D':isCount?'Kills versus deaths':'Match K/D and five-match rolling trend')+' for '+rows.length+' observations'});
+      'aria-label':(metric==='career'?'Tracked WARCON career K/D':metric==='averages'?'Trailing five-match average kills and deaths':isCount?'Kills and deaths per match':metric==='rolling'?'Rolling five-match K/D':'Per-match K/D')+' for '+rows.length+' observations, ordered oldest to newest'});
     svg.append(se('title',{},'WARDOGS player performance'));
     svg.append(se('desc',{},'Exact values are available in the data table beneath this interactive graph.'));
     const gradientId='aarPerf'+(++identity),defs=se('defs'),
@@ -69,11 +73,11 @@
           d:path+' L '+points[points.length-1].px+' '+(box.y+box.h)+' L '+points[0].px+' '+(box.y+box.h)+' Z',
           fill:'url(#'+gradientId+')'}));
         if(points.length>1)svg.append(se('path',{d:path,fill:'none',stroke:s.color,
-          'stroke-width':s.key==='rolling'?2.3:3,'stroke-linecap':'round','stroke-linejoin':'round',
+          'stroke-width':2.5,'stroke-linecap':'round','stroke-linejoin':'round',
           class:s.key==='rolling'?'perf-dashed':'perf-stroke'}));
         for(const p of points){
           const group=se('g',{class:'perf-point'});
-          const label=M.tickDate(rows[p.i].date)+' · '+(rows[p.i].map||'Career snapshot')+' · '+s.label+': '+
+          const label=M.tickDate(rows[p.i].date)+' · '+(metric==='career'?'Career snapshot':rows[p.i].map||'Map not recorded')+' · '+s.label+': '+
             (isCount?String(p.value):p.value.toFixed(2));
           group.append(se('circle',{cx:p.px,cy:p.py,r:4.7,fill:'#0c1710',stroke:s.color,'stroke-width':2.4,class:'perf-dot'}));
           const hit=se('circle',{cx:p.px,cy:p.py,r:16,fill:'transparent',tabindex:'0',role:'button',
@@ -93,6 +97,40 @@
     container.append(svg);
     return series;
   }
+  /* Genuine zero-based paired-dots; never use for ratios or rolling windows. */
+  function pairedGraph(container,rows,report){
+    container.replaceChildren();
+    const height=56+rows.length*25, left=91,right=44,width=780;
+    const peak=Math.max(1,...rows.flatMap(r=>[r.kills,r.deaths]));
+    const xpos=n=>left+n/peak*(width-left-right);
+    const svg=se('svg',{viewBox:'0 0 '+width+' '+height,class:'perf-svg perf-paired-svg',
+      role:'img','aria-label':'Kills and deaths paired by match on the same zero-based scale; exact values in the table'});
+    for(let t=0;t<=4;t++){
+      const x=xpos(peak*t/4);
+      svg.append(se('line',{x1:x,y1:24,x2:x,y2:height-17,class:'perf-gridline'}));
+      svg.append(se('text',{x,y:16,'text-anchor':'middle',class:'perf-axis-label'},String(Math.round(peak*t/4))));
+    }
+    rows.forEach((row,i)=>{
+      const y=35+i*25;
+      svg.append(se('text',{x:8,y:y+4,class:'perf-axis-label'},M.tickDate(row.date)));
+      svg.append(se('line',{x1:xpos(Math.min(row.kills,row.deaths)),y1:y,
+        x2:xpos(Math.max(row.kills,row.deaths)),y2:y,stroke:'#62856f','stroke-width':2}));
+      for(const [key,color,label] of [['kills','#86f4a4','Kills'],['deaths','#f5c84b','Deaths']]){
+        const x=xpos(row[key]),title=M.tickDate(row.date)+' '+(row.map||'')+' · '+label+': '+row[key];
+        svg.append(se('circle',{cx:x,cy:y,r:4.7,fill:color}));
+        const hit=se('circle',{cx:x,cy:y,r:14,fill:'transparent',tabindex:0,
+          role:'button','aria-label':title,class:'perf-hit'});
+        const show=()=>{report.hidden=false;report.textContent=title;};
+        hit.addEventListener('focus',show);hit.addEventListener('click',show);
+        hit.addEventListener('mouseenter',show);
+        hit.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();show();}});
+        svg.append(hit);
+      }
+    });
+    container.append(svg);
+    return [{label:'Kills per match',key:'kills',color:'#86f4a4'},
+      {label:'Deaths per match',key:'deaths',color:'#f5c84b'}];
+  }
   function mount(host,config) {
     if(!host||!config||typeof config.key!=='string')return;
     const matches=M.matchSeries(config.matches,config.key);
@@ -100,29 +138,30 @@
     // Preserve a visitor's selected view while the background history shard loads.
     const oldMetric=host.querySelector('.perf-tab[aria-pressed="true"]')?.dataset.metric;
     const oldRange=host.querySelector('.perf-window')?.value;
-    let metric=['kd','kills','career'].includes(oldMetric)?oldMetric:'kd';
-    let range=oldRange==='25'?25:oldRange==='all'?Infinity:10;
+    let metric=['kd','kills','rolling','averages','career'].includes(oldMetric)?oldMetric:'kd';
+    let range=(oldRange==='20'||oldRange==='25')?20:oldRange==='all'?Infinity:10;
+    let encoding='trend';
     host.replaceChildren();
     const header=el('header','perf-header'),
       left=el('div','perf-heading');
     left.append(el('span','eyebrow','PLAYER RESULTS OVER TIME'),
-      el('h3','','Performance over time'),
+      el('h3','','Performance trends'),
       el('p','perf-subtitle','See recent results and how your overall stats have changed.'));
-    header.append(left,el('span','perf-source',config.demo?'SAMPLE / MADE-UP STATS':'DATA FROM WARCON'));
+    header.append(left,el('span','perf-source',config.demo?'SAMPLE / MADE-UP STATS':'SAVED MATCHES / WARCON'));
     host.append(header);
     const toolbar=el('div','perf-toolbar'),tabs=el('div','perf-tabs');
     tabs.setAttribute('role','group');
     tabs.setAttribute('aria-label','Choose a stat to view');
-    for(const [key,label] of [['kd','K/D OVER TIME'],['kills','KILLS / DEATHS'],['career','ALL-TIME K/D']]){
+    for(const [key,label] of [['kills','Kills & deaths'],['kd','K/D per match'],['rolling','Trailing 5-match K/D'],['averages','Trailing 5-match averages'],['career','Career K/D history']]){
       const button=el('button','perf-tab',label);
       button.type='button';button.dataset.metric=key;
       button.addEventListener('click',()=>{metric=key;update();});
       tabs.append(button);
     }
-    const selectLabel=el('label','perf-window-label','WINDOW');
+    const selectLabel=el('label','perf-window-label','POINTS SHOWN');
     const select=el('select','perf-window');
-    select.setAttribute('aria-label','Number of recent observations');
-    for(const [value,label] of [['10','Last 10'],['25','Last 25'],['all','All available']]){
+    select.setAttribute('aria-label','Number of observations plotted, newest records selected, shown oldest to newest');
+    for(const [value,label] of [['10','Last 10 points'],['20','Last 20 points'],['all','All available points']]){
       const option=el('option','',label);option.value=value;select.append(option);
     }
     select.value=range===Infinity?'all':String(range);
@@ -132,9 +171,20 @@
       update();
     });
     selectLabel.append(select);
-    toolbar.append(tabs,selectLabel);host.append(toolbar);
+    const encodingLabel=el('label','perf-encoding-label','CHART VIEW');
+    const encodingSelect=el('select','perf-encoding');
+    for(const [value,label] of [['trend','Trend lines'],['paired','Paired dots']]){
+      const option=el('option','',label);option.value=value;encodingSelect.append(option);
+    }
+    encodingSelect.setAttribute('aria-label','Kills and deaths chart presentation');
+    encodingSelect.addEventListener('change',()=>{encoding=encodingSelect.value;update();});
+    encodingLabel.append(encodingSelect);
+    toolbar.append(tabs,selectLabel,encodingLabel);host.append(toolbar);
     const coverage=el('p','perf-coverage');
     host.append(coverage);
+    const explanation=el('p','perf-explanation');
+    explanation.setAttribute('role','note');
+    host.append(explanation);
     const summary=el('div','perf-summary'),canvas=el('div','perf-canvas'),
       empty=el('div','perf-empty'),legend=el('div','perf-legend'),
       inspector=el('div','perf-inspector'),footnote=el('p','perf-footnote'),
@@ -151,14 +201,18 @@
       scroller.replaceChildren();
       const headings=metric==='career'?['Date','Career K/D','Kills','Deaths','Matches']:
         metric==='kills'?['Date','Map','Kills','Deaths']:
-        ['Date','Map','Match K/D','5-game K/D','Kills','Deaths'];
+        metric==='rolling'?['Date','Map','5-match K/D','Match K/D','Kills','Deaths']:
+        metric==='averages'?['Date','Map','Avg kills (5)','Avg deaths (5)','Kills','Deaths']:
+        ['Date','Map','Match K/D','Kills','Deaths'];
       const t=el('table','perf-table'),head=el('thead'),line=el('tr');
       headings.forEach(v=>line.append(el('th','',v)));head.append(line);t.append(head);
       const body=el('tbody');
       for(const row of rows){
         const cols=metric==='career'?[M.tickDate(row.date),M.format(row.kd),row.kills,row.deaths,row.matches]:
           metric==='kills'?[M.tickDate(row.date),row.map,row.kills,row.deaths]:
-          [M.tickDate(row.date),row.map,M.format(row.kd),M.format(row.rolling),row.kills,row.deaths];
+          metric==='rolling'?[M.tickDate(row.date),row.map,M.format(row.rolling),M.format(row.kd),row.kills,row.deaths]:
+          metric==='averages'?[M.tickDate(row.date),row.map,M.format(row.avgKills),M.format(row.avgDeaths),row.kills,row.deaths]:
+          [M.tickDate(row.date),row.map,M.format(row.kd),row.kills,row.deaths];
         const tr=el('tr');cols.forEach(v=>tr.append(el('td','',v)));body.append(tr);
       }
       t.append(body);scroller.append(t);
@@ -169,22 +223,33 @@
       // Do not leave a live selector enabled when every option renders the same data.
       // Each metric may have different match and career sample sizes.
       if(total<=10)range=10;
-      else if(total<=25&&range===25)range=Infinity;
+      else if(total<=20&&range===20)range=Infinity;
+      encodingLabel.hidden=metric!=='kills';
+      if(metric!=='kills'){encoding='trend';encodingSelect.value='trend';}
       select.disabled=total<=10;
       for(const option of select.children){
-        if(option.value==='10')option.textContent='Last 10';
-        if(option.value==='25'){
-          option.textContent='Last 25';
-          option.disabled=total<=25;
+        if(option.value==='10')option.textContent='Last 10 points';
+        if(option.value==='20'){
+          option.textContent='Last 20 points';
+          option.disabled=total<=20;
         }
-        if(option.value==='all')option.textContent='All '+total+' available';
+        if(option.value==='all')option.textContent='All '+total+' available points';
       }
       select.value=range===Infinity?'all':String(range);
       const rows=M.windowed(full,range);
       coverage.textContent=total===0?'No saved results yet':
         total<=10?'Only '+total+' observations available · More windows unlock as data grows':
-        rows.length+' of '+total+' '+(metric==='career'?'career snapshots':'completed matches')+' in view';
+        rows.length+' of '+total+' '+(metric==='career'?'saved career snapshots':'saved completed-match records')+' shown · Oldest → newest';
       for(const button of tabs.children)button.setAttribute('aria-pressed',String(button.dataset.metric===metric));
+      explanation.textContent=metric==='kills'?
+        'Each point represents one saved completed match. Green = kills; yellow = deaths. Dates run from oldest on the left to newest on the right.':
+        metric==='kd'?
+        'Each point is that single match’s K/D (kills ÷ deaths). The newest selected matches are shown in chronological order.':
+        metric==='rolling'?
+        'Each point uses that match and the four preceding saved matches (5 total): combined kills ÷ combined deaths. “Last 10 points” displays ten rolling results, not just five matches. Earlier matches may contribute to the first point shown. Oldest → newest.':
+        metric==='averages'?
+        'Each point is the mean kills and mean deaths from the match and four preceding completed matches. The first four observations are unavailable. Last 10 / Last 20 / All never changes this five-match calculation.':
+        'Each point is the WARCON all-time career K/D captured on that date, not a match result. These are saved snapshots, not a complete career timeline. Oldest → newest.';
       for(const node of [summary,canvas,empty,legend,inspector])node.replaceChildren();
       empty.hidden=true;inspector.hidden=true;footnote.hidden=false;details.hidden=false;
       if(!rows.length){
@@ -199,17 +264,18 @@
       if(metric==='career'){
         summary.append(tile('SNAPSHOTS',String(rows.length),'saved daily updates'),
           tile('LATEST CAREER K/D',M.format(last.kd),'WARCON career totals'),
-          tile('TRACKED SINCE',M.tickDate(rows[0].date),'from saved results only'));
+          tile('EARLIEST DATE SHOWN',M.tickDate(rows[0].date),'saved career snapshot'));
       }else if(metric==='kills'){
         summary.append(tile('MATCHES IN VIEW',String(rows.length),'completed match records'),
           tile('KILLS IN VIEW',String(rows.reduce((sum,row)=>sum+row.kills,0)),'kills in shown matches'),
           tile('DEATHS IN VIEW',String(rows.reduce((sum,row)=>sum+row.deaths,0)),'deaths in shown matches'));
       }else{
         summary.append(tile('MATCHES IN VIEW',String(rows.length),'completed match records'),
-          tile('LATEST MATCH K/D',M.format(last.kd),'last saved match'),
-          tile('FIVE-MATCH K/D',M.format(last.rolling),last.rolling===null?'unlocks after 5 matches':'total kills / total deaths'));
+          tile(metric==='rolling'?'LATEST ROLLING K/D (5)':metric==='averages'?'LATEST AVG KILLS (5)':'LATEST MATCH K/D',
+            M.format(metric==='rolling'?last.rolling:metric==='averages'?last.avgKills:last.kd),'latest saved match sample'),
+          tile('DATE RANGE',M.tickDate(rows[0].date)+' – '+M.tickDate(last.date),'saved match dates'));
       }
-      const graphSeries=graph(canvas,rows,metric,inspector);
+      const graphSeries=graph(canvas,rows,metric,inspector,encoding);
       for(const s of graphSeries){
         if(s.key==='rolling'&&!rows.some(r=>r.rolling!==null))continue;
         const indicator=el('span','perf-legend-item'),dot=el('i');
@@ -221,8 +287,12 @@
       footnote.textContent=metric==='career'?
         'WARCON all-time stats saved on different days. We keep up to 60 updates from the past 180 days and do not make up earlier numbers.':
         metric==='kills'?
-        'Kills and deaths come from completed matches saved in 1ADAAR.':
-        'Five-match K/D is total kills divided by total deaths over five matches. If there are no deaths, we show the kill count. If there are no kills or deaths, we show a dash.';
+        'Green is kills. Yellow is deaths. Both come from completed matches saved by 1ADAAR.':
+        metric==='rolling'?
+        'Rolling K/D uses the combined kills and deaths from five consecutive saved matches; first four observations have no rolling value. The selected point range does not change that five-match calculation.':
+        metric==='averages'?
+        'Trailing five-match kills and deaths are arithmetic means; incomplete initial windows are blank. These are saved match counts, not WARDOGS progression.':
+        'Match K/D is recorded kills divided by deaths for each completed saved match. See the exact figures in the data table.';
       if(config.demo)footnote.textContent='DEMO / FICTIONAL — '+footnote.textContent;
       table(rows);
     }

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#101216" />
+  <meta name="description" content="Compare two WARDOGS players using public all-time WARCON stats for the OneAverageDan community server." />
+  <title>Compare Players — 1ADAAR</title>
+  <link rel="icon" href="assets/1ad-logo.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/style.css" />
+  <link rel="stylesheet" href="assets/brand.css?v=9" />
+  <link rel="stylesheet" href="assets/players.css?v=9" />
+  <link rel="stylesheet" href="assets/compare.css?v=1" />
+  <script defer src="js/compare.js?v=1"></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to player comparison</a>
+<div class="app-shell">
+  <aside class="rail" aria-label="Main menu">
+    <div class="brand"><img class="brand-emblem" src="assets/1ad-logo.svg" width="52" height="52" alt="Official 1AD emblem" /><div><strong>1ADAAR</strong><small>MATCHES &amp; PLAYER STATS</small></div></div>
+    <div class="rail-label">MENU</div>
+    <a class="nav" href="index.html#reports"><span class="nav-glyph" aria-hidden="true">▦</span>Match history</a>
+    <a class="nav" href="seasons.html"><span class="nav-glyph" aria-hidden="true">▤</span>Older matches</a>
+    <a class="nav" href="players.html"><span class="nav-glyph" aria-hidden="true">◎</span>Find a player</a>
+    <a class="nav active" href="compare.html" aria-current="page"><span class="nav-glyph" aria-hidden="true">⇄</span>Compare players</a>
+    <a class="nav" href="weekly.html"><span class="nav-glyph" aria-hidden="true">◷</span>Weekly roundup</a>
+    <a class="nav" href="https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342/leaderboard" target="_blank" rel="noopener noreferrer"><span class="nav-glyph" aria-hidden="true">♜</span>WARCON player rankings <span class="external">↗</span></a>
+    <div class="rail-footer"><div><strong>COMMUNITY-RUN SERVER</strong><small>Not operated by WARDOGS developers</small></div></div>
+  </aside>
+  <main id="content" class="main">
+    <header class="topbar"><div class="game-lockup"><img src="assets/wardogs-fullmark.png" width="200" height="40" alt="WARDOGS — Tactical All Out Warfare" /></div><div class="breadcrumb">WARDOGS <span>/</span> ONEAVERAGEDAN <span>/</span> PLAYER COMPARISON</div></header>
+    <section class="compare-hero" aria-labelledby="compare-heading">
+      <div class="eyebrow">ONEAVERAGEDAN WARDOGS COMMUNITY SERVER</div>
+      <h1 id="compare-heading">Compare <em>players.</em></h1>
+      <p>Choose two players to compare their all-time WARDOGS statistics. The numbers come from WARCON's public server rankings, not estimates from saved matches.</p>
+      <p class="compare-explain">Only players in the public WARCON list (up to 1,000) are available. A dash means a number is not available—not zero.</p>
+    </section>
+    <section class="compare-work" aria-labelledby="compare-choose-title">
+      <h2 id="compare-choose-title">Choose two players</h2>
+      <p id="compare-message" class="notice" role="status" aria-live="polite">Loading players…</p>
+      <form id="compare-form" class="compare-controls" hidden>
+        <div class="compare-select"><label for="compare-first">First player</label><select id="compare-first" required><option value="">Choose a player</option></select></div>
+        <div class="compare-select"><label for="compare-second">Second player</label><select id="compare-second" required><option value="">Choose a player</option></select></div>
+        <button type="submit">Compare stats →</button>
+      </form>
+      <div id="compare-results" hidden>
+        <div class="compare-heading-row"><h2>Player stats, side by side</h2><button id="compare-copy" type="button">↗ Share comparison</button></div>
+        <p class="compare-note">These are all-time WARCON totals, not current-season results. Different numbers don't automatically mean one player is better.</p>
+        <div class="compare-grid-wrap" tabindex="0" role="region" aria-label="Side-by-side player statistics">
+          <table class="compare-table"><thead><tr><th scope="col">Statistic</th><th id="compare-name-one" scope="col">Player one</th><th id="compare-name-two" scope="col">Player two</th></tr></thead><tbody id="compare-rows"></tbody></table>
+        </div>
+        <p class="compare-disclaimer">WARCON keeps all-time totals. Rankings and combat details may be missing or delayed, and this page never displays raw Steam IDs.</p>
+        <p id="compare-share-feedback" class="compare-note" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+    <footer><span>1ADAAR <b>◆</b> ONEAVERAGEDAN PLAYER STATS</span><span>Public WARCON all-time results · No made-up statistics</span></footer>
+  </main>
+</div>
+</body>
+</html>

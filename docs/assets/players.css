@@ -61,3 +61,13 @@
 #dossier .analytics-section-label{border-bottom:1px solid #346447}
 .player-results .section-head{border-left:3px solid #67dc8b;padding-left:17px}
 #performance-module{scroll-margin-top:22px}
+
+
+/* v2 deep-dive entry; only shown after a real player profile is selected. */
+.map-team-jump{margin:15px 0 16px}
+.map-team-jump a{display:inline-flex;align-items:center;justify-content:center;min-height:45px;
+ padding:11px 17px;border:1px solid #70ca8e;background:#203527;border-radius:5px;
+ color:#d5ffe1;text-decoration:none;font-size:14px;font-weight:800;line-height:1.35}
+.map-team-jump a:hover{text-decoration:underline;background:#294733}
+.map-team-jump a:focus-visible{outline:3px solid #b9ffd0;outline-offset:3px}
+.map-team-jump a[hidden]{display:none}

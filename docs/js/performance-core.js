@@ -19,7 +19,7 @@
       if (unique !== null) seen.add(unique);
       rows.push({date:match.endedAt, ts, map:typeof match.map === 'string' ? match.map : 'Unknown map',
         id:unique, kills:p.kills, deaths:p.deaths,
-        kd:round(displayRatio(p.kills,p.deaths)), rolling:null});
+        kd:round(displayRatio(p.kills,p.deaths)), rolling:null,avgKills:null,avgDeaths:null});
     }
     rows.sort((a,b) => a.ts - b.ts || String(a.id).localeCompare(String(b.id)));
     for (let i = 4; i < rows.length; i++) {
@@ -27,6 +27,8 @@
       const kills = last.reduce((sum,r)=>sum+r.kills,0);
       const deaths = last.reduce((sum,r)=>sum+r.deaths,0);
       rows[i].rolling = round(displayRatio(kills,deaths));
+      rows[i].avgKills = round(kills/5);
+      rows[i].avgDeaths = round(deaths/5);
     }
     return rows;
   }
@@ -44,7 +46,7 @@
     return [...byDate.values()].sort((a,b)=>a.ts-b.ts);
   }
   function windowed(series, limit) {
-    const n = limit === 10 || limit === 25 ? limit : Infinity;
+    const n = limit === 10 || limit === 20 || limit === 25 ? limit : Infinity;
     return series.slice(Math.max(0,series.length-n));
   }
   const format = n => n === null || !Number.isFinite(n) ? '—' : n.toFixed(2);

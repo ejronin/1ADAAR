@@ -9,7 +9,7 @@ class ShareAndJoinTests(unittest.TestCase):
         self.assertIn('<section id="join-wardogs"', html)
         self.assertIn('New to WARDOGS?', html)
         self.assertIn('Get the server join code from the 1AD Discord', html)
-        self.assertEqual(html.count('href="https://discord.gg/e9B69UkE53"'),2)
+        self.assertEqual(html.count('href="https://discord.gg/e9B69UkE53"'),1)
         sidebar=html.split('<aside class="rail"',1)[1].split('</aside>',1)[0]
         self.assertNotIn('join-wardogs',sidebar)
     def test_match_share_is_for_actual_opened_match_only(self):

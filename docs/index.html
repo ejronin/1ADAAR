@@ -18,13 +18,17 @@
   <link rel="icon" href="assets/1ad-logo.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="assets/style.css" />
   <link rel="stylesheet" href="assets/brand.css?v=9" />
+  <link rel="stylesheet" href="assets/motion-v11.css?v=2" />
   <link rel="stylesheet" href="assets/factions.css?v=1" />
   <link rel="stylesheet" href="assets/server-status.css?v=3" />
   <script defer src="js/factions.js?v=1"></script>
   <script defer src="js/share.js?v=2"></script>
   <script defer src="js/match-sort.js?v=1"></script>
   <script defer src="js/app.js?v=8"></script>
+  <script defer src="js/activity-insights.js?v=1"></script>
+  <script defer src="js/home-intelligence.js?v=1"></script>
   <script defer src="js/server-status.js?v=4"></script>
+<link rel="stylesheet" href="assets/ia-v11.css?v=1" />
 </head>
 <body>
 <a class="skip" href="#content">Skip to match results</a>
@@ -33,7 +37,10 @@
     <div class="brand"><img class="brand-emblem" src="assets/1ad-logo.svg" width="52" height="52" alt="Official 1AD emblem" /><div><strong>1ADAAR</strong><small>MATCHES &amp; PLAYER STATS</small></div></div>
     <div class="rail-label">MENU</div>
     <a class="nav active" href="#reports" aria-current="page"><span class="nav-glyph">▦</span>Match history</a>
+    <a class="nav" href="seasons.html"><span class="nav-glyph" aria-hidden="true">▤</span>Older matches</a>
+    <a class="nav" href="activity.html"><span class="nav-glyph" aria-hidden="true">▦</span>Recorded match activity</a>
     <a class="nav" href="players.html"><span class="nav-glyph">◎</span>Find a player</a>
+    <a class="nav" href="compare.html"><span class="nav-glyph" aria-hidden="true">⇄</span>Compare players</a>
     <a class="nav" href="weekly.html"><span class="nav-glyph" aria-hidden="true">◷</span>Weekly roundup</a>
     <a class="nav" href="https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342/leaderboard" rel="noopener noreferrer" target="_blank"><span class="nav-glyph">♜</span>WARCON player rankings <span class="external">↗</span></a>
     <a class="nav" href="https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342" rel="noopener noreferrer" target="_blank"><span class="nav-glyph">◉</span>Server on WARCON <span class="external">↗</span></a>
@@ -41,7 +48,21 @@
   </aside>
   <main id="content" class="main">
     <header class="topbar"><div class="game-lockup" aria-label="Game: WARDOGS — Tactical All Out Warfare"><img src="assets/wardogs-fullmark.png" alt="WARDOGS — Tactical All Out Warfare" width="200" height="40" /></div><div class="breadcrumb">WARDOGS <span>/</span> ONEAVERAGEDAN <span>/</span> MATCH HISTORY</div></header>
-    <section class="hero" aria-labelledby="hero-heading"><div class="hero-glow" aria-hidden="true"></div><div class="hero-text"><div class="eyebrow"><span class="diamond">◆</span> ONEAVERAGEDAN WARDOGS COMMUNITY SERVER</div><h1 id="hero-heading">Match results.<br><em>Player stats.</em></h1><p>See match scores and player results saved from WARCON. This site may not have every match.</p><div class="hero-actions"><a id="latest-match-link" class="primary" href="#reports" hidden aria-label="Open latest completed match details">View latest match <span aria-hidden="true">→</span></a><a class="secondary discord-link" href="https://discord.gg/e9B69UkE53" target="_blank" rel="noopener noreferrer"><img class="discord-icon" src="assets/discord.svg" width="20" height="20" alt="" /> Join the 1AD Discord <span aria-hidden="true">↗</span></a></div><div class="source-tag"><span class="signal" aria-hidden="true"></span> RESULTS FROM WARCON </div></div><div class="hero-graphic" aria-hidden="true"><img class="hero-logo" src="assets/1ad-logo.svg" width="246" height="246" alt="" /></div></section>
+
+    <section class="ia-titlebar" aria-labelledby="ia-server-briefing">
+      <div><span class="eyebrow">COMMUNITY OPERATIONS / 1ADAAR v1.1.0</span>
+        <h1 id="ia-server-briefing">Server briefing</h1>
+        <p>Real match results, player intelligence and community reporting—with the data source visible at every step.</p>
+      </div>
+      <span class="ia-source-pill">WARCON · CAPTURED REPORTING</span>
+    </section>
+    <section class="hero motion-hero" aria-labelledby="hero-heading">
+      <svg class="hero-laser-svg" viewBox="0 0 1000 480" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <rect class="hero-laser-outline" x="2" y="2" width="996" height="476" rx="10" pathLength="100"/>
+        <rect class="hero-laser-trace" x="2" y="2" width="996" height="476" rx="10" pathLength="100"/>
+        <rect class="hero-laser-head" x="2" y="2" width="996" height="476" rx="10" pathLength="100"/>
+      </svg>
+      <div class="hero-glow" aria-hidden="true"></div><div class="hero-text"><div class="eyebrow"><span class="diamond">◆</span> ONEAVERAGEDAN WARDOGS COMMUNITY SERVER</div><h2 id="hero-heading">WARDOGS MATCH REPORTS.<br><em>PLAYER INTELLIGENCE.</em></h2><p>Recorded WARCON match results, player performance, and server activity—all in one place.</p><div class="hero-actions"><a class="primary" href="players.html">Explore player intelligence <span aria-hidden="true">→</span></a><a class="secondary" href="activity.html">Activity patterns <span aria-hidden="true">→</span></a><a id="latest-match-link" class="secondary" href="#reports" hidden aria-label="Open latest completed match details">Latest match <span aria-hidden="true">→</span></a></div><div class="source-tag"><span class="signal" aria-hidden="true"></span> RESULTS FROM WARCON </div></div><div class="hero-graphic" aria-hidden="true"><span class="hero-logo-halo"><img class="hero-logo" src="assets/1ad-logo.svg" width="246" height="246" alt="" /></span></div></section>
     <section class="server-status" id="server-status" data-state="unknown" aria-label="Server status: STATUS UNKNOWN">
       <div class="server-status-main">
         <span class="server-status-lamp" aria-hidden="true"></span>
@@ -56,8 +77,19 @@
       <div class="server-status-cell"><span>CURRENT MAP</span><strong id="server-status-map">—</strong></div>
     </section>
     <section aria-label="Match summary" class="kpi-grid"><div class="kpi"><span>MATCHES SAVED</span><strong id="stat-matches">—</strong><small>the latest saved results</small></div><div class="kpi"><span>LAST MATCH WINNER</span><strong id="stat-winner" class="text-value">—</strong><small>last saved match</small></div><div class="kpi"><span>LAST PLAYED MAP</span><strong id="stat-map" class="text-value">—</strong><small>last saved match</small></div><div class="kpi"><span>MATCH HISTORY</span><strong id="stat-feed" class="text-value">WAITING</strong><small id="stat-sync">Waiting for saved results</small></div></section>
-    <section id="reports" class="reports" aria-labelledby="reports-heading"><div class="section-head"><div><div class="eyebrow">MATCH RESULTS</div><h2 id="reports-heading">Match history</h2><p>Only completed matches are shown. We keep the latest 120 matches we have saved, which may not include every match played.</p></div><div class="filters"><label class="sr-only" for="find-match">Search matches</label><input id="find-match" type="search" placeholder="Search map or winner…" autocomplete="off" /><label class="sr-only" for="sort-matches">Sort match results</label><select id="sort-matches" disabled aria-describedby="sort-explanation"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select><small class="filter-hint" id="sort-explanation" role="status">Sorting becomes available after 2 completed matches.</small></div></div>
+    <div class="ia-intelligence-grid">
+    <section id="reports" class="reports ia-reports-panel" aria-labelledby="reports-heading"><div class="section-head"><div><div class="eyebrow">MATCH RESULTS</div><h2 id="reports-heading">Latest match reports</h2><p>WARCON completed matches only. This feed keeps the latest 120 matches we have saved and may not include every match played; older matches may be missing.</p></div><div class="filters"><label class="sr-only" for="find-match">Search matches</label><input id="find-match" type="search" placeholder="Search map or winner…" autocomplete="off" /><label class="sr-only" for="sort-matches">Sort match results</label><select id="sort-matches" disabled aria-describedby="sort-explanation"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select><small class="filter-hint" id="sort-explanation" role="status">Sorting becomes available after 2 completed matches.</small></div></div>
     <div id="feedback" class="notice" role="status">Retrieving published match history…</div><div id="match-grid" class="match-grid" aria-live="polite"></div></section>
+
+    <aside class="ia-home-activity" aria-labelledby="ia-home-activity-title">
+      <header><span class="eyebrow">ACTIVITY INTELLIGENCE</span>
+        <h2 id="ia-home-activity-title">When matches start</h2>
+        <p>Captured completed-match starts by Eastern weekday/hour, not individual player activity.</p>
+      </header>
+      <p id="ia-home-activity-note" role="status">Checking retained match-start coverage…</p>
+      <div id="ia-home-activity-matrix" class="ia-home-heatmap" aria-label="Recorded match start pattern"></div>
+      <a class="ia-activity-link" href="activity.html">Explore full activity intelligence →</a>
+    </aside></div>
     <section id="join-wardogs" class="join-panel" aria-labelledby="join-wardogs-heading">
       <div class="join-panel-icon" aria-hidden="true">◆</div>
       <div class="join-panel-copy">

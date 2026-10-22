@@ -48,9 +48,14 @@ def sanitize_board_row(row: object, *, has_feed: bool) -> dict | None:
     return out
 
 
-def collect_players(fetch_json_fn, base_url: str) -> dict:
-    """Bounded all-time leaderboard snapshot. No privileged API endpoints or secrets."""
-    players, first_feed, pages_seen = {}, False, 0
+def collect_players(fetch_json_fn, base_url: str, avatar_lookup=None) -> dict:
+    """Public all-time WARCON board; private SteamID64s stay in process memory.
+
+    The optional callback receives a transient pseudonymous-key -> SteamID64
+    mapping. Its result may only add a sanitized Steam CDN image to public rows.
+    """
+    from src.steam_avatars import safe_avatar
+    players, ids, first_feed, pages_seen = {}, {}, False, 0
     for page in range(1, BOARD_PAGE_LIMIT + 1):
         doc = fetch_json_fn(f"{base_url}?scope=server&range=all&sort=kills&minMinutes=0&page={page}")
         rows = doc.get("rows")
@@ -62,9 +67,19 @@ def collect_players(fetch_json_fn, base_url: str) -> dict:
             entry = sanitize_board_row(row, has_feed=first_feed)
             if entry:
                 players[entry["key"]] = entry
+                ids[entry["key"]] = row["steamId"]
         pages_seen += 1
         if not rows or len(rows) < 50 or page * 50 >= nonnegative_integer(doc.get("total")):
             break
+    if avatar_lookup is not None and players:
+        resolved = avatar_lookup(ids)
+        if not isinstance(resolved, dict):
+            raise ValueError("Steam avatar resolution returned invalid result")
+        for key, url in resolved.items():
+            if key in players:
+                image = safe_avatar(url)
+                if image:
+                    players[key]["avatar"] = image
     return {"schemaVersion": 2, "source": "WARCON public leaderboard API (all time, server)",
             "limit": BOARD_PAGE_LIMIT * 50, "capped": pages_seen == BOARD_PAGE_LIMIT and len(players) >= BOARD_PAGE_LIMIT * 50,
             "hasFeed": first_feed, "players": sorted(players.values(), key=lambda x: (x["rank"],x["name"].casefold()))}

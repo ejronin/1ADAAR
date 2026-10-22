@@ -16,11 +16,12 @@ class VisualRecapTest(unittest.TestCase):
         self.assertLess(len(img),7_000_000)
         self.assertIn("attachment://match-recap.png",json.dumps(discord_payload({
             **sample,"warconUrl":"https://console.warcon.app/s/demo/matches/234",
-            "winner":"Lonestar","peakPlayers":32,"endedAt":"2026-10-16T20:10:00Z"
+            "winner":"Lonestar","peakPlayers":32,"endedAt":"2026-10-16T20:10:00Z","verifiedCompleted":True
         })))
     def test_smoke_has_fictional_scores_and_watermark(self):
         self.assertEqual(DEMO_MATCH["id"],0)
-        self.assertIn("FICTIONAL",smoke_payload()["embeds"][0]["description"])
+        self.assertIn("TEST — NOT A REAL MATCH",smoke_payload()["components"][0]["components"][0]["content"])
+        self.assertIn("FICTIONAL",json.dumps(smoke_payload()))
         self.assertGreater(len(render_match_card(DEMO_MATCH,demo=True)),10000)
     def test_multipart_contains_image_and_disables_pings(self):
         from unittest.mock import MagicMock
@@ -41,6 +42,8 @@ class VisualRecapTest(unittest.TestCase):
             self.assertIn(b'payload_json',body)
             self.assertIn(b'match-recap.png',body)
             self.assertIn(b'"parse": []',body)
+            self.assertIn(b'"flags": 32768',body)
+            self.assertIn("with_components=true",request.full_url)
             self.assertIn(raw,body)
     def test_demo_is_not_part_of_live_data(self):
         fixture=json.loads((ROOT/"docs/data/demo-player.json").read_text())

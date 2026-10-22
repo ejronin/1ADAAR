@@ -27,7 +27,7 @@
     };
     const entries=Object.entries(labels).filter(([key])=>rows[key]&&rows[key].name);
     if(!entries.length)return;
-    add(parent,'h5','','Players of the week');
+    add(parent,'h5','','Recorded match leaders');
     const cards=add(parent,'div','weekly-awards');
     for(const [key,label] of entries){
       const a=rows[key],tile=add(cards,'div','weekly-award');

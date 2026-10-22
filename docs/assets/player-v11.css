@@ -1,0 +1,160 @@
+/* 1ADAAR v1.1.0 — one cohesive player analytics interface. */
+:root{--aar-green:#70e7a0;--aar-edge:#375741;--aar-surface:#141e17;--aar-ink:#f0fbf2;--aar-muted:#b6cdbb}
+#dossier{min-width:0;scroll-margin-top:18px}
+#dossier .profile-header{border-top:3px solid #6edda0;border-radius:10px;
+  background:linear-gradient(112deg,#17291e,#111913 62%,#1a3021);padding:22px 25px;min-height:119px;gap:19px}
+#dossier .profile-heading .eyebrow{font-size:12px;color:#97e8b3;letter-spacing:.09em}
+#dossier .profile-heading h2{font-size:clamp(34px,4vw,49px);line-height:1;letter-spacing:.015em;margin:7px 0}
+#dossier .profile-subtitle{color:#c4d8c8;font-size:13px;line-height:1.55}
+#dossier .profile-actions{min-width:max-content}
+#dossier .profile-actions button{font-size:13px;min-height:44px;padding:12px 15px}
+#dossier .profile-emblem{height:78px;width:78px;position:relative;border-radius:50%;background:
+ linear-gradient(145deg,#7a9484,#253b2e 18%,#101d15 75%,#758d7b);border:2px solid #a1b1a5;
+ box-shadow:0 0 0 3px #17251a,inset 0 0 6px #0007,0 6px 22px #0005;overflow:hidden}
+#dossier .profile-emblem img{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#dossier .profile-emblem .avatar-initials{position:relative;font:800 33px 'Barlow Condensed',sans-serif;color:#f5fff6}
+#dossier .profile-emblem img.steam-avatar{z-index:1}
+.career-primary-title{font:800 27px 'Barlow Condensed',sans-serif;text-transform:uppercase;
+ letter-spacing:.03em;color:#f6fff7;margin:26px 0 12px}
+#dossier #profile-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:0 0 10px}
+#dossier #profile-metrics .metric-tile{border-color:#365c40;background:linear-gradient(145deg,#1e3123,#121e16);
+ padding:19px 20px;border-radius:8px;box-shadow:0 8px 24px #0003}
+#dossier #profile-metrics .metric-tile strong{font-size:clamp(29px,3.3vw,43px);color:#fff;
+ font-variant-numeric:tabular-nums;margin:8px 0 4px}
+#dossier #profile-metrics .metric-tile span,#dossier #profile-metrics .metric-tile small{font-size:13px;line-height:1.5;color:#b9d7c2;letter-spacing:0}
+#dossier #profile-metrics .metric-tile span{font-size:12px;color:#9be6b4;font-weight:850}
+.career-secondary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 16px}
+.career-secondary-card{display:flex;gap:10px;align-items:baseline;min-width:0;padding:13px 17px;
+ border-radius:7px;background:#152219;border:1px solid #334d3a;flex-wrap:wrap}
+.career-secondary-card span{color:#c8dccd;font-size:13px}
+.career-secondary-card strong{font:800 23px 'Barlow Condensed',sans-serif;color:#eefef2;
+ font-variant-numeric:tabular-nums}
+.career-secondary-card small{margin-left:auto;font-size:11px;color:#adc7b5}
+.profile-analysis-grid{display:grid;grid-template-columns:minmax(0,1.58fr) minmax(295px,.82fr);
+ gap:15px;align-items:stretch;margin:10px 0 17px}
+.profile-analysis-grid>.performance-module{margin:0;min-width:0}
+.profile-analysis-grid .perf-summary{grid-template-columns:repeat(3,minmax(0,1fr))}
+#player-snapshot{min-width:0;align-self:stretch;border:1px solid #3b684b;border-radius:9px;
+ padding:22px;background:linear-gradient(140deg,#1c2b20,#121b15);
+ display:flex;flex-direction:column;gap:15px}
+.snapshot-heading h3{font:800 27px 'Barlow Condensed',sans-serif;text-transform:uppercase;color:#f5fff7;margin:0 0 5px}
+.snapshot-heading p{font-size:12px;color:#bad4c2;line-height:1.5;margin:0}
+.snapshot-win{text-align:center;border-bottom:1px solid #3a5541;padding:0 0 18px}
+.snapshot-win h4,.snapshot-insight h4{font-size:12px;text-transform:uppercase;letter-spacing:.06em;
+ font-weight:850;color:#cde7d4;margin:0 0 9px}
+.profile-win-donut{position:relative;display:grid;place-items:center;height:155px;width:155px;margin:auto}
+.profile-win-donut svg{position:absolute;inset:0;height:100%;width:100%}
+.donut-track,.donut-progress{stroke-width:14;fill:none}
+.donut-track{stroke:#3b4f40}
+.donut-progress{stroke:#72e7a2;stroke-linecap:round;transform:rotate(-90deg);transform-origin:center}
+.donut-center{position:relative;text-align:center}
+.donut-center strong{display:block;color:#f5fff8;font:800 33px 'Barlow Condensed',sans-serif}
+.donut-center small{font-size:12px;color:#b8d9c2}
+.snapshot-count{color:#eefef1;font-size:12.5px;line-height:1.5;margin:8px 0 0;font-weight:750}
+.snapshot-explain{color:#bbd0c0;font-size:11.5px;line-height:1.5;margin:4px 0 0}
+.snapshot-insight{min-width:0;padding:0 0 5px;border-bottom:1px solid #2e4836}
+.snapshot-insight-heading{display:flex;align-items:center;gap:8px;min-height:27px;margin:0 0 10px;color:#f0fff3;font-size:15px}
+.snapshot-insight-heading .faction-identity{font-size:15px;font-weight:800}
+.snapshot-insight-heading .faction-emblem{height:28px;width:28px}
+.snapshot-track{background:#3b4f40;border-radius:99px;height:11px;overflow:hidden}
+.snapshot-fill{height:100%;background:#68dca0;border-radius:99px}
+.snapshot-disclaimer{font-size:12px;color:#b6d1be;line-height:1.65;margin:auto 0 0}
+#dossier #combat-panel{margin-top:18px}
+#dossier #combat-panel .panel-heading h3,#dossier .profile-panel .panel-heading h3{font-size:26px}
+#dossier #combat-metrics .metric-tile span,#dossier #combat-metrics .metric-tile small{font-size:12px}
+#dossier .analytics-section-label{margin:25px 0 13px}
+#dossier .analytics-section-label span{font-size:12px}
+#dossier .breakdown-row{grid-template-columns:minmax(0,1fr) 92px 104px;min-height:66px;gap:10px}
+#dossier .breakdown-row .mini-meter{height:8px}
+#dossier .breakdown-row>span,#dossier .breakdown-row em{font-size:12px;white-space:normal}
+#dossier .profile-columns .panel-heading span{font-size:12px}
+#dossier .profile-disclaimer{font-size:13px}
+#dossier .map-team-jump a{font-size:13px;min-height:44px}
+#dossier .recent-table td,#dossier .recent-table th{font-size:12.5px}
+#dossier .recent-table th{color:#c7ddcf}
+@media(max-width:1470px){.profile-analysis-grid{grid-template-columns:1fr}
+ #player-snapshot{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:start;gap:14px}
+ #player-snapshot>.snapshot-heading,#player-snapshot>.snapshot-disclaimer{grid-column:1/-1}
+ #player-snapshot>.snapshot-win{border-bottom:none;border-right:1px solid #3a5541;padding:0 14px 0 0}
+ #player-snapshot>.snapshot-insight{padding:8px 0 12px}
+ .snapshot-heading{margin-bottom:0}
+ .profile-win-donut{height:115px;width:115px}
+ .donut-center strong{font-size:27px}}
+@media(max-width:900px){#dossier #profile-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .career-secondary-card{padding:12px;gap:6px}
+ .career-secondary-card small{width:100%}
+ #dossier .profile-header{flex-wrap:wrap}
+ #dossier .profile-actions{width:100%;justify-content:flex-start;min-width:0}}
+@media(max-width:680px){
+ #dossier #profile-metrics{gap:8px}
+ #dossier #profile-metrics .metric-tile{padding:13px}
+ #dossier #profile-metrics .metric-tile strong{font-size:clamp(28px,8vw,35px)}
+ .career-secondary{grid-template-columns:1fr;gap:6px}
+ .career-secondary-card{padding:12px 14px}
+ .career-secondary-card small{width:auto;margin-left:auto}
+ #player-snapshot{display:flex;flex-direction:column}
+ #player-snapshot>.snapshot-win{width:100%;border:0;border-bottom:1px solid #39553e;padding:0 0 15px}
+ .profile-win-donut{height:150px;width:150px}
+ #player-snapshot>.snapshot-insight{width:100%;padding-bottom:12px}
+ #dossier .profile-emblem{height:65px;width:65px}
+ #dossier .profile-actions button{flex:1;min-width:0}
+ #dossier .breakdown-row{grid-template-columns:minmax(0,1fr) 74px 91px;gap:5px}
+}
+@media(max-width:370px){#dossier #profile-metrics .metric-tile span{font-size:11px}
+ #dossier #profile-metrics .metric-tile small{font-size:11px}
+ #dossier .breakdown-row{grid-template-columns:minmax(0,1fr) 67px 73px}
+ #dossier .breakdown-row>span,#dossier .breakdown-row em{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.donut-progress{transition:none}}
+
+/* Screenshot-led mobile refinement: remove nav sprawl and reclaim first-screen space. */
+.player-page .player-nav-links{display:flex;flex-direction:column}
+@media(max-width:720px){
+ .player-page .rail{padding:9px 12px 11px;min-height:0;display:block}
+ .player-page .rail .brand{padding:2px 0 8px;margin:0}
+ .player-page .rail .brand-emblem{width:39px;height:39px}
+ .player-page .rail-label,.player-page .rail-footer{display:none}
+ .player-page .player-nav-links{display:flex;flex-direction:row;gap:7px;overflow-x:auto;overflow-y:hidden;
+   max-width:100%;padding:4px 2px 7px;scrollbar-width:thin;scrollbar-color:#46845b #14231a;
+   -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+ .player-page .player-nav-links .nav{display:inline-flex;flex:none;gap:8px;align-items:center;
+   min-height:44px;white-space:nowrap;font-size:12px;padding:10px 13px;border:1px solid #355941;
+   border-radius:5px;background:#17241b}
+ .player-page .player-nav-links .nav.active{background:#244330;border-color:#71c88e}
+ .player-page .player-nav-links .nav-glyph{font-size:14px}
+ .player-page .player-hero{min-height:0;margin:12px 0 15px}
+ .player-page .player-hero .hero-text{padding:22px 21px}
+ .player-page .player-hero h1{font-size:clamp(38px,10.5vw,54px);line-height:1}
+ .player-page .player-hero p{font-size:14px;line-height:1.6}
+ .player-page #dossier .profile-header{display:grid;grid-template-columns:62px minmax(0,1fr);
+   gap:10px;padding:15px;align-items:start}
+ .player-page #dossier .profile-heading{min-width:0}
+ .player-page #dossier .profile-heading h2{font-size:33px;margin:4px 0}
+ .player-page #dossier .profile-heading .eyebrow{font-size:10.5px;letter-spacing:0}
+ .player-page #dossier .profile-subtitle{font-size:11.5px}
+ .player-page #dossier .profile-emblem{height:55px;width:55px}
+ .player-page #dossier .profile-actions{grid-column:1/-1;display:flex;width:100%;margin-top:0}
+ .player-page #dossier .profile-actions .new-search{flex:1;font-size:12px}
+ .player-page #dossier .demo-warning{font-size:10.5px;padding:7px 8px;line-height:1.4}
+ .player-page .perf-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+ .player-page .perf-tab{font-size:12px;line-height:1.35;padding:10px 6px}
+}
+@media(max-width:420px){
+ .player-page .perf-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .player-page .perf-summary>.perf-mini-stat:nth-child(3){grid-column:1/-1}
+}
+
+
+/* Direct IA link: clearly server-level recorded match starts, never a personal activity trace. */
+.profile-activity-link{display:flex;justify-content:space-between;align-items:center;gap:17px;
+ margin:6px 0 22px;padding:17px 20px;border:1px solid #39634a;border-left:3px solid #78dea0;
+ border-radius:7px;background:linear-gradient(105deg,#1b3021,#142119)}
+.profile-activity-link>div{min-width:0}
+.profile-activity-link strong{display:block;color:#e6fff0;font-size:16px;font-weight:800}
+.profile-activity-link p{max-width:710px;color:#c1dfc9;font-size:13px;line-height:1.6;margin:6px 0 0}
+.profile-activity-link a{display:inline-flex;align-items:center;justify-content:center;flex:none;
+ min-height:45px;padding:11px 16px;border:1px solid #68be84;border-radius:5px;
+ background:#274631;color:#e6ffea;font-size:13px;font-weight:800;text-decoration:none}
+.profile-activity-link a:hover{background:#335c3f}
+.profile-activity-link a:focus-visible{outline:3px solid #c4ffd7;outline-offset:3px}
+@media(max-width:720px){.profile-activity-link{flex-direction:column;align-items:stretch;padding:14px}
+ .profile-activity-link a{width:100%}}

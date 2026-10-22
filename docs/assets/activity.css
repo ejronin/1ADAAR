@@ -1,0 +1,50 @@
+/* Server-wide captured completed match starts, NOT individual player activity. */
+.act-hero{margin:24px 0;padding:36px clamp(20px,4vw,46px);border-radius:8px;
+ border:1px solid #456a4c;border-top:4px solid #7de2a4;
+ background:linear-gradient(115deg,#0d1610f5,#122217e8),url('wardogs-official-hero.webp') center/cover}
+.act-hero h1{font:800 clamp(37px,5vw,65px)/1.08 'Barlow Condensed',sans-serif;text-transform:uppercase;
+ color:#fff;margin:12px 0}
+.act-hero h1 em{font-style:normal;color:#8aefac}
+.act-hero p{max-width:830px;font-size:15px;color:#e5f2e8;line-height:1.65;margin:12px 0}
+.act-hero .act-caution{color:#c3d9c9;font-size:13px}
+.act-section{margin:27px 0 45px}
+.act-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:17px;margin-bottom:16px}
+.act-section-head h2{font:800 clamp(28px,3vw,38px)/1.1 'Barlow Condensed',sans-serif;
+ text-transform:uppercase;margin:0 0 7px;color:#f2fff4}
+.act-section-head p,.act-explainer,.act-caution,.act-source{font-size:13px;color:#c1d7c7;line-height:1.65;margin:7px 0}
+.act-filter{min-width:200px}
+.act-filter label{display:block;color:#cde9d5;font-weight:750;font-size:13px;margin-bottom:7px}
+.act-filter select{min-height:49px;width:100%;padding:10px 13px;background:#18271d;border:1px solid #5b866b;
+ border-radius:5px;color:#f5fff5;font-size:14px}
+.act-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.act-stat{background:#18251b;border:1px solid #3c6147;border-radius:7px;padding:16px 20px;min-width:0}
+.act-stat span{font-size:12px;color:#bcdfc6;display:block}
+.act-stat strong{font:800 clamp(20px,2.3vw,31px)/1.2 'Barlow Condensed',sans-serif;
+ color:#fff;display:block;margin-top:9px;overflow-wrap:anywhere}
+.act-heatmap-scroll{overflow-x:auto;overscroll-behavior-x:contain;border:1px solid #3d6848;
+ border-radius:8px;background:linear-gradient(135deg,#14231a,#111b15);max-width:100%;padding:16px 14px 19px}
+.act-table-wrapper{min-width:790px;max-width:1100px;margin:0 auto}
+.act-grid-table{border-collapse:separate;border-spacing:5px;width:100%;table-layout:fixed}
+.act-grid-table th{font-size:12px;color:#cde6d4;text-align:center;font-weight:700}
+.act-grid-table .act-day{min-width:46px;text-align:left;font-size:13px;color:#e6f3e9;white-space:nowrap}
+.act-grid-table td{padding:0}
+.act-cell{width:100%;aspect-ratio:1/1;min-height:28px;border:1px solid #43604b;border-radius:4px;
+ background:#27332a;display:block;padding:0;cursor:pointer}
+.act-cell[data-level="1"],.act-legend-swatch[data-level="1"]{background:#315f46}
+.act-cell[data-level="2"],.act-legend-swatch[data-level="2"]{background:#408f61}
+.act-cell[data-level="3"],.act-legend-swatch[data-level="3"]{background:#58c384}
+.act-cell[data-level="4"],.act-legend-swatch[data-level="4"]{background:#86eeb1}
+.act-cell:hover{outline:2px solid #d0ffdc;outline-offset:0}
+.act-cell[aria-pressed="true"]{outline:3px solid #fff;outline-offset:1px}
+.act-cell:focus-visible,.act-filter select:focus-visible,.act-heatmap-scroll:focus-visible{
+ outline:3px solid #c8ffda;outline-offset:3px}
+.act-legend{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;
+ font-size:12px;color:#cce2d0;margin:15px 0}
+.act-legend-swatch{width:16px;height:16px;border-radius:3px;border:1px solid #43604b;background:#27332a}
+.act-detail{color:#e4ffeb;font-size:14px;line-height:1.5;padding:13px 16px;margin:10px 0 21px;
+ background:#173020;border-left:3px solid #6ee3a0;border-radius:4px}
+.act-source{padding-top:10px;border-top:1px solid #375f41}
+@media(max-width:800px){.act-section-head{align-items:stretch;flex-direction:column}
+ .act-filter{width:100%}.act-metrics{grid-template-columns:1fr}
+ .act-hero{padding:25px 20px}
+ .act-heatmap-scroll{padding:10px 7px 15px}}

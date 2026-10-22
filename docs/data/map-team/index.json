@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "coverage": "captured-only",
+  "source": "Completed matches captured by 1ADAAR from public WARCON",
+  "capturedMatches": 0,
+  "playersWithCapturedMatches": 0,
+  "officialSeasons": [
+    {
+      "key": "wardogs-1",
+      "name": "Season 1"
+    },
+    {
+      "key": "wardogs-2",
+      "name": "Season 2"
+    }
+  ]
+}

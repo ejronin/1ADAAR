@@ -20,4 +20,4 @@ class WebsiteTests(unittest.TestCase):
         p=Path(__file__).resolve().parents[1]/'docs'
         s=(p/'index.html').read_text()
         self.assertIn('1ad-logo.svg',s)
-        self.assertEqual(s.count('Join the 1AD Discord'),2)  # Hero + context-specific onboarding
+        self.assertEqual(s.count('Join the 1AD Discord'),1)  # Single contextual onboarding; hero highlights analytics

@@ -18,25 +18,35 @@
   <link rel="stylesheet" href="assets/style.css" />
   <link rel="stylesheet" href="assets/brand.css?v=9" />
   <link rel="stylesheet" href="assets/factions.css?v=1" />
-  <link rel="stylesheet" href="assets/players.css?v=9" />
-  <link rel="stylesheet" href="assets/performance.css?v=3" />
+  <link rel="stylesheet" href="assets/players.css?v=10" />
+  <link rel="stylesheet" href="assets/performance.css?v=4" />
+  <link rel="stylesheet" href="assets/player-v11.css?v=1" />
   <script defer src="js/performance-core.js?v=1"></script>
-  <script defer src="js/performance.js?v=4"></script>
+  <script defer src="js/performance.js?v=5"></script>
   <script defer src="js/factions.js?v=1"></script>
+  <script defer src="js/player-snapshot.js?v=1"></script>
   <script defer src="js/share.js?v=2"></script>
-  <script defer src="js/players.js?v=9"></script>
+  <script defer src="js/role-radar.js?v=1"></script>
+<script defer src="js/progression.js?v=1"></script>
+<script defer src="js/players.js?v=11"></script>
+<link rel="stylesheet" href="assets/ia-v11.css?v=1" />
 </head>
-<body>
+<body class="player-page">
 <a class="skip" href="#content">Skip to player lookup</a>
 <div class="app-shell">
   <aside class="rail" aria-label="Primary navigation">
     <div class="brand"><img class="brand-emblem" src="assets/1ad-logo.svg" width="52" height="52" alt="Official 1AD emblem" /><div><strong>1ADAAR</strong><small>MATCHES &amp; PLAYER STATS</small></div></div>
     <div class="rail-label">MENU</div>
+    <nav class="player-nav-links" aria-label="Player statistics navigation">
     <a class="nav" href="index.html#reports"><span class="nav-glyph">▦</span>Match history</a>
+    <a class="nav" href="seasons.html"><span class="nav-glyph" aria-hidden="true">▤</span>Older matches</a>
+    <a class="nav" href="activity.html"><span class="nav-glyph" aria-hidden="true">▦</span>Recorded match activity</a>
     <a class="nav active" href="players.html" aria-current="page"><span class="nav-glyph">◎</span>Find a player</a>
+    <a class="nav" href="compare.html"><span class="nav-glyph" aria-hidden="true">⇄</span>Compare players</a>
     <a class="nav" href="weekly.html"><span class="nav-glyph" aria-hidden="true">◷</span>Weekly roundup</a>
     <a class="nav" href="https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342/leaderboard" target="_blank" rel="noopener noreferrer"><span class="nav-glyph">♜</span>WARCON player rankings <span class="external">↗</span></a>
     <a class="nav" href="https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342" target="_blank" rel="noopener noreferrer"><span class="nav-glyph">◉</span>Server on WARCON <span class="external">↗</span></a>
+    </nav>
     <div class="rail-footer"><div><strong>COMMUNITY-RUN SERVER</strong><small>Independent of WARDOGS developers</small></div></div>
   </aside>
   <main id="content" class="main">
@@ -52,13 +62,41 @@
     <div id="lookup-message" class="notice" role="status">Loading player stats…</div>
     <section id="lookup-results" class="player-results" aria-labelledby="results-title" hidden><div class="section-head"><div><div class="eyebrow">SEARCH RESULTS</div><h2 id="results-title">Matching players</h2><p>Choose the player you want to view.</p></div></div><div id="player-candidates" class="candidate-grid"></div></section>
     <section id="dossier" aria-labelledby="dossier-title" hidden>
-      <div class="profile-header"><div class="profile-emblem"><img src="assets/1ad-logo.svg" alt="" width="58" height="58" /></div><div class="profile-heading"><span class="eyebrow"><span id="profile-source-text">PLAYER STATS / FROM WARCON</span></span><h2 id="dossier-title"></h2><div id="profile-subtitle" class="profile-subtitle"></div><div id="demo-warning" class="demo-warning" hidden>SAMPLE PLAYER — MADE-UP STATS · NOT REAL RESULTS</div></div><div class="profile-actions"><button type="button" id="share-player" class="new-search" aria-label="Share this player stats profile">↗ Share these stats</button><button type="button" id="new-search" class="new-search">New search</button></div></div>
+      <div class="profile-header"><div class="profile-emblem" id="player-avatar" role="img" aria-label="Player initials until Steam avatar is available"><span class="avatar-initials" aria-hidden="true">?</span></div><div class="profile-heading"><span class="eyebrow"><span id="profile-source-text">PLAYER STATS / FROM WARCON</span></span><h2 id="dossier-title"></h2><div id="profile-subtitle" class="profile-subtitle"></div><div id="demo-warning" class="demo-warning" hidden>SAMPLE PLAYER — MADE-UP STATS · NOT REAL RESULTS</div></div><div class="profile-actions"><button type="button" id="share-player" class="new-search" aria-label="Share this player stats profile">↗ Share these stats</button><button type="button" id="new-search" class="new-search">New search</button></div></div>
       <div id="player-share-status" class="share-status" role="status" aria-live="polite" hidden></div>
-      <div class="metric-grid" id="profile-metrics"></div>
-      <section id="performance-module" class="performance-module" aria-label="Performance over time"><p class="perf-empty-static">Your results over time will appear when matches are saved.</p></section>
-      <div id="combat-panel" class="profile-panel" hidden><div class="panel-heading"><h3>Extra combat stats</h3><span>Shown only when WARCON has these results</span></div><div class="metric-grid compact" id="combat-metrics"></div></div>
-      <div class="analytics-section-label"><span>MATCHES BY MAP AND TEAM</span><small>Map and faction effectiveness · completed matches only</small></div>
-      <div class="profile-columns"><section class="profile-panel"><div class="panel-heading"><h3>Results by map</h3><span>Only saved matches</span></div><div id="map-breakdown"></div></section><section class="profile-panel faction-breakdown"><div class="panel-heading"><h3>Results by team</h3><span>Recent archived matches only</span></div><div id="faction-breakdown"></div></section></div>
+      <h3 class="career-primary-title" id="career-metrics-title">Player statistics</h3>
+      <div class="metric-grid" id="profile-metrics" aria-labelledby="career-metrics-title"></div>
+      <div id="profile-secondary" class="career-secondary" aria-label="Wins, playtime and seeding time"></div>
+      <div class="profile-analysis-grid"><section id="performance-module" class="performance-module" aria-label="Performance trends"><p class="perf-empty-static">Your results over time will appear when matches are saved.</p></section><aside id="player-snapshot" aria-label="Player snapshot"></aside></div>
+      <section id="progression-panel" class="progression-panel profile-panel" aria-labelledby="progression-heading" hidden>
+        <div class="panel-heading"><h3 id="progression-heading">Your WARDOGS progression</h3><span>OPTIONAL · WARDOGS TRACKER</span></div>
+        <p class="progression-explainer">These are game-account progression values, not this server's match statistics. Your WARCON player results work without connecting anything.</p>
+        <div class="progression-layout">
+          <div class="progression-radar">
+            <svg id="progression-role-radar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-labelledby="t d"><title id="t">Six-role progression axes, unfilled</title><desc id="d">Role radar awaits real Assault Medic Support Recon Driver Pilot levels. No synthetic values or filled polygon.</desc><g fill="none" stroke="#48614e" stroke-width="1"><polygon points="200,39 291,91 291,195 200,247 109,195 109,91"/><polygon points="200,65 268,104 268,182 200,221 132,182 132,104"/><polygon points="200,91 245,117 245,169 200,195 155,169 155,117"/><polygon points="200,117 223,130 223,156 200,169 177,156 177,130"/><path d="M200 143V39M200 143 291 91M200 143 291 195M200 143V247M200 143 109 195M200 143 109 91"/></g><g fill="#d8ecd9" font-family="Arial,sans-serif" font-size="12" text-anchor="middle"><text x="200" y="21">ASSAULT</text><text x="322" y="83">MEDIC</text><text x="322" y="213">SUPPORT</text><text x="200" y="283">RECON</text><text x="77" y="213">DRIVER</text><text x="77" y="83">PILOT</text></g><rect data-role-empty="true" x="125" y="124" width="150" height="38" rx="6" fill="#18291e" stroke="#658971"/><text data-role-empty="true" x="200" y="147" text-anchor="middle" fill="#e8f6eb" font-size="11" font-family="Arial,sans-serif">NO VERIFIED ROLE LEVELS</text></svg>
+          </div>
+          <div>
+            <div class="progression-kpis">
+              <div><small>Wardog level</small><strong>—</strong></div>
+              <div><small>Career XP</small><strong>—</strong></div>
+              <div><small>Account cash</small><strong>Hidden or unavailable</strong></div>
+              <div><small>Gold</small><strong>Hidden or unavailable</strong></div>
+            </div>
+            <p class="progression-roles">Assault · Medic · Support · Recon · Driver · Pilot: <strong>Level — · XP —</strong></p>
+          </div>
+        </div>
+        <div class="progression-actions">
+          <a href="https://wardogstracker.gg/stats" target="_blank" rel="noopener noreferrer">Open WARDOGS Tracker to sync ↗</a>
+          <button type="button" id="progression-check" disabled aria-describedby="progression-status">Verify connection (not yet enabled)</button>
+        </div>
+        <p id="progression-status" role="status" aria-live="polite">Not connected. WARDOGS Tracker opens in a new tab so you can return to this dossier after syncing. A verified 1ADAAR connection and automatic refresh will become available only after secure Steam sign-in and consent are approved.</p>
+        <small>Source: <a href="https://wardogstracker.gg/developers" target="_blank" rel="noopener noreferrer">WARDOGS Tracker public API</a> · Last synced: — · No SteamID or private account data is published by this page.</small>
+      </section>
+      <aside class="profile-activity-link" aria-label="Server-wide recorded match activity"><div><strong>Explore recorded match activity</strong><p>View when completed WARDOGS server matches were saved. This is a server-wide heatmap, not a player activity tracker.</p></div><a href="activity.html">View match activity heatmap →</a></aside>
+      <div id="combat-panel" class="profile-panel" hidden><div class="panel-heading"><h3>Combat detail</h3><span>Shown only when WARCON has these results</span></div><div class="metric-grid compact" id="combat-metrics"></div></div>
+      <div class="analytics-section-label"><span>MAP AND FACTION PERFORMANCE</span><small>Results from saved completed matches</small></div>
+      <p class="map-team-jump"><a id="map-team-details" href="map-team.html" hidden>See full map &amp; team results →</a></p>
+      <div class="profile-columns"><section class="profile-panel"><div class="panel-heading"><h3>Performance by map</h3><span>From latest 120 saved server matches</span></div><div id="map-breakdown"></div></section><section class="profile-panel faction-breakdown"><div class="panel-heading"><h3>Faction performance</h3><span>From latest 120 saved server matches</span></div><div id="faction-breakdown"></div></section></div>
       <section class="profile-panel"><div class="panel-heading"><h3>Recent completed matches</h3><span>Only matches 1ADAAR has saved</span></div><div id="recent-match-table" class="table-scroll"></div></section>
       <p class="profile-disclaimer">Your overall totals come from WARCON. Map, team, and recent match details come from the latest 120 completed matches saved by 1ADAAR, so older matches may be missing. A dash (—) means the number is not available; it does not mean zero.</p>
     </section>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#101713">
+<meta name="description" content="See saved WARDOGS map and faction results for an individual player on OneAverageDan's community server.">
+<title>Map & Team Performance — 1ADAAR</title>
+<link rel="icon" href="assets/1ad-logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/brand.css?v=9">
+<link rel="stylesheet" href="assets/factions.css?v=1">
+<link rel="stylesheet" href="assets/map-team.css?v=2">
+<script defer src="js/factions.js?v=1"></script>
+<script defer src="js/map-team.js?v=2"></script>
+<link rel="stylesheet" href="assets/ia-v11.css?v=1" />
+</head>
+<body>
+<a class="skip" href="#content">Skip to map and team results</a>
+<div class="app-shell">
+  <aside class="rail" aria-label="Main menu">
+    <div class="brand"><img class="brand-emblem" src="assets/1ad-logo.svg" width="52" height="52" alt="Official 1AD emblem"><div><strong>1ADAAR</strong><small>MATCHES &amp; PLAYER STATS</small></div></div>
+    <div class="rail-label">MENU</div>
+    <a class="nav" href="index.html#reports"><span class="nav-glyph" aria-hidden="true">▦</span>Match history</a>
+    <a class="nav" href="seasons.html"><span class="nav-glyph" aria-hidden="true">▤</span>Older matches</a>
+    <a class="nav" href="activity.html"><span class="nav-glyph" aria-hidden="true">▦</span>Recorded activity</a>
+    <a class="nav" href="players.html"><span class="nav-glyph" aria-hidden="true">◎</span>Find a player</a>
+    <a class="nav" href="compare.html"><span class="nav-glyph" aria-hidden="true">⇄</span>Compare players</a>
+    <a class="nav" href="weekly.html"><span class="nav-glyph" aria-hidden="true">◷</span>Weekly roundup</a>
+    <a class="nav active" href="map-team.html" aria-current="page"><span class="nav-glyph" aria-hidden="true">◫</span>Map &amp; team performance</a>
+    <div class="rail-footer"><strong>COMMUNITY-RUN SERVER</strong><small>Not operated by the WARDOGS developers</small></div>
+  </aside>
+  <main class="main" id="content">
+    <header class="topbar"><div class="game-lockup"><img src="assets/wardogs-fullmark.png" width="200" height="40" alt="WARDOGS — Tactical All Out Warfare"></div><div class="breadcrumb">WARDOGS <span>/</span> ONEAVERAGEDAN <span>/</span> MAP &amp; TEAM RESULTS</div></header>
+    <section class="mt-hero" aria-labelledby="mt-title">
+      <div class="eyebrow">ONEAVERAGEDAN WARDOGS COMMUNITY SERVER</div>
+      <h1 id="mt-title">Map &amp; <em>team performance.</em></h1>
+      <p id="mt-player-name" class="mt-player">Select a player to see their results.</p>
+      <p>Learn which maps and teams work best for you, based on completed matches we have saved from WARCON.</p>
+      <p class="mt-disclaimer"><strong>Saved matches only.</strong> These are not all-time WARCON career totals, and some played matches may be missing.</p>
+      <a id="mt-back" href="players.html" class="mt-back">← Find a player</a>
+    </section>
+    <section class="mt-body" aria-labelledby="mt-results">
+      <h2 id="mt-results">Your results</h2>
+      <p id="mt-message" role="status" aria-live="polite" class="notice">Loading saved results…</p>
+      <div id="mt-view" hidden>
+        <form id="mt-filters" class="mt-filters">
+          <div><label for="mt-season">Season</label><select id="mt-season"><option value="all">All saved seasons</option></select></div>
+          <div><label for="mt-sort">Sort results by</label><select id="mt-sort"><option value="matches">Most matches</option><option value="rate">Highest recorded win rate</option><option value="kills">Most kills</option><option value="seconds">Most time played</option></select></div>
+        </form>
+        <div id="mt-summary" class="mt-summary" aria-label="Summary from saved matches"></div>
+        <div class="mt-insight-grid">
+          <section class="mt-panel">
+            <h3>Recorded win rate</h3>
+            <p class="mt-explainer">Wins divided by matches with a known result.</p>
+            <div id="mt-win-ring"></div>
+          </section>
+          <section class="mt-panel">
+            <h3>Which teams you played</h3>
+            <p class="mt-explainer">Share of your saved matches with a known team.</p>
+            <div id="mt-team-rings" class="mt-team-rings"></div>
+          </section>
+        </div>
+        <section class="mt-panel" aria-labelledby="mt-kd-title">
+          <h3 id="mt-kd-title">Aggregate K/D by map</h3>
+          <p class="mt-explainer">Recorded kills divided by recorded deaths for each map in this selected completed-match sample. Numbers of recorded matches are shown; missing matches are not treated as zero.</p>
+          <div id="mt-kd-plot" class="mt-kd-plot" aria-live="polite"></div>
+        </section>
+        <section class="mt-panel" aria-labelledby="mt-maps-title">
+          <div class="mt-section-header"><div><h3 id="mt-maps-title">Results by map</h3><p>Compare saved appearances, recorded results, kills and time played.</p></div></div>
+          <div id="mt-maps" class="mt-rows"></div>
+        </section>
+        <section class="mt-panel" aria-labelledby="mt-factions-title">
+          <div class="mt-section-header"><div><h3 id="mt-factions-title">Results by team</h3><p>Every row is a recorded appearance, not a separate faction join event.</p></div></div>
+          <div id="mt-factions" class="mt-rows"></div>
+        </section>
+        <section class="mt-panel" aria-labelledby="mt-combos-title">
+          <div class="mt-section-header"><div><h3 id="mt-combos-title">Map + team breakdown</h3><p>Choose a map and team to see how you performed with that combination.</p></div></div>
+          <form class="mt-filters" id="mt-combo-filters">
+            <div><label for="mt-combo-map">Map</label><select id="mt-combo-map"><option value="">All maps</option></select></div>
+            <div><label for="mt-combo-faction">Team</label><select id="mt-combo-faction"><option value="">All teams</option></select></div>
+          </form>
+          <div class="mt-scroll" role="region" aria-label="Map and team results table" tabindex="0">
+            <table class="mt-table">
+              <thead><tr><th scope="col">Map</th><th scope="col">Team</th><th scope="col">Matches</th><th scope="col">W / L / D</th><th scope="col">Win rate</th><th scope="col">K / D</th><th scope="col">Time played</th></tr></thead>
+              <tbody id="mt-combinations"></tbody>
+            </table>
+          </div>
+        </section>
+        <p class="mt-footnote">These results are calculated from matches 1ADAAR successfully saved. A missing player record or match cannot be counted. A dash (—) means a statistic cannot be calculated from available data.</p>
+      </div>
+    </section>
+    <footer><span>1ADAAR <b>◆</b> ONEAVERAGEDAN COMMUNITY SERVER</span><span>Captured completed matches · WARCON source</span></footer>
+  </main>
+</div>
+</body>
+</html>

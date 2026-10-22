@@ -64,3 +64,28 @@
   .weekly-list li{font-size:13px}
 }
 @media(prefers-reduced-motion:reduce){.weekly-hero:before{animation:none}}
+
+/* v1.1.0: no artificial community winners; reserve real podium positions. */
+.weekly-podium-section{margin:24px 0 30px}
+.weekly-podium-section .section-head{padding-left:17px;border-left:3px solid #d7b36f}
+.weekly-podium-section .section-head p{font-size:14px;line-height:1.6;color:#d8c9b3}
+.weekly-podium{display:grid;grid-template-columns:1fr 1.12fr 1fr;gap:15px;align-items:end;margin:25px 0 14px}
+.weekly-podium-place{--podium:#aebac5;min-width:0;text-align:center;padding:19px 12px;
+ border:1px solid var(--podium);border-radius:7px;background:linear-gradient(145deg,#222321,#191b1b)}
+.weekly-podium-place.silver{--podium:#bdc9d5}
+.weekly-podium-place.gold{--podium:#e4bd78;padding:30px 12px 25px}
+.weekly-podium-place.bronze{--podium:#c49372}
+.weekly-rank{font:800 28px 'Barlow Condensed',sans-serif;color:var(--podium);display:block}
+.weekly-avatar{display:grid;place-items:center;width:73px;height:73px;margin:8px auto 12px;
+ border-radius:50%;border:3px solid var(--podium);background:#2d312e;color:var(--podium);font-size:23px}
+.weekly-podium-place h3{font:800 24px/1.2 'Barlow Condensed',sans-serif;color:#fff;margin:0 0 9px;overflow-wrap:anywhere}
+.weekly-podium-place p{color:#e1d0b9;font-size:13px;margin:0}
+.weekly-podium-note{color:#d3c3aa;font-size:13px;line-height:1.65;margin:0 0 20px}
+@media(max-width:650px){.weekly-podium{gap:6px}
+ .weekly-podium-place{padding:13px 5px}.weekly-podium-place.gold{padding:20px 5px 18px}
+ .weekly-avatar{width:48px;height:48px}.weekly-podium-place h3{font-size:17px}
+ .weekly-podium-place p{font-size:11px}}
+
+/* Stage facelift: mobile footers are distinct information lines, never concatenated. */
+@media(max-width:720px){.weekly-page footer{display:grid;gap:8px;line-height:1.6}
+ .weekly-page footer span{display:block;overflow-wrap:anywhere}}

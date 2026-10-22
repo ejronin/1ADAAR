@@ -5,26 +5,21 @@ from .recap import send_discord, SITE_URL
 from .recap_card import render_match_card
 
 def smoke_payload():
+    # Manual diagnostics only: no made-up match announcement in the live flow.
     return {
         "username": "1ADAAR | WARDOGS",
         "allowed_mentions": {"parse": []},
-        "embeds": [{
-            "title": "🧪 TEST — 1ADAAR VISUAL MATCH RECAP",
-            "image": {"url": "attachment://match-recap.png"},
-            "description": (
-                "**THIS IS A TEST, NOT A COMPLETED MATCH. ALL SCORES AND PLAYERS ARE FICTIONAL.**\n"
-                "GitHub Actions successfully reached the WARDOGS #match-recap Discord webhook. "
-                "Real match recaps will publish after WARCON records a completed match."
-            ),
-            "url": SITE_URL,
-            "color": 0x56CE71,
-            "fields": [
-                {"name": "Game", "value": "WARDOGS — Tactical All Out Warfare", "inline": False},
-                {"name": "Community", "value": "OneAverageDan / 1AD", "inline": True},
-                {"name": "Result", "value": "Webhook delivery test only", "inline": True}
-            ],
-            "footer": {"text": "1ADAAR delivery diagnostic • no match data was created"}
-        }]
+        "flags": 32768,
+        "components": [
+            {"type": 17, "accent_color": 0x56CE71, "components": [
+                {"type": 10, "content": "## TEST — NOT A REAL MATCH"},
+                {"type": 12, "items": [{
+                    "media": {"url": "attachment://match-recap.png"},
+                    "description": "FICTIONAL match-recap delivery test; this is not a genuine WARDOGS result"
+                }]},
+                {"type": 10, "content": "The Discord delivery test worked. No real match was recorded or announced."}
+            ]}
+        ]
     }
 
 # This fixture exists exclusively in the manually triggered smoke workflow.
