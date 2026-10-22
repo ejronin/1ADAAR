@@ -39,20 +39,28 @@ function pairedCounts(holder,kills,deaths,dates){
 }
 
 function initPlayer(){
- const host=$('#performance-chart');if(!host)return;const tabs=$$('.tab[data-trend]'),pick=$('#point-window'),encoding=$('#kills-encoding'),encodingControl=$('#kills-chart-picker'),summary=$('#trend-context'),legend=$('#chart-legend'),table=$('#chart-data');let active='kills';
+ const host=$('#performance-chart');if(!host)return;const tabs=$('.tab[data-trend]'),pick=$('#point-window'),encoding=$('#kills-encoding'),encodingControl=$('#kills-chart-picker'),definition=$('#trend-definition'),summary=$('#trend-context'),legend=$('#chart-legend'),table=$('#chart-data');let active='kills';
  function render(){
   if(!data.kills.length)return;
   const n=Number(pick.value),offset=Math.max(0,data.kills.length-n),kills=data.kills.slice(offset),deaths=data.deaths.slice(offset),dates=data.dates.slice(offset);
   const kd=kills.map((k,i)=>deaths[i]===0?k:k/deaths[i]),allrolling=data.kills.map((_,i)=>i<4?null:data.kills.slice(i-4,i+1).reduce((a,b)=>a+b,0)/Math.max(1,data.deaths.slice(i-4,i+1).reduce((a,b)=>a+b,0))),roll=allrolling.slice(offset);
   const avgK=data.kills.map((_,i)=>i<4?null:data.kills.slice(i-4,i+1).reduce((a,b)=>a+b,0)/5).slice(offset),avgD=data.deaths.map((_,i)=>i<4?null:data.deaths.slice(i-4,i+1).reduce((a,b)=>a+b,0)/5).slice(offset);
   const snapshots=data.career.slice(offset);
-  const legendItems=active==='kills'?[['Kills','#86f4a4'],['Deaths','#f5c84b']]:active==='kd'?[['Match K/D','#86f4a4']]:active==='rolling'?[['Five-match rolling K/D','#86f4a4']]:active==='averages'?[['Five-match avg kills','#86f4a4'],['Five-match avg deaths','#f5c84b']]:[['Tracked career K/D','#86f4a4']];
+  const legendItems=active==='kills'?[['Kills','#86f4a4'],['Deaths','#f5c84b']]:active==='kd'?[['Match K/D','#86f4a4']]:active==='rolling'?[['Trailing five-match K/D','#86f4a4']]:active==='averages'?[['Trailing 5-match avg kills','#86f4a4'],['Trailing 5-match avg deaths','#f5c84b']]:[['Tracked career K/D','#86f4a4']];
   const specs=active==='kills'?[{values:kills,color:'#86f4a4'},{values:deaths,color:'#f5c84b'}]:active==='kd'?[{values:kd,color:'#86f4a4'}]:active==='rolling'?[{values:roll,color:'#86f4a4'}]:active==='averages'?[{values:avgK,color:'#86f4a4'},{values:avgD,color:'#f5c84b'}]:[{values:snapshots,color:'#86f4a4'}];
-  if(encodingControl)encodingControl.hidden=active!=='kills';
+  if(encodingControl){encodingControl.hidden=active!=='kills';if(active!=='kills' && encoding)encoding.value='trend';}
   if(active==='kills'&&encoding?.value==='paired')pairedCounts(host,kills,deaths,dates);
   else cartesian(host,specs,dates.map(d=>d.slice(5)),legendItems.map(x=>x[0]).join(' versus ')+' over '+n+' fictional observations');
   legend.textContent='';for(const [label,color] of legendItems){const item=document.createElement('span');const swatch=document.createElement('i');swatch.style.background=color;item.append(swatch,document.createTextNode(label));legend.append(item)}
-  summary.textContent=active==='rolling'?'Five consecutive original saved matches per point, overlapping; a display window of 10 does not mean 50 distinct matches.':active==='career'?'Fictional WARCON-style careerHistory snapshots from the original PlayerOne fixture; real player snapshots require an actual saved WARCON history.':active==='averages'?'Five consecutive saved matches: arithmetic mean kills (green) and deaths (yellow); the first four observations are undefined.':active==='kills'&&encoding?.value==='paired'?'Paired dots are individual kills/deaths values from the original fictional fixture; all pairs use a zero-based common count scale.':`Displaying ${n} of 32 original fictional saved-match observations · oldest → newest; career totals remain unchanged.`;
+  const metricDefs={
+   kills:'One point = one saved completed match. The green line shows kills, yellow shows deaths. Paired dots are an alternative encoding ONLY for these raw per-match counts.',
+   kd:'One point = kills ÷ deaths in one saved completed match. This is NOT the all-time career K/D; undefined division uses the documented source convention.',
+   rolling:'TRAILING WINDOW — each point for match N uses matches N−4 through N, not the five matches around the point. For example, point 12 summarizes matches 8–12. Five consecutive-match kills summed ÷ those five deaths summed.',
+   averages:'TRAILING WINDOW — each point for match N is the average kills and average deaths across matches N−4 through N. The first four match positions have no complete five-match window.',
+   career:'Each point is a dated saved snapshot of total career K/D; it does not mean a single match and it cannot reconstruct time before observations began.'
+  };
+  if(definition)definition.textContent=metricDefs[active]||'';
+  summary.textContent=active==='rolling'?'Each point is trailing five consecutive saved matches. Overlapping windows: 10 displayed points do not mean 50 unique matches; oldest shown points may use earlier hidden matches.':active==='career'?'Fictional WARCON-style careerHistory snapshots from the original PlayerOne fixture; real player snapshots require an actual saved WARCON history.':active==='averages'?'The trailing five-match means use current + four preceding matches. 10 / 20 / All controls how many points are visible, NOT the size of the five-match rolling window.':active==='kills'&&encoding?.value==='paired'?'Paired dots are individual kills/deaths values from the original fictional fixture; all pairs use a zero-based common count scale.':`Displaying ${n} of 32 original fictional saved-match observations · oldest → newest; career totals remain unchanged.`;
   const fields=active==='kills'?[kills,deaths]:active==='averages'?[avgK,avgD]:active==='kd'?[kd]:active==='rolling'?[roll]:[snapshots];
   table.innerHTML='<tr><th>Recorded date</th>'+legendItems.map(x=>'<th>'+x[0]+'</th>').join('')+'</tr>'+Array.from({length:n},(_,i)=>'<tr><td>'+dates[i]+'</td>'+fields.map(f=>'<td>'+((f[i]===null||!Number.isFinite(f[i]))?'—':format(f[i]))+'</td>').join('')+'</tr>').join('');
  }
