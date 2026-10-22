@@ -31,14 +31,14 @@ function headers(env,origin=''){
 const json=(data,status,env,origin='')=>
   new Response(JSON.stringify(data),{status,headers:headers(env,origin)});
 const fail=(code,status,env,origin='')=>json({error:code},status,env,origin);
-function destination(env,params={},player=''){
-  const url=new URL(env.PUBLIC_PAGE_URL);
+function destination(env,params={},player='',route='players'){
+  const url=new URL(route==='standalone'?env.PUBLIC_PROGRESSION_URL:env.PUBLIC_PAGE_URL);
   for(const [k,v] of Object.entries(params))url.searchParams.set(k,v);
   if(player)url.hash='player-'+player;
   return url.toString();
 }
-function bounce(env,params,player){
-  return new Response(null,{status:303,headers:{...NO_STORE,Location:destination(env,params,player)}});
+function bounce(env,params,player,route){
+  return new Response(null,{status:303,headers:{...NO_STORE,Location:destination(env,params,player,route)}});
 }
 async function bodyOf(req){
   if(Number(req.headers.get('content-length')||0)>16384)throw Error('body_too_large');
@@ -78,11 +78,14 @@ async function verifySteam(url,env,stateHash){
 }
 async function loginStart(req,env){
   const url=new URL(req.url),pkce=url.searchParams.get('challenge')||'',
-    player=url.searchParams.get('player')||'';
-  if(!PKCE.test(pkce)||!KEY.test(player))return fail('invalid_login_request',400,env);
+    player=url.searchParams.get('player')||'',
+    route=url.searchParams.get('route')||'players';
+  if(!PKCE.test(pkce)||!['players','standalone'].includes(route)||
+     (route==='players'&&!KEY.test(player))||
+     (route==='standalone'&&player))return fail('invalid_login_request',400,env);
   const state=random(),stateHash=await hash(state);
-  await q(env,'INSERT INTO login_states(state_hash,pkce_challenge,player_key,expires_at) VALUES(?,?,?,?)',
-    stateHash,pkce,player,now()+300).run();
+  await q(env,'INSERT INTO login_states(state_hash,pkce_challenge,player_key,return_route,expires_at) VALUES(?,?,?,?,?)',
+    stateHash,pkce,route==='standalone'?'*':player,route,now()+300).run();
   const op=new URL(STEAM);
   const callback=env.AUTH_ORIGIN+'/auth/callback?state='+state;
   for(const [k,v] of Object.entries({'openid.ns':'http://specs.openid.net/auth/2.0',
@@ -97,19 +100,20 @@ async function loginCallback(req,env){
   if(!/^[A-Za-z0-9_-]{40,60}$/.test(state))return bounce(env,{progression_error:'invalid_state'});
   const stateHash=await hash(state);
   // Atomic single-use consume before checking network signatures prevents replay.
-  const record=await q(env,'DELETE FROM login_states WHERE state_hash=? AND expires_at>? RETURNING pkce_challenge,player_key',
+  const record=await q(env,'DELETE FROM login_states WHERE state_hash=? AND expires_at>? RETURNING pkce_challenge,player_key,return_route',
     stateHash,now()).first();
   if(!record)return bounce(env,{progression_error:'expired_login'});
   let steamId;
   try{steamId=await verifySteam(url,env,state);}
-  catch(_){return bounce(env,{progression_error:'steam_unavailable'},record.player_key);}
-  if(!steamId)return bounce(env,{progression_error:'verification_failed'},record.player_key);
-  if(await pageKey(steamId)!==record.player_key)
-    return bounce(env,{progression_error:'wrong_player'},record.player_key);
+  catch(_){return bounce(env,{progression_error:'steam_unavailable'},record.player_key,record.return_route);}
+  if(!steamId)return bounce(env,{progression_error:'verification_failed'},record.player_key,record.return_route);
+  const verifiedKey=await pageKey(steamId);
+  if(record.player_key!=='*'&&verifiedKey!==record.player_key)
+    return bounce(env,{progression_error:'wrong_player'},record.player_key,record.return_route);
   const code=random();
   await q(env,'INSERT INTO exchange_codes(code_hash,steam_id,player_key,pkce_challenge,expires_at) VALUES(?,?,?,?,?)',
-    await hash(code),steamId,record.player_key,record.pkce_challenge,now()+90).run();
-  return bounce(env,{progression_code:code},record.player_key);
+    await hash(code),steamId,verifiedKey,record.pkce_challenge,now()+90).run();
+  return bounce(env,{progression_code:code},verifiedKey,record.return_route);
 }
 async function exchange(req,env,origin){
   const body=await bodyOf(req),code=body.code||'',verifier=body.verifier||'';
@@ -190,7 +194,7 @@ async function disconnect(env,who,origin){
 export default {
   async fetch(req,env){
     const origin=req.headers.get('Origin')||'';
-    if(!env.DB||!env.AUTH_ORIGIN||!env.PUBLIC_ORIGIN||!env.PUBLIC_PAGE_URL||
+    if(!env.DB||!env.AUTH_ORIGIN||!env.PUBLIC_ORIGIN||!env.PUBLIC_PAGE_URL||!env.PUBLIC_PROGRESSION_URL||
        env.AUTH_ORIGIN.includes('REPLACE'))return fail('service_not_configured',503,env,origin);
     const url=new URL(req.url),path=url.pathname;
     if(url.origin!==env.AUTH_ORIGIN)return fail('invalid_host',403,env,origin);
