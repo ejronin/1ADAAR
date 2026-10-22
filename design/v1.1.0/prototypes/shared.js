@@ -39,7 +39,7 @@ function pairedCounts(holder,kills,deaths,dates){
 }
 
 function initPlayer(){
- const host=$('#performance-chart');if(!host)return;const tabs=$('.tab[data-trend]'),pick=$('#point-window'),encoding=$('#kills-encoding'),encodingControl=$('#kills-chart-picker'),summary=$('#trend-context'),legend=$('#chart-legend'),table=$('#chart-data');let active='kills';
+ const host=$('#performance-chart');if(!host)return;const tabs=$$('.tab[data-trend]'),pick=$('#point-window'),encoding=$('#kills-encoding'),encodingControl=$('#kills-chart-picker'),summary=$('#trend-context'),legend=$('#chart-legend'),table=$('#chart-data');let active='kills';
  function render(){
   if(!data.kills.length)return;
   const n=Number(pick.value),offset=Math.max(0,data.kills.length-n),kills=data.kills.slice(offset),deaths=data.deaths.slice(offset),dates=data.dates.slice(offset);
