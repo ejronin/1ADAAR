@@ -224,3 +224,10 @@ body{background:var(--ia-bg);color:var(--ia-ink)}
  .ia-home-hour-row,.ia-hour-axis{column-gap:1.5px}
  .ia-hour-axis-label{font-size:9px;letter-spacing:-.05em}
  .act-map-panel .ia-activity-empty{min-height:0}}
+
+/* Final mobile polish: prevent live footer labels appearing concatenated. */
+@media(max-width:720px){
+  main.main > footer{display:flex;flex-direction:column;align-items:flex-start;
+    justify-content:flex-start;gap:8px;line-height:1.5}
+  main.main > footer span{display:block;max-width:100%;overflow-wrap:anywhere}
+}
