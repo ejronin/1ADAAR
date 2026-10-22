@@ -9,6 +9,7 @@ on:
       - 'tests/visual_review.py'
       - 'src/recap_card.py'
       - 'src/discord_layout.py'
+      - 'tests/ia_visual_compare.py'
       - '.github/workflows/v11-player-visual-qa.yml'
   workflow_dispatch:
 permissions:
@@ -29,6 +30,14 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Capture and test 320 / 375 / 390 / 768 / 1024 / 1440px
         run: python tests/visual_review.py
+      - name: Checkout IA handoff source for visual comparison
+        uses: actions/checkout@v7
+        with:
+          ref: design/v1.1.0-ia-handoff
+          path: ia-reference
+          persist-credentials: false
+      - name: Produce owner-review side-by-side reference images
+        run: python tests/ia_visual_compare.py
       - name: Preserve review screenshots even on QA failure
         if: always()
         uses: actions/upload-artifact@v4
