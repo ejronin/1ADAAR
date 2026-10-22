@@ -80,6 +80,8 @@
       const title=make(first,'div',undefined,'mt-row-name');
       if(team&&window.OneADAARFactions)title.append(window.OneADAARFactions.label(record.name));
       else title.textContent=record.name;
+      if(!team&&window.OneADAARMapBanners)
+        window.OneADAARMapBanners.decorateMapRow(card,record.name);
       make(first,'div',number(record.matches)+' saved matches','mt-row-meta');
       if(team&&window.OneADAARFactions){
         const faction=window.OneADAARFactions.identify(record.name);
