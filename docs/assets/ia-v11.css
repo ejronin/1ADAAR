@@ -92,3 +92,5 @@ body{background:var(--ia-bg);color:var(--ia-ink)}
  background:linear-gradient(155deg,#293135,#1b211f)}
 .weekly-page .weekly-podium-place.bronze{border-color:#c18a6d;
  background:linear-gradient(155deg,#312722,#1b201f)}
+
+.progression-radar svg{display:block;width:100%;height:auto;max-width:400px;margin:auto}
