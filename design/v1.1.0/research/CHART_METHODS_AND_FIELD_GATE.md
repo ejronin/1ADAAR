@@ -23,7 +23,7 @@ Every chart requires an analytical question, verified field list, temporal scope
 | FUTURE GATED | Population horizon + interval band | How crowded were periods? | Protected population points, avg/max and coverage seconds | Admin ops |
 | FUTURE GATED | Kill-cause Pareto / distance boxplot | Which combat causes dominate and how far are shots? | Optional kill feed cause/distance/headshot tags; enough valid observations | Advanced combat |
 | FUTURE GATED | Return-player cohort heatmap | Do new players return within 7/30 days? | Complete protected session history, pseudonymous cohorts | Community ops |
-| BLOCKED | Six-axis role progression radar | Assault, Medic, Support, Recon, Driver, Pilot levels or XP | Neither documented RCON /v1/players nor inspected WARCON contracts expose six levels; no filled polygon until verified | Player |
+| CONDITIONAL / API DOCUMENTED | Six-axis role progression radar | Relative progression across Assault, Medic, Support, Recon, Driver, Pilot | Public opt-in synced WARDOGS Tracker player API has six {level,xp} fields; not exposed by ordinary WDRCON/WARCON. Require synced public profile, maxLevel, season, attribution, privacy | Player profile |
 | BLOCKED | Six-axis role performance radar | Genuine contribution in all six roles | No validated healing, revives, logistics, recon and piloting gameplay events | Future |
 | REJECT | Generic multi-gauge dashboard / radar overall skill / three faction donuts | Does it look intricate? | No interpretable scale, duplicated purpose or ambiguous fraction | Never |
 
@@ -50,6 +50,6 @@ Every chart requires an analytical question, verified field list, temporal scope
 | Bootstrap | Fast generic grid styles, conflicting visual identity | Do not use as skin; custom system instead |
 
 ## Data availability status
-Public WARCON covers scoreboard totals and completed match lines with results and optional combat feeds. Its server-wide private analytics has population, map, uptime, hourly periods and sessions. A protected player dossier includes joinedAt, leftAt, faction, session kills/deaths, seeded minutes but returns a bounded recent set (25 in inspected source). Direct game RCON /v1/players returns only current name, steamId, faction, kills/deaths, cash and ping. Do not claim six role levels, accuracy, positional heatmaps or overall progression.
+Public WARCON covers scoreboard totals and completed match lines with results and optional combat feeds. Its server-wide private analytics has population, map, uptime, hourly periods and sessions. A protected player dossier includes joinedAt, leftAt, faction, session kills/deaths, seeded minutes but returns a bounded recent set (25 in inspected source). Direct game RCON /v1/players returns current name, steamId, faction, kills/deaths, cash and ping, with no six levels. **Separately**, the documented public WARDOGS Tracker API can return all six role levels/XP for opted-in synchronized public player profiles (see ROLE_PROGRESSION_ACCESS_VALIDATION.md). Do not claim those values are direct WARCON/RCON data or invent spatial accuracy metrics.
 
 The checked-in staged recorded-activity.json has 0 captured completed match starts. The design uses a true empty state and a separately toggled fictional heatmap only; the live dashboard must never infer inactivity from this 0. Production delivery is not authorized.
