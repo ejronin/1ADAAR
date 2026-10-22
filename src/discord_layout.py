@@ -22,12 +22,9 @@ def match_recap(match: dict) -> dict:
     identifier = match.get("id")
     if not (isinstance(identifier, int) and identifier > 0):
         raise ValueError("A completed match needs a positive integer ID")
-    # Collector sets verifiedCompleted ONLY after WARCON validates final scores.
-    # Any other caller must supply an already validated completed match.
-    verified = match.get("verifiedCompleted") is True or (
-        bool(match.get("endedAt")) and isinstance(match.get("scores"), list)
-        and len(match["scores"]) > 0
-    )
+    # Only the validated WARCON completed-match collector may certify this.
+    # A caller-supplied timestamp or score row is NOT proof of completion.
+    verified = match.get("verifiedCompleted") is True
     payload = build_design_recap(
         {**match, "verifiedCompleted": verified,
          "playerLinesComplete": match.get("playerLinesComplete") is True},
