@@ -5,6 +5,19 @@
   const season=el('act-season'),status=el('act-status'),out=el('act-results');
   const tableHost=el('act-grid'),details=el('act-cell');
   const days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const emptyHost=el('act-empty-structure'),emptyMatrix=el('act-empty-matrix');
+  if(emptyMatrix){
+    for(const day of days){
+      const row=document.createElement('div');row.className='ia-home-hour-row';
+      const label=document.createElement('span');label.className='ia-home-day';
+      label.textContent=day.slice(0,3);row.append(label);
+      for(let hour=0;hour<24;hour++){
+        const slot=document.createElement('span');slot.className='ia-home-hour-cell';
+        slot.dataset.level='0';row.append(slot);
+      }
+      emptyMatrix.append(row);
+    }
+  }
   const counts=x=>Number.isSafeInteger(x)&&x>=0;
   let documentData=null;
   function node(parent,tag,value,cls){
@@ -44,9 +57,11 @@
       status.hidden=false;
       status.textContent='No completed matches have been saved for this selection yet. We cannot calculate an activity pattern.';
       out.hidden=true;
+      if(emptyHost)emptyHost.hidden=false;
       return;
     }
     status.hidden=true;out.hidden=false;
+    if(emptyHost)emptyHost.hidden=true;
     const max=Math.max(1,...group.byWeekdayAndHour.flat());
     const grid=node(tableHost,'table',undefined,'act-grid-table');
     const top=node(grid,'thead'),heading=node(top,'tr');
