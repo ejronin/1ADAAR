@@ -12,6 +12,8 @@
     const allowed=entry&&!entry.demo&&typeof entry.key==='string'&&KEY.test(entry.key);
     selectedKey=allowed?entry.key:null;
     host.hidden=!allowed;
+    if(root.OneADAARRoleRadar)
+      root.OneADAARRoleRadar.render(document.getElementById('progression-role-radar'),null);
     status.textContent=allowed?
       'No 1ADAAR Steam ownership connection has been verified. WARDOGS Tracker sync is separate. Your server statistics are unaffected.':
       'Progression unavailable without a verified profile.';
