@@ -1,12 +1,12 @@
-# 1ADAAR / Wednesday 2026-10-21 release decision — staged UX/UI/IA and operations QA
+# October 21 launch review
 
-**Status:** Staging-only. This is a source-level review, not proof of a visually inspected live site. Do not merge PR #19 or enable Weekly Intelligence publishing until release gates are met.
+This review covers the staged design and operations changes as of October 21, 2026. It wasn't a live-site sign-off. Keep PR #19 and automatic weekly publishing on hold until the release checks pass.
 
-## Design and IA verdict
+## Design direction
 
 Preserve a restrained tactical command-center appearance: green/black for the normal dashboard, approved official 1AD + WARDOGS artwork, separate amber/charcoal treatment for Weekly Intelligence. Resist a wholesale visual rebrand, a JavaScript charting dependency, rotating hero video, auto-playing sound, or invented server/map statistics the day before release.
 
-### Implemented in staging
+### Changes already staged
 
 - Readability and layout improvements now live in `docs/assets/brand.css` (shared design), `server-status.css` (server panel), `players.css` (player pages) and `performance.css` (charts). The redundant `polish.css` layer was removed; all three web pages use the same component styles, with bigger labels, usable touch controls and reduced-motion support.
 - One lightweight CSS-only HUD sweep across the existing WARDOGS press-pack hero art. Does not claim live telemetry, load remote assets, alter scoreboard data or run per-viewer WARCON requests; completely disabled under `prefers-reduced-motion`.
@@ -16,7 +16,7 @@ Preserve a restrained tactical command-center appearance: green/black for the no
 - Explicit fallback when a saved/shared profile hash cannot be found in the bounded leaderboard. Reduced-motion setting also controls automatic profile scroll.
 - Unit contract checks validate loading order, semantic navigation and skip links, social metadata, bounded-archive copy and motion controls. Existing Python + JS CI also runs.
 
-## Screen-by-screen human visual QA (still required)
+## Check each screen in a browser
 
 Perform screenshots and a real browser walkthrough before signoff on **320 × 700**, **375 × 812**, **390 × 844**, **768 × 1024**, and **1440 × 900** CSS pixel viewports, with 100% and 200% browser zoom:
 
@@ -29,7 +29,7 @@ Perform screenshots and a real browser walkthrough before signoff on **320 × 70
 
 Ensure search, navigation, dialogs, and share operate using mouse, touch and keyboard. Check 200% zoom, high-contrast preference and iOS/Android WebViews if possible. No WCAG conformance claim is made without a separate accessibility audit.
 
-## Operational and data gates (required for launch)
+## Data and release checks
 
 - [ ] At least one **real** completed WARCON match ingested and visibly rendered with correct season/source, once in `#match-recap` and no duplicate delivery.
 - [ ] Verify live WARCON public endpoint and 1ADAAR freshness, without exposing any secret or raw SteamID in public JSON. If data absent, dashboard must accurately state absence.
@@ -40,17 +40,17 @@ Ensure search, navigation, dialogs, and share operate using mouse, touch and key
 - [ ] Production dry-run and rollback plan prepared; existing `release/v1.0.0` protected.
 - [ ] **Weekly publication remains disabled** until full-week coverage and idempotent Discord ledger are implemented and tested; design mock is only a preview. PlayerOne removal and dynamic share-button personalization remain deferred until real-data acceptance (#18).
 
-## Go/no-go rule
+## Release decision
 
 A passing CI run proves source checks, **not** live game ingestion, screenshot quality, actual Pages run cadence, WebView behavior or once-only Discord posting. If live-match or Pages operations evidence is still missing Wednesday, defer the relevant automation/release rather than describe it as fully production-validated. An approved site appearance can be published separately only after ordinary staged-to-production review; never silently merge the draft or switch on experimental weekly content.
 
-## Optional later improvements (not Wednesday release blockers)
+## Improvements that can wait
 
 - Precomputed static activity sparklines and data-driven week archive navigation **only** when coverage/provenance is defensible. No fabricated populated graphs for an empty archive.
 - A build-time image export for each *real* match report's link preview; GitHub Pages hash-based player URLs do not support arbitrary dynamic metadata. Do not create per-player public HTML/dossiers without privacy review.
 - After launch, consider a wider stylesheet refactor to reduce older repeated rules between `style.css` and `brand.css`, supported by screenshots. The extra `polish.css` file has already been removed and its rules put in the correct stylesheets.
 - Low-noise admin-only incident alerts when reliable status provenance exists, without community-channel spam.
 
-### Review evidence limits
+### What this review did not establish
 
 Public Pages URLs could not be opened by the current web inspection tool; local screenshot evidence and real mobile browser testing remain explicitly outstanding. All staged code changes are grounded in the GitHub repository source, not visual proof of a rendered viewport.
