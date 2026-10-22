@@ -28,11 +28,17 @@ def match_recap(match: dict) -> dict:
         bool(match.get("endedAt")) and isinstance(match.get("scores"), list)
         and len(match["scores"]) > 0
     )
-    return build_design_recap(
+    payload = build_design_recap(
         {**match, "verifiedCompleted": verified,
          "playerLinesComplete": match.get("playerLinesComplete") is True},
         dashboard_url=SITE_URL + "#match-" + str(identifier)
     )
+    # Original verified faction accent remains meaningful in Discord.
+    accent = {"lonestar":0x465EFF, "valkyra":0xEE4138, "manticore":0x3EBA42}
+    payload["components"][0]["accent_color"] = accent.get(
+        str(match.get("winner") or "").strip().lower(), ACCENT_GREEN
+    )
+    return payload
 
 
 def next_map_post(match: dict, confirmed: dict) -> dict:
