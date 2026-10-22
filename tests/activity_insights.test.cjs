@@ -1,0 +1,31 @@
+'use strict';
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const source=fs.readFileSync('docs/js/activity-insights.js','utf8');
+const sandbox={window:{}};
+vm.runInNewContext(source,sandbox,{filename:'activity-insights.js'});
+const intel=sandbox.window.OneADAARActivity;
+assert.ok(intel,'public activity summarizer missing');
+const zeros=Array.from({length:7},()=>Array(24).fill(0));
+assert.equal(intel.summary(zeros),null,'No records cannot produce an activity winner');
+assert.equal(intel.summary([]),null);
+assert.equal(intel.summary([[1,2]]),null);
+const fixture=zeros.map(r=>r.slice());
+fixture[0][0]=1;fixture[0][6]=3;
+fixture[4][18]=7;fixture[4][19]=2;
+fixture[6][12]=4;
+const stats=intel.summary(fixture);
+assert.equal(stats.total,17);
+assert.equal(stats.day.indexes[0],4); // Friday has 9 captured starts
+assert.equal(stats.hour.indexes[0],18);
+assert.equal(stats.hour.count,7);
+assert.equal(stats.window.indexes[0],3); // 18:00-24:00
+assert.equal(stats.window.count,9);
+const empty=zeros.map(r=>r.slice());
+empty[0][6]=1;empty[1][6]=1;
+const ties=intel.summary(empty);
+assert.equal(ties.day.indexes.length,2);
+assert.equal(ties.hour.indexes[0],6);
+assert.equal(ties.window.indexes[0],1);
+console.log('PASS: exact 7x24 source aggregation, hours, weekday, 6-hour periods and no-data handling');
