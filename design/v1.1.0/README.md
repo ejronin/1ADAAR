@@ -83,7 +83,7 @@ The review site now contains six real editable design candidates, shared CSS/JS,
 
 ## Chart research and high-end rendering decisions
 
-- See `research/CHART_METHODS_AND_FIELD_GATE.md` for the decision inventory: paired dumbbells, ranked dot plots, outcome fingerprints, score-lead timelines, time heatmaps, cohort matrices, and a properly unfilled six-role progression radar.
+- See `research/CHART_METHODS_AND_FIELD_GATE.md` and `research/ROLE_PROGRESSION_ACCESS_VALIDATION.md` for the updated decision inventory: paired dumbbells, ranked dot plots, outcome fingerprints, score-lead timelines, time heatmaps, cohort matrices, and a properly unfilled six-role progression radar.
 - This is a **custom HTML/CSS/SVG/JS visual system** with no Bootstrap template; it is compatible with static GitHub Pages. Python Pillow/CairoSVG produces the deterministic high-resolution Discord image proof, while matplotlib is suitable for optional offline research. Kivy/Tkinter serve desktop GUI applications and are not useful for a static web/Discord-image pipeline.
 - `tools/render_screenshots.py` renders real desktop/mobile browser PNGs at 390px and 1440px for each of the six prototypes and tests 320/375/390/768/1024/1440 widths. `tools/render_recap_proof.py` generates a separate 1080px genuine Python raster design illustration. Both scripts are design-only, do not call WARCON, RCON or Discord, and never alter staging or production.
 - The workflow `.github/workflows/design-handoff-screenshots.yml` only runs against `design/v1.1.0-ia-handoff`; if successful it commits images and updates `screen-manifest.json` on that same branch. Any QA failure is a blocker, not an approved package.
@@ -92,5 +92,5 @@ The review site now contains six real editable design candidates, shared CSS/JS,
 
 - Saved server activity is a heatmap of captured *completed-match starts*, not personal time online. Staging's checked-in data is zero; genuine cells remain neutral until recorded matches exist. The prototype's fictional heatmap toggle exists for design evaluation only.
 - Full personal session activity requires authorized private WARCON data beyond the current bounded recent dossier; do not place privileged RCON credentials in GitHub Pages or imply verified identity from pictures.
-- Six role progression levels are not present in inspected WDRCON/WARCON schemas. The proposed radar intentionally contains no made-up player polygon.
+- Six role progression levels are not present in inspected WDRCON/WARCON schemas, **but** WARDOGS Tracker's documented public opt-in player API exposes all six levels/XP for players who have synced and permitted access. This opens a conditional source-supported radar, with no fabricated example; see research/ROLE_PROGRESSION_ACCESS_VALIDATION.md and components/progression_adapter.py.
 - Owner approval for any named screen is the required gate before implementation engineering ports the design into staging. Native Discord mobile/desktop rendering remains an implementation acceptance gate.
