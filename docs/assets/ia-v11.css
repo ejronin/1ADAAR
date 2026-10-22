@@ -274,3 +274,14 @@ body{background:var(--ia-bg);color:var(--ia-ink)}
  .demo-progression-panel .panel-heading h3{font-size:26px}
  .demo-role-table th,.demo-role-table td{padding:8px 5px}
  .demo-progression-panel .progression-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Role radar and XP table must never enlarge the entire page at tablet widths. */
+.demo-progression-panel{min-width:0;max-width:100%}
+.demo-progression-panel .progression-layout>*{min-width:0;max-width:100%}
+.demo-progression-panel .table-scroll{max-width:100%;overflow-x:auto}
+.demo-progression-panel .demo-role-table{table-layout:fixed;width:100%}
+@media(max-width:1050px){
+ .demo-progression-panel .progression-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+ .demo-progression-panel .demo-radar-column{width:100%}
+ .demo-progression-panel .progression-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
