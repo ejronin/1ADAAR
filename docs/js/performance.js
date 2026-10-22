@@ -37,7 +37,7 @@
     const y=value=>box.y+box.h*(1-Math.max(0,value)/ymax);
     if(metric==='kills'&&encoding==='paired')return pairedGraph(container,rows,report);
     const svg=se('svg',{viewBox:'0 0 780 323',class:'perf-svg',role:'img',
-      'aria-label':(metric==='career'?'Tracked WARCON career K/D':isCount?'Kills and deaths per match':metric==='rolling'?'Rolling five-match K/D':metric==='averages'?'Trailing five-match average kills and deaths':'Per-match K/D')+' for '+rows.length+' observations, ordered oldest to newest'});
+      'aria-label':(metric==='career'?'Tracked WARCON career K/D':metric==='averages'?'Trailing five-match average kills and deaths':isCount?'Kills and deaths per match':metric==='rolling'?'Rolling five-match K/D':'Per-match K/D')+' for '+rows.length+' observations, ordered oldest to newest'});
     svg.append(se('title',{},'WARDOGS player performance'));
     svg.append(se('desc',{},'Exact values are available in the data table beneath this interactive graph.'));
     const gradientId='aarPerf'+(++identity),defs=se('defs'),
