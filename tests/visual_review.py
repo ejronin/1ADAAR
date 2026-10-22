@@ -155,6 +155,33 @@ async def capture():
                 assert not activity_errors, f"Activity page Javascript errors at {width}: {activity_errors}"
                 report.setdefault("serverActivity",[]).append({"width":width,**result})
                 await activity.close()
+                # Real home and map/team Pages routes must render at every width,
+                # not merely their IA concept counterparts or the motion lab.
+                for route,filename,required in [
+                    ("index.html","home",["#server-status",".hero.motion-hero"]),
+                    ("map-team.html","map-team",["#mt-message","#mt-kd-plot"])
+                ]:
+                    surface=await browser.new_page(viewport={"width":width,"height":900},
+                                                   device_scale_factor=1)
+                    surface_errors=[]
+                    surface.on("pageerror",lambda error:surface_errors.append(str(error)))
+                    await surface.goto(origin+"/"+route,wait_until="domcontentloaded",timeout=30000)
+                    await surface.wait_for_timeout(450)
+                    for required_selector in required:
+                        # Map/Team detail panel is gated until real retained match data
+                        # exists, so its DOM is present even when appropriately hidden.
+                        assert await surface.locator(required_selector).count()>0, (
+                            route,required_selector,width)
+                    await surface.screenshot(
+                        path=str(ARTIFACT/f"{filename}-{width}px.png"),
+                        full_page=True,animations="disabled")
+                    overflow=await surface.evaluate("document.documentElement.scrollWidth-innerWidth")
+                    assert overflow<=2,f"{route} overflow at {width}px: {overflow}"
+                    assert not surface_errors,f"{route} JS errors at {width}: {surface_errors}"
+                    report.setdefault("sourceRoutes",[]).append({
+                        "route":route,"width":width,"overflow":overflow,
+                        "domReady":True,"jsErrors":surface_errors})
+                    await surface.close()
                 # Homepage laser/light sweep, isolated sample crown, and empty
                 # production-bound podium are all reviewed at the same widths.
                 motion=await browser.new_page(viewport={"width":width,"height":900},device_scale_factor=1)
