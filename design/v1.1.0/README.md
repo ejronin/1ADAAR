@@ -94,3 +94,10 @@ The review site now contains six real editable design candidates, shared CSS/JS,
 - Full personal session activity requires authorized private WARCON data beyond the current bounded recent dossier; do not place privileged RCON credentials in GitHub Pages or imply verified identity from pictures.
 - Six role progression levels are not present in inspected WDRCON/WARCON schemas, **but** WARDOGS Tracker's documented public opt-in player API exposes all six levels/XP for players who have synced and permitted access. This opens a conditional source-supported radar, with no fabricated example; see research/ROLE_PROGRESSION_ACCESS_VALIDATION.md and components/progression_adapter.py.
 - Owner approval for any named screen is the required gate before implementation engineering ports the design into staging. Native Discord mobile/desktop rendering remains an implementation acceptance gate.
+
+
+## Final owner-approved scope for external progression
+
+The owner wants **six WARDOGS role levels and XP**, **overall WARDOG level**, **career XP**, and **player-controlled account cash / gold**. They do **NOT** want a loadout builder, unlock inventory gallery, or speculative weapon stat charts. Real kill-with/died-by attribution is a possible future independent WARCON kill-feed validation, not part of this release or a reason to delay this handoff.
+
+The implementation engineer **must first read** [`research/PLAYER_PROGRESSION_OPT_IN_IMPLEMENTATION.md`](research/PLAYER_PROGRESSION_OPT_IN_IMPLEMENTATION.md), which specifies the mandatory identity, opt-in, return flow, data privacy, durable cross-device storage, and exact testing. The canonical editable teaser is at `prototypes/player.html#progression`, with six-axis empty SVG, four source-labelled absent KPIs and a **working external sync link**. Do not fabricate automatic Tracker OAuth redirection: its public API is read-only and no official third-party return callback is documented. No account is connected by these design assets.
