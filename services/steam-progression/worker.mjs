@@ -135,9 +135,13 @@ async function updateConsent(req,env,who,origin){
   const data=await bodyOf(req);
   if(data.progression!==true||typeof data.economy!=='boolean')
     return fail('explicit_consent_required',400,env,origin);
+  const previous=await consentFor(env,who.steam_id);
   await q(env,'INSERT INTO consents(steam_id,progression,economy,updated_at) VALUES(?,?,?,?) ON CONFLICT(steam_id) DO UPDATE SET progression=excluded.progression,economy=excluded.economy,updated_at=excluded.updated_at',
     who.steam_id,1,data.economy?1:0,now()).run();
-  if(!data.economy)await q(env,'DELETE FROM progression_cache WHERE steam_id=?',who.steam_id).run();
+  // Changing privacy in EITHER direction invalidates cached projection, so a
+  // newly allowed field is fetched and a newly hidden field cannot leak.
+  if(!previous||Boolean(previous.economy)!==data.economy)
+    await q(env,'DELETE FROM progression_cache WHERE steam_id=?',who.steam_id).run();
   return json({state:'connected',progression:true,economy:data.economy},200,env,origin);
 }
 function normalize(payload,steamId,allowEconomy){
