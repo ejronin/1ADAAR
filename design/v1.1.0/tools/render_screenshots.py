@@ -59,6 +59,15 @@ def capture():
                         if "2026-10-15" not in (page.locator("#chart-data").text_content() or ""):
                             errors.append(f"player-{width}: canonical last observation missing")
                     if name == "map-team":
+                        if page.locator(".titlebar [data-map]").count() != 0 or page.locator(".result-composition [data-map]").count() != 3:
+                            errors.append(f"map-team-{width}: local-only selectors must live inside Result composition, not page-level header")
+                    if name == "recap":
+                        links = page.locator(".discord a.action")
+                        if links.count() != 2 or any(not (link.get_attribute("href") or "").startswith("https://ejronin.github.io/1ADAAR/") for link in links.all()):
+                            errors.append(f"recap-{width}: missing functional first-party Discord-link design CTA")
+                        if page.locator(".discord-faction-leaders").count() != 2:
+                            errors.append(f"recap-{width}: missing faction top-player availability design block")
+                    if name == "map-team":
                         outcome_text = page.locator("#map-insight").inner_text()
                         if not all(term in outcome_text for term in ("Wins", "5 of 10", "Losses", "4 of 10", "Draws", "1 of 10")):
                             errors.append(f"map-team-{width}: outcome view not grounded in fixture")
@@ -142,6 +151,8 @@ def capture():
                             if "careerhistory" not in page.locator("#trend-context").inner_text().lower():
                                 errors.append(f"player-{width}: career snapshots not correctly labeled")
                             page.locator("[data-trend='rolling']").click()
+                            if page.locator("#kills-chart-picker").is_visible():
+                                errors.append(f"player-{width}: paired count encoding offered on trailing K/D")
                             if "overlapping" not in page.locator("#trend-context").inner_text().lower():
                                 errors.append(f"player-{width}: rolling average denominator unclear")
                         if name == "map-team":
