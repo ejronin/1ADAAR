@@ -1,13 +1,15 @@
-# Weekly Intelligence calculation scaffold — staging only
+# Weekly report data rules
 
-This stage adds src/weekly.py and tests/test_weekly.py. The engine only processes sanitized, already-published completed matches and returns inert JSON-compatible candidate data. It has no WARCON request, disk writer, scheduler, Discord delivery, or published page.
+`src/weekly.py` calculates proposed weekly results from already-saved, sanitized matches. `tests/test_weekly.py` checks the math and filtering. This part of the project does **not** fetch WARCON, write a published file, schedule a Discord post or choose a winner automatically.
 
-- Weekly window is Sunday noon to Sunday noon America/New_York, including daylight saving changes.
-- Weekly views crossing an official season transition split into separate seasonal summaries; Season 2 starts 2026-10-15T16:00:00Z. Season 3 requires verified official start metadata before publishing.
-- Records are limited to 1ADAAR's most recent 120 matches. The module explicitly marks week completeness unproven and must never send a winner as if the entire weekly history were known.
-- Faction appearances are distinct player-match appearances, not join events. Recorded participation seconds are assigned to the final match faction and do not establish exact time after faction switches.
-- Headshot and longest-shot awards are suppressed when the kill feed isn't confirmed for the analyzed matches. Season-wide best K/D (more than 20 matches in that season), character levels and true join counts remain unavailable.
-- Stored awards contain re-sanitized player display names but no hashed key, raw SteamID, private roster, join code, RCON details or Discord secrets. Conflicting payloads with the same match ID are excluded entirely, with a count exposed for review; byte-identical duplicates count only once.
-- publicationEnabled remains false. Sunday Discord posting and the permanent reports page are not yet implemented, pending first live-match validation and coverage design.
-- `planning/weekly-preview.html` is a staging-only responsive visual concept with unmistakably fictional values; it is not a report renderer or a deployable Pages artifact.
-- The desired UI and acceptance gates are in planning/V1.0.1.md.
+- A reporting week runs **Sunday noon to Sunday noon Eastern**, including daylight-saving changes.
+- A week that crosses a season boundary is split by season. Season 2 starts `2026-10-15T16:00:00Z`; don't assign Season 3 until its official start is known.
+- The input is limited to the most recent 120 saved matches. That cannot prove a whole week's coverage, so the report must say when its history is incomplete.
+- **Faction appearances** count recorded player–match appearances, not the number of times someone joined or switched teams. Participation time is assigned to the recorded final faction; it isn't proof of time spent in each faction.
+- Headshots and longest-shot awards need confirmed kill-feed data. Don't publish them when feed coverage is unknown. Character levels, true join counts and season-wide K/D rankings beyond the saved sample are also unavailable.
+- Re-sanitize display names before saving awards. Never store SteamIDs, player hashes, join codes, private rosters, RCON details or Discord secrets in award output.
+- Identical duplicate match records count once. If two records share a match ID but disagree, exclude both and record the conflict for review.
+- `publicationEnabled` remains `false`. Sunday publishing and a permanent weekly archive still require first-match checks and coverage approval.
+- `planning/weekly-preview.html` is an example layout with fictional numbers, not a production report generator.
+
+The reporting requirements and release checks are in [`V1.0.1.md`](V1.0.1.md).
