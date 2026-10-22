@@ -13,6 +13,7 @@ from pathlib import Path
 
 from cairosvg import svg2png
 from PIL import Image, ImageDraw, ImageFont, ImageOps
+from src.map_banners import banner_for_map
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs" / "assets" / "wardogs-official-hero.webp"
@@ -140,8 +141,9 @@ def award_label(key: object, fallback: object) -> str:
 
 def draw_header(im: Image.Image, draw: ImageDraw.ImageDraw, match: dict, demo: bool) -> None:
     """IA-directed editorial recap masthead; approved source art remains unchanged."""
-    if ART.exists():
-        with Image.open(ART) as original:
+    chosen_art = banner_for_map(match.get("map")) or ART
+    if chosen_art.exists():
+        with Image.open(chosen_art) as original:
             battlefield = ImageOps.fit(original.convert("RGB"), (WIDTH, 294),
                                         method=Image.Resampling.LANCZOS,
                                         centering=(.54, .44))
