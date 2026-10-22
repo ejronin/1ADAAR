@@ -57,6 +57,8 @@ There is a fictional player called **PlayerOne** in the design examples. It's th
 
 The public site uses player lookup keys rather than showing SteamID64 values in its pages. Any later account-connected features will need to respect the player's own privacy choices.
 
+Those hashed keys are pseudonymous and not truly anonymous. Opening a player profile reads the most recently published public snapshot; it does not initiate a new WARCON query or expose private server records.
+
 ## Where I'm taking it
 
 The next design, **v1.1.0**, builds on the existing site rather than replacing it with a generic dashboard. The work focuses on clearer performance charts, a better map/faction view, the time-activity heatmap, the weekly podium, original 1AD artwork and more useful Discord recaps.
