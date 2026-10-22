@@ -98,7 +98,9 @@ def capture():
                         page.screenshot(path=str(target), full_page=True, animations="disabled")
                         if name == "player":
                             page.locator("#kills-encoding").select_option("paired")
-                            if "paired comparison" not in page.locator("#performance-chart svg").get_attribute("aria-label").lower():
+                            if page.locator("#performance-chart svg").count() != 1:
+                                errors.append(f"player-{width}: paired chart did not render. JS={js_errors}. Panel={page.locator('#performance-chart').text_content()[:260]}")
+                            elif "paired comparison" not in (page.locator("#performance-chart svg").get_attribute("aria-label") or "").lower():
                                 errors.append(f"player-{width}: paired dumbbell encoding not active")
                             page.screenshot(path=str(OUT / f"player-paired-{width}.png"),
                                             full_page=True, animations="disabled")
