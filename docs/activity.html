@@ -41,7 +41,13 @@
       <div class="act-filter"><label for="act-season">Recorded season</label><select id="act-season" aria-controls="act-grid" disabled><option>Loading…</option></select></div>
     </div>
     <p id="act-status" role="status" aria-live="polite" class="notice">Loading verified saved-match data…</p>
-    <div id="act-results" hidden>
+    <div id="act-empty-structure" class="ia-activity-empty" hidden aria-label="Unobserved hours, no recorded match-start pattern">
+      <div class="eyebrow">CAPTURE COVERAGE NOT YET ESTABLISHED</div>
+      <h3>No recorded pattern yet</h3>
+      <p>The neutral time matrix is an empty-state guide, not measured activity. Data becomes available as completed matches are retained.</p>
+      <div id="act-empty-matrix" class="ia-home-heatmap" aria-hidden="true"></div>
+    </div>
+        <div id="act-results" hidden>
       <div class="act-metrics">
         <div class="act-stat"><span>Completed matches captured</span><strong id="act-count">—</strong></div>
         <div class="act-stat"><span>First saved match started</span><strong id="act-first">—</strong></div>
