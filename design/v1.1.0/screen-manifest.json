@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "project": "1ADAAR",
   "release": "1.1.0",
-  "status": "owner_visual_review_pending",
+  "status": "source_revision_pending_browser_regeneration",
   "baselineStagingCommit": "26da372ea9c076bfe3751a0716ee8382161e811d",
   "designBranch": "design/v1.1.0-ia-handoff",
   "designTokensFile": "design/v1.1.0/tokens.final.json",
@@ -48,7 +48,7 @@
     {
       "id": "player",
       "title": "Player dossier",
-      "description": "Steam portrait treatment, career KPIs, five trend modes, one donut, appearance bars",
+      "description": "Player dossier, sourced combat and performance views, real Steam identity design, plus optional third-party six-role progression, Wardog level, career XP and privacy-protected account cash/gold teaser.",
       "source": [
         "docs/players.html",
         "docs/playerone-demo.html",
@@ -68,7 +68,7 @@
       },
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "ownerApproval": "pending",
-      "deliveryStatus": "editable_prototype_and_chromium_screenshots_committed",
+      "deliveryStatus": "editable_prototype_updated_screenshots_to_regenerate",
       "componentIds": [
         "steam-identity",
         "career-kpi-band",
@@ -78,7 +78,8 @@
         "faction-map-usage",
         "combat-detail",
         "ranked-map-kd",
-        "recent-match-evidence"
+        "recent-match-evidence",
+        "opt-in-game-progression-and-economy"
       ]
     },
     {
@@ -137,7 +138,7 @@
         "podium-empty-state",
         "fictional-crown-motion"
       ],
-      "referenceVisual": "Owner-provided Community Players of the Week screenshot, 937\u00d7415; reference composition reproduced as editable CSS/HTML/SVG."
+      "referenceVisual": "Owner-provided Community Players of the Week screenshot, 937×415; reference composition reproduced as editable CSS/HTML/SVG."
     },
     {
       "id": "recap",
@@ -349,7 +350,7 @@
         "design/v1.1.0/components/win-rate-ring.svg",
         "design/v1.1.0/prototypes/shared.css"
       ],
-      "technicalSpecification": "165px SVG; identical 11px stroke for track and value; 56.25% from 27/48, centered 27\u201331px figure, literal numerator denominator",
+      "technicalSpecification": "165px SVG; identical 11px stroke for track and value; 56.25% from 27/48, centered 27–31px figure, literal numerator denominator",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/player-390.png",
@@ -516,7 +517,7 @@
       "editableSourceFiles": [
         "design/v1.1.0/prototypes/map-team.html"
       ],
-      "technicalSpecification": "Canonical map\u00d7faction pair counts, all unobserved combinations dashed, not coerced to zero",
+      "technicalSpecification": "Canonical map×faction pair counts, all unobserved combinations dashed, not coerced to zero",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/map-team-390.png",
@@ -652,7 +653,7 @@
         "design/v1.1.0/prototypes/activity.html",
         "design/v1.1.0/prototypes/shared.js"
       ],
-      "technicalSpecification": "7\u00d724 Eastern grid showing counts of captured completed-match starts, neutral zero-evidence state and optional explicitly fictional demo toggle",
+      "technicalSpecification": "7×24 Eastern grid showing counts of captured completed-match starts, neutral zero-evidence state and optional explicitly fictional demo toggle",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/activity-390.png",
@@ -713,10 +714,43 @@
       ],
       "dataGate": "real player opted-in public synchronized six-role level/XP record from WARDOGS Tracker; owner/consumer privacy approval, attribution, versioned season and level scale",
       "ownerApproval": "pending"
+    },
+    {
+      "id": "opt-in-game-progression-and-economy",
+      "screenId": "player",
+      "prototypeSelector": "#progression",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/player.html",
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/components/six-role-radar-empty.svg",
+        "design/v1.1.0/components/progression_adapter.py",
+        "design/v1.1.0/components/role_radar.js"
+      ],
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "integrationSpec": "design/v1.1.0/research/PLAYER_PROGRESSION_OPT_IN_IMPLEMENTATION.md",
+      "technicalSpecification": "Optional WARDOGS Tracker player-synced third-party progression: six true role levels and XP, overall Wardog level, career XP, and independent nullable cash/gold (account economy, not RCON live match). Original external sync link opens new tab preserving 1ADAAR. No documented Tracker OAuth callback: durable Steam ownership, granular opt-in and secure cross-device persistence require an owner-approved serverless identity/consent backend; no fake live numbers or loadout/weapon stats.",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/player-390.png",
+        "design/v1.1.0/screenshots/player-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/players.html",
+        "docs/js/players.js",
+        "docs/assets/player-v11.css",
+        "docs/js/player-snapshot.js"
+      ],
+      "dataGate": "Player Steam OpenID identity verified in approved serverless backend; separate source visibility/consent for progression and economy, linked synced public WARDOGS Tracker profile, known role level axis and source freshness, no raw SteamID on GitHub Pages.",
+      "ownerApproval": "pending"
     }
   ],
   "designArtifactStatus": "source_corrected_owner_approval_pending",
   "researchRoles": "design/v1.1.0/research/ROLE_PROGRESSION_ACCESS_VALIDATION.md",
-  "roleProgressionAccess": "documented third-party public API for opted-in synced players; not native WDRCON or WARCON role data",
-  "dataPrivacy": "No raw SteamID64, Steam game session, RCON password, Discord webhook, or unauthorised external profile published"
+  "roleProgressionAccess": "Confirmed documented WARDOGS Tracker read-only API; public synced profile only. No verified third-party OAuth callback. Durable player connection requires secure 1ADAAR Steam OpenID + consent storage.",
+  "dataPrivacy": "No raw SteamID64, Steam game session, RCON password, Discord webhook, or unauthorised external profile published",
+  "optInImplementationSpec": "design/v1.1.0/research/PLAYER_PROGRESSION_OPT_IN_IMPLEMENTATION.md",
+  "excludedFromRelease": [
+    "loadout builder",
+    "unlock galleries",
+    "weapon kills-with/deaths-by when complete per-player event attribution not proven"
+  ]
 }
