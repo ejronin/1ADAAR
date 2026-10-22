@@ -152,16 +152,40 @@ async def capture():
                     root:document.documentElement.scrollWidth,
                     width:innerWidth,
                     scope:document.querySelector('#act-season').value,
-                    summary:document.querySelector('#act-status').textContent,
-                    hasGrid:!!document.querySelector('.act-grid-table')
+                    hasGrid:!!document.querySelector('.act-grid-table'),
+                    emptyVisible:!document.querySelector('#act-empty-structure').hidden,
+                    summaryHidden:document.querySelector('#act-summary-values').hidden,
+                    emptyText:document.querySelector('#act-summary-empty').textContent.trim(),
+                    heatCells:document.querySelectorAll('#act-empty-matrix .ia-home-hour-cell').length,
+                    times:[...document.querySelectorAll('#act-empty-matrix .ia-hour-axis-label')]
+                        .map(x=>x.textContent),
+                    companion:!!document.querySelector('.act-insight-panel')
                 })""")
                 assert result["root"]<=width+2, f"Activity body overflow at {width}px: {result}"
                 assert result["scope"]=="all"
-                assert not result["hasGrid"],"A no-data archive must not render a fake heatmap"
-                assert "No completed matches" in result["summary"]
+                assert not result["hasGrid"],"A no-data archive must not render a fake populated heatmap"
+                assert result["emptyVisible"] and result["summaryHidden"] and result["companion"]
+                assert result["heatCells"]==168, f"Lost hourly cells: {result}"
+                assert result["times"]==["00:00","06:00","12:00","18:00"]
+                assert "Data will appear" in result["emptyText"]
                 assert not activity_errors, f"Activity page Javascript errors at {width}: {activity_errors}"
                 report.setdefault("serverActivity",[]).append({"width":width,**result})
                 await activity.close()
+                # Verify Home mini heatmap preserves all 24 time columns with
+                # the identical 24H, six-hour time markers.
+                homeAxis=await browser.new_page(viewport={"width":width,"height":900})
+                await homeAxis.goto(origin+"/index.html",wait_until="domcontentloaded")
+                await homeAxis.locator('#ia-home-activity-matrix .ia-hour-axis').wait_for()
+                homeCheck=await homeAxis.evaluate("""() => ({
+                    hours:[...document.querySelectorAll('#ia-home-activity-matrix .ia-hour-axis-label')]
+                        .map(x=>x.textContent),
+                    cells:document.querySelectorAll('#ia-home-activity-matrix .ia-home-hour-cell').length,
+                    overflow:document.documentElement.scrollWidth-innerWidth
+                })""")
+                assert homeCheck["hours"]==["00:00","06:00","12:00","18:00"]
+                assert homeCheck["cells"]==168
+                assert homeCheck["overflow"]<=2, f"Home mini heatmap overflow {width}px: {homeCheck}"
+                await homeAxis.close()
                 # Real home and map/team Pages routes must render at every width,
                 # not merely their IA concept counterparts or the motion lab.
                 for route,filename,required in [
