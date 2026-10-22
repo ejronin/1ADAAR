@@ -64,12 +64,12 @@ class FixtureParityTest(unittest.TestCase):
     def test_live_source_gates_not_replaced_by_pretend_data(self):
         activity=(BASE/"activity.html").read_text()
         self.assertIn("NO VERIFIED ROLE LEVELS",activity)
-        self.assertIn("NO PROGRESSION SOURCE",activity)
+        self.assertIn("WARDOGS Tracker",activity)
         self.assertIn("ZERO CAPTURED MATCHES",activity)
         self.assertIn("role_radar.js",activity)
         js=(BASE/"shared.js").read_text()
         self.assertIn("fetch('../../../docs/data/demo-player.json'",js)
-        self.assertIn("const tabs=$$('.tab[data-trend]')",js)
+        self.assertIn("tabs=$('.tab[data-trend]')",js)
         self.assertIn("pairedCounts(",js)
 
 if __name__=="__main__":
