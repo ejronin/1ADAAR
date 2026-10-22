@@ -6,3 +6,224 @@
 @media(max-width:520px){.top{height:67px}.top img{max-width:150px}.top small{font-size:9px}.panel{padding:15px}.titlebar{margin-top:20px}.grid{gap:12px}.grid.three{grid-template-columns:repeat(2,minmax(0,1fr))}.metric{padding:11px}.metric strong{font-size:34px}.metric.secondary strong{font-size:31px}.hero{padding:23px;min-height:350px;align-items:flex-start}.hero h1{font-size:52px}.hero-logo{width:135px;height:135px;position:absolute;right:-13px;bottom:-20px;opacity:.42}.identity h1{font-size:35px}.portrait{width:65px;height:65px}.heat{grid-template-columns:29px repeat(24,minmax(0,1fr));gap:2px}.cell{border:0}.day{font-size:8px}.hour{font-size:8px}.podium{gap:6px}.podium .place,.podium .place.first{padding:14px 5px;min-height:215px}.podium .place strong{font-size:30px}.podium .portrait{width:55px;height:55px}}
 @media(max-width:330px){.top small{display:none}.metric strong{font-size:30px}.tab{padding:8px;font-size:10px}.panel{padding:12px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.crown{opacity:1;transform:none}}
+
+
+/* WEEKLY PODIUM: source-faithful restoration from owner-provided earlier
+   1ADAAR reference, October 2026. Distinct gold/silver/bronze metallurgy.
+   Static empty-state crown is a placement emblem; motion only on verified
+   populated first place. Scoped here to avoid changing player/UI card chrome. */
+.weekly-spotlight{
+  background:#20211e;
+  border-color:#465348;
+  padding:25px 20px 18px;
+}
+.weekly-spotlight .weekly-spotlight-heading{
+  margin:0 0 38px;
+  align-items:flex-start;
+}
+.weekly-spotlight-heading h2{
+  color:#f4d4a2;
+  font:800 28px/1.06 'Barlow Condensed','Arial Narrow',Arial,sans-serif;
+  text-transform:uppercase;
+  letter-spacing:.015em;
+}
+.weekly-spotlight-heading .sub{
+  color:#dfc8b3;
+  font-size:13px;
+  margin-top:7px;
+}
+.weekly-awaiting-status{
+  flex-shrink:0;
+  padding:7px 10px;
+  min-height:31px;
+  border:1px solid #8a693c;
+  border-radius:5px;
+  background:linear-gradient(135deg,#302719,#23221d);
+  color:#ffd392;
+  letter-spacing:.04em;
+  font-size:11px;
+  font-weight:800;
+}
+.weekly-podium{
+  grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,1fr);
+  gap:15px;
+  align-items:end;
+}
+.weekly-podium .weekly-place,
+.weekly-podium .weekly-place.first{
+  --metal:#e4bd78;
+  --metal-faint:rgba(228,189,120,.13);
+  min-width:0;
+  min-height:232px;
+  position:relative;
+  overflow:visible;
+  border-radius:8px;
+  border:1px solid var(--metal);
+  background:
+    linear-gradient(143deg,rgba(255,255,255,.036) 0%,transparent 23%,transparent 72%,rgba(255,255,255,.009) 99%),
+    #252624;
+  box-shadow:inset 0 1px 0 var(--metal-faint),0 2px 10px rgba(0,0,0,.10);
+  padding:35px 12px 21px;
+  gap:5px;
+  justify-content:flex-start;
+  text-align:center;
+}
+.weekly-podium .weekly-place:before{
+  content:'';
+  pointer-events:none;
+  position:absolute;
+  top:1px;
+  left:10px;
+  right:10px;
+  height:1px;
+  border-radius:50%;
+  background:linear-gradient(90deg,transparent,var(--metal) 48%,transparent);
+  opacity:.26;
+}
+.weekly-podium .weekly-place--silver{
+  --metal:#b9cbd3;
+  --metal-faint:rgba(185,203,211,.17);
+  background:
+    linear-gradient(139deg,rgba(214,228,235,.046),transparent 33%,rgba(90,116,126,.019) 100%),
+    #252927;
+}
+.weekly-podium .weekly-place--gold.first{
+  --metal:#e5bc70;
+  --metal-faint:rgba(229,188,112,.25);
+  min-height:254px;
+  padding-top:46px;
+  background:
+    linear-gradient(139deg,rgba(255,221,159,.055),transparent 38%,rgba(76,57,24,.035) 100%),
+    #252624;
+}
+.weekly-podium .weekly-place--bronze{
+  --metal:#c18a6d;
+  --metal-faint:rgba(193,138,109,.20);
+  background:
+    linear-gradient(139deg,rgba(215,151,114,.052),transparent 34%,rgba(72,36,21,.027) 100%),
+    #252624;
+}
+.weekly-podium .weekly-place .weekly-rank{
+  position:absolute;
+  top:10px;
+  left:12px;
+  font:800 29px/1 'Barlow Condensed','Arial Narrow',Arial,sans-serif;
+  color:var(--metal);
+  text-shadow:0 1px 0 #0a0e0c;
+}
+.weekly-podium .weekly-place .weekly-portrait{
+  margin:0 auto 6px;
+  flex-shrink:0;
+  width:77px;
+  height:77px;
+  border:3px solid var(--metal);
+  border-radius:50%;
+  background:radial-gradient(circle at 50% 40%,#2b3d35 0%,#1b2b23 75%);
+  font:800 31px/1 'Barlow Condensed','Arial Narrow',Arial,sans-serif;
+  color:var(--metal);
+  box-shadow:inset 0 2px 3px #03090540;
+}
+.weekly-podium .weekly-place .weekly-portrait img{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  object-fit:cover;
+}
+.weekly-podium .weekly-place h3{
+  font:800 clamp(20px,2vw,28px)/1.08 'Barlow Condensed','Arial Narrow',Arial,sans-serif;
+  letter-spacing:-.012em;
+  overflow-wrap:anywhere;
+  color:#fcfcfb;
+  margin:0;
+}
+.weekly-podium .weekly-position{
+  margin:0;
+  color:#ebd6b7;
+  font-size:12px;
+  line-height:1.35;
+}
+.weekly-podium .weekly-unassigned{
+  color:var(--metal);
+  margin:9px 0 0;
+  font-size:13px;
+  font-weight:750;
+  line-height:1.3;
+}
+.weekly-podium .weekly-crown{
+  position:absolute;
+  z-index:2;
+  top:-23px;
+  left:50%;
+  width:33px;
+  height:31px;
+  transform:translateX(-50%);
+  object-fit:contain;
+  pointer-events:none;
+  filter:drop-shadow(0 1px 2px #0a0d0b87);
+}
+.weekly-podium .weekly-crown--static{
+  opacity:1;
+}
+.weekly-podium .weekly-crown--awarded{
+  opacity:0;
+}
+.weekly-podium .champion .weekly-crown--awarded{
+  animation:weekly-crown-reveal .65s ease-out 1 both;
+}
+@keyframes weekly-crown-reveal{
+  from{opacity:0;transform:translate(-50%,-8px)}
+  to{opacity:1;transform:translate(-50%,0)}
+}
+.weekly-eligibility-note{
+  margin:23px 0 0;
+  text-align:center;
+  color:#e3c598;
+  font-size:12px;
+}
+.weekly-design-study .fixture{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  padding:10px 12px;
+  cursor:pointer;
+}
+.weekly-design-study .fixture input{
+  width:18px;
+  height:18px;
+  accent-color:#b78e56;
+}
+@media(max-width:680px){
+  .weekly-spotlight{padding:19px 10px 14px}
+  .weekly-spotlight .weekly-spotlight-heading{margin-bottom:31px}
+  .weekly-spotlight-heading h2{font-size:24px}
+  .weekly-spotlight-heading .sub{font-size:12px}
+  .weekly-awaiting-status{font-size:9px;padding:6px 8px}
+  .weekly-podium{gap:7px}
+  .weekly-podium .weekly-place,
+  .weekly-podium .weekly-place.first{
+    min-height:216px;
+    padding:32px 6px 15px;
+  }
+  .weekly-podium .weekly-place--gold.first{min-height:237px;padding-top:44px}
+  .weekly-podium .weekly-place .weekly-rank{font-size:23px;top:9px;left:8px}
+  .weekly-podium .weekly-place .weekly-portrait{width:55px;height:55px;border-width:2.5px;font-size:25px}
+  .weekly-podium .weekly-place h3{font-size:clamp(17px,4.3vw,23px)}
+  .weekly-podium .weekly-position{font-size:11px}
+  .weekly-podium .weekly-unassigned{font-size:11px}
+  .weekly-podium .weekly-crown{width:29px;height:27px;top:-21px}
+}
+@media(max-width:375px){
+  .weekly-spotlight .weekly-spotlight-heading{gap:7px}
+  .weekly-spotlight-heading h2{font-size:20px}
+  .weekly-awaiting-status{max-width:112px;text-align:center}
+  .weekly-podium .weekly-place h3{font-size:17px}
+  .weekly-podium .weekly-place .weekly-portrait{width:48px;height:48px}
+  .weekly-podium .weekly-place .weekly-unassigned{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  .weekly-podium .champion .weekly-crown--awarded{
+    animation:none;
+    opacity:1;
+    transform:translateX(-50%);
+  }
+}
