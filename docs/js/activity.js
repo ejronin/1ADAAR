@@ -17,6 +17,7 @@
       }
       emptyMatrix.append(row);
     }
+    if(window.OneADAARActivity)window.OneADAARActivity.axis(emptyMatrix);
   }
   const counts=x=>Number.isSafeInteger(x)&&x>=0;
   let documentData=null;
@@ -49,13 +50,19 @@
     if(!documentData)return;
     const group=documentData.seasons.find(row=>row.key===season.value);
     if(!group)return;
+    const summaryNode=el('act-summary-values'),summaryEmpty=el('act-summary-empty');
+    const summaryDisclosure=el('act-summary-disclosure');
+    const hasSummary=window.OneADAARActivity&&
+      window.OneADAARActivity.render(summaryNode,group.byWeekdayAndHour);
+    summaryNode.hidden=!hasSummary;
+    summaryEmpty.hidden=Boolean(hasSummary);
+    summaryDisclosure.hidden=!hasSummary;
     tableHost.replaceChildren();details.textContent='Select a square to inspect its recorded count.';
     el('act-count').textContent=group.count.toLocaleString();
     el('act-first').textContent=stamp(group.firstMatchStartedAt);
     el('act-last').textContent=stamp(group.lastMatchStartedAt);
     if(!group.count){
-      status.hidden=false;
-      status.textContent='No completed matches have been saved for this selection yet. We cannot calculate an activity pattern.';
+      status.hidden=true;
       out.hidden=true;
       if(emptyHost)emptyHost.hidden=false;
       return;
@@ -67,7 +74,8 @@
     const top=node(grid,'thead'),heading=node(top,'tr');
     node(heading,'th','Day').scope='col';
     for(let hour=0;hour<24;hour++){
-      const th=node(heading,'th',hour%4===0?String(hour).padStart(2,'0'):'');
+      const th=node(heading,'th',hour%6===0?String(hour).padStart(2,'0')+':00':'');
+      if(hour%6===0)th.className='act-major-hour';
       th.scope='col';th.title=timeLabel(hour)+' Eastern';
     }
     const body=node(grid,'tbody');
@@ -77,6 +85,7 @@
       label.scope='row';
       for(let hour=0;hour<24;hour++){
         const cell=node(row,'td');
+        if(hour%6===0)cell.className='act-major-hour-cell';
         const count=group.byWeekdayAndHour[day][hour];
         const b=node(cell,'button',undefined,'act-cell');
         b.type='button';b.dataset.level=String(count?Math.max(1,Math.ceil(4*count/max)):0);
@@ -119,6 +128,13 @@
       status.hidden=false;
       status.textContent='Verified match activity could not be loaded. Please try again later.';
       season.disabled=true;out.hidden=true;
+      if(emptyHost)emptyHost.hidden=false;
+      const emptyNotice=el('act-summary-empty');if(emptyNotice){
+        emptyNotice.hidden=false;
+        emptyNotice.textContent='Recorded activity data is temporarily unavailable.';
+      }
+      el('act-summary-values').hidden=true;
+      el('act-summary-disclosure').hidden=true;
     }
   })();
 })();
