@@ -33,7 +33,7 @@ class FactionRecapArtworkTests(unittest.TestCase):
             self.assertEqual(im.size[1],816)
         self.assertEqual(discord_payload({
             **make(scores),"warconUrl":"https://console.warcon.app/s/demo/matches/127",
-            "peakPlayers":32,"endedAt":"2026-10-16T20:10:00Z"
+            "peakPlayers":32,"endedAt":"2026-10-16T20:10:00Z","verifiedCompleted":True
         })["components"][0]["accent_color"],0xEE4138)
     def test_unknown_faction_does_not_get_invented_emblem(self):
         self.assertIsNone(faction_color("NewFaction"))
