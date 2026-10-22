@@ -1,13 +1,9 @@
-# Actual rendered design captures
+# Design screenshots
 
-For EACH editable screen prototype, include at minimum:
-- `home-390.png`, `home-1440.png`
-- `player-390.png`, `player-1440.png`
-- `map-team-390.png`, `map-team-1440.png`
-- `weekly-390.png`, `weekly-1440.png`
-- `recap-390.png`, `recap-1440.png`
-- `activity-390.png`, `activity-1440.png`
+These are Chromium captures of the editable prototypes in `../prototypes/`, not separately drawn mockups.
 
-Use genuine browser captures of the submitted HTML/CSS/JS, not independent compositions that cannot be reproduced from digital source.
+Each screen has a `390px` phone capture and a `1440px` desktop capture: `home`, `player`, `map-team`, `weekly`, `recap` and `activity`. Additional captures show the paired chart, faction-share control and the clearly labeled fictional podium/heatmap states.
 
-Additional UI checks at 320, 375, 768 and 1024 CSS pixels are required; attach evidence in a QA report or additional screenshots. Distinguish actual empty live-data state from any clearly fictional illustrated award/recap. Do not use synthetic numbers in production-bound screenshots.
+The browser checks also run at 320, 375, 768 and 1024 CSS pixels; results are in `BROWSER_QA.md`.
+
+Keep sample data visibly labeled as fictional. The Discord HTML screenshots show a layout reference; they are **not** evidence of native Discord-client rendering. When the design changes, regenerate the captures and update `screen-manifest.json` so the screenshots match the source.
