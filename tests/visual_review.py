@@ -154,8 +154,8 @@ async def capture():
                     assert await real.locator("#progression-role-radar").count()==1
                     assert await real.locator("#progression-role-radar [data-role-profile]").count()==0
                     assert "Steam connection service is not deployed yet" in await real.locator("#progression-status").inner_text()
-                assert await real.locator('#progression-check').is_disabled()
-                assert await real.locator('#progression-consent-panel').is_hidden()
+                    assert await real.locator('#progression-check').is_disabled()
+                    assert await real.locator('#progression-consent-panel').is_hidden()
                     report.setdefault("realProfiles",[]).append({"width":width,**actual,
                         "progressionEmpty":True})
                 assert not real_errors, f"Real player page errors at {width}: {real_errors}"
