@@ -7,7 +7,8 @@ if(!globalThis.crypto)globalThis.crypto=webcrypto;
 const SID='76561190000000001';
 const env={AUTH_ORIGIN:'https://1adaar-auth.example.workers.dev',
   PUBLIC_PAGE_URL:'https://ejronin.github.io/1ADAAR/players.html',
-  PUBLIC_ORIGIN:'https://ejronin.github.io',DB:{}};
+  PUBLIC_ORIGIN:'https://ejronin.github.io',
+  PUBLIC_PROGRESSION_URL:'https://ejronin.github.io/1ADAAR/progression.html',DB:{}};
 const fixture={player:{steamId:SID,stats:{wardogLevel:142,careerXp:1830450,cash:0,gold:4,
   syncedAt:'2026-10-22T11:00:00Z',roles:{
     assault:{level:41,xp:612000},medic:{level:22,xp:180400},
