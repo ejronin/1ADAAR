@@ -79,6 +79,65 @@ def alpha_paste(im: Image.Image, icon: Image.Image, xy: tuple[int, int]) -> None
     im.paste(icon, xy, icon)
 
 
+def draw_award_icon(draw: ImageDraw.ImageDraw, kind: object,
+                    x: int, y: int, ink: str = GREEN) -> None:
+    """48px line-drawn, brand-consistent glyphs. No emoji fonts or PNG icons.
+
+    All icons share the same stroke and bounding box and remain legible when
+    Discord scales the 1080px PNG to a mobile media-gallery thumbnail.
+    """
+    cx, cy = x + 23, y + 23
+    label = str(kind or "").strip().lower()
+    stroke = 3
+    if label in {"kills", "mostkills", "most kills"}:
+        # Four-quadrant precision reticle.
+        draw.ellipse((cx - 13, cy - 13, cx + 13, cy + 13),
+                     outline=ink, width=stroke)
+        draw.ellipse((cx - 3, cy - 3, cx + 3, cy + 3),
+                     outline=ink, width=2)
+        for points in [
+            (cx, cy - 21, cx, cy - 11), (cx, cy + 11, cx, cy + 21),
+            (cx - 21, cy, cx - 11, cy), (cx + 11, cy, cx + 21, cy)
+        ]:
+            draw.line(points, fill=ink, width=stroke)
+    elif label in {"kd", "k/d", "bestkd", "best k/d"}:
+        # Balance scales: equal pans, no emoji/font fallback.
+        draw.line((cx, cy - 18, cx, cy + 17), fill=ink, width=stroke)
+        draw.line((cx - 19, cy - 9, cx + 19, cy - 9), fill=ink, width=stroke)
+        draw.ellipse((cx - 3, cy - 21, cx + 3, cy - 15),
+                     outline=ink, width=2)
+        for direction in (-1, 1):
+            offset = direction * 13
+            draw.line((cx + offset, cy - 9, cx + offset - 7, cy + 7),
+                      fill=ink, width=2)
+            draw.line((cx + offset, cy - 9, cx + offset + 7, cy + 7),
+                      fill=ink, width=2)
+            draw.arc((cx + offset - 8, cy + 1, cx + offset + 8, cy + 10),
+                     0, 180, fill=ink, width=2)
+        draw.line((cx - 10, cy + 18, cx + 10, cy + 18), fill=ink, width=stroke)
+    elif label in {"longest", "longestshot", "longest shot"}:
+        # Engineering ruler with real tick marks.
+        draw.rounded_rectangle((cx - 21, cy - 8, cx + 21, cy + 9),
+                               radius=3, outline=ink, width=stroke)
+        for index, dx in enumerate(range(-14, 19, 8)):
+            top = cy - 7
+            bottom = cy + (4 if index % 2 == 0 else 0)
+            draw.line((cx + dx, top, cx + dx, bottom),
+                      fill=ink, width=2)
+    else:
+        # Honest generic achievement marker for unrecognized award type.
+        draw.rounded_rectangle((cx - 16, cy - 16, cx + 16, cy + 16),
+                               radius=5, outline=ink, width=stroke)
+        draw.line((cx - 8, cy, cx + 8, cy), fill=ink, width=stroke)
+
+
+def award_label(key: object, fallback: object) -> str:
+    labels = {"kills": "MOST KILLS", "kd": "BEST K/D",
+              "longest": "LONGEST SHOT"}
+    return labels.get(str(key or "").strip().lower(),
+                      str(fallback or key or "MATCH HIGHLIGHT").upper())
+
+
 def draw_header(im: Image.Image, draw: ImageDraw.ImageDraw, match: dict, demo: bool) -> None:
     """IA-directed editorial recap masthead; approved source art remains unchanged."""
     if ART.exists():
@@ -126,7 +185,7 @@ def render_match_card(match: dict, *, demo: bool = False) -> bytes:
     scores = [r for r in match.get("scores", []) if isinstance(r, dict)][:3]
     awards = [a for a in match.get("awards", [])
               if isinstance(a, dict) and a.get("name")][:3]
-    height = 962 if awards else 816
+    height = 1036 if awards else 816
     im = Image.new("RGB", (WIDTH, height), BG)
     draw = ImageDraw.Draw(im)
     draw_header(im, draw, match, demo)
@@ -183,18 +242,33 @@ def render_match_card(match: dict, *, demo: bool = False) -> bytes:
         card_width = (RIGHT - LEFT - 22) // 3
         for i, award in enumerate(awards):
             x = LEFT + i * (card_width + 11)
-            draw.rounded_rectangle((x, 815, x + card_width, 880), radius=7,
-                                   fill="#1a271e", outline="#39533f", width=1)
-            draw.text((x + 13, 821),
-                      truncate(draw, award.get("label") or award.get("key") or "Highlight",
-                               font(14, True), card_width - 26),
-                      fill=MUTED, font=font(14, True))
-            draw.text((x + 13, 844),
-                      truncate(draw, award.get("name"), font(19, True), card_width - 26),
-                      fill=LIGHT, font=font(19, True))
-            draw.text((x + 13, 866),
-                      truncate(draw, award.get("value"), font(13), card_width - 26),
-                      fill=GREEN, font=font(13))
+            # Faction outline only when the award source supplies a recognized,
+            # verified identity. Never infer the winner's team from the name.
+            outline = faction_color(award.get("faction")) or "#45624e"
+            draw.rounded_rectangle((x, 815, x + card_width, 945),
+                                   radius=9, fill="#18241b", outline=outline, width=2)
+            draw_award_icon(draw, award.get("key"),
+                            x + 12, 853, ink=GREEN)
+            label_face = font(15, True)
+            name_face = font(20, True)
+            value_face = font(31, True)
+            origin_x = x + 78
+            available = card_width - 94
+            draw.text((origin_x, 824),
+                      truncate(draw, award_label(award.get("key"),
+                                                 award.get("label")),
+                               label_face, available),
+                      fill=MUTED, font=label_face)
+            draw.text((origin_x, 854),
+                      truncate(draw, award.get("name"),
+                               name_face, available),
+                      fill=LIGHT, font=name_face)
+            # Consistent third row / 31px numerical hierarchy for all three
+            # cells; exact source strings retain correct unit semantics.
+            draw.text((origin_x, 885),
+                      truncate(draw, award.get("value"),
+                               value_face, available),
+                      fill=GREEN, font=value_face)
     draw.rectangle((0, height - 69, WIDTH, height), fill="#1c3122")
     draw.rectangle((0, height - 69, WIDTH, height - 66), fill="#7de39a")
     foot = ("DESIGN SAMPLE · FICTIONAL MATCH · DO NOT POST"
