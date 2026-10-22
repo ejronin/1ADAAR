@@ -80,6 +80,7 @@ body{background:var(--ia-bg);color:var(--ia-ink)}
 .progression-actions a,.progression-actions button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 15px;
  border-radius:7px;border:1px solid #658d6e;background:#183823;color:#f2fff5;font:700 13px system-ui;cursor:pointer;text-decoration:none}
 .progression-actions :is(a,button):focus-visible{outline:2px solid #a3f9b5;outline-offset:3px}
+.progression-actions button:disabled{opacity:.54;cursor:not-allowed;background:#1a251d;border-color:#384c3d;color:#b2bfb3}
 #progression-status{font-size:13px;color:#c3d8c5;line-height:1.6}
 .progression-panel>small{font-size:11px;color:#b1c5b7;line-height:1.65}
 @media(max-width:750px){.progression-layout{grid-template-columns:1fr}
