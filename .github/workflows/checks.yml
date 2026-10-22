@@ -1,7 +1,7 @@
 name: Validate code and publication safety
 on:
   pull_request:
-    branches: [main]
+    branches: [main, staging/v2.0-foundation]
   push:
     branches: [main]
     paths:
@@ -34,6 +34,8 @@ jobs:
           node --check docs/js/players.js
           node --check docs/js/performance-core.js
           node --check docs/js/performance.js
+          node --check docs/js/progression.js
+          node --check docs/js/role-radar.js
           node --check docs/js/demo-performance.js
           node --check docs/js/factions.js
           node tests/factions.test.cjs
