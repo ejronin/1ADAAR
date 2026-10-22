@@ -100,7 +100,7 @@ def build_design_recap(
                 {"type":12,"items":[{"media":{"url":"attachment://"+attachment_filename},
                           "description":"Verified WARDOGS completed-match after-action image, with final faction scores and game map"}]},
                 {"type":10,"content":summary},
-                {"type":10,"content":"Next map and conditions appear separately only after confirmed WARCON status."},
+                {"type":10,"content":"Next map and conditions will be posted separately only if WARCON confirms them."},
                 {"type":1,"components":[{"type":2,"style":5,
                   "label":"Open in 1ADAAR","url":dashboard_url}]}
             ]}
