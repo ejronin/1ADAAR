@@ -193,11 +193,15 @@
   });
   disconnect.addEventListener('click',async()=>{
     disconnect.disabled=true;
-    try{await api('/api/disconnect','POST');}
-    catch(_){/* Revoke server session on next authenticated request if unreachable. */}
-    clearSession();blank();connected=false;show('unlinked');
-    note('Disconnected locally. Reconnect with Steam to verify server-side consent revocation.');
-    disconnect.disabled=false;
+    try{
+      await api('/api/disconnect','POST');
+      clearSession();blank();connected=false;show('unlinked');
+      note('Disconnected. Your server-side consent, cached progression and login sessions were revoked.');
+    }catch(e){
+      // Do not falsely announce server-side deletion if the request failed.
+      note('Could not revoke the connection on the server ('+e.message+
+        '). Your connection remains active. Please retry Disconnect.');
+    }finally{disconnect.disabled=false;}
   });
   root.addEventListener('focus',()=>{if(Date.now()-lastCheck>60000&&readSession()&&currentKey){
     lastCheck=Date.now();load();
