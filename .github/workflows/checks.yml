@@ -28,6 +28,7 @@ jobs:
       - name: JavaScript syntax validation
         run: |
           node --check docs/js/app.js
+          node --check docs/js/home-intelligence.js
           node --check docs/js/match-sort.js
           node tests/match-sort.test.cjs
           node tests/archive_ui.test.cjs
