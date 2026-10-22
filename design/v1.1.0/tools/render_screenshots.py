@@ -131,7 +131,21 @@ def capture():
                             errors.append(f"weekly-{width}: static crown not visible")
                     delta = page.evaluate("Math.max(0, document.documentElement.scrollWidth - window.innerWidth)")
                     if delta > 2 or js_errors:
-                        errors.append(f"{name}-{width}: {delta}px overflow, JS={js_errors}")
+                        overflow_detail=""
+                        if delta > 2 and name == "recap":
+                            overflow_detail=page.evaluate("""() => [...document.querySelectorAll('*')]
+                              .map(el=>({el,box:el.getBoundingClientRect()}))
+                              .filter(x=>x.box.right>innerWidth+2)
+                              .sort((a,b)=>b.box.right-a.box.right)
+                              .slice(0,8)
+                              .map(x=>({
+                                el:x.el.tagName.toLowerCase(),
+                                cls:typeof x.el.className==='string'?x.el.className:'',
+                                right:Math.round(x.box.right),
+                                width:Math.round(x.box.width),
+                                text:(x.el.textContent||'').trim().slice(0,44)
+                              }))""")
+                        errors.append(f"{name}-{width}: {delta}px overflow, JS={js_errors}, offenders={overflow_detail}")
                     report.append(f"| {name} | {width} | {len(js_errors)} | {delta} | {'PASS' if not js_errors and delta<=2 else 'FAIL'} |")
                     if width in (390,1440):
                         target = OUT / f"{name}-{width}.png"
