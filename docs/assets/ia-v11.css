@@ -1,0 +1,53 @@
+/* IA v1.1 source-aligned implementation layer; authored CSS remains Pages-native.
+   Measurements from design/v1.1.0/tokens.final.json at design commit 4d884c8.
+   SCSS/Vite are deliberately not runtime dependencies. */
+:root{--ia-bg:#090e0c;--ia-surface:#121d16;--ia-ink:#f2f6f1;
+ --ia-muted:#b1c5b7;--ia-green:#86f4a4;--ia-deaths:#f5c84b;
+ --ia-gold:#e4bd78;--ia-silver:#bec9c7;--ia-bronze:#c78d62;
+ --ia-stroke:#304537;--ia-radius:11px;--ia-gap:16px;
+ --ia-lonestar:#465eff;--ia-valkyra:#ee4138;--ia-manticore:#3eba42}
+body{background:var(--ia-bg);color:var(--ia-ink)}
+.rail{background:#0c130f;border-right:1px solid var(--ia-stroke)}
+.nav{border-radius:7px}
+.app-shell .main{min-width:0}
+.metric-tile,.career-secondary-card,.mt-panel,.mt-summary-card,.weekly-season,
+.performance-module,.snapshot-module{border-radius:var(--ia-radius)}
+.metric-tile,.career-secondary-card,.mt-panel,.mt-summary-card,
+.perf-mini-stat{border-width:1px}
+#dossier .profile-win-donut{width:140px;height:140px}
+#dossier .donut-track,#dossier .donut-progress{stroke-width:9.43}
+#dossier .donut-center strong{font:700 27px/1.1 'Barlow Condensed',Arial,sans-serif}
+#dossier .donut-center small{font-size:11px}
+.mt-ring{width:140px;height:140px}
+.mt-donut-track,.mt-donut-fill{stroke-width:9.43}
+.mt-ring>strong{font-size:27px;font-weight:700}
+.mt-team-rings .mt-donut-track,.mt-team-rings .mt-donut-fill{stroke-width:9.43}
+.perf-gridline{stroke-width:1;stroke-dasharray:none;stroke-opacity:.3}
+.perf-encoding-label{display:flex;align-items:center;gap:8px;color:#b1c5b7;font-size:11px;font-weight:800}
+.perf-encoding-label[hidden]{display:none}
+.perf-encoding{background:#14261a;border:1px solid #52755c;color:#eefbef;min-height:44px;border-radius:7px;padding:8px}
+.perf-paired-svg{min-height:220px}
+.weekly-page .weekly-podium{gap:16px}
+.weekly-page .weekly-podium-place{border-radius:11px;border-width:1px}
+.weekly-page .weekly-podium-place.gold{min-height:248px}
+.weekly-page .weekly-rank,
+.weekly-page .weekly-podium-place.gold .weekly-rank{
+  width:100%;text-align:left;height:auto;margin:0 0 9px;
+  font:800 27px/1.1 'Barlow Condensed',Arial,sans-serif;color:var(--podium)}
+.weekly-page .weekly-podium-place .weekly-avatar{margin:10px auto 11px}
+.weekly-page .weekly-podium-place.gold .weekly-crown{position:absolute;top:13px;left:50%;transform:translateX(-50%)}
+.weekly-page .weekly-podium-place.gold[data-award-verified="true"] .weekly-crown{
+ position:absolute;top:12px;left:50%;width:32px;height:29px;margin:0;
+ transform:translateX(-50%);animation:ia-crown-in 650ms ease-out 1 forwards}
+@keyframes ia-crown-in{from{opacity:0;translate:0 -6px}to{opacity:1;translate:0 0}}
+@media(max-width:680px){
+ .weekly-page .weekly-podium{gap:6px}
+ .weekly-page .weekly-podium-place{padding:13px 6px;min-width:0}
+ .weekly-page .weekly-podium-place.gold{padding:17px 7px;min-height:214px}
+ .weekly-page .weekly-rank,.weekly-page .weekly-podium-place.gold .weekly-rank{font-size:23px}
+ .weekly-page .weekly-podium-place h3{font-size:clamp(14px,3.5vw,19px)}
+ .perf-toolbar{flex-wrap:wrap;align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){
+ .weekly-page .weekly-podium-place.gold[data-award-verified="true"] .weekly-crown{animation:none;opacity:1;translate:0 0}
+}
