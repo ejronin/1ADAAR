@@ -64,3 +64,23 @@ body{background:var(--ia-bg);color:var(--ia-ink)}
  transform:translate(-50%,-50%);border-radius:50%;background:#86f4a4}
 @media(max-width:520px){.mt-kd-item{grid-template-columns:90px minmax(38px,1fr) 95px;gap:7px}
  .mt-kd-label,.mt-kd-value{font-size:11px}}
+
+/* Source-verified progression connection teaser; no fictional filled radar. */
+.progression-panel{border:1px solid #34543d;border-radius:var(--ia-radius);background:#131e17;padding:24px;margin:22px 0}
+.progression-panel[hidden]{display:none}
+.progression-explainer{font-size:13px;line-height:1.6;color:var(--ia-muted);margin:10px 0}
+.progression-layout{display:grid;grid-template-columns:minmax(180px,400px) minmax(0,1fr);gap:20px;align-items:center}
+.progression-radar img{width:100%;height:auto;display:block}
+.progression-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.progression-kpis>div{border:1px solid #385440;border-radius:7px;padding:14px;min-width:0}
+.progression-kpis small{display:block;color:#bdcfbf;font-size:11px}
+.progression-kpis strong{display:block;font:700 26px/1.3 'Barlow Condensed',Arial,sans-serif;color:#f0f8f1;overflow-wrap:anywhere}
+.progression-roles{font-size:13px;line-height:1.65;color:#d3e6d6}
+.progression-actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.progression-actions a,.progression-actions button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 15px;
+ border-radius:7px;border:1px solid #658d6e;background:#183823;color:#f2fff5;font:700 13px system-ui;cursor:pointer;text-decoration:none}
+.progression-actions :is(a,button):focus-visible{outline:2px solid #a3f9b5;outline-offset:3px}
+#progression-status{font-size:13px;color:#c3d8c5;line-height:1.6}
+.progression-panel>small{font-size:11px;color:#b1c5b7;line-height:1.65}
+@media(max-width:750px){.progression-layout{grid-template-columns:1fr}
+ .progression-radar{max-width:360px;margin:auto}}
