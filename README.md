@@ -37,11 +37,11 @@ The aim is to make the figures understandable, not to bury them in unexplained c
 
 ### A look back at the week
 
-The [weekly roundup](https://ejronin.github.io/1ADAAR/weekly.html) is the place for community highlights and saved weekly results. A week with too little verified data shouldn't suddenly have a made-up champion. The numbers, awards and recap images need to come from matches the server actually recorded.
+The [weekly roundup](https://ejronin.github.io/1ADAAR/weekly.html) is the place for community highlights and saved weekly results. Reporting weeks run from Sunday noon to Sunday noon Eastern. A week with too little verified data shouldn't suddenly have a made-up champion. The numbers, awards and recap images need to come from matches the server actually recorded.
 
 ## How it works
 
-WARCON collects the match and player information used by the site. GitHub Actions picks up the public records on a schedule, prepares the data for the website and produces the recap artwork. GitHub Pages serves the finished pages, while Discord receives the completed-match reports through a webhook.
+WARCON collects the match and player information used by the site. GitHub Actions aims to check the public records about every ten minutes, prepares the data for the website and produces the recap artwork. GitHub Pages serves the finished pages. A Discord recap goes out only after WARCON has recorded a completed match with usable results.
 
 That setup is intentional. **1ADAAR doesn't require a computer at home to stay online**, or a separate paid web server for its existing public dashboard. Most of the work happens during scheduled GitHub jobs, and the website reads the data they've already prepared.
 
