@@ -16,7 +16,7 @@ class VisualRecapTest(unittest.TestCase):
         self.assertLess(len(img),7_000_000)
         self.assertIn("attachment://match-recap.png",json.dumps(discord_payload({
             **sample,"warconUrl":"https://console.warcon.app/s/demo/matches/234",
-            "winner":"Lonestar","peakPlayers":32,"endedAt":"2026-10-16T20:10:00Z"
+            "winner":"Lonestar","peakPlayers":32,"endedAt":"2026-10-16T20:10:00Z","verifiedCompleted":True
         })))
     def test_smoke_has_fictional_scores_and_watermark(self):
         self.assertEqual(DEMO_MATCH["id"],0)
