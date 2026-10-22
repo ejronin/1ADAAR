@@ -65,6 +65,28 @@ async def capture():
                 assert measurements["donuts"]==1
                 assert measurements["insights"]==2
                 assert len(measurements["tabs"])==5
+                # The public PlayerOne route must demonstrate the approved
+                # opt-in state transition without any API or actual Steam sign-in.
+                assert await page.locator('#demo-progression-panel').is_visible()
+                assert await page.locator('#demo-role-radar [data-role-profile]').count()==0
+                await page.locator('#demo-progression-connect').click()
+                assert await page.locator('#demo-role-radar [data-role-profile]').count()==1
+                assert await page.locator('#demo-role-values tr').count()==6
+                assert (await page.locator('#demo-wardog-level').text_content()).strip()=='142'
+                assert (await page.locator('#demo-career-xp').text_content()).strip()=='1,830,450'
+                assert (await page.locator('#demo-cash').text_content()).strip()=='Hidden'
+                assert await page.locator('#demo-progression-refresh').is_visible()
+                await page.locator('#demo-economy-visible').check()
+                assert (await page.locator('#demo-gold').text_content()).strip()=='4'
+                await page.locator('#demo-progression-refresh').click()
+                assert 'no network request' in (await page.locator('#demo-progression-status').text_content()).lower()
+                if width in (390,1440):
+                    await page.screenshot(path=str(ARTIFACT/f'playerone-progression-connected-{width}px.png'),
+                                          full_page=True,animations='disabled')
+                await page.locator('#demo-progression-disconnect').click()
+                assert await page.locator('#demo-role-radar [data-role-profile]').count()==0
+                assert (await page.locator('#demo-wardog-level').text_content()).strip()=='—'
+                assert await page.locator('#demo-progression-connect').is_visible()
                 assert measurements["table"]
                 assert not errors, f"JavaScript exceptions at {width}px: {errors}"
                 # Exercise the actual redesigned five modes rather than only
