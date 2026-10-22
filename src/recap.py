@@ -154,6 +154,10 @@ def public_match(raw: dict, detail: dict | None = None) -> dict:
             "winner": clean(raw.get("winner"), 35),
             "scores": score_rows(raw.get("finalScores")),
             "peakPlayers": max(0, int(raw.get("peakPlayers") or 0)),
+            "verifiedCompleted": True,
+            # Incomplete/bounded match lines CANNOT support top-per-faction claims.
+            # Only an explicitly certified complete dataset may set this True.
+            "playerLinesComplete": bool(isinstance(detail, dict) and detail.get("playerLinesComplete") is True),
             "players": players, "awards": awards,
             "hasFeed": bool(detail.get("hasFeed")) if isinstance(detail, dict) else False,
             "warconUrl": f"{PUBLIC_SITE}/{identifier}"}
