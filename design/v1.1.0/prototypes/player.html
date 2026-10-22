@@ -3,6 +3,39 @@
 <div class="titlebar"><div class="row identity"><div class="portrait" aria-label="Fictional sample avatar placeholder">P</div><div><div class="eyebrow">Player dossier / career overview</div><h1>PlayerOne</h1><p class="sub">Example player · Fictional career ranking #12 · Steam picture shown only for verified real identities</p></div></div><div class="pills"><span class="pill demo">SAMPLE DATA</span><a class="btn ghost" href="#match-evidence">Recent results ↓</a></div></div>
 <div class="grid four"><div class="metric"><small>Career K/D</small><strong>1.91</strong><p>634 kills / 332 deaths · WARCON-style total</p></div><div class="metric"><small>Total kills</small><strong>634</strong><p>Career total · fictional</p></div><div class="metric"><small>Total deaths</small><strong>332</strong><p>Career total · fictional</p></div><div class="metric"><small>Matches played</small><strong>48</strong><p>Completed career matches · fictional</p></div></div>
 <div class="grid three block"><div class="metric secondary"><small>Wins</small><strong>27</strong><p>27 wins · 17 losses · 4 draws</p></div><div class="metric secondary"><small>Playtime</small><strong>37h</strong><p>2,220 minutes</p></div><div class="metric secondary"><small>Seeding time</small><strong>3h</strong><p>180 minutes · recorded on server</p></div></div>
+<section class="panel block progression-teaser" id="progression" aria-labelledby="progression-heading">
+ <div class="panel-head">
+  <div><div class="eyebrow">OPTIONAL · WARDOGS ACCOUNT PROGRESSION</div>
+  <h2 id="progression-heading">Your WARDOGS progression</h2>
+  <p class="sub">Six role levels, experience and account economy — only after a player-approved WARDOGS Tracker sync.</p></div>
+  <span class="pill warn">NOT CONNECTED · FICTIONAL PLAYER</span>
+ </div>
+ <div class="grid two progression-layout">
+  <div class="progression-radar-box">
+    <img class="progression-empty-radar" src="../components/six-role-radar-empty.svg" alt="Unfilled radar with six role axes: Assault, Medic, Support, Recon, Driver, Pilot. No verified levels are available for PlayerOne." width="400" height="300">
+    <p class="source">Each axis represents the role's verified level, with exact XP shown in a separate accessible list once a synced profile is authorized. No arbitrary skill score.</p>
+    <div class="progression-rows" aria-label="Role progression not yet connected">
+      <span>Assault <b>—</b></span><span>Medic <b>—</b></span><span>Support <b>—</b></span>
+      <span>Recon <b>—</b></span><span>Driver <b>—</b></span><span>Pilot <b>—</b></span>
+    </div>
+  </div>
+  <div class="progression-info">
+   <div class="grid equal progression-metrics" aria-label="Optional account progression and economy unavailable">
+    <div class="metric secondary"><small>WARDOG level</small><strong>—</strong><p>Game profile · not server rank</p></div>
+    <div class="metric secondary"><small>Career XP</small><strong>—</strong><p>Game progression total</p></div>
+    <div class="metric secondary"><small>Account cash</small><strong>—</strong><p>Hidden until permitted · not match cash</p></div>
+    <div class="metric secondary"><small>Gold</small><strong>—</strong><p>Hidden until permitted · 0 is a valid value</p></div>
+   </div>
+   <div class="progression-connect">
+    <h3>Unlock your progression</h3>
+    <p>On WARDOGS Tracker, sign in using Steam, close WARDOGS, and sync your profile. Then return to this open 1ADAAR dossier. The future secure connection will verify account ownership and check accessible public data; simply following a link does not connect accounts.</p>
+    <a class="btn" href="https://wardogstracker.gg/stats" target="_blank" rel="noopener noreferrer">Sync on WARDOGS Tracker ↗</a>
+    <p class="source">Return to this tab to continue. Automatic redirect and permanent account linking require a separately approved secure authentication/consent backend, not an undocumented Tracker callback.</p>
+   </div>
+   <p class="source">Source: <a href="https://wardogstracker.gg/developers" target="_blank" rel="noopener noreferrer">WARDOGS Tracker public API</a> · Last synced: — · Private/unsynced or hidden values stay unavailable. WARDOGS Tracker is not affiliated with the game developer.</p>
+  </div>
+ </div>
+</section>
 <section class="grid two block"><div class="panel"><div class="panel-head"><div><div class="eyebrow">PERFORMANCE INTELLIGENCE</div><h2>Performance trends</h2><p class="sub">Actual PlayerOne demonstration observations; career snapshots and saved matches remain separately labeled.</p></div><select id="point-window" class="select" aria-label="Points shown"><option value="10">Last 10 points</option><option value="20">Last 20 points</option><option value="32" selected>All 32 points</option></select></div>
 <div class="toolbar" role="group" aria-label="Performance view"><button class="tab" type="button" data-trend="kills" aria-pressed="true">Kills & deaths</button><button class="tab" type="button" data-trend="kd" aria-pressed="false">Match K/D</button><button class="tab" type="button" data-trend="rolling" aria-pressed="false">Trailing 5-match K/D</button><button class="tab" type="button" data-trend="averages" aria-pressed="false">Trailing 5-match averages</button><button class="tab" type="button" data-trend="career" aria-pressed="false">Career K/D</button></div>
 <div class="toolbar" id="kills-chart-picker" style="margin-top:12px"><label for="kills-encoding" class="sub">Kills / deaths layout</label><select id="kills-encoding" class="select"><option value="trend">Time-series comparison</option><option value="paired">Per-match paired dot chart</option></select></div>
