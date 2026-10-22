@@ -1,0 +1,758 @@
+{
+  "schemaVersion": 2,
+  "project": "1ADAAR",
+  "release": "1.1.0",
+  "status": "owner_visual_review_pending",
+  "baselineStagingCommit": "26da372ea9c076bfe3751a0716ee8382161e811d",
+  "designBranch": "design/v1.1.0-ia-handoff",
+  "designTokensFile": "design/v1.1.0/tokens.final.json",
+  "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+  "research": [
+    "design/v1.1.0/research/CHART_METHODS_AND_FIELD_GATE.md",
+    "design/v1.1.0/research/ROLE_PROGRESSION_ACCESS_VALIDATION.md",
+    "design/v1.1.0/research/RCON_WARCON_FIELD_INVENTORY.md",
+    "design/v1.1.0/research/COMPETITIVE_CHART_UX_REFERENCES.md"
+  ],
+  "discrepancyRegister": "design/v1.1.0/research/DESIGN_DISCREPANCY_REGISTER.md",
+  "isProductionReady": false,
+  "productionModified": false,
+  "screens": [
+    {
+      "id": "home",
+      "title": "Main briefing",
+      "description": "Hero, official marks, real-status modules, empty captured-match states",
+      "source": [
+        "docs/index.html",
+        "docs/assets/brand.css",
+        "docs/assets/motion-v11.css",
+        "docs/js/app.js"
+      ],
+      "prototype": "design/v1.1.0/prototypes/home.html",
+      "editableFiles": [
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/prototypes/shared.js",
+        "design/v1.1.0/prototypes/home.html"
+      ],
+      "screenshots": {
+        "mobile390": "design/v1.1.0/screenshots/home-390.png",
+        "desktop1440": "design/v1.1.0/screenshots/home-1440.png"
+      },
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "ownerApproval": "pending",
+      "deliveryStatus": "editable_prototype_and_chromium_screenshots_committed",
+      "componentIds": [
+        "official-hero-motion",
+        "status-and-match-briefing"
+      ]
+    },
+    {
+      "id": "player",
+      "title": "Player dossier",
+      "description": "Player dossier, sourced combat and performance views, real Steam identity design, plus optional third-party six-role progression, Wardog level, career XP and privacy-protected account cash/gold teaser.",
+      "source": [
+        "docs/players.html",
+        "docs/playerone-demo.html",
+        "docs/js/players.js",
+        "docs/js/performance.js",
+        "docs/js/player-snapshot.js"
+      ],
+      "prototype": "design/v1.1.0/prototypes/player.html",
+      "editableFiles": [
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/prototypes/shared.js",
+        "design/v1.1.0/prototypes/player.html"
+      ],
+      "screenshots": {
+        "mobile390": "design/v1.1.0/screenshots/player-390.png",
+        "desktop1440": "design/v1.1.0/screenshots/player-1440.png"
+      },
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "ownerApproval": "pending",
+      "deliveryStatus": "editable_prototype_and_chromium_screenshots_committed",
+      "componentIds": [
+        "steam-identity",
+        "career-kpi-band",
+        "performance-trend-tabs",
+        "paired-kills-deaths",
+        "career-win-rate-ring",
+        "faction-map-usage",
+        "combat-detail",
+        "ranked-map-kd",
+        "recent-match-evidence",
+        "opt-in-game-progression-and-economy"
+      ]
+    },
+    {
+      "id": "map-team",
+      "title": "Maps and factions",
+      "description": "Faction outcome fingerprint, ranked dots, map/team crosstab",
+      "source": [
+        "docs/map-team.html",
+        "docs/js/map-team.js",
+        "docs/assets/map-team.css"
+      ],
+      "prototype": "design/v1.1.0/prototypes/map-team.html",
+      "editableFiles": [
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/prototypes/shared.js",
+        "design/v1.1.0/prototypes/map-team.html"
+      ],
+      "screenshots": {
+        "mobile390": "design/v1.1.0/screenshots/map-team-390.png",
+        "desktop1440": "design/v1.1.0/screenshots/map-team-1440.png"
+      },
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "ownerApproval": "pending",
+      "deliveryStatus": "editable_prototype_and_chromium_screenshots_committed",
+      "componentIds": [
+        "outcome-fingerprint",
+        "faction-outcome-composition",
+        "ranked-performance-dotplot",
+        "map-faction-crosstab",
+        "comparison-control-modes"
+      ]
+    },
+    {
+      "id": "weekly",
+      "title": "Weekly roundup",
+      "description": "Owner-preferred earlier weekly podium: silver / taller gold with crown / bronze, metallic borders, circular portraits and precise empty states; separate fictional winner animation study.",
+      "source": [
+        "docs/weekly.html",
+        "docs/assets/weekly.css",
+        "docs/assets/motion-v11.css"
+      ],
+      "prototype": "design/v1.1.0/prototypes/weekly.html",
+      "editableFiles": [
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/prototypes/shared.js",
+        "design/v1.1.0/prototypes/weekly.html"
+      ],
+      "screenshots": {
+        "mobile390": "design/v1.1.0/screenshots/weekly-390.png",
+        "desktop1440": "design/v1.1.0/screenshots/weekly-1440.png"
+      },
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "ownerApproval": "pending",
+      "deliveryStatus": "editable_prototype_and_chromium_screenshots_committed",
+      "componentIds": [
+        "podium-empty-state",
+        "fictional-crown-motion"
+      ],
+      "referenceVisual": "Owner-provided Community Players of the Week screenshot, 937×415; reference composition reproduced as editable CSS/HTML/SVG."
+    },
+    {
+      "id": "recap",
+      "title": "Discord AAR",
+      "description": "Editable Discord Components V2-constrained actual link action, faction-specific verified tops and match artwork; separate real client acceptance.",
+      "source": [
+        "src/recap_card.py",
+        "src/discord_layout.py"
+      ],
+      "prototype": "design/v1.1.0/prototypes/recap.html",
+      "editableFiles": [
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/prototypes/shared.js",
+        "design/v1.1.0/prototypes/recap.html"
+      ],
+      "screenshots": {
+        "mobile390": "design/v1.1.0/screenshots/recap-390.png",
+        "desktop1440": "design/v1.1.0/screenshots/recap-1440.png"
+      },
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "ownerApproval": "pending",
+      "deliveryStatus": "editable_prototype_and_chromium_screenshots_committed",
+      "componentIds": [
+        "discord-message-layout",
+        "python-report-art"
+      ]
+    },
+    {
+      "id": "activity",
+      "title": "Activity intelligence",
+      "description": "Server match-start heatmap and personal-session design; opt-in third-party public six-role progression source documented; fictional profile remains deliberately unsynced.",
+      "source": [
+        "docs/activity.html",
+        "docs/js/activity.js",
+        "docs/data/recorded-activity.json"
+      ],
+      "prototype": "design/v1.1.0/prototypes/activity.html",
+      "editableFiles": [
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/prototypes/shared.js",
+        "design/v1.1.0/prototypes/activity.html"
+      ],
+      "screenshots": {
+        "mobile390": "design/v1.1.0/screenshots/activity-390.png",
+        "desktop1440": "design/v1.1.0/screenshots/activity-1440.png"
+      },
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "ownerApproval": "pending",
+      "deliveryStatus": "editable_prototype_and_chromium_screenshots_committed",
+      "componentIds": [
+        "server-match-start-heatmap",
+        "future-personal-session-heatmap",
+        "six-role-radar"
+      ]
+    }
+  ],
+  "browserQA": {
+    "viewportWidths": [
+      320,
+      375,
+      390,
+      768,
+      1024,
+      1440
+    ],
+    "screenshotsAreFromEditableSource": true,
+    "nativeDiscordClientVerified": false,
+    "errors": []
+  },
+  "components": [
+    {
+      "id": "official-hero-motion",
+      "screenId": "home",
+      "prototypeSelector": ".hero .laser, .hero-logo-mark .hero-logo-sheen",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/home.html",
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/components/hero-border-trace.svg"
+      ],
+      "technicalSpecification": "One small 4.2%-length moving laser head follows the full hero perimeter (1450ms), then fades completely; logo sheen is a stationary mask/clip identical in size and shape to the authentic 1AD emblem, with no translucent copy moving across the hero.",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/home-390.png",
+        "design/v1.1.0/screenshots/home-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/index.html",
+        "docs/assets/motion-v11.css"
+      ],
+      "dataGate": "original brand assets",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "status-and-match-briefing",
+      "screenId": "home",
+      "prototypeSelector": ".grid.four .metric",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/home.html",
+        "design/v1.1.0/prototypes/shared.css"
+      ],
+      "technicalSpecification": "Exact source-labelled server/match metrics; missing status remains a dash and empty match results are honest",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/home-390.png",
+        "design/v1.1.0/screenshots/home-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/index.html",
+        "docs/js/app.js"
+      ],
+      "dataGate": "verified WARCON public status or captured matches",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "steam-identity",
+      "screenId": "player",
+      "prototypeSelector": ".identity .portrait",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/player.html",
+        "design/v1.1.0/prototypes/shared.css"
+      ],
+      "technicalSpecification": "88px circular avatar frame, ID-matched real Steam CDN picture or initial; no invented face, no public key or raw SteamID",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/player-390.png",
+        "design/v1.1.0/screenshots/player-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/players.html",
+        "docs/js/players.js",
+        "src/steam_avatars.py"
+      ],
+      "dataGate": "verified real-player Steam avatar association",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "career-kpi-band",
+      "screenId": "player",
+      "prototypeSelector": ".grid.four .metric",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/player.html",
+        "design/v1.1.0/prototypes/shared.css"
+      ],
+      "technicalSpecification": "Career K/D, 634 kills, 332 deaths, 48 matches in four primary cards; supplemental 27 wins, 37h play, 3h seeding",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/player-390.png",
+        "design/v1.1.0/screenshots/player-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/players.html",
+        "docs/js/players.js",
+        "docs/assets/player-v11.css"
+      ],
+      "dataGate": "WARCON all-time or canonical fictional PlayerOne",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "performance-trend-tabs",
+      "screenId": "player",
+      "prototypeSelector": "#performance-chart",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/player.html",
+        "design/v1.1.0/prototypes/shared.js",
+        "design/v1.1.0/prototypes/shared.css"
+      ],
+      "technicalSpecification": "Five distinct sourced metrics; Last 10 / Last 20 / All selects displayed POINTS. Trailing five-match K/D and averages use current plus previous four completed matches; first four incomplete rolling windows null; controls irrelevant to a given metric must be hidden.",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/player-390.png",
+        "design/v1.1.0/screenshots/player-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/js/performance.js",
+        "docs/js/performance-core.js",
+        "docs/assets/performance.css"
+      ],
+      "dataGate": "saved completed matches plus separately captured careerHistory",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "paired-kills-deaths",
+      "screenId": "player",
+      "prototypeSelector": "#kills-encoding",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/player.html",
+        "design/v1.1.0/prototypes/shared.js",
+        "design/v1.1.0/prototypes/shared.css"
+      ],
+      "technicalSpecification": "Per-match KILLS / DEATHS only: common-axis zero-baseline paired dot comparison. Visible encoding select ONLY for raw kills/deaths; hidden in match K/D, trailing 5-match ratio, trailing 5-match averages and career K/D. Exact table and alternate time-series retained.",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/player-paired-390.png",
+        "design/v1.1.0/screenshots/player-paired-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/js/performance.js",
+        "docs/assets/performance.css"
+      ],
+      "dataGate": "recorded per-match kills and deaths",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "career-win-rate-ring",
+      "screenId": "player",
+      "prototypeSelector": ".panel svg[aria-label*='career win rate']",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/player.html",
+        "design/v1.1.0/components/win-rate-ring.svg",
+        "design/v1.1.0/prototypes/shared.css"
+      ],
+      "technicalSpecification": "165px SVG; identical 11px stroke for track and value; 56.25% from 27/48, centered 27–31px figure, literal numerator denominator",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/player-390.png",
+        "design/v1.1.0/screenshots/player-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/js/player-snapshot.js",
+        "docs/assets/player-v11.css"
+      ],
+      "dataGate": "career wins / matches outcomes",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "faction-map-usage",
+      "screenId": "player",
+      "prototypeSelector": ".panel .faction",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/player.html",
+        "design/v1.1.0/prototypes/shared.css"
+      ],
+      "technicalSpecification": "Original faction icon plus 40% share; separately labelled map appearance bar; neither is win percentage",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/player-390.png",
+        "design/v1.1.0/screenshots/player-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/js/player-snapshot.js",
+        "docs/js/factions.js"
+      ],
+      "dataGate": "ten selected known saved match records",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "combat-detail",
+      "screenId": "player",
+      "prototypeSelector": ".grid.four .metric.secondary",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/player.html",
+        "design/v1.1.0/prototypes/shared.css"
+      ],
+      "technicalSpecification": "Keep all four conditional stats: headshots 128, vehicle kills 19, best streak 14, team kills 3 in fictional sample",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/player-390.png",
+        "design/v1.1.0/screenshots/player-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/players.html",
+        "docs/js/players.js"
+      ],
+      "dataGate": "WARCON combat feed coverage for real players",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "ranked-map-kd",
+      "screenId": "player",
+      "prototypeSelector": ".chart[aria-label*='aggregate kills-to-deaths']",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/player.html",
+        "design/v1.1.0/prototypes/shared.css"
+      ],
+      "technicalSpecification": "Ranked lollipop K/D: Zestafona 1.82, Bakurani 1.52, Ozeti 1.39; show 3/4/3 sample matches and zero-death handling",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/player-390.png",
+        "design/v1.1.0/screenshots/player-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/js/map-team.js",
+        "docs/assets/map-team.css"
+      ],
+      "dataGate": "saved match player kills/deaths grouped by map",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "recent-match-evidence",
+      "screenId": "player",
+      "prototypeSelector": "#match-evidence",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/player.html"
+      ],
+      "technicalSpecification": "Ten exact latest fictional match rows by endedAt, map, faction, W/L/D, K, D; source file kept unchanged",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/player-390.png",
+        "design/v1.1.0/screenshots/player-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/players.html",
+        "docs/js/players.js"
+      ],
+      "dataGate": "source-confirmed saved match records",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "outcome-fingerprint",
+      "screenId": "map-team",
+      "prototypeSelector": ".outcome",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/map-team.html",
+        "design/v1.1.0/components/outcome-fingerprint.svg"
+      ],
+      "technicalSpecification": "W/L/D result cells ordered chronologically within each map; canonical last ten 5 W / 4 L / 1 D",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/map-team-390.png",
+        "design/v1.1.0/screenshots/map-team-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/map-team.html",
+        "docs/js/map-team.js"
+      ],
+      "dataGate": "known results from selected saved match rows",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "faction-outcome-composition",
+      "screenId": "map-team",
+      "prototypeSelector": ".panel .faction",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/map-team.html",
+        "design/v1.1.0/prototypes/shared.css"
+      ],
+      "technicalSpecification": "Faction-identified 100% horizontal stacked known W/L/D groups with counts; no free-floating ambiguous donuts",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/map-team-390.png",
+        "design/v1.1.0/screenshots/map-team-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/map-team.html",
+        "docs/js/map-team.js",
+        "docs/js/factions.js"
+      ],
+      "dataGate": "known per-faction outcomes and sample counts",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "ranked-performance-dotplot",
+      "screenId": "map-team",
+      "prototypeSelector": ".chart[aria-label*='kill-to-death']",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/map-team.html",
+        "design/v1.1.0/prototypes/shared.css"
+      ],
+      "technicalSpecification": "Title 'Aggregate K/D by map'. K/D = sum recorded kills / sum recorded deaths in selected completed matches; Zestafona 1.82 (3), Bakurani 1.52 (4), Ozeti 1.39 (3) for original fictional fixture; explicit sample sizes and zero-death rule.",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/map-team-390.png",
+        "design/v1.1.0/screenshots/map-team-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/js/map-team.js",
+        "docs/assets/map-team.css"
+      ],
+      "dataGate": "verified per-map kill/death aggregates",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "map-faction-crosstab",
+      "screenId": "map-team",
+      "prototypeSelector": "table",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/map-team.html"
+      ],
+      "technicalSpecification": "Canonical map×faction pair counts, all unobserved combinations dashed, not coerced to zero",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/map-team-390.png",
+        "design/v1.1.0/screenshots/map-team-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/map-team.html",
+        "docs/js/map-team.js"
+      ],
+      "dataGate": "observed match map/faction assignments",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "comparison-control-modes",
+      "screenId": "map-team",
+      "prototypeSelector": ".result-composition [data-map]",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/map-team.html",
+        "design/v1.1.0/prototypes/shared.js"
+      ],
+      "technicalSpecification": "Match outcomes / Team share / Map share are LOCAL CONTROLS displayed in the Result composition panel header only; they update just that panel's expanded breakdown. Fixed 5W/4L/1D counts remain source-labelled. Other map/faction components do not misleadingly change.",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/map-team-faction-share-390.png",
+        "design/v1.1.0/screenshots/map-team-faction-share-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/js/map-team.js"
+      ],
+      "dataGate": "saved match result/faction/map",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "podium-empty-state",
+      "screenId": "weekly",
+      "prototypeSelector": ".weekly-spotlight .weekly-podium .weekly-place",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/weekly.html",
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/components/weekly-crown.svg"
+      ],
+      "technicalSpecification": "Restore owner-provided earlier weekly visual: left cool-silver 02, taller/wider muted-gold 01 center with STATIC emblem crown, right warm-bronze 03; color-matched metallic rim and avatar outlines; empty cards say Awaiting results, placement label and No player selected. Screenshot comparison at 390/1440; 320px no overflow.",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/weekly-390.png",
+        "design/v1.1.0/screenshots/weekly-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/weekly.html",
+        "docs/assets/weekly.css",
+        "docs/assets/motion-v11.css",
+        "docs/js/weekly.js"
+      ],
+      "dataGate": "real verified eligible community award recipients",
+      "ownerApproval": "pending",
+      "designReference": "Owner-supplied previous 1ADAAR 'Community players of the week' visual, 937x415px PNG, shared October 21, 2026",
+      "status": "visual_design_restored_pending_owner_review"
+    },
+    {
+      "id": "fictional-crown-motion",
+      "screenId": "weekly",
+      "prototypeSelector": "#podium-demo .weekly-podium .weekly-crown--awarded",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/weekly.html",
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/prototypes/shared.js",
+        "design/v1.1.0/components/weekly-crown.svg"
+      ],
+      "technicalSpecification": "Reuses the same-sized static first-slot crown from the reference: only a verified populated 01 slot animates with a single 650ms fade above the real avatar; reduced motion is static. User-triggered fictional example is for design review, not production.",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/weekly-390.png",
+        "design/v1.1.0/screenshots/weekly-1440.png",
+        "design/v1.1.0/screenshots/weekly-fictional-interaction-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/weekly.html",
+        "docs/assets/weekly.css",
+        "docs/assets/motion-v11.css",
+        "docs/js/weekly.js"
+      ],
+      "dataGate": "first-place verified winner and permitted picture",
+      "ownerApproval": "pending",
+      "status": "source_restored_pending_owner_review"
+    },
+    {
+      "id": "discord-message-layout",
+      "screenId": "recap",
+      "prototypeSelector": ".discord",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/recap.html",
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/components/discord_recap_contract.py"
+      ],
+      "technicalSpecification": "Actual documented Discord Components V2 JSON source: IS_COMPONENTS_V2 (32768), Container 17, text 10, media gallery 12 with attachment PNG, Action Row 1 with real HTTPS Link Button type2/style5/url (no custom_id). Three original faction-branded recorded-top-kills slots, populated only with complete verified per-match player lines; ties declared, missing omitted. Native Discord client QA still required.",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/recap-390.png",
+        "design/v1.1.0/screenshots/recap-1440.png"
+      ],
+      "productionBoundFiles": [
+        "src/discord_layout.py",
+        "src/recap.py",
+        "src/recap_card.py"
+      ],
+      "dataGate": "verified completed match and real Discord client QA",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "python-report-art",
+      "screenId": "recap",
+      "prototypeSelector": ".recap-art",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/recap.html",
+        "design/v1.1.0/tools/render_recap_proof.py"
+      ],
+      "technicalSpecification": "1080px deterministic Pillow+CairoSVG design-only image with authentic 1AD, WARDOGS art and faction SVGs; fictional scoreboard clearly marked",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/recap-python-render.png"
+      ],
+      "productionBoundFiles": [
+        "src/recap_card.py"
+      ],
+      "dataGate": "verified actual score/map/winner before live delivery",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "server-match-start-heatmap",
+      "screenId": "activity",
+      "prototypeSelector": "#heat-cells",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/activity.html",
+        "design/v1.1.0/prototypes/shared.js"
+      ],
+      "technicalSpecification": "7×24 Eastern grid showing counts of captured completed-match starts, neutral zero-evidence state and optional explicitly fictional demo toggle",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/activity-390.png",
+        "design/v1.1.0/screenshots/activity-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/activity.html",
+        "docs/js/activity.js"
+      ],
+      "dataGate": "saved 1ADAAR completed matches with startedAt",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "future-personal-session-heatmap",
+      "screenId": "activity",
+      "prototypeSelector": ".empty",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/activity.html",
+        "design/v1.1.0/components/session_aggregator.py",
+        "design/v1.1.0/tools/test_session_aggregator.py"
+      ],
+      "technicalSpecification": "DST-aware UTC-overlap personal minutes/day and weekday-hour aggregator, de-duplicated intervals and publication authorization guard; UI remains empty until access",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/activity-390.png",
+        "design/v1.1.0/screenshots/activity-1440.png"
+      ],
+      "productionBoundFiles": [
+        "src/recap.py",
+        "docs/players.html",
+        "docs/js/players.js"
+      ],
+      "dataGate": "authorized complete protected WARCON join/leave sessions plus privacy approval",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "six-role-radar",
+      "screenId": "activity",
+      "prototypeSelector": ".radar",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/activity.html",
+        "design/v1.1.0/components/six-role-radar-empty.svg",
+        "design/v1.1.0/components/role_radar.js",
+        "design/v1.1.0/components/role_radar.schema.json",
+        "design/v1.1.0/components/progression_adapter.py",
+        "design/v1.1.0/research/ROLE_PROGRESSION_ACCESS_VALIDATION.md"
+      ],
+      "technicalSpecification": "Third-party public WARDOGS Tracker GET /api/v1/players/{steamId} DOCUMENTS all six role level and XP pairs for synced, non-private profiles. Normalizer enforces SteamID match privately, opt-in display, trusted timestamp, common level cap and no public raw ID. Missing/hidden/unsynced profiles render neutral; no WDRCON/WARCON claim. Role PERFORMANCE radar remains unsupported.",
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/activity-390.png",
+        "design/v1.1.0/screenshots/activity-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/players.html",
+        "docs/js/players.js",
+        "src/recap.py"
+      ],
+      "dataGate": "real player opted-in public synchronized six-role level/XP record from WARDOGS Tracker; owner/consumer privacy approval, attribution, versioned season and level scale",
+      "ownerApproval": "pending"
+    },
+    {
+      "id": "opt-in-game-progression-and-economy",
+      "screenId": "player",
+      "prototypeSelector": "#progression",
+      "editableSourceFiles": [
+        "design/v1.1.0/prototypes/player.html",
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/components/six-role-radar-empty.svg",
+        "design/v1.1.0/components/progression_adapter.py",
+        "design/v1.1.0/components/role_radar.js"
+      ],
+      "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
+      "integrationSpec": "design/v1.1.0/research/PLAYER_PROGRESSION_OPT_IN_IMPLEMENTATION.md",
+      "technicalSpecification": "Optional WARDOGS Tracker player-synced third-party progression: six true role levels and XP, overall Wardog level, career XP, and independent nullable cash/gold (account economy, not RCON live match). Original external sync link opens new tab preserving 1ADAAR. No documented Tracker OAuth callback: durable Steam ownership, granular opt-in and secure cross-device persistence require an owner-approved serverless identity/consent backend; no fake live numbers or loadout/weapon stats.",
+      "actualScreenshots": [
+        "design/v1.1.0/screenshots/player-390.png",
+        "design/v1.1.0/screenshots/player-1440.png"
+      ],
+      "productionBoundFiles": [
+        "docs/players.html",
+        "docs/js/players.js",
+        "docs/assets/player-v11.css",
+        "docs/js/player-snapshot.js"
+      ],
+      "dataGate": "Player Steam OpenID identity verified in approved serverless backend; separate source visibility/consent for progression and economy, linked synced public WARDOGS Tracker profile, known role level axis and source freshness, no raw SteamID on GitHub Pages.",
+      "ownerApproval": "pending"
+    }
+  ],
+  "designArtifactStatus": "source_corrected_owner_approval_pending",
+  "researchRoles": "design/v1.1.0/research/ROLE_PROGRESSION_ACCESS_VALIDATION.md",
+  "roleProgressionAccess": "Confirmed documented WARDOGS Tracker read-only API; public synced profile only. No verified third-party OAuth callback. Durable player connection requires secure 1ADAAR Steam OpenID + consent storage.",
+  "dataPrivacy": "No raw SteamID64, Steam game session, RCON password, Discord webhook, or unauthorised external profile published",
+  "optInImplementationSpec": "design/v1.1.0/research/PLAYER_PROGRESSION_OPT_IN_IMPLEMENTATION.md",
+  "excludedFromRelease": [
+    "loadout builder",
+    "unlock galleries",
+    "weapon kills-with/deaths-by when complete per-player event attribution not proven"
+  ],
+  "frontendGraphicsTechnologyAssessment": "design/v1.1.0/research/FRONTEND_GRAPHICS_TECHNOLOGY_ASSESSMENT.md",
+  "frontendStackDecision": "Dart Sass/SCSS + current custom HTML/CSS/SVG as staging first step; Vite/one JS chart engine only after proof; Python Pillow+CairoSVG for Discord; Playwright QA. No Bootstrap/Kivy/Tkinter app runtime."
+}

@@ -1,0 +1,51 @@
+name: Design source screenshots · PR 28
+on:
+  push:
+    branches:
+      - design/v1.1.0-ia-handoff
+    paths:
+      - 'design/v1.1.0/prototypes/**'
+      - 'design/v1.1.0/tools/**'
+      - 'design/v1.1.0/tokens.final.json'
+      - '.github/workflows/design-handoff-screenshots.yml'
+permissions:
+  contents: write
+concurrency:
+  group: 1adaar-design-source-captures
+  cancel-in-progress: false
+jobs:
+  render:
+    if: github.repository == 'ejronin/1ADAAR' && github.ref == 'refs/heads/design/v1.1.0-ia-handoff'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: design/v1.1.0-ia-handoff
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install reproducible browser/image tools
+        run: |
+          python -m pip install playwright==1.56.0 Pillow==11.3.0 CairoSVG==2.8.2
+          python -m playwright install --with-deps chromium
+      - name: Verify time-heatmap derivation and DST/privacy tests
+        run: python -m unittest discover -s design/v1.1.0/tools -p 'test_*.py' -v
+      - name: Render 1080px Python illustration (fictional)
+        run: python design/v1.1.0/tools/render_recap_proof.py
+      - name: Render and QA all six editable HTML screens
+        run: python design/v1.1.0/tools/render_screenshots.py
+      - name: Commit design screenshots and manifest on design branch only
+        run: |
+          git config user.name '1adaar-design-qa[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add design/v1.1.0/screenshots/ design/v1.1.0/screen-manifest.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'design(qa): capture real Chromium screens at 390/1440 and test six widths'
+            # Design review contributions can land while capture runs.
+            # Rebase screenshots onto the newest design-branch head, never force push.
+            git fetch origin design/v1.1.0-ia-handoff
+            git rebase origin/design/v1.1.0-ia-handoff
+            git push origin HEAD:design/v1.1.0-ia-handoff
+          fi

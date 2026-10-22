@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Validated six-role WARDOGS progression data (private source-gated)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "sourceStatus",
+    "source",
+    "maxLevel",
+    "levels"
+  ],
+  "properties": {
+    "sourceStatus": {
+      "const": "verified"
+    },
+    "source": {
+      "type": "string",
+      "minLength": 3
+    },
+    "capturedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "maxLevel": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "levels": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "Assault",
+        "Medic",
+        "Support",
+        "Recon",
+        "Driver",
+        "Pilot"
+      ],
+      "properties": {
+        "Assault": {
+          "type": "number",
+          "minimum": 0
+        },
+        "Medic": {
+          "type": "number",
+          "minimum": 0
+        },
+        "Support": {
+          "type": "number",
+          "minimum": 0
+        },
+        "Recon": {
+          "type": "number",
+          "minimum": 0
+        },
+        "Driver": {
+          "type": "number",
+          "minimum": 0
+        },
+        "Pilot": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    }
+  },
+  "description": "Do not create this record unless the six role levels are present in a single approved WARDOGS telemetry source. Compare against maxLevel during runtime validation."
+}
