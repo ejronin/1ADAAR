@@ -160,6 +160,23 @@ async def capture():
                         "progressionEmpty":True})
                 assert not real_errors, f"Real player page errors at {width}: {real_errors}"
                 await real.close()
+                # Anyone may open independent game-account progression without
+                # being a published WARCON top-1000 server player.
+                own=await browser.new_page(viewport={"width":width,"height":900},device_scale_factor=1)
+                own_errors=[]
+                own.on("pageerror",lambda error:own_errors.append(str(error)))
+                result=await own.goto(origin+"/progression.html",wait_until="domcontentloaded")
+                assert result and result.status==200
+                assert await own.locator('#progression-panel').is_visible()
+                assert await own.locator('#progression-check').is_disabled()
+                assert await own.locator('#progression-role-radar [data-role-profile]').count()==0
+                ownWidth=await own.evaluate("document.documentElement.scrollWidth-innerWidth")
+                assert ownWidth<=2,f"Standalone progression overflow at {width}px: {ownWidth}"
+                assert not own_errors,f"Standalone progression errors: {own_errors}"
+                if width in (390,1440):
+                    await own.screenshot(path=str(ARTIFACT/f"my-wardogs-progression-{width}px.png"),
+                                         full_page=True,animations="disabled")
+                await own.close()
                 # Server-wide completed-match activity is source-backed and
                 # must show a no-data notice (not fictional activity) until
                 # completed WARCON matches are actually archived.
