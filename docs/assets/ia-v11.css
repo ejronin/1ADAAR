@@ -51,3 +51,16 @@ body{background:var(--ia-bg);color:var(--ia-ink)}
 @media(prefers-reduced-motion:reduce){
  .weekly-page .weekly-podium-place.gold[data-award-verified="true"] .weekly-crown{animation:none;opacity:1;translate:0 0}
 }
+
+/* Shared numeric-axis map comparison; values stay in DOM, not decorative tooltips. */
+.mt-kd-plot{display:grid;gap:12px}
+.mt-kd-item{display:grid;grid-template-columns:minmax(90px,150px) minmax(60px,1fr) minmax(95px,165px);
+ align-items:center;gap:12px;font-size:13px;min-width:0}
+.mt-kd-label,.mt-kd-value{overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.mt-kd-value{text-align:right;color:#d1e7d4;font-size:12px}
+.mt-kd-track{height:1px;position:relative;background:#688a72;margin:6px 8px 6px 1px}
+.mt-kd-track::before{content:"";position:absolute;left:0;top:-3px;width:1px;height:7px;background:#d6f4db}
+.mt-kd-dot{position:absolute;top:50%;height:11px;width:11px;border:2px solid #101912;
+ transform:translate(-50%,-50%);border-radius:50%;background:#86f4a4}
+@media(max-width:520px){.mt-kd-item{grid-template-columns:90px minmax(38px,1fr) 95px;gap:7px}
+ .mt-kd-label,.mt-kd-value{font-size:11px}}
