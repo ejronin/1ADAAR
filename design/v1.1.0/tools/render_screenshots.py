@@ -63,7 +63,7 @@ def capture():
                             link=panel.locator('a[href="https://wardogstracker.gg/stats"]')
                             if link.count()!=1 or link.get_attribute("target")!="_blank":
                                 errors.append(f"player-{width}: missing real tracker sync external link")
-                            if not all(k in panel.inner_text() for k in
+                            if not all(k in (panel.text_content() or '') for k in
                                        ("WARDOG level","Career XP","Account cash","Gold",
                                         "Assault","Medic","Support","Recon","Driver","Pilot")):
                                 errors.append(f"player-{width}: missing approved exact role/economy language")
