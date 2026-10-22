@@ -321,3 +321,40 @@
 @media(max-width:520px){
   .result-breakdown-selectors .tab{font-size:10px;flex:1;min-width:90px}
 }
+
+/* Discord V2 source-matched blocks; native client still controls final layout. */
+.discord-faction-leaders{
+ margin:11px 0 12px;
+ padding:13px 12px;
+ border:1px solid #474b51;
+ background:#272a30;
+ border-radius:6px;
+}
+.discord-faction-leaders>strong{
+ display:block;
+ color:#f1f2f7;
+ font-size:11px;
+ letter-spacing:.06em;
+}
+.discord-leader{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:9px;
+ padding:8px 0;
+ border-bottom:1px solid #43464d;
+ font-size:11px;
+ color:#aeb3c4;
+}
+.discord-leader:last-of-type{border-bottom:none}
+.discord-leader .faction{font-size:11px;white-space:nowrap;color:#e7e7f2}
+.discord-leader .faction img{width:19px;height:19px}
+.discord .action{
+ text-decoration:none;
+ font-weight:650;
+ border:1px solid #4e555f;
+ border-radius:4px;
+ min-height:38px;
+ align-items:center;
+}
+.discord .action:focus-visible{outline:2px solid #fff;outline-offset:3px}
