@@ -2,12 +2,17 @@
   "schemaVersion": 2,
   "project": "1ADAAR",
   "release": "1.1.0",
-  "status": "owner_visual_review_pending",
+  "status": "source_revision_pending_new_browser_screenshots",
   "baselineStagingCommit": "26da372ea9c076bfe3751a0716ee8382161e811d",
   "designBranch": "design/v1.1.0-ia-handoff",
   "designTokensFile": "design/v1.1.0/tokens.final.json",
   "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
-  "research": "design/v1.1.0/research/CHART_METHODS_AND_FIELD_GATE.md",
+  "research": [
+    "design/v1.1.0/research/CHART_METHODS_AND_FIELD_GATE.md",
+    "design/v1.1.0/research/ROLE_PROGRESSION_ACCESS_VALIDATION.md",
+    "design/v1.1.0/research/RCON_WARCON_FIELD_INVENTORY.md",
+    "design/v1.1.0/research/COMPETITIVE_CHART_UX_REFERENCES.md"
+  ],
   "discrepancyRegister": "design/v1.1.0/research/DESIGN_DISCREPANCY_REGISTER.md",
   "isProductionReady": false,
   "productionModified": false,
@@ -137,7 +142,7 @@
     {
       "id": "recap",
       "title": "Discord AAR",
-      "description": "Editable desktop/mobile Discord hierarchy, original faction and game brand art",
+      "description": "Editable Discord Components V2-constrained actual link action, faction-specific verified tops and match artwork; separate real client acceptance.",
       "source": [
         "src/recap_card.py",
         "src/discord_layout.py"
@@ -163,7 +168,7 @@
     {
       "id": "activity",
       "title": "Activity intelligence",
-      "description": "Captured match-start activity, personal-session future gate, unfilled six-role radar",
+      "description": "Server match-start heatmap and personal-session design; opt-in third-party public six-role progression source documented; fictional profile remains deliberately unsynced.",
       "source": [
         "docs/activity.html",
         "docs/js/activity.js",
@@ -206,13 +211,13 @@
     {
       "id": "official-hero-motion",
       "screenId": "home",
-      "prototypeSelector": ".hero .trace .laser",
+      "prototypeSelector": ".hero .laser, .hero-logo-mark .hero-logo-sheen",
       "editableSourceFiles": [
         "design/v1.1.0/prototypes/home.html",
         "design/v1.1.0/prototypes/shared.css",
         "design/v1.1.0/components/hero-border-trace.svg"
       ],
-      "technicalSpecification": "One-time 1450ms hero border laser followed by SVG-alpha-masked circular 1AD sheen; reduced-motion static fallback",
+      "technicalSpecification": "One small 4.2%-length moving laser head follows the full hero perimeter (1450ms), then fades completely; logo sheen is a stationary mask/clip identical in size and shape to the authentic 1AD emblem, with no translucent copy moving across the hero.",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/home-390.png",
@@ -299,7 +304,7 @@
         "design/v1.1.0/prototypes/shared.js",
         "design/v1.1.0/prototypes/shared.css"
       ],
-      "technicalSpecification": "Five source-labelled trend views with 10/25/All, exact-value table, kills green, deaths yellow, 2.5px path and 1px grid",
+      "technicalSpecification": "Five distinct sourced metrics; Last 10 / Last 20 / All selects displayed POINTS. Trailing five-match K/D and averages use current plus previous four completed matches; first four incomplete rolling windows null; controls irrelevant to a given metric must be hidden.",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/player-390.png",
@@ -322,7 +327,7 @@
         "design/v1.1.0/prototypes/shared.js",
         "design/v1.1.0/prototypes/shared.css"
       ],
-      "technicalSpecification": "Genuine zero-based per-match paired-dot / dumbbell view, 32 canonical fixture observations; preserves a two-series line alternative",
+      "technicalSpecification": "Per-match KILLS / DEATHS only: common-axis zero-baseline paired dot comparison. Visible encoding select ONLY for raw kills/deaths; hidden in match K/D, trailing 5-match ratio, trailing 5-match averages and career K/D. Exact table and alternate time-series retained.",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/player-paired-390.png",
@@ -344,7 +349,7 @@
         "design/v1.1.0/components/win-rate-ring.svg",
         "design/v1.1.0/prototypes/shared.css"
       ],
-      "technicalSpecification": "165px SVG; identical 11px stroke for track and value; 56.25% from 27/48, centered 27\u201331px figure, literal numerator denominator",
+      "technicalSpecification": "165px SVG; identical 11px stroke for track and value; 56.25% from 27/48, centered 27–31px figure, literal numerator denominator",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/player-390.png",
@@ -491,7 +496,7 @@
         "design/v1.1.0/prototypes/map-team.html",
         "design/v1.1.0/prototypes/shared.css"
       ],
-      "technicalSpecification": "Three aligned map aggregate K/D dots, zero-index count axis 0\u20132.5, numeric values and N beside dots",
+      "technicalSpecification": "Title 'Aggregate K/D by map'. K/D = sum recorded kills / sum recorded deaths in selected completed matches; Zestafona 1.82 (3), Bakurani 1.52 (4), Ozeti 1.39 (3) for original fictional fixture; explicit sample sizes and zero-death rule.",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/map-team-390.png",
@@ -511,7 +516,7 @@
       "editableSourceFiles": [
         "design/v1.1.0/prototypes/map-team.html"
       ],
-      "technicalSpecification": "Canonical map\u00d7faction pair counts, all unobserved combinations dashed, not coerced to zero",
+      "technicalSpecification": "Canonical map×faction pair counts, all unobserved combinations dashed, not coerced to zero",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/map-team-390.png",
@@ -527,12 +532,12 @@
     {
       "id": "comparison-control-modes",
       "screenId": "map-team",
-      "prototypeSelector": "[data-map]",
+      "prototypeSelector": ".result-composition [data-map]",
       "editableSourceFiles": [
         "design/v1.1.0/prototypes/map-team.html",
         "design/v1.1.0/prototypes/shared.js"
       ],
-      "technicalSpecification": "Working W/L/D, faction appearance share and map appearance share selectors; denominator always 10 in current demo",
+      "technicalSpecification": "Match outcomes / Team share / Map share are LOCAL CONTROLS displayed in the Result composition panel header only; they update just that panel's expanded breakdown. Fixed 5W/4L/1D counts remain source-labelled. Other map/faction components do not misleadingly change.",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/map-team-faction-share-390.png",
@@ -603,16 +608,19 @@
       "prototypeSelector": ".discord",
       "editableSourceFiles": [
         "design/v1.1.0/prototypes/recap.html",
-        "design/v1.1.0/prototypes/shared.css"
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/components/discord_recap_contract.py"
       ],
-      "technicalSpecification": "Editable desktop/mobile approximation of Components V2 media attachment, short copy, full-report link, no fake native client proof",
+      "technicalSpecification": "Actual documented Discord Components V2 JSON source: IS_COMPONENTS_V2 (32768), Container 17, text 10, media gallery 12 with attachment PNG, Action Row 1 with real HTTPS Link Button type2/style5/url (no custom_id). Three original faction-branded recorded-top-kills slots, populated only with complete verified per-match player lines; ties declared, missing omitted. Native Discord client QA still required.",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/recap-390.png",
         "design/v1.1.0/screenshots/recap-1440.png"
       ],
       "productionBoundFiles": [
-        "src/discord_layout.py"
+        "src/discord_layout.py",
+        "src/recap.py",
+        "src/recap_card.py"
       ],
       "dataGate": "verified completed match and real Discord client QA",
       "ownerApproval": "pending"
@@ -644,7 +652,7 @@
         "design/v1.1.0/prototypes/activity.html",
         "design/v1.1.0/prototypes/shared.js"
       ],
-      "technicalSpecification": "7\u00d724 Eastern grid showing counts of captured completed-match starts, neutral zero-evidence state and optional explicitly fictional demo toggle",
+      "technicalSpecification": "7×24 Eastern grid showing counts of captured completed-match starts, neutral zero-evidence state and optional explicitly fictional demo toggle",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/activity-390.png",
@@ -688,9 +696,11 @@
         "design/v1.1.0/prototypes/activity.html",
         "design/v1.1.0/components/six-role-radar-empty.svg",
         "design/v1.1.0/components/role_radar.js",
-        "design/v1.1.0/components/role_radar.schema.json"
+        "design/v1.1.0/components/role_radar.schema.json",
+        "design/v1.1.0/components/progression_adapter.py",
+        "design/v1.1.0/research/ROLE_PROGRESSION_ACCESS_VALIDATION.md"
       ],
-      "technicalSpecification": "Six labeled axes; renderer fills polygon only for complete verified Assault/Medic/Support/Recon/Driver/Pilot levels with common maxLevel",
+      "technicalSpecification": "Third-party public WARDOGS Tracker GET /api/v1/players/{steamId} DOCUMENTS all six role level and XP pairs for synced, non-private profiles. Normalizer enforces SteamID match privately, opt-in display, trusted timestamp, common level cap and no public raw ID. Missing/hidden/unsynced profiles render neutral; no WDRCON/WARCON claim. Role PERFORMANCE radar remains unsupported.",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/activity-390.png",
@@ -698,11 +708,15 @@
       ],
       "productionBoundFiles": [
         "docs/players.html",
-        "docs/js/players.js"
+        "docs/js/players.js",
+        "src/recap.py"
       ],
-      "dataGate": "six actual role levels/XP from authorized documented source (not yet found)",
+      "dataGate": "real player opted-in public synchronized six-role level/XP record from WARDOGS Tracker; owner/consumer privacy approval, attribution, versioned season and level scale",
       "ownerApproval": "pending"
     }
   ],
-  "designArtifactStatus": "ready_for_owner_review_not_approved"
+  "designArtifactStatus": "source_corrected_owner_approval_pending",
+  "researchRoles": "design/v1.1.0/research/ROLE_PROGRESSION_ACCESS_VALIDATION.md",
+  "roleProgressionAccess": "documented third-party public API for opted-in synced players; not native WDRCON or WARCON role data",
+  "dataPrivacy": "No raw SteamID64, Steam game session, RCON password, Discord webhook, or unauthorised external profile published"
 }
