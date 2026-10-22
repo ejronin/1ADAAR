@@ -27,7 +27,7 @@
 Hero border: 1450ms narrow trace once only. Emblem sheen: 1100ms after hero; the mask comes from original circular 1AD SVG, not a rectangular overlay. Champion crown: 650ms fade after verified winner renders; separate from rank number. All three disable animation under prefers-reduced-motion and reveal content without movement. No infinite animation or layout changes.
 
 ## Data-engineering source gates
-All public browser charts must use precomputed sanitized sources. Historical personal sessions require properly scoped authorized WARCON server.view API access, not the direct privileged game RCON secret. WARCON protected dossier has only a recent bounded session list; avoid pretending it covers all active days. Six role levels remain unverified and the six-axis radar must stay blank. No Bootstrap dashboard skin or Kivy/Tkinter runtime.
+All public browser charts must use precomputed sanitized sources. Historical personal sessions require properly scoped authorized WARCON server.view API access, not the direct privileged game RCON secret. WARCON protected dossier has only a recent bounded session list; avoid pretending it covers all active days. The six role levels ARE documented as available via opted-in public sync through WARDOGS Tracker, but NOT via documented WDRCON/WARCON. Keep the radar blank unless the particular player's public six-field record passes privacy, source, season, timestamp and maximum-level gates. No Bootstrap dashboard skin or Kivy/Tkinter runtime.
 
 ## Approval and final verification
 Each screenshot filename in screen-manifest.json must refer to real rendered browser evidence from identical prototype source. Browser QA at 320,375,390,768,1024,1440px and keyboard focus is mandatory. Owner decides whether each screen is approved. Then and only then the implementation engineer ports changes to staging; visual-fidelity review compares actual implementation screenshots with this design before production approval.
@@ -57,3 +57,48 @@ The owner identified the earlier **“COMMUNITY PLAYERS OF THE WEEK”** three-p
 **Implementation targets:** `docs/weekly.html`, `docs/assets/weekly.css`, `docs/assets/motion-v11.css`, and the existing weekly data-rendering code. Preserve the rest of the weekly roundup analytics. No production changes in this design revision.
 
 **Acceptance:** Compare final desktop/mobile implementation against `weekly-1440.png` and `weekly-390.png` side by side; test real empty archives, three full winners, only one/two available winners, motion/reduced motion, long nicknames, Steam-avatar fallback, 320px viewport, and keyboard/screen reader labels.
+
+
+## Owner-directed design corrections: hero, player trends, map comparison, Discord and role access
+
+**Update scope:** design branch / PR #28 only; no production or staging implementation merges.
+
+### Hero animations (non-negotiable)
+
+- Source: `prototypes/home.html` + `prototypes/shared.css`, `.hero .laser` and `.hero-logo-mark .hero-logo-sheen`. Perimeter rect uses `pathLength=100`, one 4.2% bright stroke segment, dash offset sweeping the WHOLE perimeter in 1.45 seconds, opacity zero on completion. Stable low-brightness border remains; no fixed laser dash.
+- 1AD sheen background is a narrow metallic luminance gradient with **stationary alpha-mask** sourced from the original `docs/assets/1ad-logo.svg`; wrapper size exactly equals displayed source emblem, with circular clipping. Do not move or scale a duplicate logo; animate light gradient position, *not* the logo element. Sheen opacity 0 after 1.1s pass; never bleeds outside emblem. Support reduced motion.
+- QA must inspect the actual border animation beyond its duration, measured element rectangles, and screenshots of resting desktop/mobile states; static screenshot cannot itself prove movement timing.
+
+### Player performance control model
+
+Five metrics: `Kills & deaths`, `Match K/D`, `Trailing 5-match K/D`, `Trailing 5-match averages`, `Career K/D`. Selector `Last 10 / Last 20 / All` controls the **number of displayed points**, not rolling-window width or map count. A trailing point at match N uses current and prior four saved completed matches, *e.g. observation 12 summarizes matches 8 through 12*. Rolling K/D = sum kills ÷ sum deaths in that five-match window; trailing means = each count's sum / 5; first four complete-window positions are unavailable. Career K/D is actual tracked snapshots, not inferred full prior history.
+
+- The chart presentation selector is **ONLY VISIBLE in Kills & deaths mode**, with two valid views: green/yellow time-series and per-match paired dots. For `Match K/D`, `Trailing 5-match K/D`, `Trailing 5-match averages`, and `Career K/D`, forcibly hide incompatible controls; never display a selectable mode that does nothing.
+- For paired dots, same count scale starts at zero, each row is one match and each dot has exact kills/deaths in accessible table. In a rolling line show one point per valid trailing five-match window; label source/denominator, never silently switch to five maps.
+- A **waterfall chart is rejected** for raw K/D and rolling ratios because they are *non-additive*; optional signed `kills minus deaths` contribution bars may be evaluated separately if they answer a player question.
+
+### Maps and factions local control / explanatory label
+
+- Title: **Aggregate K/D by map**, not `Performance contrast`. Show explicit formula: sum recorded kills / sum recorded deaths per map in the selected completed-match sample. All plotted dots share one numeric K/D scale and a visible recorded-match count. Example only uses canonical fictional fixture.
+- Move `Match outcomes / Team share / Map share` selectors **inside Result composition**, because they affect only that panel's dynamic breakdown. Other panels intentionally do not change, and must not be visually implied global. Match W/L/D outcome totals stay displayed and labeled at all times.
+- Large `5 / 4 / 1` uses the SAME Barlow Condensed + legible Arial/sans-serif fallback as every other KPI, not serif browser fallback.
+- Do not eliminate original faction SVGs and exact source-specific colors.
+
+### Discord message: exact supported Components V2 contract
+
+- Source contract: `components/discord_recap_contract.py` and `tools/test_discord_recap_contract.py`. Native Discord docs: https://docs.discord.com/developers/components/reference .
+- Use `flags=32768` and only supported `type:17` Container with `type:10` Text Display, `type:12` Media Gallery referencing an uploaded PNG at `attachment://match-recap.png`, and `type:1` Action Row containing `type:2, style:5` **real external link button** with approved HTTPS first-party URL. This button HAS `url`, MUST NOT have `custom_id`; do not pretend a styled HTML `span` is a Discord component. Discord client final widths/layout controlled by the client; native desktop/mobile QA required later. Existing `src/discord_layout.py` is implementation target, not modified by this handoff.
+- **One leading performer for each of Lonestar, Valkyra, Manticore:** computed by **most kills in that completed match**, not all-time or unrecorded points, using source-verified complete `match.players` entries and original faction. Aggregate duplicate entries by player key per faction. If tied, show `N players tied`, not a randomly chosen champion. If match data incomplete, omit claims and show a neutral unavailable state. See source/test contract.
+- Preserve source data, live delivered image, working dashboard URL, verified match-id link; never post sample fixture webhooks.
+
+### Six-role progression — RESEARCH CORRECTION
+
+The user requested actual investigation into game and other trackers. WDRCON and WARCON alone have NO documented six-role progression API, but **WARDOGS Tracker** https://wardogstracker.gg/developers confirms a public opt-in synced `/api/v1/players/{steamId}` API with level + XP for all Assault, Medic, Recon, Support, Driver, Pilot. A separate WARDOGS Zone implementation https://wardogs.zone/privacy describes player-authorized game backend account progression reads. This independently demonstrates feasibility for synced players, **not for everyone who has joined Dan's server**. See `research/ROLE_PROGRESSION_ACCESS_VALIDATION.md`.
+
+- Adapter `components/progression_adapter.py` validates response shape, exact SteamID association privately, six present finite level/XP values, maximum-level scale, timestamp, publication authorization; publishes no SteamID or authenticated session.
+- Renderer `components/role_radar.js` and schema `role_radar.schema.json` take those six values ONLY if provided a verified source, common bound, and consented public record; in all other cases radar remains neutral. Season and syncedAt must be presented beside genuine data with attribution and approved cache policy.
+- v1.1.0 role module **conditionally eligible** pending a real synced player data test and owner consent. Six-role *gameplay performance* radar remains unavailable without role-specific event telemetry. No auto-scraping private sessions or Steam auth tokens.
+
+### Final gate
+
+New screenshots and manifest must reflect exact latest edits. Browser regression tests at 320/375/390/768/1024/1440, plus 200% zoom where possible, relevant control show/hide, correct local selector behavior, hero final opacity, official assets, and real Discord JSON shape. Native Discord verification and Dan-server live WARCON/RCON probes are implementation-stage gates after owner approval, not substituted with an HTML mock.
