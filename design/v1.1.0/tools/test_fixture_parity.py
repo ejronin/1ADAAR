@@ -69,7 +69,7 @@ class FixtureParityTest(unittest.TestCase):
         self.assertIn("role_radar.js",activity)
         js=(BASE/"shared.js").read_text()
         self.assertIn("fetch('../../../docs/data/demo-player.json'",js)
-        self.assertIn("tabs=$('.tab[data-trend]')",js)
+        self.assertIn("tabs=$$('.tab[data-trend]')",js)
         self.assertIn("pairedCounts(",js)
 
 if __name__=="__main__":
