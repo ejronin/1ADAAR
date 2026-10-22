@@ -109,7 +109,7 @@
     {
       "id": "weekly",
       "title": "Weekly roundup",
-      "description": "Verified empty podium, isolated fictional crown reveal",
+      "description": "Owner-preferred earlier weekly podium: silver / taller gold with crown / bronze, metallic borders, circular portraits and precise empty states; separate fictional winner animation study.",
       "source": [
         "docs/weekly.html",
         "docs/assets/weekly.css",
@@ -127,11 +127,12 @@
       },
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "ownerApproval": "pending",
-      "deliveryStatus": "editable_prototype_and_chromium_screenshots_committed",
+      "deliveryStatus": "editable_source_changed_screenshots_to_regenerate",
       "componentIds": [
         "podium-empty-state",
         "fictional-crown-motion"
-      ]
+      ],
+      "referenceVisual": "Owner-provided Community Players of the Week screenshot, 937×415; reference composition reproduced as editable CSS/HTML/SVG."
     },
     {
       "id": "recap",
@@ -547,12 +548,13 @@
     {
       "id": "podium-empty-state",
       "screenId": "weekly",
-      "prototypeSelector": ".podium .place",
+      "prototypeSelector": ".weekly-spotlight .weekly-podium .weekly-place",
       "editableSourceFiles": [
         "design/v1.1.0/prototypes/weekly.html",
-        "design/v1.1.0/prototypes/shared.css"
+        "design/v1.1.0/prototypes/shared.css",
+        "design/v1.1.0/components/weekly-crown.svg"
       ],
-      "technicalSpecification": "Equal #01/#02/#03 placement typography; verified empty results, amber/silver/bronze restricted to awards",
+      "technicalSpecification": "Restore owner-provided earlier weekly visual: left cool-silver 02, taller/wider muted-gold 01 center with STATIC emblem crown, right warm-bronze 03; color-matched metallic rim and avatar outlines; empty cards say Awaiting results, placement label and No player selected. Screenshot comparison at 390/1440; 320px no overflow.",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/weekly-390.png",
@@ -560,32 +562,41 @@
       ],
       "productionBoundFiles": [
         "docs/weekly.html",
-        "docs/assets/weekly.css"
+        "docs/assets/weekly.css",
+        "docs/assets/motion-v11.css",
+        "docs/js/weekly.js"
       ],
       "dataGate": "real verified eligible community award recipients",
-      "ownerApproval": "pending"
+      "ownerApproval": "pending",
+      "designReference": "Owner-supplied previous 1ADAAR 'Community players of the week' visual, 937x415px PNG, shared October 21, 2026",
+      "status": "visual_design_restored_pending_owner_review"
     },
     {
       "id": "fictional-crown-motion",
       "screenId": "weekly",
-      "prototypeSelector": "#podium-demo",
+      "prototypeSelector": "#podium-demo .weekly-podium .weekly-crown--awarded",
       "editableSourceFiles": [
         "design/v1.1.0/prototypes/weekly.html",
+        "design/v1.1.0/prototypes/shared.css",
         "design/v1.1.0/prototypes/shared.js",
-        "design/v1.1.0/prototypes/shared.css"
+        "design/v1.1.0/components/weekly-crown.svg"
       ],
-      "technicalSpecification": "Isolated explicitly fictional gold crown fade 650ms above avatar and below rank 1; never shown for empty live podium",
+      "technicalSpecification": "Reuses the same-sized static first-slot crown from the reference: only a verified populated 01 slot animates with a single 650ms fade above the real avatar; reduced motion is static. User-triggered fictional example is for design review, not production.",
       "componentSpec": "design/v1.1.0/components/COMPONENT_IMPLEMENTATION_SPEC.md",
       "actualScreenshots": [
         "design/v1.1.0/screenshots/weekly-390.png",
-        "design/v1.1.0/screenshots/weekly-1440.png"
+        "design/v1.1.0/screenshots/weekly-1440.png",
+        "design/v1.1.0/screenshots/weekly-fictional-interaction-1440.png"
       ],
       "productionBoundFiles": [
+        "docs/weekly.html",
+        "docs/assets/weekly.css",
         "docs/assets/motion-v11.css",
-        "docs/assets/weekly.css"
+        "docs/js/weekly.js"
       ],
       "dataGate": "first-place verified winner and permitted picture",
-      "ownerApproval": "pending"
+      "ownerApproval": "pending",
+      "status": "source_restored_pending_owner_review"
     },
     {
       "id": "discord-message-layout",
