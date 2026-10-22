@@ -102,3 +102,12 @@ The user requested actual investigation into game and other trackers. WDRCON and
 ### Final gate
 
 New screenshots and manifest must reflect exact latest edits. Browser regression tests at 320/375/390/768/1024/1440, plus 200% zoom where possible, relevant control show/hide, correct local selector behavior, hero final opacity, official assets, and real Discord JSON shape. Native Discord verification and Dan-server live WARCON/RCON probes are implementation-stage gates after owner approval, not substituted with an HTML mock.
+
+
+## Final scope: external synced progression and account economy
+
+The player dossier carries a **teaser while unconnected**: empty six-role radar and six exact role labels, WARDOG level, career XP, account cash, and gold. All four source values remain unavailable until a real eligible public synced WARDOGS Tracker record exists. Cash/gold are nullable and independently private, zero is valid, and these values must **not** be conflated with live RCON money or server WARCON K/D.
+
+The actual external Steam sign-in happens on WARDOGS Tracker (https://wardogstracker.gg/stats), opened in a separate tab to leave 1ADAAR in place. The implementation engineer must add owner-approved Steam OpenID to 1ADAAR using a properly secured serverless service for owner verification and durable cross-device consent; the Tracker public API is **not** a delegated OAuth login. The design preview does not authenticate and the static page cannot securely persist account ownership.
+
+**Mandatory engineer setup, consent, redirect, data freshness and acceptance specification:** `design/v1.1.0/research/PLAYER_PROGRESSION_OPT_IN_IMPLEMENTATION.md`; normalized fields in `design/v1.1.0/components/progression_adapter.py` and role source-gate schema/renderer. The design does not contain weapons or loadout elements; optional future kills-with/died-by charts must be based on complete, attributable WARCON kill events and are not authorized by the Tracker unlock list.
