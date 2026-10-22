@@ -69,7 +69,7 @@ class TestCollector(unittest.TestCase):
         self.assertEqual(layout['components'][1]['type'],12)
         self.assertIn('attachment://match-recap.png',json.dumps(layout))
         self.assertIn("only if WARCON confirms",json.dumps(layout))
-        self.assertEqual(payload['components'][1]['components'][0]['url'],
+        self.assertEqual(payload['components'][0]['components'][-1]['components'][0]['url'],
                          f"{recap.SITE_URL}#match-812")
         self.assertEqual(payload['allowed_mentions'],{'parse':[]})
     def test_match_must_end_with_final_scores_before_posting(self):
