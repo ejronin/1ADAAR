@@ -74,6 +74,27 @@ def normalize_tracker_progression(
             return None
     except ValueError:
         return None
+    # Public tracker optional scalar values. 0 is a genuine account value;
+    # null/missing is a privacy-protected/unavailable reading, NEVER zero.
+    # Season-level cap and unit semantics must be separately verified.
+    def optional_nonnegative(field: str, *, integer: bool = False):
+        value = stats.get(field)
+        if isinstance(value, bool) or not isinstance(value, (int,float)):
+            return None
+        if not isfinite(value) or value < 0 or (integer and int(value) != value):
+            return None
+        return int(value) if integer else value
+
+    level = optional_nonnegative("wardogLevel", integer=True)
+    career_xp = optional_nonnegative("careerXp", integer=True)
+    cash = optional_nonnegative("cash", integer=True)
+    gold = optional_nonnegative("gold", integer=True)
+    # No assertion that Tracker account cash is RCON's live match cash.
+    # Suppression of either scalar is independently respected.
+    economy_status = {
+        "cash": "visible" if cash is not None else "hidden_or_unavailable",
+        "gold": "visible" if gold is not None else "hidden_or_unavailable",
+    }
     # No SteamID, original public profile URL, or other identifying fields.
     return {
         "sourceStatus":"verified",
@@ -84,5 +105,10 @@ def normalize_tracker_progression(
         "maxLevel":max_level,
         "levels":checked,
         "xp":checked_xp,
+        "wardogLevel":level,
+        "careerXp":career_xp,
+        "cash":cash,
+        "gold":gold,
+        "economyStatus":economy_status,
         "seasonStatus":"verify game season before mixing readings",
     }
