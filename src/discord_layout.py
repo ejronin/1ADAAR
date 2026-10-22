@@ -17,27 +17,22 @@ def _button(url: str, label: str) -> dict:
 
 
 def match_recap(match: dict) -> dict:
-    """A single large graphic, one follow-up sentence, and 1ADAAR button."""
-    ident = int(match["id"])
-    winner = str(match.get("winner", "")).strip().lower()
-    color = {"lonestar": 0x465EFF, "valkyra": 0xEE4138,
-             "manticore": 0x3EBA42}.get(winner, ACCENT_GREEN)
-    return {
-        "username": "1ADAAR | WARDOGS",
-        "allowed_mentions": {"parse": []},
-        "flags": V2_FLAG,
-        "components": [
-            {"type": 17, "accent_color": color, "components": [
-                {"type": 10, "content": "## AFTER ACTION REPORT"},
-                {"type": 12, "items": [{
-                    "media": {"url": "attachment://match-recap.png"},
-                    "description": "WARDOGS completed match results with game map, mode, faction scores and verified awards"
-                }]},
-                {"type": 10, "content": "Next map and conditions will be posted separately, only if WARCON confirms them."},
-            ]},
-            _button(SITE_URL + "#match-" + str(ident), "See more on 1ADAAR")
-        ],
-    }
+    """Native Discord Components V2; no claims from incomplete player lines."""
+    from src.discord_contract import build_design_recap
+    identifier = match.get("id")
+    if not (isinstance(identifier, int) and identifier > 0):
+        raise ValueError("A completed match needs a positive integer ID")
+    # Collector sets verifiedCompleted ONLY after WARCON validates final scores.
+    # Any other caller must supply an already validated completed match.
+    verified = match.get("verifiedCompleted") is True or (
+        bool(match.get("endedAt")) and isinstance(match.get("scores"), list)
+        and len(match["scores"]) > 0
+    )
+    return build_design_recap(
+        {**match, "verifiedCompleted": verified,
+         "playerLinesComplete": match.get("playerLinesComplete") is True},
+        dashboard_url=SITE_URL + "#match-" + str(identifier)
+    )
 
 
 def next_map_post(match: dict, confirmed: dict) -> dict:
