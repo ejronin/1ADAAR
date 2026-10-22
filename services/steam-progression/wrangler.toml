@@ -5,6 +5,7 @@ workers_dev = true
 
 [vars]
 PUBLIC_PAGE_URL = "https://ejronin.github.io/1ADAAR/players.html"
+PUBLIC_PROGRESSION_URL = "https://ejronin.github.io/1ADAAR/progression.html"
 PUBLIC_ORIGIN = "https://ejronin.github.io"
 # Fill with the actual HTTPS Worker hostname after initial deployment.
 AUTH_ORIGIN = "https://REPLACE-WITH-YOUR-WORKER.workers.dev"
