@@ -1,70 +1,71 @@
-# Implementation engineer handoff — Optional WARDOGS player progression connection
+# Optional player progression: implementation notes
 
-**1ADAAR v1.1.0 design decision.** Owner confirms exactly these optional player-profile fields: **six role levels and XP**, **overall WARDOG level**, **career XP**, and **account cash and gold**. Keep the personal time heatmap workstream independently scoped to WARCON authorized sessions. **No loadout builder, unlock gallery, or weapons module in this deliverable.** Weapon kills-with/deaths-by analytics may be reassessed only when complete WARCON kill-event feeds and player attribution have been independently validated; do not make it a release gate.
+The owner wants **six role levels and XP, overall WARDOG level, career XP, and account cash/gold when visible**. That's the whole external-progression scope for v1.1.0. No loadout builder, unlock gallery or weapon charts. Keep WARCON server stats and the player activity heatmap separate.
 
-## 0. Authority and verified source
+## Source and limits
 
-WARDOGS Tracker independently documents a free read-only public API: https://wardogstracker.gg/developers and https://wardogstracker.gg/api/v1/openapi.json. Base `https://wardogstracker.gg/api/v1`; `GET /players/{steamId}` returns `player.stats.wardogLevel`, `careerXp`, nullable `cash` and `gold`, `roles.assault/medic/recon/support/driver/pilot.{level,xp}`, and `syncedAt`. Unknown/private profiles return HTTP 404; unsynced records can have `stats: null`. API is read-only, CORS-enabled, cached ~60s, 120 requests/min/IP (respect 429 Retry-After); attribution WARDOGS Tracker required. These are **game account progression values**, not WARCON per-server combat metrics or live RCON `cash`. The source operator is an unofficial third party; obtain any extra permission needed for retention and republication.
+[WARDOGS Tracker](https://wardogstracker.gg/developers) documents a read-only public API at `https://wardogstracker.gg/api/v1`. Its [OpenAPI file](https://wardogstracker.gg/api/v1/openapi.json) describes `GET /players/{steamId}` with six `roles.*.{level,xp}` records, `wardogLevel`, `careerXp`, nullable `cash` and `gold`, and `syncedAt`.
 
-Official WARCON remains the source of 1ADAAR match/career combat analytics. No WDRCON or WARCON six-role XP endpoint is documented. Tracker is an **opt-in synchronized profile**, not an inventory of all players who visit Dan's server. Tracker's https://wardogstracker.gg/stats describes Steam login on *their* site, press **Track my stats**, close WARDOGS to sync, and later background updates. Cash/gold are independently `null` for hidden values. Game seasons may reset progression/cash; gold is said to carry over, so store `syncedAt` and label all values as game-account stats.
+The player must sign into [WARDOGS Tracker](https://wardogstracker.gg/stats) with Steam and sync their own profile. Private/unknown profiles can return 404; unsynced profiles may have `stats: null`. The public endpoint is documented as cached for about 60 seconds and limited to roughly 120 requests/minute/IP. Confirm these details and the service's retention/republication terms before enabling any collector.
 
-## 1. User experience, two separate consents
+These are **game-account progression** figures. They are not the player's performance on Dan's server, and Tracker's account cash must not be called live in-match “cash in pocket.” Cash and gold can be hidden separately. A source value of **0** is a real value; `null` or missing means unavailable, not zero.
 
-Existing 1ADAAR player dossier (WARCON stats) must work **without** external account linkage.
+## What the player sees
 
-New panel title **Your WARDOGS progression** under career/performance, with an attractive but **unfilled** six-role radar and four source-label teaser cards:
-- **Wardog level** (overall);
-- **Career XP**;
-- **Account cash** (do NOT say in-match “Cash in pocket”);
-- **Gold**.
+The existing WARCON player dossier should work even if the player never signs in anywhere.
 
-Below radar: Assault, Medic, Recon, Support, Driver, Pilot rows with `Level — · XP —` until synced. No fake values. Label `Optional · WARDOGS Tracker` and `Last synced: —`. The normalized actual values replace dashes only after eligibility and privacy checks. Absent/hidden cash or gold stay **Hidden or unavailable**; zero is only shown when the source explicitly says 0.
+The optional **Your WARDOGS progression** section starts with an empty six-role radar and labeled slots for Wardog level, career XP, account cash and gold. No test numbers in a real profile. It names WARDOGS Tracker as the source and shows the latest sync date when data becomes available.
 
-Two independent actions:
-**(A) Sync with WARDOGS Tracker ↗** — open https://wardogstracker.gg/stats in a new tab, preserving the current 1ADAAR dossier. This is a plain verified external link, NOT an invented OAuth exchange or tracker callback.
-**(B) I've synced — check progression** — when implemented, calls the approved 1ADAAR backend to refresh the specific already identity-bound profile; if not available, show an accurate explanation and keep the user on the dossier. Do not create a fake-success button in the design preview.
+The first action is **Sync on WARDOGS Tracker ↗**. Open the real Tracker site in a separate tab so the 1ADAAR dossier stays open. Explain that the player signs in on Tracker, closes the game and syncs their stats there.
 
-A small explanation: "Sign in with Steam on WARDOGS Tracker, close the game and synchronize. Return to this tab and check again. Your 1ADAAR match stats work without this." Credit https://wardogstracker.gg. If tracker later documents a `return_to` protocol, support it only after official validation; currently there is **no verified callback parameter**.
+The next action, implemented as part of the secure connection, is **I've synced — check my progression**. It checks the accessible public record for the **already verified account**. If that record isn't available, give a clear message and leave the rest of the profile alone.
 
-## 2. Identity, privacy and persistent connection — two implementation tiers
+**Tracker does not document a third-party OAuth callback or automatic return URL.** Don't invent `redirect_uri` support or suggest a link click verifies ownership. A real login/return to 1ADAAR would be a separate 1ADAAR-controlled sign-in flow.
 
-**Tier 1 (no new hosted backend):** Show a read-only optional external Sync link and stat availability notice. A user may revisit/check their profile, but **a click or localStorage value must NOT be interpreted as verified Steam ownership or permanent cross-device consent**. Do not publish raw SteamID in a static Pages fetch URL. This tier has no genuine persistent account connection.
+## What “connected” should mean
 
-**Tier 2 (required for durable, cross-device opt-in):** Use a secure, owner-approved free-tier serverless identity/consent store (example architecture: HTTPS edge functions + managed Postgres with row-level security, or an existing equivalent connected identity service). Still no paid server and no owner's personal PC. Engineer must confirm free-tier limits, retention, backups, and OAuth/OpenID capabilities before selecting provider.
+There are two ways to stage this feature:
 
-1. On the 1ADAAR player dossier, click **Connect my Steam account**. Start login through a **trusted Steam OpenID** integration or the approved identity provider, with signed nonce, state, CSRF protection, short expiry and HTTPS-only callback. Steam OpenID authenticates the user to **1ADAAR**, not to WARDOGS Tracker. Verify OpenID response server-side against Steam and match returned SteamID64 against the player's existing private WARCON identity mapping. Never accept a typed SteamID as proof of account ownership.
-2. In the same authenticated session, obtain explicit granular consent: **show my six role levels/XP and overall level/career XP**; separately **show my account cash/gold** (opt-out possible independently). Record time, consent version, source and revocation ability. Consent belongs to the player, not simply a browser clicking an external link.
-3. Serverless private function queries the read-only WARDOGS Tracker public endpoint, verifies source and matching 17-digit SteamID64, `stats` present, all six roles correctly typed and finite, source `syncedAt`, known common level axis maximum, and permitted profile privacy. Null economy readings stay null. The role radar should **not be filled until the game/season's common axis maximum is verified**; if unknown use ranked exact level bars/rows first.
-4. Persist a *private* row keyed to the already existing 1ADAAR opaque internal `player_key` plus identity-link credential, consent flags, last `syncedAt`, last successful check time, status, source URI, and limited normalized level/XP/cash/gold snapshot in private storage. **Raw SteamID remains private only**, never as a Pages URL, commit, downloadable JSON shard, webhook or frontend log. Do not store Steam login or game-session tokens. The per-player public profile uses only approved normalized fields after privacy recheck.
-5. Return through a **1ADAAR-controlled callback**, not WARDOGS Tracker, to the **existing local dossier path** using an allowlisted opaque `player_key` and authenticated session. No open redirects, long-lived tokens or SteamID in query strings. Check and show `Connected` only when account proof, permission and API data all succeed.
-6. Subsequent visits read the private consent link across devices. Refresh at a sensible cadence with a cache >=60s and backoff on 429, 5xx and network errors; check `syncedAt`, because tracker data is not automatically realtime. Do not hammer the API by repeated dashboard browsing. If profile becomes private, 404, is deleted, or consent revoked, hide previously cached progression immediately and purge/expire cached copies according to retention policy. **Don't commit per-player sensitive economic data to GitHub Pages or Git history**, since removal cannot be guaranteed there.
-7. Include **Disconnect / Stop displaying progression**, a conspicuous source credit, `Last synced`, stale-data label, and a short privacy explanation. Failure is normal and non-blocking: `No synchronized public Tracker profile`, `Private profile` (if 404 does not distinguish unknown, use combined wording), `Tracker unavailable`, `Data older than X`, `Economy hidden`, `Verification pending`.
+**Simple link-only version:** add the external Tracker link and honest empty/progression-available messaging. No persistent account claim. Browser `localStorage` or a typed SteamID is not account verification. This is the only option that needs no new private backend.
 
-Even if opt-in consent is granted, the source's own hidden cash/gold values MUST NOT be inferred or shown.
+**Full optional connection:** if the owner approves a free-tier identity/storage provider, add secure Steam OpenID verification for 1ADAAR and store a private account/consent link. GitHub Pages cannot process a secure on-demand login callback or maintain a private writable database by itself. The engineer must show the provider, ongoing limits/cost, retention policy and failure cases before it is enabled.
 
-## 3. Data mapping and visuals
+For the full connection:
 
-| Tracker field | Public normalized field | Display | Notes |
-|---|---|---|---|
-| stats.roles.assault..pilot.level | levels[Assault...Pilot] | Six-axis **level** radar, or exact ranked levels if axis limit unknown | Same scale; include each numeric level |
-| stats.roles.assault..pilot.xp | xp[Assault...Pilot] | Exact rows / grouped detail | XP is NOT proportional to level scale by default |
-| stats.wardogLevel | wardogLevel | Prominent numeric KPI | Game account, not server ranking |
-| stats.careerXp | careerXp | Numeric KPI | Scope, syncedAt |
-| stats.cash | cash / status | Numeric economy card | Nullable independently; NOT in-match cash |
-| stats.gold | gold / status | Numeric economy card | Nullable independently; 0 valid |
-| stats.syncedAt | capturedAt | Sync freshness | Source timestamp, not site collection time |
+1. The player selects **Connect my Steam account** on their existing dossier. Start Steam OpenID through an approved HTTPS service, with a signed short-lived state/nonce, CSRF checks and server-side callback verification.
+2. Privately confirm the returned SteamID64 belongs to the same player as the site's internal `player_key`. Never accept a typed ID, copied URL, Discord nickname or hash as proof of ownership.
+3. Ask separately for consent to display **role/XP progression** and **account cash/gold**. Keep the consent version, time and a way to revoke either choice.
+4. Fetch the allowed public Tracker profile through the private service, verify the matching SteamID, complete six role fields, valid `syncedAt`, profile visibility and current game season. Use a verified common maximum level before drawing the radar; otherwise show exact levels as rows.
+5. Store only the necessary link and approved data in the private store, keyed to the site's existing opaque player key. Keep Steam IDs private. Don't store Steam login/game-session tokens or commit private money, account IDs or consent records into `docs/data/` or Git history.
+6. Return to the original 1ADAAR player dossier with an allowlisted internal player key and authenticated session. No arbitrary redirect URL, long-lived query token or SteamID in the browser URL.
+7. On later visits, read the stored consent and permitted data. Respect Tracker's cache and 429 responses, back off on errors and display `syncedAt`; site visits must not trigger uncontrolled polling.
+8. If consent is withdrawn or the source turns private, is deleted, or no longer permits display, stop showing cached data and remove/expire it under the agreed retention policy. Provide **Disconnect / Stop displaying progression**.
 
-Implementation-friendly existing source:
-- `design/v1.1.0/components/progression_adapter.py` — validates six roles, matches private SteamID, normalizes overall level/XP/cash/gold with privacy-safe nullable semantics.
-- `design/v1.1.0/components/role_radar.js` and `role_radar.schema.json` — source-gated six-axis renderer, only if real complete levels and a common axis maximum.
-- `design/v1.1.0/prototypes/player.html` + `shared.css` — optional progression teaser and real outbound link.
-- `design/v1.1.0/research/ROLE_PROGRESSION_ACCESS_VALIDATION.md` — provenance and RCON/WARCON limitations.
-- Tests in `design/v1.1.0/tools/test_progression_adapter.py` must pass before staging.
+Never publish a private roster, session record or hidden cash/gold simply because a player once appeared on Dan's server.
 
-## 4. Acceptance for implementation engineer
+## Data fields and display
 
-**Proof required:** Real player who voluntarily synced: Steam identity verified to 1ADAAR, 200 response from Tracker, actual level/XP fields match source, economy permissions respected, no raw SteamID in public assets/network URLs/logs, and redirection back to correct dossier. Test another user trying to opt into a different player's dossier: must fail. Test a private/unsynced user, hidden cash alone, hidden gold alone, genuine zero cash, consent revocation, session expiry, 429 backoff, current season, all six axis labels and mobile. Confirm no promises of exact live match money or equipped weapons.
+| Tracker field | 1ADAAR display | Notes |
+|---|---|---|
+| `roles.{assault,medic,recon,support,driver,pilot}.level` | Six-role radar or exact level bars | Same verified level scale for all axes |
+| `roles.*.xp` | XP beside each role | Don't use XP to fill a level-scale polygon |
+| `wardogLevel` | WARDOG level card | Account progression, not server rank |
+| `careerXp` | Career XP card | Show the sync date |
+| `cash` | Account cash | Nullable and separately hidden |
+| `gold` | Gold | Nullable and separately hidden; zero is valid |
+| `syncedAt` | Last synced | Source time, not collection-job time |
 
-After owner approval, implementation engineer ports design source to staging, returns a hosted working player dossier and privacy-safe test report, and requests IA visual-fidelity verification before any production deployment.
+Reusable source is already in `design/v1.1.0/components/progression_adapter.py`, `role_radar.js`, and `role_radar.schema.json`. The adapter checks the private SteamID association and returns a normalized record without that identifier. Its tests are in `design/v1.1.0/tools/test_progression_adapter.py`. The editable UI is `design/v1.1.0/prototypes/player.html#progression`.
 
-**Owner decision needed from implementation engineer:** whether to start with Tier 1 link-only or approve Tier 2 identity/consent backend to achieve true durable cross-device opt-in. Do NOT present Tier 1 as “always connected.” Free hosting does not eliminate the need for an authenticated persistence system.
+## Tests before owner approval
+
+Use one **consenting, actually synced player** to prove the endpoint and exact fields. Check that:
+- That person can connect only their own player dossier, with no exposed SteamID or sensitive URL.
+- Private/unknown and unsynced Tracker accounts stay unavailable, with no invented role levels.
+- Hiding cash but not gold (and vice versa) works; an actual zero remains zero.
+- Session expiry, revoked consent, disconnect, source downtime and 429 rate limiting are handled.
+- The radar scale, six labels, XP rows, current season and sync date match source data.
+- A returning user on another device sees only records they're still authorized to see.
+- The phone layout, keyboard controls and first-party callback pass the same security and visual checks as the rest of staging.
+
+The engineer should return a working staging page, the provider/setup decision, tests and any unresolved source limits. Do not enable production until the owner has seen the **actual working site** and approved both its behavior and any new service.

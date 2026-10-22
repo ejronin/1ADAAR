@@ -1,8 +1,8 @@
-# 1ADAAR v2.0 — Player Map & Team Performance
+# Map and faction performance — v1.1.0 plan
 
-**Status:** Approved design direction, implementation in staging PR #22. Production v1.0.1 remains unchanged.
+This is the design direction for the map/faction page, developed in [staging PR #22](https://github.com/ejronin/1ADAAR/pull/22). It isn't production approval; v1.0.1 stays live until the finished staging build is reviewed.
 
-## Brand and navigation rules (approved 2026-10-20)
+## Branding and navigation
 
 - Retain the exact official 1AD emblem and official WARDOGS branding, not recreated words or lookalike logos.
 - Main site and player pages: charcoal, black, white and green; faction identity uses the authentic source-derived emblems and faction colors.
@@ -10,7 +10,7 @@
 - V2 build order: (1) redesigned player profile, (2) Map & Team Performance drill-down, (3) top-three weekly community spotlight, (4) verified Discord membership/consented profile picture, (5) real season-specific public ranking, (6) completed permanent history and player comparison staging features.
 - Community spotlight **must not** rank a player as Discord-eligible based on name similarity, public Steam ID lookup or a guessed avatar. Eligibility needs opt-in verified Discord association and membership at the cutoff; nonmembers remain in ordinary public server statistics.
 
-## Information architecture
+## Page layout
 
 **Main player profile** (`players.html#player-<64-char-hash>`):
 - Header and all-time WARCON career cards, recent captured match performance, radial data visualizations only for supported measures.
@@ -27,7 +27,7 @@
 7. Filters for season and sorting (matches, recorded win rate, kills, playtime). Only official, locally documented season boundaries; do not mix seasons, label unknown outcomes 'Not recorded'.
 8. Empty state: 'No saved completed matches for this player yet' if no captured match includes the player. Never use sample/demo figures on this page.
 
-## Exact metrics and provenance
+## Statistics and source
 
 Source: only completed, sanitized `schemaVersion:2` WARCON match records preserved by `src/season_archive.py`.
 Season is assigned by official match end timestamp. One match counts once for a player, whether or not the team result is present.
@@ -43,7 +43,7 @@ Season is assigned by official match end timestamp. One match counts once for a 
 - **Unknowns**: no disguised 0 values. Keep unknown outcome counts visible; unassigned maps/teams show neutral labels.
 - The old top-120 match window is **not** the full source: v2 uses the immutable captured season/month archive. The archive can still miss matches that WARCON did not return or GitHub Actions failed to fetch.
 
-## Architecture, performance and safety
+## Build and privacy rules
 
 - A single GitHub Actions full collector pass precomputes privacy-safe summaries; no new WARCON fetch, server, Discord webhook, hosting bill or browser-side heavy archive reads.
 - Static shard files by first hex character of the existing pseudonymous player key under `docs/data/map-team/`. A player's browser request fetches one shard, not entire month/history.
@@ -51,6 +51,6 @@ Season is assigned by official match end timestamp. One match counts once for a 
 - Add unit tests for multi-season splits, duplicate match IDs, missing outcomes, thresholded best-map rankings, all-time/season scope separation, privacy and empty states; JavaScript syntax and navigation tests.
 - Visual QA on narrow phones and desktop; ensure bars do not require color to convey win/loss outcomes.
 
-## Release acceptance
+## Before release
 
 A successful CI test suite is necessary but not sufficient for real-data validation. Keep staging draft until design and browser checks and the first real captured match can confirm formulas. No merge to production without explicit approval.

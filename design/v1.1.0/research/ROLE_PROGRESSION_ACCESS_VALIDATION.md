@@ -1,34 +1,60 @@
-# Six-role progression — access investigation and v1.1.0 revised decision
-**Date:** 2026-10-21/22. **Status:** A viable documented third-party public API EXISTS; coverage and live owner-server integration are NOT yet verified. This replaces the earlier mistaken “no way to obtain” conclusion.
+# Can 1ADAAR read the six WARDOGS role levels?
 
-## Executive technical finding
+**Research note, October 21–22, 2026.** The answer depends on which service we're using. The six levels are documented in a public third-party API, but we have **not** tested access for Dan's players or found them in the dedicated-server RCON feed.
 
-WARDOGS stores six distinct progression tracks: Assault, Medic, Recon, Support, Driver, and Pilot. BULKHEAD's game backend evidently exposes progression to the authenticated player session; community services already display all six. What remains missing is a **server-admin RCON** route that lets Dan obtain all community players' levels without their participation. It is wrong both to call this data impossible and to claim it exists in RCON.
+## What each source provides
 
-### Evidence by source and scope
+**WDRCON (the game's server RCON)**
 
-1. **WARDOGS dedicated-server WDRCON /v1/players (admin authenticated):** https://github.com/warcon-app/warcon/blob/main/docs/wardogs-api.md . Reverse-engineered dedicated-server roster fields: current name, SteamID64, faction, kills, deaths, cash, ping; NO level, track XP, purchases or six roles. /v1/capabilities should be checked against Dan's actual running build to guard against changes, but nothing inspected confirms progression fields.
-2. **WARCON public/private server APIs:** https://github.com/warcon-app/warcon . Saved match player lines, session activity, historical scoreboard, optional kill feed and faction outcomes; NO six game-profile progression levels in inspected code.
-3. **WARDOGS Tracker: CONFIRMED PUBLIC API DOCUMENTATION:** https://wardogstracker.gg/developers and https://wardogstracker.gg/api/v1/openapi.json . GET `https://wardogstracker.gg/api/v1/players/{steamId}` (17-digit SteamID64) returns `player.stats.roles.assault/medic/recon/support/driver/pilot.{level,xp}`, plus `wardogLevel`, `careerXp`, `unlocks`, and `syncedAt`. Free documented read-only endpoint, no API key, CORS, 120 requests/minute/IP, ~60-second cache; requires player to SIGN IN and SYNC; private/unknown returns 404, unsynced yields stats=null. Other documented APIs by-discord id and unlocks. For public attribution credit WARDOGS Tracker with direct link. **An API specification and examples are direct evidence of an integration path, but no live named WARDOGS player was called in this handoff**; production HTTP availability, stability, compliance and field semantics require validation.
-4. **WARDOGS Tracker synchronization design:** https://wardogstracker.gg/about and https://wardogstracker.gg/stats . Users sign in through Steam's official login, close WARDOGS, and press “Track my stats”; site obtains progression from their account, then schedules reads for ~three hours. It is NOT a general-purpose server RCON accessor. The public API returns only synchronized players and honors profile privacy controls.
-5. **WARDOGS Zone authenticated progression integration:** https://wardogs.zone/privacy . Describes exchanging a signed Steam login for a WARDOGS backend game session, keeping that session encrypted on their service, and reading date-stamped role levels/XP, seasonal progress, unlocks and collection. This independently supports that user-authorized account progression exists outside RCON. **Do not imitate/private-reverse-engineer this Steam session flow or collect Steam tokens in 1ADAAR without explicit player authorization, security review and official API permission.** Prefer the documented WARDOGS Tracker public API instead.
-6. **BULKHEAD / developer statements and player forums:** https://www.reddit.com/r/WarDogs/comments/1w1qe66/wardogs_devs_community_servers_update/ describes protected server code, RCON as admin tooling rather than an account XP export. Players discuss role-specific leveling in https://www.reddit.com/r/WarDogs/comments/1wgarem/progression_feedback_from_someone_who_has_tried/ and https://www.reddit.com/r/WarDogs/comments/1wmqbnl/assault_class_is_by_far_the_hardest_to_progress/ . The experience records six progression tracks in game; discussion does not establish a new RCON endpoint. The game studio has not been proven to have issued a PUBLIC REST account-progression API to unrelated server admins.
+The [documented dedicated-server API](https://github.com/warcon-app/warcon/blob/main/docs/wardogs-api.md) gives the current roster's name, Steam ID, faction, kills/deaths, cash and ping. It doesn't document Assault, Medic, Support, Recon, Driver or Pilot XP/levels. The actual server's `GET /v1/capabilities` should still be checked against its installed build before making a broader claim.
 
-## Correct product design and data integration
+**WARCON (the server-history service)**
 
-- **Progression radar** is now **CONDITIONALLY FEASIBLE** for a public, synced, accessible WARDOGS Tracker player. Show the source name, season and `syncedAt` alongside a six-axis **level** radar; show exact level + XP in accessible table. Do not combine cumulative role XP with a level-scale polygon on the same axes. Use six values, one common documented max level, and explicit missing-state semantics.
-- Player profile ID lookup remains in a private GitHub Actions collector that already has server-specific SteamIDs. Fetch only public/authorized tracker profiles for approved display; never put raw SteamID64 in Pages JSON or Pages API calls, and never publish the fetched Steam key. Use pseudonymous player key as existing join. Respect private/deleted/unsynced and stale profiles: show a labeled empty module instead of zero levels.
-- At no point infer six-role levels from kills, deaths, cash, faction, hit distance, game equipment, ranking or WARDOGS server RCON.
-- A participant who does **not** sync with WARDOGS Tracker may have no public progression record. Present `Progression unavailable · Connect/sync WARDOGS Tracker to make it visible` as a neutral optional action, not a requirement to use 1ADAAR, and do not promise automatic access to a whole server roster.
-- Changes to role XP/level represent game-profile progression and may reset each season. Do not mix Season 1 and Season 2 records, or mistake profile level for a server-specific combat stat. Label the exact source, season and date. Historical radar animation is possible only after multiple *real* readings, never interpolated snapshots.
-- The optional per-player fetched data can also support **Wardog level / career XP**, a **six-track ranked dot chart**, and an **unlock progress table**. Radar is recommended for a quick role-strength *shape*, sorted bars are superior for exact comparisons and screen readers.
-- Privacy: explicitly no hidden/private profiles, no disallowed cache retention, no Steam sessions, auth cookies or tokens in browser/GitHub Actions/Pages; owner should obtain permission to display optional external progression and provide tracker attribution.
+[WARCON's published code](https://github.com/warcon-app/warcon) covers matches, historical scoreboards, factions, sessions and optional kill events. The reviewed API fields likewise do not include six-role game-account progression.
 
-## Updated milestone decision
+**WARDOGS Tracker (optional public player profiles)**
 
-- **Design handoff:** ship editable radar SVG, renderer, schema, Python response normalizer, fallback state, source credit and citation.
-- **v1.1.0 implementation:** eligible as an opt-in, third-party-sourced progression module AFTER endpoint validation, profile privacy check, owner consent decision and GitHub Actions integration. Unsupported players see missing state.
-- **v1.5.0:** optional periodic progression history, seasonal comparisons, opt-in self-sync flow through an officially/third-party-supported mechanism if authorized. Full six-role **contribution/performance** radar is still BLOCKED: tracker `level/xp` does not mean per-role objective contributions in a selected match.
-- **Direct RCON:** no established progression route. Live `/v1/capabilities` verification remains required before definitively stating no future native route exists.
+[Developer API documentation](https://wardogstracker.gg/developers) and its [OpenAPI file](https://wardogstracker.gg/api/v1/openapi.json) describe:
 
-**Confidence:** High that the documented WARDOGS Tracker API response shape contains six role level/XP fields. Medium that a given WARDOGS server visitor can have accessible data, since syncing and privacy are user-controlled. Unsupported that any server admin can freely enumerate all players' complete progression using WDRCON/WARCON alone. No private credentials were accessed.
+```text
+GET https://wardogstracker.gg/api/v1/players/{steamId}
+player.stats.roles.{assault,medic,recon,support,driver,pilot}.{level,xp}
+player.stats.wardogLevel
+player.stats.careerXp
+player.stats.cash
+player.stats.gold
+player.stats.syncedAt
+```
+
+Players sign in with Steam on [WARDOGS Tracker](https://wardogstracker.gg/stats) and synchronize their own game profiles. The API is read-only and documented as free, with no API key, roughly a 60-second cache and a limit of 120 requests a minute per IP. It only works when the player's synchronized profile is accessible; unknown/private profiles return 404 and unsynced profiles may have `stats: null`. Cash and gold may be hidden independently.
+
+This is a **documented integration route**, not proof that the connection has been tested with a real account in 1ADAAR. Verify the current endpoint, rate limits, privacy rules and field meanings during implementation. Credit WARDOGS Tracker on the profile.
+
+**WARDOGS Zone**
+
+[WARDOGS Zone's privacy information](https://wardogs.zone/privacy) describes using an authorized player login and a game-backend session to collect progression. This backs up the conclusion that account progression exists outside RCON. It is **not** permission to copy that service's account-session method or collect Steam tokens ourselves.
+
+**Developer and community discussion**
+
+The [community-server discussion](https://www.reddit.com/r/WarDogs/comments/1w1qe66/wardogs_devs_community_servers_update/) treats RCON as an administration tool, not a public account-progression export. Players discuss leveling in these threads: [progression feedback](https://www.reddit.com/r/WarDogs/comments/1wgarem/progression_feedback_from_someone_who_has_tried/) and [Assault leveling](https://www.reddit.com/r/WarDogs/comments/1wmqbnl/assault_class_is_by_far_the_hardest_to_progress/). None of these establishes a new RCON route or an official developer-backed public account API.
+
+## What we can build
+
+For a player who has synced and allowed access, show:
+
+- Six role **levels** on a common-scale radar, plus exact level/XP rows. Confirm the current game's level maximum and season first; if the scale is unknown, show rows or ranked bars without a radar polygon.
+- Overall WARDOG level and career XP.
+- Account cash and gold **only when visible**. These aren't the same as a live match's RCON cash value.
+- Source credit and `syncedAt` so readers know how old the data is.
+
+When a profile is private, missing or unsynced, leave the numbers empty and offer the optional sync link. A player shouldn't need Tracker to use the rest of 1ADAAR.
+
+Keep raw SteamIDs and any login details out of Pages assets. The match collector may privately match the already-known player ID to a public Tracker response, but account ownership and permission need their own verified process. Never calculate role levels from kills, cash, faction or rank.
+
+## Still to be done
+
+The implementation engineer needs to confirm the endpoint with a consenting synced profile, check its current terms and privacy behavior, validate the level scale and choose an approved consent/storage method. A permanent connection across browsers also needs proper authentication; Tracker hasn't documented an automatic third-party return callback.
+
+Six-role **progression** is possible in principle through Tracker. Six-role **gameplay contribution** (healing, logistics, recon work, piloting effectiveness and so on) is still unproven and must not be drawn as a performance radar.
+
+Read [the connection plan](PLAYER_PROGRESSION_OPT_IN_IMPLEMENTATION.md) for the setup, privacy and acceptance tests. No private credentials were accessed during this research.

@@ -1,9 +1,8 @@
-# Browser QA of editable design candidates
+# Browser checks for the design previews
 
-Source: design/v1.1.0/prototypes/*.html (not current implementation pages).
-These are browser screenshots, not native Discord-app screenshots. All data in mockups is explicit fictional fixture or no-data.
+These results are from `design/v1.1.0/prototypes/*.html`, **not** the implemented staging site. Chromium captured the pages at the sizes below. Fictional examples are labeled, and missing real data stays missing. This doesn't replace testing a real Discord message.
 
-| Screen | CSS width | Page JS errors | Body overflow px | Result |
+| Page | Width (px) | JavaScript errors | Horizontal overflow (px) | Result |
 |---|---:|---:|---:|---|
 | home | 320 | 0 | 0 | PASS |
 | home | 375 | 0 | 0 | PASS |
@@ -42,12 +41,10 @@ These are browser screenshots, not native Discord-app screenshots. All data in m
 | activity | 1024 | 0 | 0 | PASS |
 | activity | 1440 | 0 | 0 | PASS |
 
-## Data acceptance caveats
-The activity heatmap has zero actual saved match starts and is neutral by default.
-The fictional interaction captures deliberately show sample-only states, not live data.
-The six-role radar has no filled role-level data polygon.
-Sourced PlayerOne plot / 32 rows, Last 10 selector, paired-dot encoding, historical snapshots and faction/map switch tested.
-A first real WARCON source and actual Discord desktop/mobile visual acceptance are separate release gates.
+## What wasn't tested here
 
-## Errors
-- None in source/prototype browser checks
+The saved-match activity heatmap has no real completed-match starts yet. Its normal state stays empty. The role radar is also empty without a synced player profile. Fictional views are deliberately separate.
+
+The PlayerOne sample covers 32 plotted records, the Last 10 control, paired-dot mode, career snapshots and the map/faction selector. Real WARCON collection and native Discord desktop/mobile rendering still need their own checks.
+
+**Browser errors in this capture:** None.

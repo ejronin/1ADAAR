@@ -1,107 +1,95 @@
-# 1ADAAR v1.1.0 — digital IA/UX/UI handoff
+# 1ADAAR v1.1.0 design handoff
 
-**Status: EDITABLE DIGITAL HANDOFF COMMITTED — Chromium desktop/mobile screenshots and browser QA complete; OWNER APPROVAL PENDING.** Source is a proposed direction, NOT the approved final design. Production `main` and staging implementation are untouched.
+This folder has the editable designs, screenshots and implementation notes for the next 1ADAAR release. The six screens are ready for review, **not yet approved for production**.
 
-## Where to work
+- [Design PR #28](https://github.com/ejronin/1ADAAR/pull/28)
+- Design branch: `design/v1.1.0-ia-handoff`
+- Implementation base: `staging/v2.0-foundation`
+- Original staging reference: `26da372ea9c076bfe3751a0716ee8382161e811d`
 
-Repository: `ejronin/1ADAAR`  
-Design branch: `design/v1.1.0-ia-handoff`  
-Implementation branch: `staging/v2.0-foundation` (owned by the implementation engineer).  
-Independent assessment: [PR #27](https://github.com/ejronin/1ADAAR/pull/27) — reference only; do **not** assume its concepts are applied to staging.  
-Baseline staging commit: `26da372ea9c076bfe3751a0716ee8382161e811d`.
+Use the source files here to build the approved changes in staging. Don't merge this folder wholesale into the live site.
 
-**The IA engineer commits or uploads actual editable visual artifacts here, NOT into the production or implementation branches.** If GitHub push access is unavailable, provide a ZIP with this exact directory layout, then the implementation lead can import it. Do not rely on a ZIP as the only surviving design source.
+## Start here
 
-## Required directory structure
+1. Open `prototypes/index.html` to review the six screens: home, player, map/faction, weekly, recap and activity.
+2. Use `screen-manifest.json` to find each component's HTML/CSS/JS/SVG source, screenshots, implementation target and approval status.
+3. Check `tokens.final.json` and `components/COMPONENT_IMPLEMENTATION_SPEC.md` for measurements and interaction details. The token file is a **candidate**, not a signed-off design.
+4. Compare `screenshots/*-390.png` and `*-1440.png` with the browser implementation. The browser checks also cover 320, 375, 768 and 1024 CSS pixels.
+5. Read the integration and chart notes before adding new API calls or dependencies.
 
-```text
-design/v1.1.0/
-  README.md                  — this handoff protocol
-  screen-manifest.json       — status, code target and exact links per screen
-  tokens.template.json       — starter reference; candidate tokens.final.json now included
-  component-spec-template.md — starter reference; components/COMPONENT_IMPLEMENTATION_SPEC.md now included
-  prototypes/
-    index.html               — active owner review portal with six editable prototypes
-    home.html                — editable homepage design candidate
-    player.html              — editable profile, charts and user identity
-    map-team.html            — editable map/faction outcome comparison
-    weekly.html              — verified empty podium + isolated fictional crown
-    recap.html               — editable Discord message composition
-    shared.css               — shared production-target visual tokens and styling
-    shared.js                — source-labeled interactive charts and controls
-  components/
-    README.md                — individual editable donut, podium, etc
-  screenshots/
-    README.md                — static evidence matching named prototype files
-  assets/
-    README.md                — only NEW design assets; reference approved originals
-```
+The design package is editable. Screenshots are evidence of what the current prototypes rendered, not a substitute for their source files or proof of native Discord behavior.
 
-## Minimum acceptance package for each screen
+## What's in the folder
 
-1. **Editable, complete source**: one browser-readable HTML prototype with its CSS and JS; Figma links are welcome but NOT a substitute for exportable implementation material. A static screenshot alone is not enough.
-2. Screenshots of the **same** prototype at **390px and 1440px**, plus tested layouts at **320, 375, 768, 1024**. Include clearly labeled real empty states and fictional demonstration states.
-3. Exact specs for every major component: font family/size/weight/line-height; stroke and donut-ring thickness; radii; spacing; alignment; color tokens; responsive breakpoints; motion/reduced-motion; focus targets; source/data definition.
-4. An updated `screen-manifest.json` entry referencing the real prototype and both screenshots. Do not mark a screen delivered until its referenced files exist.
-5. Component-to-implementation file mapping in the screen spec, down to selectors/modules. Identify **keep / replace / remove** and feature parity for controls, real data and state logic. Do not invent WARCON fields.
-6. Before/after critique and severity-ranked discrepancies; a line-weight and typography audit covering the win-rate donut, chart axes/paths, KPI labels, borders and avatar/podium graphics.
+| Location | Contents |
+|---|---|
+| `prototypes/` | Full HTML pages, shared CSS/JS and a clickable review index |
+| `components/` | Standalone SVGs, chart code, progression adapter, Python tests and component specifications |
+| `screenshots/` | Captured desktop/mobile layouts and clearly labeled fictional interaction states |
+| `assets/` | New licensed design assets only; existing logos remain in `docs/assets/` |
+| `research/` | Data-source notes, chart choices, technical options and player connection requirements |
+| `screen-manifest.json` | The list of screens/components, their files, targets and review status |
+| `tools/` | Screenshot and Python-image generators, plus unit tests |
 
-## Brand and data guardrails
+To view the pages locally, run this from the repository root:
 
-- **DO NOT redraw or overwrite** `docs/assets/1ad-logo.svg`, official WARDOGS artwork, or `docs/assets/factions/*.svg`; prototype pages should link to these originals, via relative paths from this directory (e.g. `../../../docs/assets/1ad-logo.svg` from `prototypes/`).
-- Everyday design: charcoal / white / restrained green. Week/awards: separate muted amber, silver, bronze. Real faction colors only for faction identity; kills green and deaths yellow.
-- No fabricated live matches, verified winners, RCON telemetry or player-specific activity heatmaps. Fictional fixtures must be explicitly labeled. No real Steam/Discord IDs or secrets in prototypes or screenshots.
-- Do not post demo webhooks or enable collection jobs. No live admin credentials are required to deliver visual designs.
-- Preserve exact analytical mode semantics and dropdown behavior; visually distinguish WARCON career stats, saved completed matches, captured snapshots and weekly/season data.
-
-## How the implementation lead uses the deliverable
-
-1. Owner opens the clickable `prototypes/index.html` review and approves named screen revisions; rejected screens return to IA engineering.
-2. IA engineer tags the manifest entry `ownerApproval: approved` **only when the owner explicitly approves**. Do not self-approve.
-3. Implementation lead reads the exact HTML/CSS, `tokens.final.json`, specs, and real screenshots; builds these onto `staging/v2.0-foundation` without importing fictitious data or overwriting production.
-4. Lead produces browser screenshots from implemented staging at matching widths and a discrepancy matrix. IA engineer compares visual output with approved source until deviations are resolved.
-5. Owner signs off the entire release after visual, automated, live-source, and native Discord app QA. The design branch is never merged into production as part of a documentation-only approval.
-
-## Running the prototypes locally (works without GitHub Pages)
-
-In a checked-out copy of the design branch, run from the **repository root**:
-
-```bash
+```sh
 python -m http.server 8000
 ```
 
-Open `http://localhost:8000/design/v1.1.0/prototypes/index.html`. This loads the approved original game/1AD artwork from the same checkout and avoids browser `file://` limitations. No paid host, cloud secrets or live WARCON access is needed.
+Then visit `http://localhost:8000/design/v1.1.0/prototypes/index.html`. The local server is important because the pages load images and sample data from other repository folders. Opening an HTML file directly may not work.
 
-## Link and review protocol
+There's also an optional [browser preview through raw.githack](https://raw.githack.com/ejronin/1ADAAR/design/v1.1.0-ia-handoff/design/v1.1.0/prototypes/index.html). That's a third-party proxy, not the live site; check it before relying on it.
 
-Optional review UI (source branch through a third-party proxy, **not** production; availability must be checked):
-`https://raw.githack.com/ejronin/1ADAAR/design/v1.1.0-ia-handoff/design/v1.1.0/prototypes/index.html`
+## What the design covers
 
-Code and changes: GitHub draft PR from `design/v1.1.0-ia-handoff` into `staging/v2.0-foundation`. Screenshots included under `design/v1.1.0/screenshots/` and linked by the manifest.
+The site keeps its WARDOGS look: original 1AD and WARDOGS logos, Lonestar blue, Valkyra red, Manticore green, and restrained green/charcoal throughout the normal dashboard. Gold, silver and bronze belong to the weekly podium. Don't redraw or recolor the original artwork.
 
-The review site now contains six real editable design candidates, shared CSS/JS, source-gated chart research, and exact component specs. The branch-scoped GitHub Actions screenshot workflow generated actual 390px and 1440px Chromium captures for all six screens and updated the manifest with tested viewports. The digital package is ready for OWNER VISUAL REVIEW, not self-approved or staged. **Design delivery does not imply owner approval or staging implementation.**
+The six screens cover:
 
-## Chart research and high-end rendering decisions
+- **Home:** a clean server briefing, a short border laser that goes dark when finished, and a metallic sheen clipped to the original 1AD mark.
+- **Player:** career totals, recent results, properly labeled chart controls, map/faction comparisons, Steam portrait treatment and an optional progression panel.
+- **Maps and factions:** win/loss/draw breakdowns, recorded K/D by map and selectors that sit inside the panel they change.
+- **Weekly:** the owner's preferred silver/gold/bronze podium, honest empty places and a crown effect reserved for a real qualified first-place player. The sample winner is only a demo.
+- **Discord recap:** the image and text hierarchy, per-faction top-kill leaders where the match lines support them, and a real link-button implementation contract. The HTML preview still needs a check inside Discord itself.
+- **Activity:** the recorded **match-start** heatmap, separate from any future player-session calendar. Missing session history isn't treated as zero activity.
 
-- See `research/CHART_METHODS_AND_FIELD_GATE.md` and `research/ROLE_PROGRESSION_ACCESS_VALIDATION.md` for the updated decision inventory: paired dumbbells, ranked dot plots, outcome fingerprints, score-lead timelines, time heatmaps, cohort matrices, and a properly unfilled six-role progression radar.
-- This is a **custom HTML/CSS/SVG/JS visual system** with no Bootstrap template; it is compatible with static GitHub Pages. Python Pillow/CairoSVG produces the deterministic high-resolution Discord image proof, while matplotlib is suitable for optional offline research. Kivy/Tkinter serve desktop GUI applications and are not useful for a static web/Discord-image pipeline.
-- `tools/render_screenshots.py` renders real desktop/mobile browser PNGs at 390px and 1440px for each of the six prototypes and tests 320/375/390/768/1024/1440 widths. `tools/render_recap_proof.py` generates a separate 1080px genuine Python raster design illustration. Both scripts are design-only, do not call WARCON, RCON or Discord, and never alter staging or production.
-- The workflow `.github/workflows/design-handoff-screenshots.yml` only runs against `design/v1.1.0-ia-handoff`; if successful it commits images and updates `screen-manifest.json` on that same branch. Any QA failure is a blocker, not an approved package.
+Keep career totals, archived matches, season data and account progression labeled separately. A five-match trailing K/D point combines the **current match and preceding four**, regardless of whether the chart shows 10, 20 or all points. Raw kills/deaths can use paired dots; that option should disappear for ratio-only charts.
 
-## Data design caveats
+All PlayerOne figures are fictional test data. Live winners, match outcomes, role levels and activity should never be made up to fill a chart.
 
-- Saved server activity is a heatmap of captured *completed-match starts*, not personal time online. Staging's checked-in data is zero; genuine cells remain neutral until recorded matches exist. The prototype's fictional heatmap toggle exists for design evaluation only.
-- Full personal session activity requires authorized private WARCON data beyond the current bounded recent dossier; do not place privileged RCON credentials in GitHub Pages or imply verified identity from pictures.
-- Six role progression levels are not present in inspected WDRCON/WARCON schemas, **but** WARDOGS Tracker's documented public opt-in player API exposes all six levels/XP for players who have synced and permitted access. This opens a conditional source-supported radar, with no fabricated example; see research/ROLE_PROGRESSION_ACCESS_VALIDATION.md and components/progression_adapter.py.
-- Owner approval for any named screen is the required gate before implementation engineering ports the design into staging. Native Discord mobile/desktop rendering remains an implementation acceptance gate.
+## External progression: what can actually be connected
 
+The optional WARDOGS Tracker connection is for four things only: **six role levels and XP, overall WARDOG level, career XP, and account cash/gold when visible**. There is no loadout builder or unlock gallery.
 
-## Final owner-approved scope for external progression
+WARDOGS Tracker documents a public API for player-synced profiles, but that does **not** mean 1ADAAR can automatically sign someone in or retrieve every visitor's progression. The outbound sync link opens the Tracker site in a separate tab. A persistent connection across browsers needs verified Steam ownership, the player's consent and private storage through an approved backend.
 
-The owner wants **six WARDOGS role levels and XP**, **overall WARDOG level**, **career XP**, and **player-controlled account cash / gold**. They do **NOT** want a loadout builder, unlock inventory gallery, or speculative weapon stat charts. Real kill-with/died-by attribution is a possible future independent WARCON kill-feed validation, not part of this release or a reason to delay this handoff.
+Start with [the connection instructions](research/PLAYER_PROGRESSION_OPT_IN_IMPLEMENTATION.md) and [the API investigation](research/ROLE_PROGRESSION_ACCESS_VALIDATION.md). The Python adapter and six-role radar renderer are in `components/`. Never publish raw Steam IDs, login credentials or hidden account-economy values in GitHub Pages.
 
-The implementation engineer **must first read** [`research/PLAYER_PROGRESSION_OPT_IN_IMPLEMENTATION.md`](research/PLAYER_PROGRESSION_OPT_IN_IMPLEMENTATION.md), which specifies the mandatory identity, opt-in, return flow, data privacy, durable cross-device storage, and exact testing. The canonical editable teaser is at `prototypes/player.html#progression`, with six-axis empty SVG, four source-labelled absent KPIs and a **working external sync link**. Do not fabricate automatic Tracker OAuth redirection: its public API is read-only and no official third-party return callback is documented. No account is connected by these design assets.
+Weapon kills-with/died-by charts are a separate possible WARCON kill-feed task, **not part of this release** until attribution is verified.
 
-## GitHub-compatible graphics and frontend modernization
+## Data and release rules
 
-**Mandatory pre-implementation architecture review:** [`research/FRONTEND_GRAPHICS_TECHNOLOGY_ASSESSMENT.md`](research/FRONTEND_GRAPHICS_TECHNOLOGY_ASSESSMENT.md). The current implementation staging branch directly publishes `docs/` to GitHub Pages; it has no Node.js `package.json`, Sass or Vite pipeline. Proposed modernization: Dart Sass/SCSS and canonical design tokens first; Vite only when a bundled chart/motion dependency is justified; custom SVG and selectively D3/Observable Plot *or* Apache ECharts (not all engines); Motion only for measurable visual animation complexity; Python Pillow+CairoSVG for Discord images, matplotlib for offline quantitative work, Playwright for UI QA. Bootstrap UI templates, Kivy, Tkinter, WebGL and blanket React rewrites are not recommended for 1ADAAR. The implementation engineer must return a package/security/bundle assessment and visually demonstrated staging build; no production deployments without owner approval.
+- WARCON provides server and match data. Game-account progression comes from a separately synced public Tracker profile when permitted.
+- Only captured completed matches may count toward a saved-match report or server-wide activity heatmap.
+- Personal online-time analysis needs authorized complete session timestamps and a privacy review. The existing bounded session list isn't full lifetime history.
+- Keep test screenshots, empty states and fictional examples clearly marked.
+- No RCON passwords, private WARCON keys, Steam credentials, webhook secrets or real player IDs in the design assets.
+- Nobody posts a demo recap to the live Discord channel or activates extra data collection from this folder.
+- The implementation engineer builds the actual site in staging; the owner inspects that **working preview**, not just static pictures, before approving deployment.
+
+## Notes worth reading
+
+- [Chart choices and the data each one needs](research/CHART_METHODS_AND_FIELD_GATE.md)
+- [WARCON and RCON fields](research/RCON_WARCON_FIELD_INVENTORY.md)
+- [Six-role progression research](research/ROLE_PROGRESSION_ACCESS_VALIDATION.md)
+- [Player connection and storage](research/PLAYER_PROGRESSION_OPT_IN_IMPLEMENTATION.md)
+- [Frameworks, CSS, Python image tools and GitHub builds](research/FRONTEND_GRAPHICS_TECHNOLOGY_ASSESSMENT.md)
+- [What needs changing in staging](research/DESIGN_DISCREPANCY_REGISTER.md)
+- [Examples from other gaming dashboards](research/COMPETITIVE_CHART_UX_REFERENCES.md)
+
+## Review and sign-off
+
+An approved design is not automatically working code. The implementation engineer ports the approved pieces to staging, runs the data and browser tests, and returns a hosted preview with screenshots at matching sizes. Check that preview against the design source and record any mismatches.
+
+Only the owner can approve the screens and the production release. Keep `ownerApproval` in the manifest pending until that decision is explicit. Don't merge into `main` because a screenshot job passed.
