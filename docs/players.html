@@ -26,7 +26,8 @@
   <script defer src="js/factions.js?v=1"></script>
   <script defer src="js/player-snapshot.js?v=1"></script>
   <script defer src="js/share.js?v=2"></script>
-  <script defer src="js/players.js?v=11"></script>
+  <script defer src="js/progression.js?v=1"></script>
+<script defer src="js/players.js?v=11"></script>
 <link rel="stylesheet" href="assets/ia-v11.css?v=1" />
 </head>
 <body class="player-page">
@@ -66,6 +67,30 @@
       <div class="metric-grid" id="profile-metrics" aria-labelledby="career-metrics-title"></div>
       <div id="profile-secondary" class="career-secondary" aria-label="Wins, playtime and seeding time"></div>
       <div class="profile-analysis-grid"><section id="performance-module" class="performance-module" aria-label="Performance trends"><p class="perf-empty-static">Your results over time will appear when matches are saved.</p></section><aside id="player-snapshot" aria-label="Player snapshot"></aside></div>
+      <section id="progression-panel" class="progression-panel profile-panel" aria-labelledby="progression-heading" hidden>
+        <div class="panel-heading"><h3 id="progression-heading">Your WARDOGS progression</h3><span>OPTIONAL · WARDOGS TRACKER</span></div>
+        <p class="progression-explainer">These are game-account progression values, not this server's match statistics. Your WARCON player results work without connecting anything.</p>
+        <div class="progression-layout">
+          <div class="progression-radar">
+            <img src="assets/six-role-radar-empty.svg" alt="Six-role chart awaits verified progression; no values displayed" width="400" height="300" />
+          </div>
+          <div>
+            <div class="progression-kpis">
+              <div><small>Wardog level</small><strong>—</strong></div>
+              <div><small>Career XP</small><strong>—</strong></div>
+              <div><small>Account cash</small><strong>Hidden or unavailable</strong></div>
+              <div><small>Gold</small><strong>Hidden or unavailable</strong></div>
+            </div>
+            <p class="progression-roles">Assault · Medic · Support · Recon · Driver · Pilot: <strong>Level — · XP —</strong></p>
+          </div>
+        </div>
+        <div class="progression-actions">
+          <a href="https://wardogstracker.gg/stats" target="_blank" rel="noopener noreferrer">Sync with WARDOGS Tracker ↗</a>
+          <button type="button" id="progression-check">I've synced — check progression</button>
+        </div>
+        <p id="progression-status" role="status" aria-live="polite">No verified progression connection. Sign in through WARDOGS Tracker, sync on their site, then return here. Connecting to 1ADAAR requires separately authorized Steam ownership verification.</p>
+        <small>Source: <a href="https://wardogstracker.gg/developers" target="_blank" rel="noopener noreferrer">WARDOGS Tracker public API</a> · Last synced: — · No SteamID or private account data is published by this page.</small>
+      </section>
       <aside class="profile-activity-link" aria-label="Server-wide recorded match activity"><div><strong>Explore recorded match activity</strong><p>View when completed WARDOGS server matches were saved. This is a server-wide heatmap, not a player activity tracker.</p></div><a href="activity.html">View match activity heatmap →</a></aside>
       <div id="combat-panel" class="profile-panel" hidden><div class="panel-heading"><h3>Combat detail</h3><span>Shown only when WARCON has these results</span></div><div class="metric-grid compact" id="combat-metrics"></div></div>
       <div class="analytics-section-label"><span>MAP AND FACTION PERFORMANCE</span><small>Results from saved completed matches</small></div>
