@@ -82,11 +82,11 @@ class LayoutContractTests(unittest.TestCase):
         self.assertIn("textContent",snap)
         self.assertNotIn("innerHTML",snap)
         js=(DOCS/"js/performance.js").read_text()
-        for label in ("Kills & deaths","K/D per match","Rolling K/D · 5 matches","Career K/D history",
-                      "Last 10","Last 25","All available","See the numbers in a table"):
+        for label in ("Kills & deaths","K/D per match","Trailing 5-match K/D","Trailing 5-match averages","Career K/D history",
+                      "Last 10","Last 20","All available","See the numbers in a table"):
             self.assertIn(label,js)
-        self.assertIn("color:'#70e6a0'",js)
-        self.assertIn("color:'#eac765'",js)
+        self.assertIn("color:'#86f4a4'",js)
+        self.assertIn("color:'#f5c84b'",js)
         self.assertIn("tabindex:'0'",js)
         self.assertIn("POINTS SHOWN",js)
         self.assertIn("oldest to newest",js.lower())
