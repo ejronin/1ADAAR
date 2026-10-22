@@ -67,6 +67,26 @@ async def capture():
                 assert len(measurements["tabs"])==5
                 assert measurements["table"]
                 assert not errors, f"JavaScript exceptions at {width}px: {errors}"
+                # Exercise the actual redesigned five modes rather than only
+                # checking that five tab labels exist.
+                assert await page.locator('.perf-encoding-label').is_hidden()
+                await page.locator('.perf-tab[data-metric="kills"]').click()
+                assert await page.locator('.perf-encoding-label').is_visible()
+                await page.locator('.perf-encoding').select_option('paired')
+                assert await page.locator('.perf-paired-svg').count()==1
+                if width in (390,1440):
+                    await page.screenshot(path=str(ARTIFACT/f"playerone-paired-dots-{width}px.png"),
+                                          full_page=True,animations="disabled")
+                await page.locator('.perf-tab[data-metric="averages"]').click()
+                assert await page.locator('.perf-encoding-label').is_hidden()
+                assert await page.locator('.perf-table th').all_text_contents() == [
+                    'Date','Map','Avg kills (5)','Avg deaths (5)','Kills','Deaths'
+                ]
+                await page.locator('.perf-window').select_option('20')
+                assert await page.locator('.perf-table tbody tr').count()==20
+                if width in (390,1440):
+                    await page.screenshot(path=str(ARTIFACT/f"playerone-five-match-averages-{width}px.png"),
+                                          full_page=True,animations="disabled")
                 await page.close()
                 # Also inspect the live WARCON-backed player lookup surface,
                 # with no fake data injected into the browser or source files.
