@@ -393,3 +393,6 @@
  .weekly-podium .weekly-place h3{font-size:15px}
  .weekly-podium .weekly-place .weekly-unassigned{font-size:9.5px}
 }
+
+/* Long implementation filenames in the Discord technical note must wrap on narrow phones. */
+.panel code{overflow-wrap:anywhere;word-break:break-word;white-space:normal}
