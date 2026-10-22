@@ -70,6 +70,9 @@ class TrackerDataPrivacyTests(unittest.TestCase):
         self.assertNotIn(SID,(ROOT/"docs/js/progression.js").read_text())
         self.assertIn("No verified progression connection",html)
         self.assertTrue((ROOT/"docs/js/role-radar.js").is_file())
+        self.assertIn('id="progression-role-radar"',html)
+        self.assertIn('data-role-empty="true"',html)
+        self.assertIn('root.OneADAARRoleRadar.render',js)
 
 
 if __name__=="__main__":
