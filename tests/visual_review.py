@@ -126,7 +126,14 @@ async def capture():
                     assert actual["primary"]==4 and actual["secondary"]==3
                     assert actual["donuts"]==1 and actual["insights"]==2 and actual["share"]
                     assert actual["overflow"]<=2, f"Live profile overflow {width}px: {actual}"
-                    report.setdefault("realProfiles",[]).append({"width":width,**actual})
+                    # Optional Tracker connection must appear only on genuine
+                    # profiles, with no synthetic polygon or claimed login.
+                    await real.locator("#progression-panel").wait_for(state="visible",timeout=10000)
+                    assert await real.locator("#progression-role-radar").count()==1
+                    assert await real.locator("#progression-role-radar [data-role-profile]").count()==0
+                    assert "No 1ADAAR Steam ownership" in await real.locator("#progression-status").inner_text()
+                    report.setdefault("realProfiles",[]).append({"width":width,**actual,
+                        "progressionEmpty":True})
                 assert not real_errors, f"Real player page errors at {width}: {real_errors}"
                 await real.close()
                 # Server-wide completed-match activity is source-backed and
