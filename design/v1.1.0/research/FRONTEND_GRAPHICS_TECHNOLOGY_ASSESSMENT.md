@@ -34,9 +34,9 @@ There is **no** `package.json`, Vite, Sass, React or Astro build pipeline in tha
 
 The difference between a premium dashboard and a generic one is usually the work done on hierarchy, source labels, chart choices and the original artwork—not whether the site uses a fashionable framework.
 
-## Suggested order of work
+## How the technology fits together
 
-### 1. Clean up the CSS first
+### Shared styles come first
 
 Move repeated values into shared tokens: 1AD green, faction blue/red/green, weekly metallic shades, spacing, type scale, line thickness and focus states. Use modern Sass `@use`/`@forward` and compile it into the existing CSS layout.
 
@@ -44,7 +44,7 @@ Keep the current site working while migrating styles. The original WARDOGS and 1
 
 For the hero, keep the light sweep masked to the **same SVG and size** as the logo, not a sliding duplicate. A small laser segment should travel the entire rounded hero border once, then disappear. Respect reduced-motion settings.
 
-### 2. Add a build tool only when necessary
+### A build tool is useful when imports grow
 
 Vite makes sense once the site needs modules or package imports. It can build a multi-page site **without React**.
 
@@ -55,7 +55,7 @@ If it's added:
 - Build and publish an **isolated staging preview** first. Do not modify the production Pages workflow or merge because a build passed.
 - Measure the JS bundle and check dependency licenses/security updates.
 
-### 3. Improve only the charts that need it
+### Charts follow the data
 
 Useful additions, with actual supporting data:
 
@@ -69,15 +69,15 @@ A waterfall chart is not right for a non-additive K/D ratio. Don't draw weapon u
 
 For static Discord reports, keep Pillow and CairoSVG. For analytical images generated in Actions, consider Matplotlib. Neither Kivy nor Tkinter helps with this workflow.
 
-### 4. Keep private services separate
+### Private account data stays outside Pages
 
 The website can publish small, sanitized JSON files computed by Python in GitHub Actions. If the archive grows, SQLite or DuckDB can help with temporary build-time calculations; that does **not** make GitHub Pages a writable database.
 
 A real, cross-device Steam connection needs a secure HTTPS identity/consent backend and private storage. It cannot be implemented with Pages and Actions alone. The [progression connection plan](PLAYER_PROGRESSION_OPT_IN_IMPLEMENTATION.md) covers that separately.
 
-## What to return before adding dependencies
+## How a technology choice is evaluated
 
-The implementation engineer should provide:
+The decision is easier to evaluate when it includes:
 
 - Which tools are being adopted, with one sentence explaining why each is needed.
 - The packages, versions, licenses and effect on bundle size and GitHub Actions time.
@@ -86,7 +86,7 @@ The implementation engineer should provide:
 - Working chart controls, accessible tables, keyboard focus and reduced-motion checks.
 - A clear note on any extra service, cost, privacy or long-term maintenance burden.
 
-The owner needs to inspect **the compiled staging site as it would appear in production**, then approve it. No paid hosting or production dependency changes should happen before that.
+The actual compiled staging site—not just the source mockups—is what matters for a release decision. Any new paid service or production dependency also needs to be agreed on before it is introduced.
 
 ## Useful documentation
 
