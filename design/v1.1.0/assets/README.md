@@ -1,11 +1,11 @@
-# Design assets (NEW ONLY)
+# Design assets
 
-Store new illustrations, safe SVG decoration, layout backgrounds, icon exports or fonts **under compatible license** used in the proposed visuals. Document their source and usage. Do not commit font binaries if not licensed or needed.
+New artwork goes here. Use existing logos and faction marks from `docs/assets/` instead of copying or redrawing them.
 
-Always link the existing original assets directly instead of duplicating or altering:
-- `../../../docs/assets/1ad-logo.svg` (relative from `prototypes/`)
-- `../../../docs/assets/wardogs-official-hero.webp`
-- `../../../docs/assets/wardogs-fullmark.png`
-- `../../../docs/assets/factions/*.svg`
+The prototypes already use these files:
+- `docs/assets/1ad-logo.svg`
+- `docs/assets/wardogs-official-hero.webp`
+- `docs/assets/wardogs-fullmark.png`
+- `docs/assets/factions/*.svg`
 
-Every new asset must have a corresponding component spec and be included in the handoff manifest/reference paths. No real-player IDs, credentials, or cached third-party avatars.
+For anything new, record its source and license, note where it is used, and add it to `screen-manifest.json`. Don't commit real player identifiers, credentials or third-party profile images. Only include fonts when the license permits redistribution and the project genuinely needs them.
