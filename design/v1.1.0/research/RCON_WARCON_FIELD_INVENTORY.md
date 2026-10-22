@@ -47,7 +47,7 @@ Public access is governed by WARCON public settings and quotas. Not every metric
 ## Identifiable information policy and missing data
 - Never publish raw SteamID64, API credentials, RCON passwords, private staff notes/actions, moderation list records, or protected data not explicitly authorized for public display.
 - Steam public PFP is separately identifiable and should be shown only when source-association and privacy treatment are accepted; it is not Discord membership proof.
-- The player level/rank, the six Assault/Medic/Support/Recon/Driver/Pilot levels/XP and role-specific support events are absent in documented WDRCON /v1/players and inspected WARCON responses. Source remains UNKNOWN; never infer them from kills/cash/faction.
+- The player level/rank, the six Assault/Medic/Support/Recon/Driver/Pilot levels/XP and role-specific support events are absent in documented WDRCON /v1/players and inspected WARCON responses. Those sources do not provide those levels, but the separate publicly documented WARDOGS Tracker player API has all six for opted-in synced public profiles; see ROLE_PROGRESSION_ACCESS_VALIDATION.md. Never infer them from kills/cash/faction.
 - No verified player position/aim telemetry, recoil/accuracy or movement tracks are exposed; do not create positional heatmaps.
 - The current 1ADAAR stored recorded-activity.json contains 0 captured completed matches; the real server heatmap stays empty. Protected personal session heatmap must not be published until authorized complete session range and privacy gates pass.
 
