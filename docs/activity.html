@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="assets/style.css">
 <link rel="stylesheet" href="assets/brand.css?v=9">
 <link rel="stylesheet" href="assets/activity.css?v=1">
+<script defer src="js/activity-insights.js?v=1"></script>
 <script defer src="js/activity.js?v=1"></script>
 <link rel="stylesheet" href="assets/ia-v11.css?v=1" />
 </head>
@@ -41,10 +42,11 @@
       <div class="act-filter"><label for="act-season">Recorded season</label><select id="act-season" aria-controls="act-grid" disabled><option>Loading…</option></select></div>
     </div>
     <p id="act-status" role="status" aria-live="polite" class="notice">Loading verified saved-match data…</p>
+    <div class="act-analysis-layout">
+      <div class="act-map-panel">
     <div id="act-empty-structure" class="ia-activity-empty" hidden aria-label="Unobserved hours, no recorded match-start pattern">
-      <div class="eyebrow">CAPTURE COVERAGE NOT YET ESTABLISHED</div>
-      <h3>No recorded pattern yet</h3>
-      <p>The neutral time matrix is an empty-state guide, not measured activity. Data becomes available as completed matches are retained.</p>
+      <h3>Recorded match-start heatmap</h3>
+      <p>Data will appear as completed matches are recorded.</p>
       <div id="act-empty-matrix" class="ia-home-heatmap" aria-hidden="true"></div>
     </div>
         <div id="act-results" hidden>
@@ -60,6 +62,18 @@
       <p class="act-legend"><span>Fewer captured starts</span><i class="act-legend-swatch" data-level="0"></i><i class="act-legend-swatch" data-level="1"></i><i class="act-legend-swatch" data-level="2"></i><i class="act-legend-swatch" data-level="3"></i><i class="act-legend-swatch" data-level="4"></i><span>More captured starts</span></p>
       <p id="act-cell" class="act-detail" role="status" aria-live="polite">Select a square to inspect its recorded count.</p>
       <p class="act-caution">Coverage: captured matches only. An unfilled square means no captured match starts for that time slot. It does <strong>not</strong> mean the server was inactive. Match seasons are assigned by the completed match's end time.</p>
+    </div>
+      </div>
+      <aside class="act-insight-panel" aria-labelledby="act-insight-title">
+        <div class="eyebrow">CAPTURED MATCH STARTS</div>
+        <h3 id="act-insight-title">Activity intelligence</h3>
+        <div id="act-summary-values" class="ia-insight-grid" hidden></div>
+        <p id="act-summary-empty" class="act-summary-empty">Data will appear as completed matches are recorded.</p>
+        <p id="act-summary-disclosure" class="act-summary-disclosure" hidden>
+          Based only on retained completed-match start timestamps, in US Eastern time.
+          These are not player counts, occupancy, broadcast records, or private operational forecasts.
+        </p>
+      </aside>
     </div>
     <p class="act-source">Only published, completed WARCON matches are counted here. No Steam IDs, player-specific time-of-day histories, administrator data, or simulated events are included.</p>
   </section>
