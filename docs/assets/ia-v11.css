@@ -94,3 +94,68 @@ body{background:var(--ia-bg);color:var(--ia-ink)}
  background:linear-gradient(155deg,#312722,#1b201f)}
 
 .progression-radar svg{display:block;width:100%;height:auto;max-width:400px;margin:auto}
+
+/* Actual IA home information architecture; existing WARCON DOM targets retained. */
+@media(min-width:1061px){.app-shell{grid-template-columns:214px minmax(0,1fr)}}
+.main{max-width:1660px;min-width:0}
+.ia-titlebar{margin:26px 0 22px;display:flex;align-items:flex-end;justify-content:space-between;
+ flex-wrap:wrap;gap:20px}
+.ia-titlebar .eyebrow{color:#a0d9ac;font-size:10px;font-weight:800;letter-spacing:.13em}
+.ia-titlebar h1{font:800 clamp(42px,4.6vw,68px)/.99 'Barlow Condensed',Arial,sans-serif;
+ color:#f2f6f1;margin:9px 0 11px;letter-spacing:.01em}
+.ia-titlebar p{color:var(--ia-muted);font-size:13px;line-height:1.6;max-width:610px;margin:0}
+.ia-source-pill{align-self:center;display:inline-flex;padding:7px 11px;color:#c6ecd0;
+ font-size:10px;font-weight:800;letter-spacing:.05em;border:1px solid #446951;
+ border-radius:6px;background:#16251a}
+.hero.motion-hero{min-height:338px;border-radius:11px}
+.hero.motion-hero .hero-text{padding:35px clamp(20px,3.2vw,50px)}
+.hero.motion-hero h2{font:800 clamp(45px,5.2vw,76px)/.96 'Barlow Condensed',Arial,sans-serif;
+ letter-spacing:.01em;color:#f2f6f1;margin:14px 0 16px;max-width:600px;
+ text-transform:none}
+.hero.motion-hero h2 em{color:#86f4a4;font-style:normal}
+.hero.motion-hero .hero-actions{gap:10px;flex-wrap:wrap}
+.hero.motion-hero .hero-actions a{border-radius:7px;font-size:12px;letter-spacing:.015em;
+ text-transform:none;font-weight:800}
+.kpi-grid{gap:12px;margin-top:18px}
+.kpi{border-radius:9px;position:relative;overflow:hidden;background:#122018;border:1px solid #324b39}
+.kpi:before{content:"";height:2px;background:linear-gradient(90deg,#86f4a4,transparent 80%);position:absolute;inset:0 0 auto}
+.kpi strong{font:800 clamp(29px,3.2vw,43px)/1.1 'Barlow Condensed',Arial,sans-serif;color:#effaf0}
+.kpi .text-value{font-size:clamp(23px,2.5vw,37px)}
+.ia-intelligence-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(275px,1fr);
+ align-items:start;gap:16px;margin:22px 0}
+.ia-reports-panel,.ia-home-activity{min-width:0;border:1px solid var(--ia-stroke);
+ background:linear-gradient(130deg,#142118,#111c15);border-radius:11px;padding:21px;
+ box-shadow:inset 0 1px #b8ffbc0b}
+.ia-reports-panel{margin:0!important}
+.ia-reports-panel .section-head{margin:0 0 16px;display:flex;align-items:flex-start;flex-wrap:wrap}
+.ia-reports-panel .section-head h2,.ia-home-activity h2{
+ font:800 30px/1.07 'Barlow Condensed',Arial,sans-serif;letter-spacing:.01em;color:#f0f6f1;
+ text-transform:none;margin:8px 0}
+.ia-reports-panel .section-head p,.ia-home-activity p{
+ color:#b1c5b7;font-size:12px;line-height:1.6;margin:8px 0 12px}
+.ia-reports-panel .filters{display:flex;flex-wrap:wrap;gap:7px;max-width:100%}
+.ia-reports-panel .filters input{min-width:110px;max-width:100%}
+.ia-reports-panel .match-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.ia-home-activity{display:flex;flex-direction:column;gap:10px}
+.ia-home-activity .eyebrow{font-size:10px;color:#90dbab}
+.ia-home-activity #ia-home-activity-note{font-size:11px;margin:0;color:#b0c6b4}
+.ia-home-heatmap{display:grid;gap:3px;min-width:0;margin:8px 0}
+.ia-home-hour-row{display:grid;grid-template-columns:31px repeat(24,minmax(0,1fr));gap:2px;align-items:center}
+.ia-home-day{font:700 10px system-ui,sans-serif;color:#b1c5b7}
+.ia-home-hour-cell{display:block;aspect-ratio:1;border:1px solid #304637;
+ background:#233329;border-radius:2px;min-width:0}
+.ia-home-hour-cell[data-level="1"]{background:#305f3c}
+.ia-home-hour-cell[data-level="2"]{background:#468950}
+.ia-home-hour-cell[data-level="3"]{background:#60b86c}
+.ia-home-hour-cell[data-level="4"]{background:#86f4a4}
+.ia-activity-link{align-self:flex-start;padding:11px 13px;min-height:44px;
+ background:#183522;border:1px solid #538c65;border-radius:7px;color:#dcffe6;
+ font-size:12px;font-weight:800;text-decoration:none}
+.ia-activity-link:hover,.ia-activity-link:focus-visible{background:#244a2d}
+@media(max-width:1200px){.ia-intelligence-grid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:720px){.ia-titlebar{margin:18px 0}.ia-titlebar h1{font-size:45px}
+ .hero.motion-hero .hero-text{padding:28px 19px}
+ .hero.motion-hero h2{font-size:clamp(45px,9.5vw,63px);margin:12px 0}
+ .ia-reports-panel,.ia-home-activity{padding:16px}
+ .ia-home-hour-row{gap:1.5px}
+}
