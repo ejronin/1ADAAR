@@ -10,7 +10,7 @@ SID="76561198000000000"
 def fixture():
     return {"player":{"steamId":SID,"stats":{"roles":{
        role.lower():{"level":i+11,"xp":(i+1)*1000} for i,role in enumerate(mod.ROLES)
-    },"syncedAt":"2026-10-21T13:00:00.000Z"}},"source":"WARDOGS Tracker"}
+    },"syncedAt":"2026-10-21T13:00:00.000Z","wardogLevel":142,"careerXp":1830450,"cash":220531,"gold":4}},"source":"WARDOGS Tracker"}
 
 class ProgressionAdapterTests(unittest.TestCase):
     def test_exact_six_axes_no_ids_in_public_result(self):
@@ -22,6 +22,40 @@ class ProgressionAdapterTests(unittest.TestCase):
         self.assertIn("wardogstracker.gg/developers",got["sourceUrl"])
         self.assertNotIn(SID,json.dumps(got))
         self.assertNotIn("steamId",json.dumps(got))
+    def test_economy_and_total_progression_metrics_are_source_specific(self):
+        got=mod.normalize_tracker_progression(fixture(),requested_steam_id=SID,
+            public_display_approved=True,max_level=100)
+        self.assertEqual(got["wardogLevel"],142)
+        self.assertEqual(got["careerXp"],1830450)
+        self.assertEqual(got["cash"],220531)
+        self.assertEqual(got["gold"],4)
+        self.assertEqual(got["economyStatus"],{"cash":"visible","gold":"visible"})
+        self.assertIn("NOT server match",got["dataScope"])
+        self.assertNotIn(SID,json.dumps(got))
+
+    def test_cash_and_gold_privacy_null_independent(self):
+        src=fixture();src["player"]["stats"]["cash"]=None
+        src["player"]["stats"]["gold"]=0
+        got=mod.normalize_tracker_progression(src,requested_steam_id=SID,
+            public_display_approved=True,max_level=100)
+        self.assertIsNone(got["cash"])
+        self.assertEqual(got["gold"],0)
+        self.assertEqual(got["economyStatus"]["cash"],"hidden_or_unavailable")
+        self.assertEqual(got["economyStatus"]["gold"],"visible")
+        src=fixture();src["player"]["stats"]["gold"]=None
+        got=mod.normalize_tracker_progression(src,requested_steam_id=SID,
+            public_display_approved=True,max_level=100)
+        self.assertIsNone(got["gold"])
+        self.assertEqual(got["cash"],220531)
+
+    def test_malformed_optional_metrics_are_unknown_not_zero(self):
+        src=fixture();src["player"]["stats"].update({
+            "wardogLevel":-1, "careerXp":"123", "cash":float("nan"), "gold":True})
+        got=mod.normalize_tracker_progression(src,requested_steam_id=SID,
+            public_display_approved=True,max_level=100)
+        for k in ("wardogLevel","careerXp","cash","gold"):
+            self.assertIsNone(got[k])
+
     def test_gates_required(self):
         for condition in (
           dict(public_display_approved=False,max_level=100),
