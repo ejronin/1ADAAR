@@ -65,6 +65,30 @@ def capture():
                     if name == "activity":
                         if page.locator("#heat-cells button[data-b='1']").count() != 0:
                             errors.append(f"activity-{width}: real empty state has fabricated colored cells")
+                    if name == "weekly":
+                        cards = page.locator(".weekly-spotlight .weekly-podium .weekly-place")
+                        if cards.count() != 3:
+                            errors.append(f"weekly-{width}: expected three distinct placement cards")
+                        else:
+                            visual = cards.evaluate_all("""els => els.map(el => ({
+                              x:el.getBoundingClientRect().x,
+                              height:el.getBoundingClientRect().height,
+                              border:getComputedStyle(el).borderTopColor,
+                              text:el.innerText
+                            }))""")
+                            if not visual[0]["x"] < visual[1]["x"] < visual[2]["x"]:
+                                errors.append(f"weekly-{width}: wrong silver/gold/bronze order")
+                            if visual[1]["height"] <= visual[0]["height"]:
+                                errors.append(f"weekly-{width}: first-place gold card must be taller")
+                            if len({v["border"] for v in visual}) != 3:
+                                errors.append(f"weekly-{width}: podium metallic border colors are not distinct")
+                            if any("Awaiting results" not in v["text"] or
+                                   "No player selected" not in v["text"] for v in visual):
+                                errors.append(f"weekly-{width}: unassigned state lost reference copy")
+                        if page.locator(".weekly-spotlight .weekly-crown--static").count()!=1:
+                            errors.append(f"weekly-{width}: missing original empty first-place crown")
+                        elif not page.locator(".weekly-spotlight .weekly-crown--static").is_visible():
+                            errors.append(f"weekly-{width}: static crown not visible")
                     delta = page.evaluate("Math.max(0, document.documentElement.scrollWidth - window.innerWidth)")
                     if delta > 2 or js_errors:
                         errors.append(f"{name}-{width}: {delta}px overflow, JS={js_errors}")
