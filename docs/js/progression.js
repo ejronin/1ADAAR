@@ -7,6 +7,7 @@
   if(!host)return;
   const $=id=>document.getElementById(id);
   const KEY=/^[a-f0-9]{64}$/;
+  const standalone=document.body.dataset.progressStandalone==='true';
   const endpoint=String(root.OneADAARProgressionConfig?.endpoint||'').replace(/\/$/,'');
   const enabled=(()=>{
     try{return new URL(endpoint).protocol==='https:' &&
@@ -142,6 +143,10 @@
       headers:{'Content-Type':'application/json'},cache:'no-store',
       body:JSON.stringify({code,verifier})});
     const data=await response.json();
+    if(standalone&&!currentKey&&KEY.test(data.playerKey)){
+      currentKey=data.playerKey;
+      root.history.replaceState(null,'',root.location.pathname+'#player-'+data.playerKey);
+    }
     if(!response.ok||data.playerKey!==currentKey){
       note('Steam verification was not completed for this player. '+(data.error||'Try again.'));
       return;
@@ -151,7 +156,7 @@
     await load();
   }
   btn.addEventListener('click',async()=>{
-    if(!enabled||!currentKey)return;
+    if(!enabled||(!currentKey&&!standalone))return;
     // Authorization code + PKCE: no naked SteamID ever enters the static app.
     const raw=crypto.getRandomValues(new Uint8Array(32));
     const verifier=Array.from(raw,b=>b.toString(16).padStart(2,'0')).join('').slice(0,43);
@@ -161,7 +166,7 @@
     sessionStorage.setItem(VERIFIER,verifier);
     note('Redirecting to Steam account verification. You will return to this 1ADAAR dossier.');
     root.location.assign(endpoint+'/auth/start?challenge='+encodeURIComponent(challenge)+
-      '&player='+encodeURIComponent(currentKey));
+      (standalone?'&route=standalone':'&route=players&player='+encodeURIComponent(currentKey)));
   });
   consentSave.addEventListener('click',async()=>{
     if(!consentMain.checked){note('Public progression permission must be checked before connection.');return;}
@@ -199,8 +204,9 @@
   }});
   let usedCallback=false;
   async function mount(entry){
-    const allowed=entry&&!entry.demo&&KEY.test(entry.key);
-    currentKey=allowed?entry.key:null;
+    const allowed=standalone||Boolean(entry&&!entry.demo&&KEY.test(entry.key));
+    const fromHash=/^#player-([a-f0-9]{64})$/.exec(root.location.hash);
+    currentKey=standalone?(fromHash?.[1]||readSession()?.playerKey||null):allowed?entry.key:null;
     host.hidden=!allowed;
     if(!allowed)return;
     blank();connected=false;show('unlinked');
@@ -209,7 +215,8 @@
     if(callbackCode&&!usedCallback){
       usedCallback=true;
       try{await onReturn(callbackCode);}catch(e){note('Steam callback failed: '+e.message);}
-    }else await load();
+    }else if(currentKey)await load();
+    else note('Sign in with Steam to view your game-wide WARDOGS progression. This works even without a saved match on Dan\'s server.');
   }
   root.OneADAARProgression=Object.freeze({mount});
 })(window);
