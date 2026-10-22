@@ -99,6 +99,27 @@
       if(record.unknownOutcomes)make(numbers,'div',number(record.unknownOutcomes)+' results not recorded');
     }
   }
+  function mapKdDots(rows){
+    const host=$('mt-kd-plot');if(!host)return;
+    host.replaceChildren();
+    const list=(Array.isArray(rows)?rows:[]).filter(r=>
+      r&&typeof r.name==='string'&&known(r.kills)&&known(r.deaths)&&known(r.matches)&&r.matches>0)
+      .map(r=>({...r,aggregate:r.deaths===0?(r.kills===0?null:r.kills):r.kills/r.deaths}));
+    if(!list.length){make(host,'p','No completed, recorded per-map kills and deaths yet.','mt-empty');return;}
+    const peak=Math.max(1,...list.map(r=>r.aggregate??0));
+    for(const r of [...list].sort((a,b)=>(b.aggregate??-1)-(a.aggregate??-1))){
+      const line=make(host,'div',undefined,'mt-kd-item');
+      make(line,'strong',r.name,'mt-kd-label');
+      const track=make(line,'div',undefined,'mt-kd-track');
+      const dot=make(track,'span',undefined,'mt-kd-dot');
+      dot.style.left=((r.aggregate??0)/peak*100)+'%';
+      const caption=r.aggregate===null?'—':r.aggregate.toFixed(2);
+      make(line,'span',caption+' K/D · '+number(r.matches)+' matches','mt-kd-value');
+      line.setAttribute('aria-label',r.name+': '+caption+' K/D from '+
+        r.kills+' kills and '+r.deaths+' deaths over '+r.matches+' recorded matches'+
+        (r.deaths===0?' (zero deaths, WARCON display convention)':''));
+    }
+  }
   function fillChoice(select,values,first){
     select.replaceChildren();option(select,'',first);
     for(const name of [...new Set(values)].sort((a,b)=>a.localeCompare(b)))option(select,name,name);
@@ -153,6 +174,7 @@
       const share=available>0?(item?.matches||0)/available:null;
       ring(rings,share,name,color,number(item?.matches||0)+' saved appearances');
     }
+    mapKdDots(data.maps||[]);
     bars('mt-maps',data.maps||[],false);
     bars('mt-factions',data.factions||[],true);
     fillChoice(mapChoice,(data.maps||[]).map(x=>x.name),'All maps');
