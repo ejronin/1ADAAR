@@ -66,7 +66,7 @@ class SignatureMotionTests(unittest.TestCase):
         self.assertIn('class="weekly-crown"', html)
         self.assertNotIn('No fictional winners', html)
         self.assertIn('data-award-verified="false"',html)
-        self.assertIn('.weekly-podium-place.gold[data-award-verified="false"] .weekly-crown', (DOCS/'assets'/'ia-v11.css').read_text())
+        self.assertIn('.weekly-podium-place.gold[data-award-verified="false"] .weekly-crown', (DOCS/'assets'/'weekly.css').read_text())
         self.assertEqual(html.count('Awaiting results'), 3)
         self.assertNotIn('data-award-verified="true"', html)
         self.assertNotIn("RavenActual", html)
