@@ -72,3 +72,14 @@
  .mt-filters{grid-template-columns:1fr;gap:10px}.mt-ring{width:130px;height:130px}}
 @media(max-width:390px){.mt-team-rings .mt-ring{width:74px;height:74px}.mt-team-rings .mt-ring strong{font-size:18px}
  .mt-team-group .faction-identity{font-size:11px;gap:3px}.mt-team-group .faction-emblem{width:17px;height:17px}}
+
+/* Optional, licensed local map art never obscures recorded results. */
+.mt-data-row.map-banner-present{
+  background-image:linear-gradient(90deg,rgba(12,22,16,.97),rgba(12,22,16,.82) 63%,rgba(12,22,16,.48)),
+    var(--map-banner);
+  background-size:cover;
+  background-position:center;
+}
+.mt-data-row.map-banner-present .mt-row-name,.mt-data-row.map-banner-present .mt-row-numbers{
+  text-shadow:0 1px 3px #050b07;
+}
