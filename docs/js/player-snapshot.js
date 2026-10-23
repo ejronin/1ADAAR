@@ -18,18 +18,37 @@
 
   function career(primary,secondary,entry) {
     primary.replaceChildren();secondary.replaceChildren();
-    const sample=!!entry.demo,note=sample?'FICTIONAL SAMPLE':'WARCON · ALL-TIME';
-    const add=(host,label,value,compact)=>{
-      const card=make('div',compact?'career-secondary-card':'metric-tile');
-      card.append(make('span','',label),make('strong','',value),make('small','',note));
-      host.append(card);
+    // WARCON's leaderboard is ALL-TIME ON THIS SERVER. The public WARDOGS
+    // Tracker profile currently publishes progression, NOT global combat K/D.
+    // Never recycle this-server totals as global totals.
+    const add=(host,label,serverValue,compact)=>{
+      const card=make('div',compact?'career-secondary-card career-source-pair':'metric-tile career-source-pair');
+      card.append(make('span','career-pair-heading',label));
+      const row=make('div','career-pair-values');
+      for(const [source,value] of [['1AD SERVER',serverValue],['TRACKER · ALL','—']]){
+        const group=make('div','career-pair-column');
+        group.append(make('small','career-pair-source',source),
+          make('strong','career-pair-number',value));
+        if(source.startsWith('TRACKER'))group.title='Global combat total is not published by WARDOGS Tracker.';
+        row.append(group);
+      }
+      card.append(row);host.append(card);
     };
+    const feed=entry.hasFeed===true||entry.demo===true;
     for(const [label,value] of [
-      ['K/D',ratio(entry.kills,entry.deaths)],['Kills',number(entry.kills)],
-      ['Deaths',number(entry.deaths)],['Matches',number(entry.matches)]])add(primary,label,value,false);
+      ['K/D',feed?ratio(entry.kills,entry.deaths):'—'],
+      ['Kills',feed?number(entry.kills):'—'],
+      ['Deaths',feed?number(entry.deaths):'—'],
+      ['Matches',number(entry.matches)]])add(primary,label,value,false);
     for(const [label,value] of [
       ['Wins',number(entry.wins)],['Playtime',time(entry.minutes)],
       ['Seeding time',time(entry.seedMinutes)]])add(secondary,label,value,true);
+    primary.insertAdjacentElement('beforebegin',(()=>{
+      // No duplicated source legend on repeated player selections.
+      const previous=document.getElementById('career-source-note');if(previous)previous.remove();
+      return make('p','career-source-note',
+        '1AD = WARCON career results on this server. Tracker does not publish global combat totals. Missing kill-feed data displays —, never an assumed zero.');
+    })());
   }
 
   function observations(records,key) {

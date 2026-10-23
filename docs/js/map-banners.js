@@ -1,34 +1,40 @@
 'use strict';
-/* Optional approved local map photography only; never hotlink third-party art. */
+/* Three verified local WARDOGS map photographs. Never infer missing match data.
+   Named variants are generated from these originals during production packaging.
+   Keep readable DOM labels on the original-image fallback. */
 (function(root){
-  const REQUIRED=Object.freeze({
-    Bakurani:'bakurani.webp',Ozeti:'ozeti.webp',Zestafona:'zestafona.webp'
-  });
-  const source='assets/map-banners/';
-  let promised;
-  async function config(){
-    if(!promised)promised=fetch(source+'manifest.json',{cache:'no-store'})
-      .then(r=>r.ok?r.json():null).catch(()=>null);
-    return promised;
-  }
-  async function decorateMapRow(row,rawName){
-    if(!row||typeof rawName!=='string')return false;
-    const name=Object.keys(REQUIRED).find(n=>n.toLowerCase()===rawName.trim().toLowerCase());
-    if(!name)return false;
-    const data=await config();
-    if(!data||data.schemaVersion!==1||!data.images||
-      data.images[name]!==REQUIRED[name])return false;
-    const img=new Image();
-    const localUrl=source+REQUIRED[name];
-    // Only locally packaged, attribution-cleared map art may be displayed.
-    if(!await new Promise(resolve=>{
-      img.onload=()=>resolve(true);img.onerror=()=>resolve(false);
-      img.src=localUrl;
-    }))return false;
-    if(!row.isConnected)return false;
-    row.classList.add('map-banner-present');
-    row.style.setProperty('--map-banner','url("'+localUrl+'")');
-    return true;
-  }
-  root.OneADAARMapBanners=Object.freeze({decorateMapRow});
+ const MAPS=Object.freeze({bakurani:'bakurani',ozeti:'ozeti',zestafona:'zestafona'});
+ const base='assets/map-banners/';
+ function paint(row,file,withEmbeddedName){
+   if(!row||!row.isConnected)return;
+   row.classList.add('map-banner-present');
+   row.classList.toggle('map-banner-named',withEmbeddedName);
+   row.style.setProperty('--map-banner','url("'+base+file+'")');
+ }
+ function checkImage(url){
+   return new Promise(resolve=>{
+     const image=new Image();
+     image.onload=()=>resolve(true);
+     image.onerror=()=>resolve(false);
+     image.src=url;
+   });
+ }
+ async function decorateMapRow(row,rawName){
+   if(!row||typeof rawName!=='string')return false;
+   const slug=MAPS[rawName.trim().toLowerCase()];
+   if(!slug)return false;
+   // We ship the unmodified original; this works even if the generated named
+   // variant hasn't propagated through the Pages cache yet.
+   const fallback=slug+'.webp',named=slug+'-card.webp';
+   paint(row,fallback,false);
+   if(await checkImage(base+named+'?v=112')){
+     paint(row,named+'?v=112',true);
+     return true;
+   }
+   if(await checkImage(base+fallback))return true;
+   row.classList.remove('map-banner-present','map-banner-named');
+   row.style.removeProperty('--map-banner');
+   return false;
+ }
+ root.OneADAARMapBanners=Object.freeze({decorateMapRow});
 })(window);
