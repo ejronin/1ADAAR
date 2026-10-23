@@ -46,7 +46,7 @@ class VisualRecapTest(unittest.TestCase):
             self.assertIn("with_components=true",request.full_url)
             self.assertIn(raw,body)
     def test_demo_is_not_part_of_live_data(self):
-        fixture=json.loads((ROOT/"docs/data/demo-player.json").read_text())
+        fixture=json.loads((ROOT/"tests/fixtures/demo-player.json").read_text())
         players=json.loads((ROOT/"docs/data/players.json").read_text())
         matches=json.loads((ROOT/"docs/data/matches.json").read_text())
         self.assertTrue(fixture["fictional"])
