@@ -53,9 +53,9 @@ class OwnerLiveReleaseTests(unittest.TestCase):
             for marker in ('1of1servers.com/brand/full-logo-white-amber.svg',
                            'assets/brands/warcon-logo-on-dark.svg',
                            'assets/wardogs-fullmark.png','wardogstracker.gg/logo.png',
-                           'logo_steam.svg','OPTIONAL PROFILE IMAGE*'):
+                           'logo_steam.svg','OPTIONAL PROFILE PHOTO'):
                 self.assertIn(marker,html,(page,marker))
-        self.assertNotIn('data-steam-logo',(DOCS/'index.html').read_text())
+        self.assertIn('https://1of1servers.com/',(DOCS/'index.html').read_text())
 
     def test_weekly_podium_is_ranked_with_decorative_crown(self):
         html=(DOCS/'weekly.html').read_text()
