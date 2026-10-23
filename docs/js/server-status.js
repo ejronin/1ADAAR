@@ -32,7 +32,7 @@
     const online=state==='online';
     target.players.textContent=online&&Number.isSafeInteger(doc.players)&&doc.players>=0?
       String(doc.players)+(Number.isSafeInteger(doc.maxPlayers)&&doc.maxPlayers>0?' / '+doc.maxPlayers:''):'—';
-    const mapTile=target.map.closest('.server-status-cell');
+    const mapTile=typeof target.map.closest==='function' ? target.map.closest('.server-status-cell') : null;
     if(mapTile){mapTile.classList.remove('map-banner-present');mapTile.style.removeProperty('--map-banner');}
     target.map.textContent=online&&typeof doc.map==='string'&&doc.map.trim()?
       doc.map.slice(0,55):'—';
