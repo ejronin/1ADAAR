@@ -10,10 +10,13 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 class MapBannerTests(unittest.TestCase):
-    def test_no_cleared_images_means_original_art(self):
-        for name in ('Bakurani','Ozeti','Zestafona','map not listed','../assets/secret'):
+    def test_official_map_previews_and_unknown_fallback(self):
+        for name in ('Bakurani','Ozeti','Zestafona'):
+            banner=map_banners.banner_for_map(name)
+            self.assertIsNotNone(banner,name)
+            self.assertTrue(banner.is_file())
+        for name in ('map not listed','../assets/secret',None):
             self.assertIsNone(map_banners.banner_for_map(name))
-        self.assertIsNone(map_banners.banner_for_map(None))
 
     def test_only_exact_manifest_names_and_local_files_are_accepted(self):
         with tempfile.TemporaryDirectory() as td:
