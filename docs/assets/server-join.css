@@ -101,3 +101,27 @@
  .server-banner-toolbar .hero-actions .primary,.server-banner-toolbar .hero-actions .secondary{font-size:10px!important}
 }
 @media(prefers-reduced-motion:reduce){.server-join-overlay{transition:none}}
+
+/* Temporary official mark lockup, automatically removed on successful image load. */
+.server-banner-media{position:relative}
+.server-banner-brand-fallback{position:absolute;inset:0;display:flex;align-items:center;
+ justify-content:flex-start;gap:clamp(11px,1.6vw,28px);padding:0 4%;box-sizing:border-box;
+ background:linear-gradient(90deg,#07130ddf 0%,#0a1710bd 42%,transparent 86%);
+}
+.server-banner-brand-fallback[hidden]{display:none!important}
+.server-banner-1ad-mark{height:clamp(63px,11vw,150px);width:auto;max-width:25%;flex:none;
+ object-fit:contain;filter:drop-shadow(0 0 12px #49d76d88)}
+.server-banner-identity{display:grid;min-width:0;gap:4px;align-items:center}
+.server-banner-identity strong{font:900 clamp(18px,2.4vw,45px)/1 'Barlow Condensed',Impact,system-ui,sans-serif;
+ color:#fff;letter-spacing:.025em;text-shadow:0 2px 12px #000}
+.server-banner-identity span{font:700 clamp(8px,1.25vw,21px)/1.3 system-ui,sans-serif;color:#d9e9df;
+ letter-spacing:.12em}
+.server-banner-identity img{width:clamp(115px,18vw,265px);max-width:100%;height:auto;object-fit:contain;object-position:left}
+@media(max-width:440px){
+ .server-banner-brand-fallback{gap:5px;padding:0 3%}
+ .server-banner-identity{gap:1px}
+ .server-banner-identity strong{font-size:clamp(10px,4.1vw,17px)}
+ .server-banner-identity span{font-size:8px}
+ .server-banner-identity img{width:115px}
+ .server-banner-1ad-mark{height:55px}
+}
