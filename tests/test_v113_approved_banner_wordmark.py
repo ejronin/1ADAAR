@@ -30,7 +30,7 @@ class ApprovedServerArtworkTests(unittest.TestCase):
         self.assertIn('server-banner-media',join)
         self.assertIn('id="copy-server-join-code"',home)
         self.assertIn('id="copy-server-join-code"',join)
-        self.assertNotIn('a071b4aa-9574-4e7d-858c-0da3bea80f52',raw.decode('latin1',errors='ignore'))
+        self.assertNotIn('a071b4aa-9574-4e7d-858c-0da3bea80f52',(DOCS/'assets/oneaveragedan-server-banner.png').read_bytes().decode('latin1',errors='ignore'))
         self.assertIn('https://ejronin.github.io/1ADAAR/assets/oneaveragedan-server-banner.png',home)
         self.assertIn('assets/oneaveragedan-server-banner.png?v=113',home)
 
