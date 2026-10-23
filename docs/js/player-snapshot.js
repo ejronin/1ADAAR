@@ -34,9 +34,12 @@
       }
       card.append(row);host.append(card);
     };
+    const feed=entry.hasFeed===true||entry.demo===true;
     for(const [label,value] of [
-      ['K/D',ratio(entry.kills,entry.deaths)],['Kills',number(entry.kills)],
-      ['Deaths',number(entry.deaths)],['Matches',number(entry.matches)]])add(primary,label,value,false);
+      ['K/D',feed?ratio(entry.kills,entry.deaths):'—'],
+      ['Kills',feed?number(entry.kills):'—'],
+      ['Deaths',feed?number(entry.deaths):'—'],
+      ['Matches',number(entry.matches)]])add(primary,label,value,false);
     for(const [label,value] of [
       ['Wins',number(entry.wins)],['Playtime',time(entry.minutes)],
       ['Seeding time',time(entry.seedMinutes)]])add(secondary,label,value,true);
@@ -44,7 +47,7 @@
       // No duplicated source legend on repeated player selections.
       const previous=document.getElementById('career-source-note');if(previous)previous.remove();
       return make('p','career-source-note',
-        '1AD = WARCON totals for this server. Tracker does not yet publish global combat totals; — means unavailable, not zero.');
+        '1AD = WARCON career results on this server. Tracker does not publish global combat totals. Missing kill-feed data displays —, never an assumed zero.');
     })());
   }
 
