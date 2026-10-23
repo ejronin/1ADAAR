@@ -335,6 +335,38 @@ async def capture():
                             route,width,"CSS map URL resolved incorrectly",map_images)
                         assert "assets/assets/map-banners" not in map_images["css"],(
                             route,width,"CSS map URL duplicated directory",map_images)
+                    if route=="index.html":
+                        featured=await surface.evaluate("""async () => {
+                          const status=document.getElementById('server-status');
+                          const players=status.querySelector('.server-status-players-tile');
+                          const map=status.querySelector('.server-status-map-tile');
+                          const action=document.querySelector('.hero-warcon-status');
+                          const box=map.getBoundingClientRect();
+                          const pbox=players.getBoundingClientRect();
+                          const ok=window.OneADAARMapBanners.decorateMapRow(map,'Bakurani');
+                          const css=getComputedStyle(map).backgroundImage;
+                          const fresh=await new Promise(resolve=>{
+                            const pic=new Image();
+                            pic.onload=()=>resolve(true);
+                            pic.onerror=()=>resolve(false);
+                            pic.src=new URL('assets/map-banners/bakurani-card.webp', document.baseURI).href;
+                          });
+                          return {
+                            actionPresent:!!action,
+                            noStatusColumn:!status.querySelector('.server-status-source'),
+                            mapW:box.width,playersW:pbox.width,mapH:box.height,
+                            imageLoaded:fresh,cardStyled:ok,
+                            background:css
+                          };
+                        }""")
+                        assert featured["imageLoaded"] and featured["cardStyled"],(
+                            width,"Current-map image not loaded",featured)
+                        assert featured["actionPresent"] and featured["noStatusColumn"], (
+                            width,"WARCON link not moved to hero",featured)
+                        assert featured["mapW"]>featured["playersW"]*1.25, (
+                            width,"Current-map tile should be wider than player count",featured)
+                        assert "/assets/map-banners/bakurani-card.webp" in featured["background"], (
+                            width,"Current-map image CSS URL incorrect",featured)
                     for required_selector in required:
                         # Map/Team detail panel is gated until real retained match data
                         # exists, so its DOM is present even when appropriately hidden.
