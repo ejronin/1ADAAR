@@ -1,0 +1,17 @@
+name = "1adaar-steam-progression"
+main = "worker.mjs"
+compatibility_date = "2026-10-22"
+workers_dev = true
+preview_urls = false
+
+[vars]
+PUBLIC_PAGE_URL = "https://ejronin.github.io/1ADAAR/players.html"
+PUBLIC_PROGRESSION_URL = "https://ejronin.github.io/1ADAAR/progression.html"
+PUBLIC_ORIGIN = "https://ejronin.github.io"
+# Worker origin verified by Cloudflare production build and owner health check.
+AUTH_ORIGIN = "https://1adaar-steam-progression.shawn-k-gordon.workers.dev"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "1adaar-steam-consent"
+database_id = "6c7600ec-f1d8-4973-8738-849a188356ff"

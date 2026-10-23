@@ -7,8 +7,16 @@
  function render(svg, record){
   if(!svg||svg.namespaceURI!==NS)throw new TypeError('SVG element required');
   svg.querySelector('[data-role-profile]')?.remove();
-  const ok=record&&record.sourceStatus==='verified'&&
-    typeof record.source==='string'&&record.source.trim().length>2&&
+  // Fictional role fills are allowed ONLY inside the explicitly marked
+  // PlayerOne example document. Live player dossiers still require verification.
+  const fictional=Boolean(record&&record.demo===true&&
+    record.sourceStatus==='fictional-demo'&&
+    record.source==='FICTIONAL PLAYERONE FIXTURE'&&
+    svg.dataset.roleDemo==='true'&&
+    document.body.dataset.fictionalDemo==='true');
+  const verified=Boolean(record&&record.sourceStatus==='verified'&&
+    typeof record.source==='string'&&record.source.trim().length>2);
+  const ok=record&&(fictional||verified)&&
     Number.isFinite(record.maxLevel)&&record.maxLevel>0&&
     record.levels&&typeof record.levels==='object'&&
     ROLES.every(role=>Number.isFinite(record.levels[role])&&
@@ -32,10 +40,12 @@
   poly.setAttribute('stroke','#86f4a4');poly.setAttribute('stroke-width','2.5');
   poly.setAttribute('fill','#86f4a4');poly.setAttribute('fill-opacity','0.20');
   const title=document.createElementNS(NS,'title');
-  title.textContent='Verified role progression: '+ROLES.map(r=>r+': '+record.levels[r]).join(', ');
+  title.textContent=(fictional?'Fictional PlayerOne levels: ':'Verified role progression: ')+
+    ROLES.map(r=>r+': '+record.levels[r]).join(', ');
   poly.append(title);svg.append(poly);
   svg.setAttribute('aria-label',ROLES.map(r=>r+' '+record.levels[r]+' of '+record.maxLevel).join('; ')+
-    '. Verified source: '+record.source);
+    (fictional?'. FICTIONAL visualization; not real linked Steam data.':
+             '. Verified source: '+record.source));
   return true;
  }
  root.OneADAARRoleRadar=Object.freeze({ROLES,render});

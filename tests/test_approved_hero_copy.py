@@ -33,7 +33,9 @@ class HeroCopyContract(unittest.TestCase):
         map_js=(ROOT/'docs/js/map-team.js').read_text()
         self.assertIn('decorateMapRow(card,record.name)',map_js)
         manifest=(ROOT/'docs/assets/map-banners/manifest.json').read_text()
-        self.assertIn('"images": {}',manifest)
+        self.assertIn('"Bakurani": "bakurani.webp"',manifest)
+        self.assertIn('"Ozeti": "ozeti.webp"',manifest)
+        self.assertIn('"Zestafona": "zestafona.webp"',manifest)
 
 
 if __name__=='__main__':

@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="referrer" content="no-referrer" />
   <meta name="theme-color" content="#0b120f" />
   <meta name="description" content="Find your OneAverageDan WARDOGS Community Server performance: match results, wins, kills, factions and maps, sourced from WARCON." />
   <title>Find Your Stats — 1ADAAR</title>
@@ -27,7 +28,8 @@
   <script defer src="js/player-snapshot.js?v=1"></script>
   <script defer src="js/share.js?v=2"></script>
   <script defer src="js/role-radar.js?v=1"></script>
-<script defer src="js/progression.js?v=1"></script>
+<script defer src="js/progression-config.js?v=1"></script>
+<script defer src="js/progression.js?v=3"></script>
 <script defer src="js/players.js?v=11"></script>
 <link rel="stylesheet" href="assets/ia-v11.css?v=1" />
 </head>
@@ -38,10 +40,11 @@
     <div class="brand"><img class="brand-emblem" src="assets/1ad-logo.svg" width="52" height="52" alt="Official 1AD emblem" /><div><strong>1ADAAR</strong><small>MATCHES &amp; PLAYER STATS</small></div></div>
     <div class="rail-label">MENU</div>
     <nav class="player-nav-links" aria-label="Player statistics navigation">
-    <a class="nav" href="index.html#reports"><span class="nav-glyph">▦</span>Match history</a>
+    <a class="nav" href="index.html"><span class="nav-glyph">▦</span>Match history</a>
     <a class="nav" href="seasons.html"><span class="nav-glyph" aria-hidden="true">▤</span>Older matches</a>
     <a class="nav" href="activity.html"><span class="nav-glyph" aria-hidden="true">▦</span>Recorded match activity</a>
     <a class="nav active" href="players.html" aria-current="page"><span class="nav-glyph">◎</span>Find a player</a>
+    <a class="nav" href="progression.html"><span class="nav-glyph" aria-hidden="true">◈</span>My WARDOGS progression</a>
     <a class="nav" href="compare.html"><span class="nav-glyph" aria-hidden="true">⇄</span>Compare players</a>
     <a class="nav" href="weekly.html"><span class="nav-glyph" aria-hidden="true">◷</span>Weekly roundup</a>
     <a class="nav" href="https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342/leaderboard" target="_blank" rel="noopener noreferrer"><span class="nav-glyph">♜</span>WARCON player rankings <span class="external">↗</span></a>
@@ -50,7 +53,7 @@
     <div class="rail-footer"><div><strong>COMMUNITY-RUN SERVER</strong><small>Independent of WARDOGS developers</small></div></div>
   </aside>
   <main id="content" class="main">
-    <header class="topbar"><div class="game-lockup" aria-label="Game: WARDOGS — Tactical All Out Warfare"><img src="assets/wardogs-fullmark.png" alt="WARDOGS — Tactical All Out Warfare" width="200" height="40" /></div><div class="breadcrumb">WARDOGS <span>/</span> ONEAVERAGEDAN <span>/</span> PLAYER STATS</div><a class="back-match" href="index.html#reports">← Match history</a></header>
+    <header class="topbar"><div class="game-lockup" aria-label="Game: WARDOGS — Tactical All Out Warfare"><img src="assets/wardogs-fullmark.png" alt="WARDOGS — Tactical All Out Warfare" width="200" height="40" /></div><div class="breadcrumb">WARDOGS <span>/</span> ONEAVERAGEDAN <span>/</span> PLAYER STATS</div><a class="back-match" href="index.html">← Match history</a></header>
     <section class="hero player-hero" aria-labelledby="player-hero-title">
       <div class="hero-glow" aria-hidden="true"></div>
       <div class="hero-text"><div class="eyebrow">◆ WARDOGS COMMUNITY SERVER · ONEAVERAGEDAN PLAYER STATS</div><h1 id="player-hero-title">PLAYER <em>DOSSIER.</em></h1><p>Review saved match results, combat trends, maps, factions, and progression data when available.</p>
@@ -67,7 +70,6 @@
       <h3 class="career-primary-title" id="career-metrics-title">Player statistics</h3>
       <div class="metric-grid" id="profile-metrics" aria-labelledby="career-metrics-title"></div>
       <div id="profile-secondary" class="career-secondary" aria-label="Wins, playtime and seeding time"></div>
-      <div class="profile-analysis-grid"><section id="performance-module" class="performance-module" aria-label="Performance trends"><p class="perf-empty-static">Your results over time will appear when matches are saved.</p></section><aside id="player-snapshot" aria-label="Player snapshot"></aside></div>
       <section id="progression-panel" class="progression-panel profile-panel" aria-labelledby="progression-heading" hidden>
         <div class="panel-heading"><h3 id="progression-heading">Your WARDOGS progression</h3><span>OPTIONAL · WARDOGS TRACKER</span></div>
         <p class="progression-explainer">These are game-account progression values, not this server's match statistics. Your WARCON player results work without connecting anything.</p>
@@ -77,21 +79,45 @@
           </div>
           <div>
             <div class="progression-kpis">
-              <div><small>Wardog level</small><strong>—</strong></div>
-              <div><small>Career XP</small><strong>—</strong></div>
-              <div><small>Account cash</small><strong>Hidden or unavailable</strong></div>
-              <div><small>Gold</small><strong>Hidden or unavailable</strong></div>
+              <div><small>Wardog level · game account</small><strong id="progression-wardog-level">—</strong></div>
+              <div><small>Career XP · game account</small><strong id="progression-career-xp">—</strong></div>
+              <div><small>Account cash · opt-in</small><strong id="progression-cash">Hidden</strong></div>
+              <div><small>Gold · opt-in</small><strong id="progression-gold">Hidden</strong></div>
             </div>
-            <p class="progression-roles">Assault · Medic · Support · Recon · Driver · Pilot: <strong>Level — · XP —</strong></p>
+            <div class="table-scroll"><table class="demo-role-table" aria-label="Six account progression roles">
+              <caption>Role levels and XP — not connected</caption>
+              <thead><tr><th scope="col">Role</th><th scope="col">Level</th><th scope="col">XP</th></tr></thead>
+              <tbody id="progression-role-values"><tr><th scope="row">Assault</th><td>—</td><td>—</td></tr>
+              <tr><th scope="row">Medic</th><td>—</td><td>—</td></tr>
+              <tr><th scope="row">Support</th><td>—</td><td>—</td></tr>
+              <tr><th scope="row">Recon</th><td>—</td><td>—</td></tr>
+              <tr><th scope="row">Driver</th><td>—</td><td>—</td></tr>
+              <tr><th scope="row">Pilot</th><td>—</td><td>—</td></tr></tbody></table></div>
           </div>
         </div>
         <div class="progression-actions">
           <a href="https://wardogstracker.gg/stats" target="_blank" rel="noopener noreferrer">Open WARDOGS Tracker to sync ↗</a>
-          <button type="button" id="progression-check" disabled aria-describedby="progression-status">Verify connection (not yet enabled)</button>
+          <button type="button" id="progression-check" disabled aria-describedby="progression-status">Connect with Steam (setup pending)</button>
+          <button type="button" id="progression-refresh" hidden>Refresh progression</button>
+          <button type="button" id="progression-disconnect" hidden>Disconnect</button>
         </div>
-        <p id="progression-status" role="status" aria-live="polite">Not connected. WARDOGS Tracker opens in a new tab so you can return to this dossier after syncing. A verified 1ADAAR connection and automatic refresh will become available only after secure Steam sign-in and consent are approved.</p>
+        <fieldset id="progression-consent-panel" class="progression-consent-panel" hidden>
+          <legend>Account permission</legend>
+          <label><input type="checkbox" id="progression-consent-main"> I agree to display my synchronized, public WARDOGS progression in this authenticated 1ADAAR session.</label>
+          <label><input type="checkbox" id="progression-consent-economy"> Also display my available cash and gold values (optional).</label>
+          <button type="button" id="progression-consent-save">Connect progression</button>
+          <p>No server match statistics are changed. You can disconnect and revoke consent.</p>
+        </fieldset>
+        <div class="progression-actions progression-connected-actions" id="progression-connected-actions" hidden>
+          <label><input type="checkbox" id="progression-economy-toggle"> Allow available cash and gold</label>
+          <button type="button" id="progression-economy-save">Save visibility</button>
+        </div>
+        <p id="progression-status" role="status" aria-live="polite">Not connected. WARDOGS Tracker synchronizes game-wide progression separately from this server's WARCON records.</p>
+        <p id="progression-synced-at" class="progression-synced-at">Last Tracker sync: —</p>
         <small>Source: <a href="https://wardogstracker.gg/developers" target="_blank" rel="noopener noreferrer">WARDOGS Tracker public API</a> · Last synced: — · No SteamID or private account data is published by this page.</small>
       </section>
+      <div class="profile-analysis-grid"><section id="performance-module" class="performance-module" aria-label="Performance trends"><p class="perf-empty-static">Your results over time will appear when matches are saved.</p></section><aside id="player-snapshot" aria-label="Player snapshot"></aside></div>
+
       <aside class="profile-activity-link" aria-label="Server-wide recorded match activity"><div><strong>Explore recorded match activity</strong><p>View when completed WARDOGS server matches were saved. This is a server-wide heatmap, not a player activity tracker.</p></div><a href="activity.html">View match activity heatmap →</a></aside>
       <div id="combat-panel" class="profile-panel" hidden><div class="panel-heading"><h3>Combat detail</h3><span>Shown only when WARCON has these results</span></div><div class="metric-grid compact" id="combat-metrics"></div></div>
       <div class="analytics-section-label"><span>MAP AND FACTION PERFORMANCE</span><small>Results from saved completed matches</small></div>

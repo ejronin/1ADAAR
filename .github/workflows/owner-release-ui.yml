@@ -1,0 +1,38 @@
+name: 1ADAAR release UI regression checks
+
+on:
+  push:
+    branches:
+      - fix/v110-owner-home-ux-20261022
+      - release/v1.1.0-facelift-live
+  pull_request:
+    branches: [main, release/v1.1.0-facelift-live]
+
+permissions:
+  contents: read
+
+jobs:
+  release-ui-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run approved UI, asset and privacy-safe share contracts
+        run: |
+          python -m unittest discover -s tests -p 'test_website.py' -v
+          python -m unittest discover -s tests -p 'test_share_and_join.py' -v
+          python -m unittest discover -s tests -p 'test_map_banners.py' -v
+          python -m unittest discover -s tests -p 'test_approved_hero_copy.py' -v
+      - name: Check browser JS syntax
+        run: |
+          node --check docs/js/app.js
+          node --check docs/js/map-banners.js
+          node --check docs/js/server-status.js
+          node --check docs/js/home-top.js
+          node --check docs/js/source-branding.js
+          node --check docs/js/weekly.js
+          node --check docs/js/progression.js
+          node --check docs/js/progression-owner-test.js

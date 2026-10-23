@@ -131,7 +131,10 @@ async def capture():
                     await real.locator("#progression-panel").wait_for(state="visible",timeout=10000)
                     assert await real.locator("#progression-role-radar").count()==1
                     assert await real.locator("#progression-role-radar [data-role-profile]").count()==0
-                    assert "No 1ADAAR Steam ownership" in await real.locator("#progression-status").inner_text()
+                    assert await real.locator('#progression-check').is_enabled()
+                    assert 'Not connected' in await real.locator('#progression-status').inner_text()
+                    assert await real.locator('#progression-consent-panel').is_hidden()
+                    assert await real.locator('#progression-refresh').is_hidden()
                     report.setdefault("realProfiles",[]).append({"width":width,**actual,
                         "progressionEmpty":True})
                 assert not real_errors, f"Real player page errors at {width}: {real_errors}"
@@ -158,6 +161,13 @@ async def capture():
                 assert 'awaiting compatible records' in (
                     await own.locator('.pi-combat-viewport').inner_text()).lower()
                 ow=await own.evaluate("document.documentElement.scrollWidth-innerWidth")
+                if ow>2:
+                    spill=await own.evaluate("""() => [...document.querySelectorAll('body *')]
+                    .map(el=>({tag:el.tagName,cl:el.className?.baseVal||el.className,
+                         id:el.id,right:Math.round(el.getBoundingClientRect().right),
+                         w:Math.round(el.getBoundingClientRect().width)}))
+                    .filter(r=>r.right>innerWidth+2).slice(0,16)""")
+                    print("Standalone overflow nodes:",spill,flush=True)
                 assert ow<=2,f"Steam owner-test page overflow at {width}px: {ow}"
                 assert not own_errors,f"Steam owner-test JavaScript error: {own_errors}"
                 if width in (390,1440):

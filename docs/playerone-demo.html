@@ -18,21 +18,25 @@
   <script defer src="js/factions.js?v=1"></script>
   <script defer src="js/share.js?v=2"></script>
   <script defer src="js/demo-share.js?v=2"></script>
+  <script defer src="js/role-radar.js?v=2"></script>
+  <script defer src="js/demo-progression.js?v=1"></script>
   <script defer src="js/demo-performance.js?v=2"></script>
   
 <link rel="stylesheet" href="assets/ia-v11.css?v=1" />
 </head>
-<body class="player-page">
+<body class="player-page" data-fictional-demo="true">
 <a class="skip" href="#content">Skip to player lookup</a>
 <div class="app-shell">
   <aside class="rail" aria-label="Primary navigation">
     <div class="brand"><img class="brand-emblem" src="assets/1ad-logo.svg" width="52" height="52" alt="Official 1AD emblem" /><div><strong>1ADAAR</strong><small>MATCHES &amp; PLAYER STATS</small></div></div>
     <div class="rail-label">MENU</div>
     <nav class="player-nav-links" aria-label="Player statistics navigation">
-    <a class="nav" href="index.html#reports"><span class="nav-glyph">▦</span>Match history</a>
+    <a class="nav" href="index.html"><span class="nav-glyph">▦</span>Match history</a>
     <a class="nav" href="seasons.html"><span class="nav-glyph" aria-hidden="true">▤</span>Older matches</a>
     <a class="nav" href="activity.html"><span class="nav-glyph" aria-hidden="true">▦</span>Recorded match activity</a>
     <a class="nav active" href="players.html"><span class="nav-glyph">◎</span>Find a player</a>
+    <a class="nav" href="progression.html"><span class="nav-glyph" aria-hidden="true">◈</span>My WARDOGS progression</a>
+    <a class="nav" href="map-team.html"><span class="nav-glyph" aria-hidden="true">◫</span>Map &amp; team performance</a>
     <a class="nav" href="compare.html"><span class="nav-glyph" aria-hidden="true">⇄</span>Compare players</a>
     <a class="nav" href="weekly.html"><span class="nav-glyph" aria-hidden="true">◷</span>Weekly roundup</a>
     <a class="nav" href="https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342/leaderboard" target="_blank" rel="noopener noreferrer"><span class="nav-glyph">♜</span>WARCON player rankings <span class="external">↗</span></a>
@@ -41,7 +45,7 @@
     <div class="rail-footer"><div><strong>COMMUNITY-RUN SERVER</strong><small>Independent of WARDOGS developers</small></div></div>
   </aside>
   <main id="content" class="main">
-    <header class="topbar"><div class="game-lockup" aria-label="Game: WARDOGS — Tactical All Out Warfare"><img src="assets/wardogs-fullmark.png" alt="WARDOGS — Tactical All Out Warfare" width="200" height="40" /></div><div class="breadcrumb">WARDOGS <span>/</span> ONEAVERAGEDAN <span>/</span> PLAYER STATS</div><a class="back-match" href="index.html#reports">← Match history</a></header>
+    <header class="topbar"><div class="game-lockup" aria-label="Game: WARDOGS — Tactical All Out Warfare"><img src="assets/wardogs-fullmark.png" alt="WARDOGS — Tactical All Out Warfare" width="200" height="40" /></div><div class="breadcrumb">WARDOGS <span>/</span> ONEAVERAGEDAN <span>/</span> PLAYER STATS</div><a class="back-match" href="index.html">← Match history</a></header>
     
     <section class="hero player-hero" aria-labelledby="player-hero-title">
       <div class="hero-glow" aria-hidden="true"></div>
@@ -77,6 +81,53 @@
         <div class="career-secondary-card"><span>Playtime</span><strong>37h 0m</strong><small>FICTIONAL</small></div>
         <div class="career-secondary-card"><span>Seeding time</span><strong>3h 0m</strong><small>FICTIONAL</small></div>
       </div>
+      <section id="demo-progression-panel" class="progression-panel profile-panel demo-progression-panel" aria-labelledby="demo-progression-title" data-demo-state="unlinked">
+        <div class="panel-heading">
+          <div><span class="eyebrow">WARDOGS TRACKER · SIX-ROLE EXAMPLE</span>
+          <h3 id="demo-progression-title">WARDOGS account progression</h3>
+          <p class="progression-explainer">Separate from server match statistics. Explore exactly how a linked, consenting player's six roles and account progression would be displayed.</p></div>
+          <span id="demo-progression-badge" class="demo-progression-badge">NOT CONNECTED · FICTIONAL PLAYER</span>
+        </div>
+        <div class="progression-layout">
+          <div class="demo-radar-column">
+            <div class="demo-radar-frame">
+              <svg id="demo-role-radar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" data-role-demo="true" role="img" aria-label="Unconnected fictional six-role WARDOGS progression">
+                <g fill="none" stroke="#48614e" stroke-width="1"><polygon points="200,35 290,87 290,191 200,243 110,191 110,87"/><polygon points="200,61 267,100 267,178 200,217 133,178 133,100"/><polygon points="200,87 245,113 245,165 200,191 155,165 155,113"/><polygon points="200,113 222,126 222,152 200,165 178,152 178,126"/><path d="M200 139V35 M200 139L290 87 M200 139L290 191 M200 139V243 M200 139L110 191 M200 139L110 87"/></g>
+                <g fill="#d8ecd9" font-family="Arial,sans-serif" font-size="12" text-anchor="middle"><text x="200" y="21">ASSAULT</text><text x="328" y="83">MEDIC</text><text x="328" y="213">SUPPORT</text><text x="200" y="284">RECON</text><text x="72" y="213">DRIVER</text><text x="72" y="83">PILOT</text></g>
+                <rect data-role-empty="true" x="113" y="122" width="174" height="38" rx="6" fill="#192b1f" stroke="#648b6d"/>
+                <text data-role-empty="true" x="200" y="146" text-anchor="middle" fill="#eaf8ed" font-size="11" font-family="Arial,sans-serif">NO LINKED ROLE LEVELS</text>
+              </svg>
+            </div>
+            <p class="demo-radar-note">FICTIONAL six-role levels. Demonstration axis scale: 0–50 for visualization only; <strong>not an official role-level maximum</strong>.</p>
+            <div class="table-scroll"><table class="demo-role-table">
+              <caption>Role progression — fictional values only</caption>
+              <thead><tr class="demo-role-column-head"><th scope="col">Role</th><th scope="col">Level</th><th scope="col">Experience</th></tr></thead>
+              <tbody id="demo-role-values"></tbody>
+            </table></div>
+          </div>
+          <div class="demo-progression-details">
+            <div class="progression-kpis">
+              <div><small>Overall WARDOG level</small><strong id="demo-wardog-level">—</strong></div>
+              <div><small>Career XP</small><strong id="demo-career-xp">—</strong></div>
+              <div><small>Account cash</small><strong id="demo-cash">Hidden</strong></div>
+              <div><small>Account gold</small><strong id="demo-gold">Hidden</strong></div>
+            </div>
+            <div class="demo-connect-box">
+              <h4>Link and synchronize progression</h4>
+              <p id="demo-progression-status" role="status" aria-live="polite">Demonstration only. No account is connected.</p>
+              <div class="progression-actions">
+                <button type="button" id="demo-progression-connect">Simulate verified connection</button>
+                <button type="button" id="demo-progression-refresh" hidden>Refresh example</button>
+                <button type="button" id="demo-progression-disconnect" hidden>Disconnect example</button>
+              </div>
+              <label class="demo-economy-control"><input id="demo-economy-visible" type="checkbox" disabled> Show fictional cash and gold (example opt-in)</label>
+              <p id="demo-last-sync" class="demo-radar-note">No connection</p>
+              <p><a href="https://wardogstracker.gg/stats" target="_blank" rel="noopener noreferrer">Open the real WARDOGS Tracker ↗</a> to see its independent Steam sign-in and synchronization flow.</p>
+              <p class="demo-radar-note">Real 1ADAAR linking requires separate Steam identity verification, secure consent and a private session service. This demo performs none of those actions.</p>
+            </div>
+          </div>
+        </div>
+      </section>
       <div class="profile-analysis-grid">
         <section id="performance-module" class="performance-module" aria-label="Performance trends">
           <p class="perf-empty-static">Loading PlayerOne's fictional match chart…</p>
