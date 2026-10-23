@@ -434,6 +434,24 @@
       "teamKills": 0,
       "vehicleKills": 0,
       "wins": 0
+    },
+    {
+      "deaths": 0,
+      "draws": 0,
+      "hasFeed": true,
+      "headshots": 0,
+      "key": "bce9ee925e12a3291fee762dd8984805ed66fd81f137050f0940b6b7ff337c3c",
+      "killStreak": 0,
+      "kills": 0,
+      "losses": 0,
+      "matches": 0,
+      "minutes": 3,
+      "name": "Losmaduro",
+      "rank": 25,
+      "seedMinutes": 0,
+      "teamKills": 0,
+      "vehicleKills": 0,
+      "wins": 0
     }
   ],
   "schemaVersion": 2,
