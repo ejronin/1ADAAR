@@ -277,6 +277,21 @@ async def capture():
                     surface.on("pageerror",lambda error:surface_errors.append(str(error)))
                     await surface.goto(origin+"/"+route,wait_until="domcontentloaded",timeout=30000)
                     await surface.wait_for_timeout(450)
+                    if route in ("index.html","join.html"):
+                        banner = await surface.evaluate("""async () => {
+                            const image=new Image();
+                            image.src='assets/oneaveragedan-server-banner.png?v=113';
+                            await image.decode();
+                            return {
+                              width:image.naturalWidth,
+                              height:image.naturalHeight,
+                              background:getComputedStyle(document.querySelector('.server-banner-media')).backgroundImage
+                            };
+                        }""")
+                        assert banner['width']==1024 and banner['height']==256,(route,width,banner)
+                        assert 'oneaveragedan-server-banner.png' in banner['background'],(route,width,banner)
+                        await surface.wait_for_function("""() => [...document.querySelectorAll(
+                          '.server-banner-brand-fallback')].every(item => item.hidden)""")
                     for required_selector in required:
                         # Map/Team detail panel is gated until real retained match data
                         # exists, so its DOM is present even when appropriately hidden.
