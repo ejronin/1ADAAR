@@ -65,6 +65,28 @@ async def capture():
                 assert measurements["donuts"]==1
                 assert measurements["insights"]==2
                 assert len(measurements["tabs"])==5
+                # The public PlayerOne route must demonstrate the approved
+                # opt-in state transition without any API or actual Steam sign-in.
+                assert await page.locator('#demo-progression-panel').is_visible()
+                assert await page.locator('#demo-role-radar [data-role-profile]').count()==0
+                await page.locator('#demo-progression-connect').click()
+                assert await page.locator('#demo-role-radar [data-role-profile]').count()==1
+                assert await page.locator('#demo-role-values tr').count()==6
+                assert (await page.locator('#demo-wardog-level').text_content()).strip()=='142'
+                assert (await page.locator('#demo-career-xp').text_content()).strip()=='1,830,450'
+                assert (await page.locator('#demo-cash').text_content()).strip()=='Hidden'
+                assert await page.locator('#demo-progression-refresh').is_visible()
+                await page.locator('#demo-economy-visible').check()
+                assert (await page.locator('#demo-gold').text_content()).strip()=='4'
+                await page.locator('#demo-progression-refresh').click()
+                assert 'no network request' in (await page.locator('#demo-progression-status').text_content()).lower()
+                if width in (390,1440):
+                    await page.screenshot(path=str(ARTIFACT/f'playerone-progression-connected-{width}px.png'),
+                                          full_page=True,animations='disabled')
+                await page.locator('#demo-progression-disconnect').click()
+                assert await page.locator('#demo-role-radar [data-role-profile]').count()==0
+                assert (await page.locator('#demo-wardog-level').text_content()).strip()=='—'
+                assert await page.locator('#demo-progression-connect').is_visible()
                 assert measurements["table"]
                 assert not errors, f"JavaScript exceptions at {width}px: {errors}"
                 # Exercise the actual redesigned five modes rather than only
@@ -131,11 +153,32 @@ async def capture():
                     await real.locator("#progression-panel").wait_for(state="visible",timeout=10000)
                     assert await real.locator("#progression-role-radar").count()==1
                     assert await real.locator("#progression-role-radar [data-role-profile]").count()==0
-                    assert "No 1ADAAR Steam ownership" in await real.locator("#progression-status").inner_text()
+                    assert 'Not connected' in await real.locator('#progression-status').inner_text()
+                    assert await real.locator('#progression-check').is_enabled()
+                    assert await real.locator('#progression-consent-panel').is_hidden()
+                    assert await real.locator('#progression-refresh').is_hidden()
                     report.setdefault("realProfiles",[]).append({"width":width,**actual,
                         "progressionEmpty":True})
                 assert not real_errors, f"Real player page errors at {width}: {real_errors}"
                 await real.close()
+                # Anyone may open independent game-account progression without
+                # being a published WARCON top-1000 server player.
+                own=await browser.new_page(viewport={"width":width,"height":900},device_scale_factor=1)
+                own_errors=[]
+                own.on("pageerror",lambda error:own_errors.append(str(error)))
+                result=await own.goto(origin+"/progression.html",wait_until="domcontentloaded")
+                assert result and result.status==200
+                assert await own.locator('#progression-panel').is_visible()
+                assert await own.locator('#progression-check').is_enabled()
+                assert 'Sign in with Steam' in await own.locator('#progression-status').inner_text()
+                assert await own.locator('#progression-role-radar [data-role-profile]').count()==0
+                ownWidth=await own.evaluate("document.documentElement.scrollWidth-innerWidth")
+                assert ownWidth<=2,f"Standalone progression overflow at {width}px: {ownWidth}"
+                assert not own_errors,f"Standalone progression errors: {own_errors}"
+                if width in (390,1440):
+                    await own.screenshot(path=str(ARTIFACT/f"my-wardogs-progression-{width}px.png"),
+                                         full_page=True,animations="disabled")
+                await own.close()
                 # Server-wide completed-match activity is source-backed and
                 # must show a no-data notice (not fictional activity) until
                 # completed WARCON matches are actually archived.

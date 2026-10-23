@@ -39,7 +39,12 @@ jobs:
           node --check docs/js/performance-core.js
           node --check docs/js/performance.js
           node --check docs/js/progression.js
+          node --check docs/js/progression-config.js
+          node --check services/steam-progression/worker.mjs
+          node --test tests/progression_auth.test.mjs
+          node --test tests/progression_auth_e2e.test.mjs
           node --check docs/js/role-radar.js
+          node --check docs/js/demo-progression.js
           node --check docs/js/demo-performance.js
           node --check docs/js/factions.js
           node tests/factions.test.cjs
