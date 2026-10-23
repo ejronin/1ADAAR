@@ -89,3 +89,11 @@
 /* Stage facelift: mobile footers are distinct information lines, never concatenated. */
 @media(max-width:720px){.weekly-page footer{display:grid;gap:8px;line-height:1.6}
  .weekly-page footer span{display:block;overflow-wrap:anywhere}}
+
+/* Align unassigned podium cards without reserving a crown gap. */
+.weekly-page .weekly-podium{align-items:stretch;margin-top:17px}
+.weekly-page .weekly-podium-place{min-height:0;display:flex;flex-direction:column;justify-content:center}
+.weekly-page .weekly-podium-place.gold[data-award-verified="false"]{padding-top:19px;padding-bottom:19px;min-height:0}
+.weekly-page .weekly-podium-place.gold[data-award-verified="false"] .weekly-crown{display:none!important}
+.weekly-page .weekly-podium-section .section-head{margin-bottom:0}
+@media(max-width:650px){.weekly-page .weekly-podium-place.gold[data-award-verified="false"]{padding:13px 6px}}
