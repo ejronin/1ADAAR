@@ -14,7 +14,7 @@
        !endpoint.includes('REPLACE')&&!endpoint.includes('localhost');}
     catch(_){return false;}
   })();
-  const SAVED='1adaar-steam-session-v1', VERIFIER='1adaar-steam-pkce-v1';
+  const SAVED='1adaar-steam-session-v1', VERIFIER='1adaar-steam-pkce-v1', CONSENT='1adaar-steam-consented-v1';
   let currentKey=null,connected=false,inFlight=false,lastCheck=0;
   const url=new URL(root.location.href);
   // Code is a 90-second one-time credential. Remove before fetching any data.
@@ -40,7 +40,7 @@
     }catch(_){return null;}
   }
   function clearSession(){
-    sessionStorage.removeItem(SAVED);sessionStorage.removeItem(VERIFIER);
+    sessionStorage.removeItem(SAVED);sessionStorage.removeItem(VERIFIER);sessionStorage.removeItem(CONSENT);
   }
   function show(state){
     connected=state==='connected';
@@ -109,18 +109,20 @@
     const key=currentKey;
     if(!key)return;
     const s=readSession();
-    if(!s||s.playerKey!==key){show('unlinked');blank();return;}
+    if(!s||s.playerKey!==key){sessionStorage.removeItem(CONSENT);show('unlinked');blank();return;}
     inFlight=true;show(connected?'connected':'unlinked');
     try{
       const info=await api('/api/me');
       if(currentKey!==key)return;
       if(info.playerKey!==key)throw Error('account_mismatch');
       if(info.state!=='connected'){
+        sessionStorage.removeItem(CONSENT);
         blank();show('consent');
         note('Steam ownership verified. Choose the public progression and optional economy permissions below.');
         return;
       }
       economyToggle.checked=Boolean(info.economy);
+      sessionStorage.setItem(CONSENT,String(s.expiresAt));
       show('connected');
       const data=await api('/api/progression');
       if(currentKey!==key)return;

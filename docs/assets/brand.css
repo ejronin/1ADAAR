@@ -258,3 +258,38 @@ footer{font-size:11.5px;line-height:1.75;letter-spacing:.045em;color:#b4c3b9}
   *,*::before,*::after{scroll-behavior:auto!important}
 }
 @media(hover:none){.match-card:hover{transform:none}}
+
+/* Owner review: visible hosting/data provenance, with unmodified provider logos. */
+.service-provenance{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0 20px}
+.service-provenance-card{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;min-width:0;gap:9px;padding:15px;
+ border:1px solid #345740;border-radius:9px;background:#111d15;text-decoration:none;color:#cbdacf;
+ font-size:11px;line-height:1.5;transition:border-color .15s ease}
+.service-provenance-card:hover,.service-provenance-card:focus-visible{border-color:#86f4a4}
+.service-provenance-label{color:#90d6a3;font-size:10px;font-weight:800;letter-spacing:.055em}
+.service-provenance-card img{display:block;width:auto;max-width:100%;height:34px;object-fit:contain;object-position:left center}
+.service-provenance-card span:last-child{overflow-wrap:anywhere}
+.hero-actions .discord-link{display:inline-flex;align-items:center;gap:8px}
+.hero-actions .discord-link img{width:19px;height:19px;object-fit:contain;flex:none}
+@media(max-width:990px){.service-provenance{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.service-provenance{gap:8px}.service-provenance-card{padding:11px}
+ .service-provenance-card img{height:25px}.service-provenance-label{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.service-provenance-card{transition:none}}
+
+/* Compact provider lockups in the side rail, as supplied by each brand. */
+.rail-sources{display:flex;flex-direction:column;align-items:stretch;gap:10px;padding:18px 5px 8px}
+.rail-sources>strong{font:800 10px/1.3 system-ui,sans-serif;letter-spacing:.07em;color:#e8f3ea}
+.rail-sources>a{display:grid;gap:3px;text-decoration:none;border:1px solid #35533b;border-radius:6px;background:#142118;padding:9px 11px;min-width:0}
+.rail-sources>a:hover,.rail-sources>a:focus-visible{border-color:#8bea9f;background:#1e3021}
+.rail-sources img{height:26px;width:100%;max-width:150px;object-fit:contain;object-position:left center;display:block}
+.rail-sources small{font-size:9px;margin:0;letter-spacing:.03em;color:#a8cbb0}
+.rail-sources [hidden]{display:none!important}
+/* Authentic map previews are supplemental: labels and KPIs remain readable. */
+.server-status-cell.map-banner-present,.kpi.map-banner-present,.match-card.map-banner-present{
+ background-image:linear-gradient(90deg,rgba(6,14,9,.98),rgba(7,18,11,.77) 62%,rgba(7,18,11,.52)),var(--map-banner);
+ background-position:center;background-size:cover;background-repeat:no-repeat}
+.server-status-cell.map-banner-present strong,.kpi.map-banner-present strong,
+.match-card.map-banner-present .card-map{text-shadow:0 2px 7px #020a04}
+.match-card.map-banner-present .card-top{background:rgba(15,29,19,.72)}
+.match-card.map-banner-present .card-content{background:transparent}
+@media(max-height:740px) and (min-width:721px){.rail-sources{position:static}.rail{overflow-y:auto}}
+@media(max-width:720px){.rail-sources{display:none}}
