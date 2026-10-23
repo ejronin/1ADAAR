@@ -1,0 +1,22 @@
+/* Public WARDOGS Tracker profile, browser-local opt-in. */
+.tracker-public-form,.tracker-community-controls{margin:15px 0;padding:17px;
+ border:1px solid #416448;border-radius:9px;background:#112219;display:grid;gap:11px;min-width:0}
+.tracker-public-form h4,.tracker-community-controls h4{font:800 23px/1.1 'Barlow Condensed',Arial,sans-serif;margin:0;color:#f3fff6}
+.tracker-public-form p,.tracker-community-controls p{font-size:12px;line-height:1.6;color:#c4d8c8;margin:0}
+.tracker-public-form label,.tracker-community-controls label{font-size:12px;color:#d8f0dd;font-weight:700}
+.tracker-public-form input[type="text"],.tracker-community-controls input[type="text"]{
+ width:100%;min-width:0;max-width:750px;padding:11px;border:1px solid #6b9574;
+ background:#0b1810;color:#f1fff2;border-radius:5px;font:500 13px system-ui,sans-serif}
+.tracker-public-form .tracker-optin{display:flex;gap:9px;align-items:center;line-height:1.5;font-weight:500}
+.tracker-optin input{accent-color:#73db89;width:18px;height:18px;flex:none}
+.tracker-public-actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.tracker-public-actions button,.tracker-community-controls button,.tracker-public-actions a{
+ min-height:43px;border:1px solid #72c28b;border-radius:5px;background:#244b31;color:#effff1;
+ padding:11px 14px;font:700 12px system-ui,sans-serif;text-decoration:none;cursor:pointer}
+.tracker-public-actions button:disabled{opacity:.55;cursor:wait}
+.tracker-public-form .tracker-independent{font-size:11px;color:#a9c9b1}
+.tracker-community-controls form{display:grid;gap:9px}
+.tracker-community-controls form button{justify-self:start}
+.tracker-community-controls[hidden],.tracker-public-actions [hidden]{display:none!important}
+@media(max-width:520px){.tracker-public-form,.tracker-community-controls{padding:12px}
+ .tracker-public-actions button,.tracker-public-actions a{flex:1 1 auto;text-align:center}}
