@@ -38,7 +38,7 @@ class UnifiedSiteTests(unittest.TestCase):
                 self.assertEqual(parser.nav[:8],list(NAV))
                 self.assertEqual(parser.nav.count(page),1)
                 self.assertIn('assets/wardogs-fullmark.png',parser.images)
-                self.assertEqual(parser.styles[-1], 'assets/server-join.css?v=114' if page=='index.html' else 'assets/site-unified.css?v=112')
+                self.assertEqual(parser.styles[-1], 'assets/map-gallery.css?v=117' if page in ('index.html','map-team.html') else 'assets/site-unified.css?v=112')
                 self.assertEqual(sum('site-unified.css' in x for x in parser.styles),1)
                 self.assertEqual(html.count('1of1 Servers'),1)
                 self.assertEqual(html.count('alt="WARCON"'),1)
@@ -72,7 +72,7 @@ class UnifiedSiteTests(unittest.TestCase):
         self.assertIn('map-banner-named',style)
         self.assertIn('scripts/build_map_banners.py',collector)
         self.assertIn('git add docs/assets/map-banners/*-card.webp',collector)
-        self.assertIn('js/map-banners.js?v=112',(DOCS/'index.html').read_text())
+        self.assertIn('js/map-banners.js?v=117',(DOCS/'index.html').read_text())
 
     def test_no_competing_source_navigation_or_duplicated_hero_baselines(self):
         unified=(DOCS/'assets/site-unified.css').read_text()
