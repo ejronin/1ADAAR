@@ -32,7 +32,7 @@ class ShareAndJoinTests(unittest.TestCase):
         self.assertIn('^[a-f0-9]{64}$',js)
         self.assertNotIn('steamcommunity.com',js)
     def test_playerone_demo_share_labels_fictional(self):
-        html=(ROOT/'playerone-demo.html').read_text()
+        html=((Path(__file__).resolve().parents[1]/'tests/fixtures/playerone-demo.html')).read_text()
         js=(ROOT/'js/demo-share.js').read_text()
         self.assertIn('id="share-demo"',html)
         self.assertIn('demo-share-status',html)
