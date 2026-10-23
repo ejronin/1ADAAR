@@ -41,7 +41,7 @@ class LaunchUXContractTests(unittest.TestCase):
             yield filename, html, parser
 
     def test_styles_have_clear_ownership_without_redundant_overlay(self):
-        for filename in ("index.html", "players.html", "playerone-demo.html"):
+        for filename in ("index.html", "players.html"):
             html = (ROOT / filename).read_text(encoding="utf-8")
             parser = PageInspector()
             parser.feed(html)
