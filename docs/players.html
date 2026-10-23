@@ -30,7 +30,7 @@
   <script defer src="js/role-radar.js?v=3"></script>
 <script defer src="js/progression-config.js?v=2"></script>
 <script defer src="js/progression.js?v=4"></script>
-<script defer src="js/players.js?v=11"></script>
+<script defer src="js/players.js?v=12"></script>
 <link rel="stylesheet" href="assets/ia-v11.css?v=1" />
 <link rel="stylesheet" href="assets/tracker-public.css?v=1">
 </head>
@@ -68,14 +68,14 @@
       <div class="hero-glow" aria-hidden="true"></div>
       <div class="hero-text"><div class="eyebrow">◆ WARDOGS COMMUNITY SERVER · ONEAVERAGEDAN PLAYER STATS</div><h1 id="player-hero-title">PLAYER <em>DOSSIER.</em></h1><p>Review saved match results, combat trends, maps, factions, and progression data when available.</p>
         <form id="player-search" class="player-search" role="search"><label class="sr-only" for="player-query">Player name or SteamID64</label><input id="player-query" type="search" autocomplete="off" spellcheck="false" placeholder="Player name or 17-digit SteamID64" maxlength="80" required /><button type="submit">Find player →</button></form>
-        <a id="view-demo" class="demo-button" href="playerone-demo.html" aria-label="See an example player page with made-up stats">🧪 See a sample player page →</a><p class="search-footnote">Searches use WARCON's public player rankings, which show up to 1,000 players. Steam IDs are not shown in search results or saved in shared links.</p>
+        <p class="search-footnote">Searches use WARCON's public player rankings, which show up to 1,000 players. Steam IDs are not shown in search results or saved in shared links.</p>
       </div>
       <img class="player-hero-logo" src="assets/1ad-logo.svg" width="166" height="166" alt="" aria-hidden="true" />
     </section>
     <div id="lookup-message" class="notice" role="status">Loading player stats…</div>
     <section id="lookup-results" class="player-results" aria-labelledby="results-title" hidden><div class="section-head"><div><div class="eyebrow">SEARCH RESULTS</div><h2 id="results-title">Matching players</h2><p>Choose the player you want to view.</p></div></div><div id="player-candidates" class="candidate-grid"></div></section>
     <section id="dossier" aria-labelledby="dossier-title" hidden>
-      <div class="profile-header"><div class="profile-emblem" id="player-avatar" role="img" aria-label="Player initials until Steam avatar is available"><span class="avatar-initials" aria-hidden="true">?</span></div><div class="profile-heading"><span class="eyebrow"><span id="profile-source-text">PLAYER STATS / FROM WARCON</span></span><h2 id="dossier-title"></h2><div id="profile-subtitle" class="profile-subtitle"></div><div id="demo-warning" class="demo-warning" hidden>SAMPLE PLAYER — MADE-UP STATS · NOT REAL RESULTS</div></div><div class="profile-actions"><button type="button" id="share-player" class="new-search" aria-label="Share this player stats profile">↗ Share these stats</button><button type="button" id="new-search" class="new-search">New search</button></div></div>
+      <div class="profile-header"><div class="profile-emblem" id="player-avatar" role="img" aria-label="Player initials until Steam avatar is available"><span class="avatar-initials" aria-hidden="true">?</span></div><div class="profile-heading"><span class="eyebrow"><span id="profile-source-text">PLAYER STATS / FROM WARCON</span></span><h2 id="dossier-title"></h2><div id="profile-subtitle" class="profile-subtitle"></div></div><div class="profile-actions"><a class="new-search" id="map-team-details" href="map-team.html" hidden>Map &amp; team results ↗</a><button type="button" id="share-player" class="new-search" aria-label="Share this player stats profile">↗ Share these stats</button><button type="button" id="new-search" class="new-search">New search</button></div></div>
       <div id="player-share-status" class="share-status" role="status" aria-live="polite" hidden></div>
       <h3 class="career-primary-title" id="career-metrics-title">Player statistics</h3>
       <div class="metric-grid" id="profile-metrics" aria-labelledby="career-metrics-title"></div>
@@ -131,7 +131,7 @@
       <aside class="profile-activity-link" aria-label="Server-wide recorded match activity"><div><strong>Explore recorded match activity</strong><p>View when completed WARDOGS server matches were saved. This is a server-wide heatmap, not a player activity tracker.</p></div><a href="activity.html">View match activity heatmap →</a></aside>
       <div id="combat-panel" class="profile-panel" hidden><div class="panel-heading"><h3>Combat detail</h3><span>Shown only when WARCON has these results</span></div><div class="metric-grid compact" id="combat-metrics"></div></div>
       <div class="analytics-section-label"><span>MAP AND FACTION PERFORMANCE</span><small>Results from saved completed matches</small></div>
-      <p class="map-team-jump"><a id="map-team-details" href="map-team.html" hidden>See full map &amp; team results →</a></p>
+      
       <div class="profile-columns"><section class="profile-panel"><div class="panel-heading"><h3>Performance by map</h3><span>From latest 120 saved server matches</span></div><div id="map-breakdown"></div></section><section class="profile-panel faction-breakdown"><div class="panel-heading"><h3>Faction performance</h3><span>From latest 120 saved server matches</span></div><div id="faction-breakdown"></div></section></div>
       <section class="profile-panel"><div class="panel-heading"><h3>Recent completed matches</h3><span>Only matches 1ADAAR has saved</span></div><div id="recent-match-table" class="table-scroll"></div></section>
       <p class="profile-disclaimer">Your overall totals come from WARCON. Map, team, and recent match details come from the latest 120 completed matches saved by 1ADAAR, so older matches may be missing. A dash (—) means the number is not available; it does not mean zero.</p>
