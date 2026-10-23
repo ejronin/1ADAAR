@@ -114,3 +114,24 @@ html{scroll-padding-top:18px}
  .career-source-pair .career-pair-number{font-size:24px}
 }
 @media(prefers-reduced-motion:reduce){.career-source-pair,.map-banner-present{transition:none!important}}
+
+/* Generated map-title image replaces redundant live text only after the image loads. */
+.server-status-cell.map-banner-named #server-status-map,
+.kpi.map-banner-named #stat-map{opacity:0}
+.server-status-cell.map-banner-named,.kpi.map-banner-named{background-position:center center!important}
+.map-banner-present .card-content{background:transparent}
+@media(min-width:721px){.app-shell{grid-template-columns:214px minmax(0,1fr)}}
+@media(min-width:721px) and (max-width:1050px){.app-shell{grid-template-columns:202px minmax(0,1fr)}}
+@media(max-width:720px){.app-shell{display:block!important}}
+/* Any remaining gold typography belongs to podium medals, not weekly headings. */
+.weekly-page .weekly-season h4,.weekly-page .weekly-season h5,
+.weekly-page .weekly-metric strong,.weekly-page .weekly-count,
+.weekly-page .weekly-overview h3,.weekly-page .weekly-week-links a,
+.weekly-page .weekly-podium-section .section-head h2{color:#b7d7f7}
+.weekly-page .weekly-podium-place.gold .weekly-rank,
+.weekly-page .weekly-podium-place.gold .weekly-avatar,
+.weekly-page .weekly-podium-place.gold .weekly-crown{color:#f5d78b}
+.weekly-page .weekly-podium-place.silver .weekly-rank,
+.weekly-page .weekly-podium-place.silver .weekly-avatar{color:#d7e2ee}
+.weekly-page .weekly-podium-place.bronze .weekly-rank,
+.weekly-page .weekly-podium-place.bronze .weekly-avatar{color:#d9a183}
