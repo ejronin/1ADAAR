@@ -306,35 +306,62 @@ async def capture():
                                 width,"Join control too wide",geometry)
                             assert geometry["position"]=="static",(width,geometry)
                     if route in ("index.html","map-team.html"):
-                        map_images=await surface.evaluate("""async () => {
-                          const files=[...document.querySelectorAll('.map-art-grid img')];
-                          const entries=[];
-                          for(const image of files){
-                            await image.decode();
-                            entries.push({
-                              src:image.currentSrc,
-                              width:image.naturalWidth,
-                              height:image.naturalHeight,
-                              visible:image.getBoundingClientRect().width>20
-                            });
-                          }
-                          const sample=document.createElement('div');
-                          sample.className='server-status-cell';
-                          document.body.append(sample);
-                          const selected=window.OneADAARMapBanners.decorateMapRow(sample,'Bakurani');
-                          const css=getComputedStyle(sample).backgroundImage;
-                          const raw=sample.style.getPropertyValue('--map-banner');
-                          sample.remove();
-                          return {entries,selected,css,raw};
+                        banner_probe=await surface.evaluate("""async () => {
+                            const src=new URL('assets/map-banners/bakurani-card.webp',document.baseURI).href;
+                            const art=new Image();
+                            art.src=src;
+                            await art.decode();
+                            const sample=document.createElement('div');
+                            sample.className='server-status-cell';
+                            document.body.append(sample);
+                            const selected=window.OneADAARMapBanners.decorateMapRow(sample,'Bakurani');
+                            const css=getComputedStyle(sample).backgroundImage;
+                            const raw=sample.style.getPropertyValue('--map-banner');
+                            sample.remove();
+                            return {width:art.naturalWidth,height:art.naturalHeight,
+                                selected,css,raw,
+                                noGallery:document.querySelectorAll('.map-art-section').length===0};
                         }""")
-                        assert len(map_images["entries"])==3,(route,width,map_images)
-                        assert all(x["width"]>0 and x["height"]>0 and x["visible"]
-                                   for x in map_images["entries"]),(route,width,map_images)
-                        assert map_images["selected"],(route,width,map_images)
-                        assert "/assets/map-banners/bakurani-card.webp" in map_images["raw"], (
-                            route,width,"CSS map URL resolved incorrectly",map_images)
-                        assert "assets/assets/map-banners" not in map_images["css"],(
-                            route,width,"CSS map URL duplicated directory",map_images)
+                        assert banner_probe["width"]>0 and banner_probe["height"]>0,(
+                            route,width,banner_probe)
+                        assert banner_probe["selected"] and banner_probe["noGallery"],(
+                            route,width,banner_probe)
+                        assert "/assets/map-banners/bakurani-card.webp" in banner_probe["raw"],(
+                            route,width,banner_probe)
+                        assert "assets/assets/map-banners" not in banner_probe["css"],(
+                            route,width,banner_probe)
+                    if route=="index.html":
+                        featured=await surface.evaluate("""async () => {
+                          const status=document.getElementById('server-status');
+                          const players=status.querySelector('.server-status-players-tile');
+                          const map=status.querySelector('.server-status-map-tile');
+                          const action=document.querySelector('.hero-warcon-status');
+                          const box=map.getBoundingClientRect();
+                          const pbox=players.getBoundingClientRect();
+                          const ok=window.OneADAARMapBanners.decorateMapRow(map,'Bakurani');
+                          const css=getComputedStyle(map).backgroundImage;
+                          const fresh=await new Promise(resolve=>{
+                            const pic=new Image();
+                            pic.onload=()=>resolve(true);
+                            pic.onerror=()=>resolve(false);
+                            pic.src=new URL('assets/map-banners/bakurani-card.webp', document.baseURI).href;
+                          });
+                          return {
+                            actionPresent:!!action,
+                            noStatusColumn:!status.querySelector('.server-status-source'),
+                            mapW:box.width,playersW:pbox.width,mapH:box.height,
+                            imageLoaded:fresh,cardStyled:ok,
+                            background:css
+                          };
+                        }""")
+                        assert featured["imageLoaded"] and featured["cardStyled"],(
+                            width,"Current-map image not loaded",featured)
+                        assert featured["actionPresent"] and featured["noStatusColumn"], (
+                            width,"WARCON link not moved to hero",featured)
+                        assert featured["mapW"]>featured["playersW"]*1.25, (
+                            width,"Current-map tile should be wider than player count",featured)
+                        assert "/assets/map-banners/bakurani-card.webp" in featured["background"], (
+                            width,"Current-map image CSS URL incorrect",featured)
                     for required_selector in required:
                         # Map/Team detail panel is gated until real retained match data
                         # exists, so its DOM is present even when appropriately hidden.
