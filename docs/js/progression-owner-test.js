@@ -54,6 +54,7 @@
   }
   const number=n=>Number.isSafeInteger(n)&&n>=0?n.toLocaleString('en-US'):'—';
   function blank(){
+    root.OneADAARProgressionIntelligence?.render(null);
     root.OneADAARRoleRadar?.render(radar,null);
     $('progression-wardog-level').textContent='—';
     $('progression-career-xp').textContent='—';
@@ -77,6 +78,7 @@
       blank();note('Tracker supplied incomplete role data. No values have been inferred.');return;
     }
     root.OneADAARRoleRadar.render(radar,record);
+    root.OneADAARProgressionIntelligence?.render(record);
     $('progression-wardog-level').textContent=number(record.wardogLevel);
     $('progression-career-xp').textContent=number(record.careerXp);
     $('progression-cash').textContent=record.economyConsented?number(record.cash):'Hidden';
