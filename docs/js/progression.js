@@ -3,6 +3,8 @@
 // One-time user-provided ID stays in this browser only when Remember is checked.
 (function(root){
   const PROFILE_KEY='1adaar-public-tracker-profile-v1';
+  const getSaved=()=>{try{return localStorage.getItem(PROFILE_KEY)}catch(_){return null}};
+  const save=value=>{try{if(value)localStorage.setItem(PROFILE_KEY,value);else localStorage.removeItem(PROFILE_KEY);return true}catch(_){return false}};
   const api='https://wardogstracker.gg/api/v1/';
   const ID=/^7656119\d{10}$/;
   const KEY=/^[a-f0-9]{64}$/;
@@ -88,8 +90,7 @@
     if(active?.key && (await keyFor(id))!==active.key){
       blank();status('That public Tracker account does not match the selected WARCON player.');return;
     }
-    if(remember)localStorage.setItem(PROFILE_KEY,id);
-    else localStorage.removeItem(PROFILE_KEY);
+    if(!save(remember?id:null))status('Browser storage is disabled; you can still view the public profile for this session.');
     const submit=el('tracker-public-submit');submit.disabled=true;
     status('Reading your published WARDOGS Tracker progression…');
     try{
@@ -102,6 +103,9 @@
       const value=normalize(await response.json(),id);
       if(!value){blank();status('Tracker did not return complete public progression for this account. No values were guessed.');return;}
       paint(value);
+      const profileLink=el('tracker-open-profile');
+      profileLink.href='https://wardogstracker.gg/profile/'+id;
+      profileLink.hidden=false;
       const community=el('tracker-community-controls');
       if(community)community.hidden=false;
     }catch(_){blank();status('Could not retrieve the public Tracker record. The Steam authentication Worker was not contacted.');}
@@ -137,11 +141,12 @@
     host.hidden=!ok;if(!ok)return;
     active=standalone?null:entry;
     ++seq;blank();
-    const saved=parseId(localStorage.getItem(PROFILE_KEY));
+    const saved=parseId(getSaved());
     const field=el('tracker-public-id');
     field.value=saved||'';
     el('tracker-public-remember').checked=Boolean(saved);
     el('tracker-community-controls').hidden=true;
+    const profileLink=el('tracker-open-profile');profileLink.hidden=true;profileLink.removeAttribute('href');
     status('Load public Tracker progression without signing in through 1ADAAR.');
     if(saved)void load(saved,true);
   }
@@ -149,11 +154,13 @@
   if(form)form.addEventListener('submit',e=>{e.preventDefault();void load(
     el('tracker-public-id').value,el('tracker-public-remember').checked);});
   el('tracker-public-clear')?.addEventListener('click',()=>{
-    ++seq;localStorage.removeItem(PROFILE_KEY);el('tracker-public-id').value='';
+    ++seq;save(null);el('tracker-public-id').value='';
+    const link=el('tracker-open-profile');link.hidden=true;link.removeAttribute('href');
     el('tracker-public-remember').checked=false;blank();
     el('tracker-community-controls').hidden=true;
     status('Saved public profile cleared from this browser.');
   });
+  el('tracker-public-economy')?.addEventListener('change',()=>{const id=el('tracker-public-id').value;if(parseId(id))void load(id,el('tracker-public-remember').checked);});
   el('tracker-community-form')?.addEventListener('submit',community);
   root.OneADAARProgression=Object.freeze({mount});
 })(window);
