@@ -173,6 +173,42 @@ async def capture():
                 if width in (390,1440):
                     await own.screenshot(path=str(ARTIFACT/f"steam-owner-test-{width}px.png"),
                                          full_page=True,animations="disabled")
+                if width==390:
+                    # Full browser test with a LOCAL MOCK of Tracker's documented
+                    # public API. No Steam OpenID, private account, or real ID.
+                    sid='76561190000000001'
+                    roles={name:{"level":i,"xp":0 if i==0 else i*100}
+                           for i,name in enumerate(('assault','medic','support','recon','driver','pilot'))}
+                    fixture={"player":{"steamId":sid,"avatarUrl":None,
+                        "leaderboardRank":None,"leaderboardPlayers":None,
+                        "stats":{"wardogLevel":17,"careerXp":31264,
+                            "cash":123,"gold":0,"unlocks":7,
+                            "syncedAt":"2026-10-22T19:00:00Z","roles":roles}}}
+                    async def tracker_reply(route):
+                        await route.fulfill(status=200,content_type="application/json",
+                                            body=json.dumps(fixture))
+                    await own.route("https://wardogstracker.gg/api/v1/players/*",tracker_reply)
+                    await own.locator("#tracker-public-id").fill(sid)
+                    await own.locator("#tracker-public-remember").check()
+                    await own.locator("#tracker-public-submit").click()
+                    await own.locator('#progression-role-radar [data-role-profile]').wait_for(
+                        state="attached",timeout=10000)
+                    assert await own.locator('#progression-wardog-level').inner_text()=='17'
+                    assert await own.locator('#progression-career-xp').inner_text()=='31,264'
+                    assert '0 XP' in await own.locator('#progression-role-values').inner_text()
+                    assert await own.locator('#progression-cash').inner_text()=='Hidden'
+                    assert await own.locator('#tracker-open-profile').is_visible()
+                    assert await own.evaluate(
+                        "localStorage.getItem('1adaar-public-tracker-profile-v1')")==sid
+                    await own.locator('#tracker-public-economy').check()
+                    await own.wait_for_function(
+                        "() => document.querySelector('#progression-gold').textContent === '0'",
+                        timeout=10000)
+                    await own.locator('#tracker-public-clear').click()
+                    assert await own.evaluate(
+                        "localStorage.getItem('1adaar-public-tracker-profile-v1')") is None
+                    assert await own.locator("#progression-role-radar [data-role-profile]").count()==0
+                    assert not own_errors,f"Public Tracker browser JS errors: {own_errors}"
                 await own.close()
                 # Server-wide completed-match activity is source-backed and
                 # must show a no-data notice (not fictional activity) until
