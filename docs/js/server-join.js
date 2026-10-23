@@ -11,6 +11,13 @@
     return ok;
   }
   function bind(){
+    // The exact owner-approved PNG overrides this official-brand fallback.
+    // Never hide the brand row until the local file really loads.
+    const banner=new Image();
+    banner.onload=()=>{
+      document.querySelectorAll('.server-banner-brand-fallback').forEach(x=>x.hidden=true);
+    };
+    banner.src='assets/oneaveragedan-server-banner.png';
     const button=document.getElementById('copy-server-join-code');
     const status=document.getElementById('server-join-copy-status');
     if(!button||!status)return;
