@@ -2,12 +2,13 @@ name = "1adaar-steam-progression"
 main = "worker.mjs"
 compatibility_date = "2026-10-22"
 workers_dev = true
+preview_urls = false
 
 [vars]
 PUBLIC_PAGE_URL = "https://ejronin.github.io/1ADAAR/players.html"
 PUBLIC_PROGRESSION_URL = "https://ejronin.github.io/1ADAAR/progression.html"
 PUBLIC_ORIGIN = "https://ejronin.github.io"
-# Fill with the actual HTTPS Worker hostname after initial deployment.
+# Worker origin verified by Cloudflare production build and owner health check.
 AUTH_ORIGIN = "https://1adaar-steam-progression.shawn-k-gordon.workers.dev"
 
 [[d1_databases]]
