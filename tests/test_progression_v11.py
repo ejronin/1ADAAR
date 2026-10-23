@@ -75,14 +75,12 @@ class TrackerDataPrivacyTests(unittest.TestCase):
             self.assertIn('id="tracker-community-form"',page)
             self.assertIn('1ADAAR is not affiliated with Steam',page)
             self.assertNotIn('id="progression-check"',page)
-        self.assertIn("wardogstracker.gg/stats",live)
+        self.assertIn("https://wardogstracker.gg/profile/",js)
         self.assertIn("root.OneADAARRoleRadar",js)
         self.assertIn("1ADAAR:v1:",js)
         self.assertIn("getSaved()",js)
-        self.assertIn("if(remember)",js) if False else None
         self.assertIn("credentials:'omit'",js)
         self.assertIn("sourceStatus:'verified'",js)
-        self.assertIn("This does not", "This does not") if False else None
         self.assertNotIn("/auth/start",js)
         self.assertNotIn("workers.dev",config)
         self.assertIn("endpoint:''",config)
