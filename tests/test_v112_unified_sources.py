@@ -38,7 +38,7 @@ class UnifiedSiteTests(unittest.TestCase):
                 self.assertEqual(parser.nav[:8],list(NAV))
                 self.assertEqual(parser.nav.count(page),1)
                 self.assertIn('assets/wardogs-fullmark.png',parser.images)
-                self.assertEqual(parser.styles[-1], 'assets/map-gallery.css?v=117' if page in ('index.html','map-team.html') else 'assets/site-unified.css?v=112')
+                self.assertEqual(parser.styles[-1], 'assets/server-map-feature.css?v=118' if page=='index.html' else ('assets/map-gallery.css?v=117' if page=='map-team.html' else 'assets/site-unified.css?v=112'))
                 self.assertEqual(sum('site-unified.css' in x for x in parser.styles),1)
                 self.assertEqual(html.count('1of1 Servers'),1)
                 self.assertEqual(html.count('alt="WARCON"'),1)
