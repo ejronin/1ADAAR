@@ -69,6 +69,7 @@ class TrackerDataPrivacyTests(unittest.TestCase):
         config=(ROOT/"docs/js/progression-config.js").read_text()
         for page in (live,standalone):
             self.assertIn('id="tracker-public-form"',page)
+            self.assertIn('src="js/progression.js?v=4"',page)
             self.assertIn('id="tracker-public-id"',page)
             self.assertIn('id="tracker-public-remember"',page)
             self.assertIn('id="tracker-public-economy"',page)
