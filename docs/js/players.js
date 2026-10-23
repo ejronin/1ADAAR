@@ -1,7 +1,7 @@
 'use strict';
 /* Public site: all identifiers are one-way lookup keys. Never render SteamID64 or Steam links. */
 const $=id=>document.getElementById(id);
-const publicState={players:[],matches:[],demoMatches:[],capped:false,ready:false};
+const publicState={players:[],matches:[],capped:false,ready:false};
 const escapeFree=(tag,klass,value)=>{const el=document.createElement(tag);if(klass)el.className=klass;if(value!==undefined)el.textContent=String(value);return el;};
 const num=value=>Number.isFinite(value)?Number(value).toLocaleString():'—';
 const ratio=(a,b)=>!a&&!b?'—':(b? a/b:a).toFixed(2);
@@ -46,6 +46,7 @@ function breakdown(items,field,parentId) {
 function recentTable(matches,key){const wrap=$('recent-match-table');wrap.replaceChildren();if(!matches.length){wrap.append(escapeFree('div','empty-insight','This player’s recent matches will show here after we save completed results.'));return;}const table=escapeFree('table','recent-table'),thead=document.createElement('thead'),tr=document.createElement('tr');['Date','Map','Faction','Result','K','D','Time'].forEach(h=>tr.append(escapeFree('th','',h)));thead.append(tr);table.append(thead);const tbody=document.createElement('tbody');for(const m of matches.slice(0,15)){const p=m.players.find(x=>x.key===key),row=document.createElement('tr');row.append(escapeFree('td','',dateText(m.endedAt)));const map=document.createElement('td');if(publicState.selected?.demo){map.append(escapeFree('span','',m.map));}else{const link=escapeFree('a','',m.map);link.href=`index.html#match-${Number(m.id)}`;map.append(link);}row.append(map);const factionCell=document.createElement('td');factionCell.append(window.OneADAARFactions.label(p.faction||'—'));row.append(factionCell);row.append(escapeFree('td',p.result?'result-'+p.result:'result-unknown',(p.result||'Not recorded').toUpperCase()));row.append(escapeFree('td','',p.kills),escapeFree('td','',p.deaths),escapeFree('td','',`${Math.floor(p.seconds/60)}m`));tbody.append(row);}table.append(tbody);wrap.append(table);}
 /* Cache history by the first hex nibble so only one small shard loads per player. */
 const historyCache=new Map();
+const SELECTED_PLAYER_KEY='1adaar-selected-player-key-v1';
 function loadCareer(key) {
   if(!/^[a-f0-9]{64}$/.test(key))return Promise.resolve([]);
   const shard=key[0];
@@ -57,7 +58,9 @@ function loadCareer(key) {
   return historyCache.get(shard).then(doc=>
     doc&&doc.schemaVersion===1&&doc.players&&Array.isArray(doc.players[key])?doc.players[key]:[]);
 }
-function openProfile(entry){publicState.selected=entry;const detailed=$('map-team-details');detailed.hidden=!!entry.demo||!(/^[a-f0-9]{64}$/.test(entry.key));if(!detailed.hidden)detailed.href='map-team.html?player='+encodeURIComponent(entry.key);$('demo-warning').hidden=!entry.demo;$('profile-source-text').textContent=entry.demo?'SAMPLE PLAYER / MADE-UP STATS':'PLAYER STATS / FROM WARCON';$('lookup-results').hidden=true;$('dossier').hidden=false;$('lookup-message').hidden=true;$('dossier-title').textContent=entry.name;$('share-player').textContent='↗ Share '+(entry.name.length>28?entry.name.slice(0,25)+'…':entry.name)+' stats';$('share-player').setAttribute('aria-label','Share '+entry.name+' stats');$('profile-subtitle').textContent=entry.demo?`SAMPLE PLAYER • Made-up stats • Example ranking #${num(entry.rank)}`:`WARDOGS server • All-time WARCON stats • Player ranking #${num(entry.rank)}`;
+function openProfile(entry){publicState.selected=entry;
+ try{if(/^[a-f0-9]{64}$/.test(entry.key))sessionStorage.setItem(SELECTED_PLAYER_KEY,entry.key)}catch(_){/* optional context only */}
+ const detailed=$('map-team-details');detailed.hidden=!!entry.demo||!(/^[a-f0-9]{64}$/.test(entry.key));if(!detailed.hidden)detailed.href='map-team.html?player='+encodeURIComponent(entry.key);$('profile-source-text').textContent=entry.demo?'SAMPLE PLAYER / MADE-UP STATS':'PLAYER STATS / FROM WARCON';$('lookup-results').hidden=true;$('dossier').hidden=false;$('lookup-message').hidden=true;$('dossier-title').textContent=entry.name;$('share-player').textContent='↗ Share '+(entry.name.length>28?entry.name.slice(0,25)+'…':entry.name)+' stats';$('share-player').setAttribute('aria-label','Share '+entry.name+' stats');$('profile-subtitle').textContent=entry.demo?`SAMPLE PLAYER • Made-up stats • Example ranking #${num(entry.rank)}`:`WARDOGS server • All-time WARCON stats • Player ranking #${num(entry.rank)}`;
  window.OneADAARProfile.career($('profile-metrics'),$('profile-secondary'),entry);
  window.OneADAARProfile.avatar($('player-avatar'),entry);
  $('player-avatar').setAttribute('aria-label','Player profile picture for '+entry.name+', or initials if unavailable');
