@@ -1,5 +1,9 @@
 {
   "schemaVersion": 1,
-  "source": "No cleared map-banner assets installed",
-  "images": {}
+  "source": "© BULKHEAD / WARDOGS, official RCON map previews mirrored via Warcon; see ATTRIBUTION.md",
+  "images": {
+    "Bakurani": "bakurani.webp",
+    "Ozeti": "ozeti.webp",
+    "Zestafona": "zestafona.webp"
+  }
 }
