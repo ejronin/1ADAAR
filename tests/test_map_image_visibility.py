@@ -1,7 +1,6 @@
 """Map images must appear even when WARCON has zero saved completed matches."""
 from pathlib import Path
 from html.parser import HTMLParser
-import json
 import unittest
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -34,8 +33,8 @@ class MapArtTests(unittest.TestCase):
                     x["src"]=="assets/map-banners/"+name+"-card.webp?v=117"
                     and name.capitalize() in x.get("alt","") for x in images
                 ),(page,name))
-        data=json.loads((DOCS/"data"/"matches.json").read_text())
-        self.assertEqual(data["matches"],[],"Check independently of empty match history")
+        # The section is static HTML, not inside a match-results conditional.
+        self.assertIn('class="map-art-section"',(DOCS/"index.html").read_text())
 
     def test_css_variable_images_resolve_against_page_not_stylesheet(self):
         js=(DOCS/"js"/"map-banners.js").read_text()
