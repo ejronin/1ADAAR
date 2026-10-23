@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="assets/map-team.css?v=2">
 <script defer src="js/factions.js?v=1"></script>
 <script defer src="js/map-banners.js?v=1"></script>
-  <script defer src="js/map-team.js?v=2"></script>
+  <script defer src="js/map-team.js?v=3"></script>
 <link rel="stylesheet" href="assets/ia-v11.css?v=1" />
 </head>
 <body>
@@ -50,7 +50,21 @@
       <p id="mt-player-name" class="mt-player">Select a player to see their results.</p>
       <p>See where you perform best and which factions have produced your strongest saved results.</p>
       <p class="mt-disclaimer"><strong>Saved matches only.</strong> These are not all-time WARCON career totals, and some played matches may be missing.</p>
-      <a id="mt-back" href="players.html" class="mt-back">← Find a player</a>
+      <a id="mt-back" href="players.html" class="mt-back">← Return to player dossier</a>
+    </section>
+    <section class="mt-player-picker" aria-labelledby="mt-picker-title">
+      <h2 id="mt-picker-title">Select a player</h2>
+      <p>Search WARDOGS server players here. Opening a player from their dossier also selects them automatically.</p>
+      <form id="mt-player-search" role="search" autocomplete="off">
+        <label for="mt-player-query">Player name</label>
+        <div class="mt-search-row"><input id="mt-player-query" type="search" maxlength="80" placeholder="Search a recorded player name" spellcheck="false" required><button type="submit">Find player →</button></div>
+      </form>
+      <div id="mt-player-results" class="mt-player-results" aria-live="polite"></div>
+    </section>
+    <section id="mt-career" class="mt-career" aria-label="WARCON all-time player statistics" hidden>
+      <h2>WARCON career overview</h2>
+      <p>Server career figures are available independently of the saved match-by-match archive.</p>
+      <div id="mt-career-grid" class="mt-summary"></div>
     </section>
     <section class="mt-body" aria-labelledby="mt-results">
       <h2 id="mt-results">Your results</h2>
