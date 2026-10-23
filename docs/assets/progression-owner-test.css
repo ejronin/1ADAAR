@@ -1,0 +1,115 @@
+/* Standalone Steam-verified owner test page only. Not used by live player dossiers. */
+body[data-progress-standalone="true"] .progression-account-layout{max-width:1140px;margin:18px auto 0;min-width:0}
+body[data-progress-standalone="true"] .progression-panel{
+  padding:clamp(14px,2.2vw,26px);
+  margin:18px 0 24px;
+  background:linear-gradient(145deg,#14241a,#0c1510);
+}
+body[data-progress-standalone="true"] .progression-panel .panel-heading{
+  display:flex;align-items:flex-start;flex-wrap:wrap;justify-content:space-between;gap:12px;
+}
+body[data-progress-standalone="true"] .progression-panel .panel-heading h3{
+  font:800 clamp(24px,3vw,33px)/1.12 'Barlow Condensed',Arial,sans-serif;
+}
+body[data-progress-standalone="true"] .progression-layout{
+  display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);
+  gap:22px;align-items:start;
+}
+body[data-progress-standalone="true"] .progression-layout>*{min-width:0}
+body[data-progress-standalone="true"] .progression-radar svg{
+ display:block;width:100%;height:auto;max-width:400px;
+ background:#111c15;border:1px solid #365440;border-radius:9px
+}
+body[data-progress-standalone="true"] .progression-kpis{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;
+}
+body[data-progress-standalone="true"] .progression-kpis>div{min-width:0;padding:13px}
+body[data-progress-standalone="true"] .progression-kpis strong{
+ font-size:clamp(23px,3vw,29px);font-variant-numeric:tabular-nums;
+}
+body[data-progress-standalone="true"] .demo-role-table{
+ width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px;text-align:left;
+}
+body[data-progress-standalone="true"] .demo-role-table caption{
+ text-align:left;font-size:11px;color:#bdd5c1;padding:8px 0;
+}
+body[data-progress-standalone="true"] .demo-role-table th,
+body[data-progress-standalone="true"] .demo-role-table td{
+ text-align:left;border-bottom:1px solid #35523b;padding:10px 6px;
+ overflow-wrap:anywhere;
+}
+body[data-progress-standalone="true"] .demo-role-table thead{color:#a8eaba}
+body[data-progress-standalone="true"] .progression-consent-panel{
+ display:grid;gap:12px;margin:18px 0;border:1px solid #568c61;
+ background:#122719;border-radius:9px;padding:16px;
+}
+body[data-progress-standalone="true"] .progression-consent-panel[hidden],
+body[data-progress-standalone="true"] .progression-connected-actions[hidden],
+body[data-progress-standalone="true"] .progression-actions [hidden]{display:none!important}
+body[data-progress-standalone="true"] .progression-consent-panel legend{
+ color:#eef9ef;padding:0 5px;font-weight:800
+}
+body[data-progress-standalone="true"] .progression-consent-panel label,
+body[data-progress-standalone="true"] .progression-connected-actions label{
+ display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.5;
+}
+body[data-progress-standalone="true"] .progression-consent-panel input,
+body[data-progress-standalone="true"] .progression-connected-actions input{
+ accent-color:#86f4a4;width:18px;height:18px;flex:none;margin:3px 0 0;
+}
+body[data-progress-standalone="true"] .progression-consent-panel button,
+body[data-progress-standalone="true"] .progression-connected-actions button{
+ min-height:44px;padding:10px 15px;border:1px solid #75b58a;
+ border-radius:6px;background:#214b2d;color:white;cursor:pointer;font-weight:700
+}
+body[data-progress-standalone="true"] .progression-panel button[disabled]{
+ cursor:not-allowed;opacity:.55;
+}
+body[data-progress-standalone="true"] .progression-synced-at{
+ font-size:12px;color:#b3d0ba;line-height:1.5
+}
+body[data-progress-standalone="true"] .profile-disclaimer{
+ max-width:970px;line-height:1.65;margin:16px 0 28px;
+}
+@media(max-width:900px){
+ body[data-progress-standalone="true"] .progression-layout{grid-template-columns:minmax(0,1fr)}
+ body[data-progress-standalone="true"] .progression-radar{max-width:400px;width:100%;margin:auto}
+}
+@media(max-width:400px){
+ body[data-progress-standalone="true"] .progression-panel{padding:12px}
+ body[data-progress-standalone="true"] .progression-kpis{gap:7px}
+ body[data-progress-standalone="true"] .progression-kpis>div{padding:9px}
+}
+
+/* Only the standalone owner-acceptance route. Do not restyle existing WARCON pages. */
+body[data-progress-standalone="true"] .pi-identity{display:flex;align-items:center;gap:12px;min-width:0}
+body[data-progress-standalone="true"] #pi-steam-avatar{width:52px;height:52px;object-fit:cover;border:1px solid #608f6a;border-radius:11px;flex:none}
+body[data-progress-standalone="true"] #pi-steam-avatar[hidden]{display:none}
+body[data-progress-standalone="true"] .pi-secondary{display:grid;grid-template-columns:minmax(0,240px) minmax(0,1fr);gap:14px;margin:20px 0}
+body[data-progress-standalone="true"] .pi-dossier-extras{display:grid;gap:10px;align-content:start}
+body[data-progress-standalone="true"] .pi-stat{padding:18px 14px;min-width:0;border:1px solid #365440;border-radius:8px;background:#101e15}
+body[data-progress-standalone="true"] .pi-stat small{display:block;color:#a9c7b0;font-size:12px;line-height:1.4}
+body[data-progress-standalone="true"] .pi-stat strong{display:block;font:700 27px/1.3 'Barlow Condensed',Arial,sans-serif;margin:8px 0 0;overflow-wrap:anywhere}
+body[data-progress-standalone="true"] .pi-role-block{min-width:0;border:1px solid #365440;border-radius:8px;background:#101e15;padding:12px}
+body[data-progress-standalone="true"] .pi-section-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:6px 16px;margin-bottom:12px}
+body[data-progress-standalone="true"] .pi-section-head h4,body[data-progress-standalone="true"] .pi-section-head h3{margin:0;font:800 22px/1.15 'Barlow Condensed',Arial,sans-serif}
+body[data-progress-standalone="true"] .pi-section-head span{font-size:11px;color:#a9c7b0}
+body[data-progress-standalone="true"] #pi-role-plot{width:100%;height:auto;max-height:270px;display:block}
+body[data-progress-standalone="true"] #pi-role-plot-empty{margin:8px 4px;color:#aac1af;font-size:12px;line-height:1.5}
+body[data-progress-standalone="true"] #pi-role-plot-empty[hidden]{display:none}
+body[data-progress-standalone="true"] .pi-combat{margin:18px auto 0;max-width:1140px;border:1px solid #3b5341;border-radius:10px;background:#111b16;padding:clamp(13px,2vw,24px)}
+body[data-progress-standalone="true"] .pi-combat>p{color:#b9d1bf;font-size:13px;line-height:1.6;margin:5px 0 14px}
+body[data-progress-standalone="true"] .pi-combat-viewport{min-height:210px;position:relative;display:grid;align-content:center;text-align:center;gap:8px;border:1px solid #405348;border-radius:7px;background:linear-gradient(180deg,#132319,#101916);padding:24px 16px 51px}
+body[data-progress-standalone="true"] .pi-combat-viewport strong{color:#e9f1ea;font-weight:800}
+body[data-progress-standalone="true"] .pi-combat-viewport p{max-width:680px;margin:0 auto;color:#b1c5b7;font-size:12px;line-height:1.6}
+body[data-progress-standalone="true"] .pi-future-axis{position:absolute;bottom:10px;left:15px;right:15px;display:flex;justify-content:space-between;border-top:1px solid #44594b;padding-top:8px;color:#94ac9a;font-size:10px}
+body[data-progress-standalone="true"] .pi-combat>small{display:block;margin-top:11px;font-size:11px;color:#9fb8a7;line-height:1.6}
+@media(max-width:760px){
+ body[data-progress-standalone="true"] .pi-secondary{grid-template-columns:minmax(0,1fr)}
+ body[data-progress-standalone="true"] .pi-dossier-extras{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body[data-progress-standalone="true"] .pi-stat{padding:12px}
+}
+@media(max-width:400px){
+ body[data-progress-standalone="true"] .pi-dossier-extras{grid-template-columns:minmax(0,1fr)}
+ body[data-progress-standalone="true"] .pi-combat-viewport{min-height:245px}
+}
