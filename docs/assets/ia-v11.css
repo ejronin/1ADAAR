@@ -240,3 +240,84 @@ body{background:var(--ia-bg);color:var(--ia-ink)}
 @media (max-width:720px){
   .player-hero .player-hero-logo{top:50%;transform:translateY(-50%);}
 }
+
+
+/* v1.1.0 PlayerOne-only progression showcase. No account connection is inferred. */
+.demo-progression-panel{margin:22px 0 24px;padding:24px;background:linear-gradient(145deg,#14241a,#101b14);
+ border:1px solid #416e4b}
+.demo-progression-panel .panel-heading{display:flex;justify-content:space-between;
+ gap:14px;align-items:flex-start;flex-wrap:wrap}
+.demo-progression-panel .panel-heading h3{font:800 30px/1.1 'Barlow Condensed',Arial,sans-serif;
+ margin:8px 0 10px}
+.demo-progression-badge{border-radius:5px;border:1px solid #906e42;background:#3e301f;
+ color:#ffe4ba;padding:8px 11px;font:800 10px/1.3 system-ui,sans-serif;
+ letter-spacing:.03em;max-width:320px}
+.demo-progression-panel[data-demo-state="connected"] .demo-progression-badge{
+ border-color:#4d925e;background:#193826;color:#a4eeb2}
+.demo-radar-column,.demo-progression-details{min-width:0}
+.demo-radar-frame{border:1px solid #365440;border-radius:9px;
+ background:#111c15;display:grid;place-items:center;padding:6px}
+.demo-radar-frame svg{display:block;width:min(100%,400px);height:auto}
+.demo-radar-note{font:400 11px/1.55 system-ui,sans-serif;color:#b9ccbc;
+ margin:10px 0;overflow-wrap:anywhere}
+.demo-role-table{width:100%;border-collapse:collapse;font:400 12px/1.5 system-ui,sans-serif;
+ text-align:left}
+.demo-role-table caption{text-align:left;padding:7px 0;color:#9cbba6;font-size:11px}
+.demo-role-table th,.demo-role-table td{padding:9px 10px;text-align:left;
+ border-bottom:1px solid #334d39}
+.demo-role-table thead th{color:#c5f4d2;font-weight:800}
+.demo-role-table td{color:#ecf8ef;font-variant-numeric:tabular-nums}
+.demo-connect-box{border:1px solid #416448;border-radius:9px;
+ margin-top:14px;padding:17px;background:#1a3020}
+.demo-connect-box h4{font:800 22px/1.1 'Barlow Condensed',Arial,sans-serif;
+ color:#f1fcf3;margin:0 0 8px}
+.demo-connect-box p{line-height:1.55;font-size:12px;color:#cedbcc}
+.demo-connect-box a{color:#a0e4ad;text-underline-offset:3px}
+.demo-economy-control{display:flex;gap:8px;align-items:center;
+ font-size:12px;color:#d2ead7;line-height:1.4}
+.demo-economy-control input{width:17px;height:17px;accent-color:#86f4a4}
+.demo-progression-panel .progression-actions button[hidden]{display:none!important}
+.demo-progression-panel .progression-actions button{
+ min-height:44px;font-weight:700}
+.demo-progression-panel .progression-kpis strong{font-size:clamp(23px,2.5vw,30px)}
+@media(max-width:650px){.demo-progression-panel{padding:15px}
+ .demo-progression-panel .panel-heading h3{font-size:26px}
+ .demo-role-table th,.demo-role-table td{padding:8px 5px}
+ .demo-progression-panel .progression-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Role radar and XP table must never enlarge the entire page at tablet widths. */
+.demo-progression-panel{min-width:0;max-width:100%}
+.demo-progression-panel .progression-layout>*{min-width:0;max-width:100%}
+.demo-progression-panel .table-scroll{max-width:100%;overflow-x:auto}
+.demo-progression-panel .demo-role-table{table-layout:fixed;width:100%}
+@media(max-width:1050px){
+ .demo-progression-panel .progression-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+ .demo-progression-panel .demo-radar-column{width:100%}
+ .demo-progression-panel .progression-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+/* Authenticated game-account progression, separate from WARCON server data. */
+.progression-consent-panel{border:1px solid #568c61;background:#122719;border-radius:9px;
+ padding:16px 18px;margin:18px 0;display:grid;gap:12px}
+.progression-consent-panel[hidden],.progression-connected-actions[hidden]{display:none!important}
+.progression-consent-panel legend{font:800 18px/1.2 'Barlow Condensed',Arial,sans-serif;
+ color:#effbf2;padding:0 5px}
+.progression-consent-panel label,.progression-connected-actions label{
+ display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.6;color:#e0f0e2}
+.progression-consent-panel input,.progression-connected-actions input{accent-color:#86f4a4;
+ margin-top:3px;width:18px;height:18px;flex:none}
+.progression-consent-panel button,.progression-connected-actions button{
+ min-height:44px;border-radius:7px;padding:9px 14px;border:1px solid #7abf8a;
+ color:#f0fff3;background:#21512c;font-weight:700;cursor:pointer}
+.progression-consent-panel p,.progression-synced-at{font-size:12px;line-height:1.6;color:#b2cbb8}
+.progression-synced-at{margin:7px 0}
+.progression-actions button[hidden],.progression-actions a[hidden]{display:none!important}
+.progression-actions button:disabled{opacity:.5;cursor:not-allowed}
+
+/* Fix Steam-consent fieldsets in the full dossier at narrow widths. */
+#dossier .progression-panel,#dossier .progression-panel .progression-layout>*{min-width:0;max-width:100%}
+#dossier .progression-panel .table-scroll{max-width:100%;overflow-x:auto}
+@media(max-width:750px){#dossier .progression-layout{grid-template-columns:minmax(0,1fr)}
+#dossier .progression-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:375px){#dossier .progression-panel{padding:12px}
+#dossier .progression-kpis>div{padding:9px;min-width:0}}
