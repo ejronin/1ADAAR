@@ -381,7 +381,7 @@ async def capture():
                   crown:getComputedStyle(document.querySelector('.weekly-podium-place.gold .weekly-crown')).display,
                   overflow:document.documentElement.scrollWidth-innerWidth
                 })""")
-                assert no_crown["winner"]=="false" and no_crown["crown"]=="none",no_crown
+                assert no_crown["winner"]=="false" and no_crown["crown"]=="grid",no_crown  # decorative crown; no winner named
                 assert no_crown["overflow"]<=2,no_crown
                 await motion.screenshot(path=str(ARTIFACT/f"weekly-unawarded-{width}px.png"),
                                         full_page=True,animations="disabled")
