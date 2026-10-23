@@ -62,7 +62,8 @@ class LaunchUXContractTests(unittest.TestCase):
         for filename, _, parser in self.pages():
             for key in ("og:type", "og:site_name", "og:title", "og:description", "og:image", "og:image:alt"):
                 self.assertTrue(parser.meta.get(key), (filename, key))
-            self.assertIn("oneaveragedan-server-banner.png", parser.meta["og:image"])
+            expected = "oneaveragedan-server-banner.png" if filename == "index.html" else "wardogs-official-hero.webp"
+            self.assertIn(expected, parser.meta["og:image"], filename)
             self.assertNotIn("SteamID", parser.meta["og:description"])
 
     def test_plain_english_consistent_navigation_and_data_scope(self):
