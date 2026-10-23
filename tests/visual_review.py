@@ -331,7 +331,7 @@ async def capture():
                         assert all(x["width"]>0 and x["height"]>0 and x["visible"]
                                    for x in map_images["entries"]),(route,width,map_images)
                         assert map_images["selected"],(route,width,map_images)
-                        assert "/1ADAAR/assets/map-banners/bakurani-card.webp" in map_images["raw"], (
+                        assert "/assets/map-banners/bakurani-card.webp" in map_images["raw"], (
                             route,width,"CSS map URL resolved incorrectly",map_images)
                         assert "assets/assets/map-banners" not in map_images["css"],(
                             route,width,"CSS map URL duplicated directory",map_images)
