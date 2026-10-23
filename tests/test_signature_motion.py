@@ -10,7 +10,7 @@ DOCS = ROOT / "docs"
 class SignatureMotionTests(unittest.TestCase):
     def test_homepage_has_real_laser_perimeter_and_logo_halo(self):
         html = (DOCS / "index.html").read_text()
-        self.assertIn('class="hero motion-hero"', html)
+        self.assertIn('class="hero motion-hero server-banner-hero"', html)
         self.assertIn('class="hero-laser-svg"', html)
         self.assertIn('class="hero-laser-trace"', html)
         self.assertIn('class="hero-laser-head"', html)

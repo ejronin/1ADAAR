@@ -25,7 +25,7 @@ class WebsiteTests(unittest.TestCase):
     def test_owner_home_layout_and_links(self):
         p=Path(__file__).resolve().parents[1]/'docs'
         home=(p/'index.html').read_text()
-        hero=home.split('<section class="hero motion-hero"',1)[1].split('</section>',1)[0]
+        hero=home.split('<section class="hero motion-hero server-banner-hero"',1)[1].split('</section>',1)[0]
         self.assertIn('Join the 1AD Discord',hero)
         self.assertEqual(home.count('Join the 1AD Discord'),1)
         self.assertNotIn('id="join-wardogs"',home)

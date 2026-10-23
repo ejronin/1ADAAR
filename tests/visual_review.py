@@ -267,7 +267,8 @@ async def capture():
                 # Real home and map/team Pages routes must render at every width,
                 # not merely their IA concept counterparts or the motion lab.
                 for route,filename,required in [
-                    ("index.html","home",["#server-status",".hero.motion-hero"]),
+                    ("index.html","home",["#server-status",".hero.motion-hero","#copy-server-join-code"]),
+                    ("join.html","join",[".server-banner-media","#copy-server-join-code"]),
                     ("map-team.html","map-team",["#mt-message","#mt-kd-plot"])
                 ]:
                     surface=await browser.new_page(viewport={"width":width,"height":900},
@@ -281,6 +282,21 @@ async def capture():
                         # exists, so its DOM is present even when appropriately hidden.
                         assert await surface.locator(required_selector).count()>0, (
                             route,required_selector,width)
+                    if route in ("index.html","join.html"):
+                        # Simulate the browser-approved clipboard path, then
+                        # validate the code itself rather than a cosmetic toast.
+                        await surface.evaluate("""() => {
+                            window.__testCopiedJoin = null;
+                            Object.defineProperty(navigator,'clipboard',{
+                                configurable:true,
+                                value:{writeText: async (value) => { window.__testCopiedJoin=value; }}
+                            });
+                        }""")
+                        await surface.locator('#copy-server-join-code').click()
+                        copied=await surface.evaluate('window.__testCopiedJoin')
+                        assert copied=='a071b4aa-9574-4e7d-858c-0da3bea80f52', (route,width,copied)
+                        status=await surface.locator('#server-join-copy-status').inner_text()
+                        assert 'COPIED' in status,(route,width,status)
                     await surface.screenshot(
                         path=str(ARTIFACT/f"{filename}-{width}px.png"),
                         full_page=True,animations="disabled")

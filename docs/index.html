@@ -30,9 +30,11 @@
   <script defer src="js/home-intelligence.js?v=1"></script>
   <script defer src="js/server-status.js?v=112"></script>
   <script defer src="js/home-top.js?v=1"></script>
+  <script defer src="js/server-join.js?v=1"></script>
 
 <link rel="stylesheet" href="assets/ia-v11.css?v=1" />
   <link rel="stylesheet" href="assets/site-unified.css?v=112" />
+  <link rel="stylesheet" href="assets/server-join.css?v=1" />
 </head>
 <body>
 <a class="skip" href="#content">Skip to match results</a>
@@ -61,13 +63,44 @@
   <main id="content" class="main">
     <header class="topbar"><div class="game-lockup" aria-label="Game: WARDOGS — Tactical All Out Warfare"><img src="assets/wardogs-fullmark.png" alt="WARDOGS — Tactical All Out Warfare" width="200" height="40" /></div><div class="breadcrumb">WARDOGS <span>/</span> ONEAVERAGEDAN <span>/</span> MATCH HISTORY</div></header>
 
-<section class="hero motion-hero" aria-labelledby="hero-heading">
+<section class="hero motion-hero server-banner-hero" aria-labelledby="hero-heading">
       <svg class="hero-laser-svg" viewBox="0 0 1000 480" preserveAspectRatio="none" aria-hidden="true" focusable="false">
         <rect class="hero-laser-outline" x="2" y="2" width="996" height="476" rx="10" pathLength="100"/>
         <rect class="hero-laser-trace" x="2" y="2" width="996" height="476" rx="10" pathLength="100"/>
         <rect class="hero-laser-head" x="2" y="2" width="996" height="476" rx="10" pathLength="100"/>
       </svg>
-      <div class="hero-glow" aria-hidden="true"></div><div class="hero-text"><div class="eyebrow"><span class="diamond">◆</span> ONEAVERAGEDAN WARDOGS COMMUNITY SERVER</div><h1 id="hero-heading">MATCHES. PLAYERS.<br><em>RESULTS.</em></h1><p>Track completed matches, player performance, and server activity for OneAverageDan’s WARDOGS community server.</p><div class="hero-actions"><a class="primary" href="players.html">Explore player intelligence <span aria-hidden="true">→</span></a><a class="secondary" href="activity.html">Activity patterns <span aria-hidden="true">→</span></a><a class="secondary discord-link" href="https://discord.gg/e9B69UkE53" target="_blank" rel="noopener noreferrer"><img class="discord-icon" src="assets/discord.svg" alt="" width="19" height="19">Join the 1AD Discord <span aria-hidden="true">↗</span></a><a id="latest-match-link" class="secondary" href="#reports" hidden aria-label="Open latest completed match details">Latest match <span aria-hidden="true">→</span></a></div><div class="source-tag"><span class="signal" aria-hidden="true"></span> RESULTS FROM WARCON </div></div><div class="hero-graphic" aria-hidden="true"><span class="hero-logo-halo"><img class="hero-logo" src="assets/1ad-logo.svg" width="246" height="246" alt="" /></span></div></section>
+      <div class="server-banner-media" role="img" aria-label="OneAverageDan WARDOGS Community Server, hosted by 1of1"><div class="server-banner-brand-fallback" aria-hidden="true">
+          <img class="server-banner-1ad-mark" src="assets/1ad-logo.svg" width="142" height="142" alt="">
+          <div class="server-banner-identity">
+            <strong>ONEAVERAGEDAN</strong>
+            <span>COMMUNITY SERVER</span>
+            <img src="assets/wardogs-fullmark.png" width="260" height="62" alt="">
+          </div>
+        </div></div>
+      <div class="server-join-overlay" aria-label="WARDOGS community server join code">
+        <span class="server-join-title">JOIN THE 1AD SERVER</span>
+        <button id="copy-server-join-code" class="server-join-copy" type="button"
+          data-join-code="a071b4aa-9574-4e7d-858c-0da3bea80f52"
+          aria-label="Copy OneAverageDan WARDOGS join code">
+          <span class="server-join-value">a071b4aa-9574-4e7d-858c-0da3bea80f52</span>
+          <span aria-hidden="true" class="server-join-icon">⧉</span>
+        </button>
+        <span id="server-join-copy-status" class="server-join-feedback" role="status" aria-live="polite">CLICK TO COPY</span>
+      </div>
+      <div class="hero-text server-banner-toolbar">
+        <h1 id="hero-heading" class="sr-only">MATCHES. PLAYERS. RESULTS.</h1>
+        <p class="sr-only">Track completed matches, player performance, and server activity for OneAverageDan’s WARDOGS community server.</p>
+        <div class="hero-actions">
+          <a class="primary" href="players.html">Explore player intelligence <span aria-hidden="true">→</span></a>
+          <a class="secondary" href="activity.html">Activity patterns <span aria-hidden="true">→</span></a>
+          <a class="secondary discord-link" href="https://discord.gg/e9B69UkE53" target="_blank" rel="noopener noreferrer"><img class="discord-icon" src="assets/discord.svg" alt="" width="19" height="19">Join the 1AD Discord <span aria-hidden="true">↗</span></a>
+          <a class="secondary" href="join.html">How to join <span aria-hidden="true">→</span></a>
+          <a id="latest-match-link" class="secondary" href="#reports" hidden aria-label="Open latest completed match details">Latest match <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="source-tag"><span class="signal" aria-hidden="true"></span> RESULTS FROM WARCON </div>
+      </div>
+      <div class="hero-graphic server-banner-halo-reference" aria-hidden="true"><span class="hero-logo-halo"><img class="hero-logo" src="assets/1ad-logo.svg" width="246" height="246" alt="" /></span></div>
+    </section>
     <section class="server-status" id="server-status" data-state="unknown" aria-label="Server status: STATUS UNKNOWN">
       <div class="server-status-main">
         <span class="server-status-lamp" aria-hidden="true"></span>
