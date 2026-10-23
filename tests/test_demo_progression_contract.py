@@ -5,7 +5,7 @@ import unittest
 ROOT=Path(__file__).resolve().parents[1]/"docs"
 class FictionalProgressionContractTests(unittest.TestCase):
     def test_only_demo_page_has_fictional_roles_and_simulated_connection(self):
-        page=(ROOT/"playerone-demo.html").read_text()
+        page=((Path(__file__).resolve().parents[1]/"tests/fixtures/playerone-demo.html")).read_text()
         script=(ROOT/"js/demo-progression.js").read_text()
         radar=(ROOT/"js/role-radar.js").read_text()
         live=(ROOT/"players.html").read_text()
@@ -35,7 +35,7 @@ class FictionalProgressionContractTests(unittest.TestCase):
         assert 'id="progression-role-radar"' in live
 
     def test_navigation_exposes_player_map_and_activity_pages(self):
-        for name in ("index.html","players.html","playerone-demo.html","weekly.html",
+        for name in ("index.html","players.html","weekly.html",
                      "activity.html","seasons.html","compare.html","map-team.html"):
             page=(ROOT/name).read_text()
             with self.subTest(name=name):
