@@ -292,6 +292,19 @@ async def capture():
                         assert 'oneaveragedan-server-banner.png' in banner['background'],(route,width,banner)
                         await surface.wait_for_function("""() => [...document.querySelectorAll(
                           '.server-banner-brand-fallback')].every(item => item.hidden)""")
+                        if route=="index.html":
+                            geometry=await surface.evaluate("""() => {
+                                const image=document.querySelector('.server-banner-media').getBoundingClientRect();
+                                const control=document.querySelector('.server-join-overlay').getBoundingClientRect();
+                                return {imageBottom:image.bottom, controlTop:control.top,
+                                  controlWidth:control.width,
+                                  position:getComputedStyle(document.querySelector('.server-join-overlay')).position};
+                            }""")
+                            assert geometry["controlTop"]>=geometry["imageBottom"]-2, (
+                                width,"Copy control must not cover approved banner",geometry)
+                            assert geometry["controlWidth"]<=327,(
+                                width,"Join control too wide",geometry)
+                            assert geometry["position"]=="static",(width,geometry)
                     for required_selector in required:
                         # Map/Team detail panel is gated until real retained match data
                         # exists, so its DOM is present even when appropriately hidden.
