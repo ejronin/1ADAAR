@@ -35,7 +35,7 @@ class ComparePageContractTests(unittest.TestCase):
         self.assertIn(":focus-visible",css)
 
     def test_plain_english_nav_from_existing_pages(self):
-        for name in ("index.html", "players.html", "playerone-demo.html", "weekly.html"):
+        for name in ("index.html", "players.html", "weekly.html"):
             body=(ROOT/"docs"/name).read_text()
             self.assertIn('href="compare.html"',body,name)
             self.assertIn("Compare players</a>",body,name)

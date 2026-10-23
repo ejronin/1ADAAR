@@ -3,11 +3,11 @@ import unittest
 from pathlib import Path
 
 class DemoPageTests(unittest.TestCase):
-    def test_static_playerone_demo_is_regular_link_without_network_dependency(self):
+    def test_retired_demo_only_exists_as_internal_fixture(self):
         root=Path(__file__).resolve().parents[1]/'docs'
         live=(root/'players.html').read_text()
-        demo=(root/'playerone-demo.html').read_text()
-        self.assertIn('href="playerone-demo.html"',live)
+        demo=((Path(__file__).resolve().parents[1]/'tests/fixtures/playerone-demo.html')).read_text()
+        self.assertNotIn('href="playerone-demo.html"',live)
         self.assertNotIn('id="view-demo" class="demo-button" type="button"',live)
         self.assertIn('SAMPLE PLAYER — MADE-UP STATS',demo)
         self.assertIn('SAMPLE PLAYER / MADE-UP STATS',demo)
@@ -16,8 +16,8 @@ class DemoPageTests(unittest.TestCase):
         self.assertNotIn('steamcommunity.com',demo)
     def test_demo_page_consistent_with_separate_fixture(self):
         root=Path(__file__).resolve().parents[1]/'docs'
-        fixture=json.loads((root/'data/demo-player.json').read_text())
-        page=(root/'playerone-demo.html').read_text()
+        fixture=json.loads(((Path(__file__).resolve().parents[1]/'tests/fixtures/demo-player.json')).read_text())
+        page=(Path(__file__).resolve().parents[1]/'tests/fixtures/playerone-demo.html').read_text()
         self.assertTrue(fixture['fictional'])
         self.assertEqual(fixture['player']['name'],'PlayerOne')
         self.assertIn(str(fixture['player']['kills']),page)

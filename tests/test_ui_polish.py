@@ -41,7 +41,7 @@ class LaunchUXContractTests(unittest.TestCase):
             yield filename, html, parser
 
     def test_styles_have_clear_ownership_without_redundant_overlay(self):
-        for filename in ("index.html", "players.html", "playerone-demo.html"):
+        for filename in ("index.html", "players.html"):
             html = (ROOT / filename).read_text(encoding="utf-8")
             parser = PageInspector()
             parser.feed(html)
@@ -66,7 +66,7 @@ class LaunchUXContractTests(unittest.TestCase):
             self.assertNotIn("SteamID", parser.meta["og:description"])
 
     def test_plain_english_consistent_navigation_and_data_scope(self):
-        for filename in ("index.html", "players.html", "playerone-demo.html"):
+        for filename in ("index.html", "players.html"):
             html = (ROOT / filename).read_text(encoding="utf-8")
             self.assertIn("Match history</a>", html, filename)
             self.assertIn("Find a player</a>", html, filename)

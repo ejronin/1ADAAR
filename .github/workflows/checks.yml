@@ -40,6 +40,8 @@ jobs:
           node --check docs/js/performance.js
           node --check docs/js/progression.js
           node --check docs/js/role-radar.js
+          node tests/role_radar_scale.test.cjs
+          node --check docs/js/map-team.js
           node --check docs/js/demo-performance.js
           node --check docs/js/factions.js
           node tests/factions.test.cjs

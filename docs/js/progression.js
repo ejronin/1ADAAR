@@ -116,33 +116,8 @@
       const profileLink=el('tracker-open-profile');
       profileLink.href='https://wardogstracker.gg/profile/'+id;
       profileLink.hidden=false;
-      const community=el('tracker-community-controls');
-      if(community)community.hidden=false;
     }catch(_){blank();status('Could not retrieve the public Tracker record. The Steam authentication Worker was not contacted.');}
     finally{submit.disabled=false;}
-  }
-  const serverId=/^[a-zA-Z0-9_-]{3,80}$|^[a-f0-9-]{36}$/;
-  async function community(event){
-    event.preventDefault();
-    const server=el('tracker-community-server')?.value.trim()||'';
-    const result=el('tracker-community-status');
-    if(!serverId.test(server)){result.textContent='Enter a Tracker server slug, ID, or join code.';return;}
-    const id=parseId(el('tracker-public-id')?.value);
-    if(!id){result.textContent='Load a public player profile first.';return;}
-    result.textContent='Checking community kill-feed coverage…';
-    try{
-      const url=api+'servers/'+encodeURIComponent(server)+'/leaderboard?range=7d&limit=100';
-      const response=await fetch(url,{credentials:'omit',referrerPolicy:'no-referrer',cache:'no-store'});
-      if(response.status===404){result.textContent='No connected public kill feed was found for this server. No match statistics can be recovered from the server list alone.';return;}
-      if(!response.ok){result.textContent='Community leaderboard unavailable.';return;}
-      const data=await response.json();
-      const player=(Array.isArray(data.players)?data.players:[]).find(p=>p.steamId===id);
-      if(!player){result.textContent='Server feed found, but this player is not in the returned top 100 for the last 7 days. This is not a zero-stat result.';return;}
-      const summary=['Kills '+fmt(player.kills),'Deaths '+fmt(player.deaths),
-        'K/D '+(Number.isFinite(player.kd)?player.kd.toFixed(2):'—'),
-        'Headshots '+fmt(player.headshots),'Longest '+(Number.isFinite(player.longestKillM)?player.longestKillM+' m':'—')];
-      result.textContent='Recorded community kills · last 7 days · '+summary.join(' · ');
-    }catch(_){result.textContent='Community feed could not be reached. No missing play was inferred.';}
   }
   function mount(entry){
     const standalone=document.body.dataset.progressStandalone==='true';
@@ -155,7 +130,6 @@
     const field=el('tracker-public-id');
     field.value=saved||'';
     el('tracker-public-remember').checked=Boolean(saved);
-    el('tracker-community-controls').hidden=true;
     const profileLink=el('tracker-open-profile');profileLink.hidden=true;profileLink.removeAttribute('href');
     status('Load public Tracker progression without signing in through 1ADAAR.');
     if(saved)void load(saved,true);
@@ -167,10 +141,8 @@
     ++seq;save(null);el('tracker-public-id').value='';
     const link=el('tracker-open-profile');link.hidden=true;link.removeAttribute('href');
     el('tracker-public-remember').checked=false;blank();
-    el('tracker-community-controls').hidden=true;
     status('Saved public profile cleared from this browser.');
   });
   el('tracker-public-economy')?.addEventListener('change',()=>{const id=el('tracker-public-id').value;if(parseId(id))void load(id,el('tracker-public-remember').checked);});
-  el('tracker-community-form')?.addEventListener('submit',community);
   root.OneADAARProgression=Object.freeze({mount});
 })(window);

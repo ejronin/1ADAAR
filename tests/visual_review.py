@@ -13,6 +13,7 @@ import sys
 import subprocess
 from pathlib import Path
 import threading
+from shutil import copyfile
 
 from playwright.async_api import async_playwright
 
@@ -30,6 +31,9 @@ async def capture():
         'from pathlib import Path; Path("visual-review/discord-recap-v11-FICTIONAL.png").write_bytes('
         'render_match_card({**DEMO_MATCH, "winner": "Lonestar"}, demo=True))'],
         cwd=ROOT,check=True)
+    # The PlayerOne reference exists only in CI; never commit or publish this route.
+    fixture_page=ROOT/"docs/playerone-demo.html"
+    copyfile(ROOT/"tests/fixtures/playerone-demo.html",fixture_page)
     handler=functools.partial(http.server.SimpleHTTPRequestHandler,directory=str(ROOT/"docs"))
     server=http.server.ThreadingHTTPServer(("127.0.0.1",0),handler)
     threading.Thread(target=server.serve_forever,daemon=True).start()
@@ -377,7 +381,7 @@ async def capture():
                   crown:getComputedStyle(document.querySelector('.weekly-podium-place.gold .weekly-crown')).display,
                   overflow:document.documentElement.scrollWidth-innerWidth
                 })""")
-                assert no_crown["winner"]=="false" and no_crown["crown"]=="none",no_crown
+                assert no_crown["winner"]=="false" and no_crown["crown"]=="grid",no_crown  # decorative crown; no winner named
                 assert no_crown["overflow"]<=2,no_crown
                 await motion.screenshot(path=str(ARTIFACT/f"weekly-unawarded-{width}px.png"),
                                         full_page=True,animations="disabled")
@@ -412,6 +416,7 @@ async def capture():
             await browser.close()
     finally:
         server.shutdown()
+        fixture_page.unlink(missing_ok=True)
     (ARTIFACT/"report.json").write_text(json.dumps(report,indent=2)+"\n",encoding="utf-8")
     print(json.dumps(report,indent=2))
 

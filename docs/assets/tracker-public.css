@@ -20,3 +20,7 @@
 .tracker-community-controls[hidden],.tracker-public-actions [hidden]{display:none!important}
 @media(max-width:520px){.tracker-public-form,.tracker-community-controls{padding:12px}
  .tracker-public-actions button,.tracker-public-actions a{flex:1 1 auto;text-align:center}}
+
+.radar-scale-caption{color:#acdcb8;font-size:12px;font-weight:700;text-align:center;margin:6px 0 13px}
+.tracker-feed-coverage{font-size:12px;line-height:1.6;color:#b9d3be;
+ background:#17231a;border-left:3px solid #619b72;padding:9px 12px;margin:14px 0}

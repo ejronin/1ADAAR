@@ -1,6 +1,6 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
-const fixture=JSON.parse(fs.readFileSync('docs/data/demo-player.json','utf-8'));
+const fixture=JSON.parse(fs.readFileSync('tests/fixtures/demo-player.json','utf-8'));
 let rendered=null;
 vm.runInNewContext(fs.readFileSync('docs/js/demo-performance.js','utf-8'),{
   window:{OneADAARPerformance:{mount:(_target,data)=>{rendered=data;}}},

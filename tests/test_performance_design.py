@@ -6,8 +6,8 @@ DOCS=Path(__file__).resolve().parents[1]/"docs"
 
 class PerformanceDesignTests(unittest.TestCase):
     def test_player_and_demo_share_accessible_design(self):
-        for name in ("players.html","playerone-demo.html"):
-            text=(DOCS/name).read_text(encoding="utf-8")
+        for page in (DOCS/"players.html", (Path(__file__).resolve().parents[1]/'tests/fixtures/playerone-demo.html')):
+            text=page.read_text(encoding="utf-8")
             self.assertIn('id="performance-module"',text)
             self.assertIn('src="js/performance-core.js?v=1"',text)
             self.assertIn('src="js/performance.js?v=5"',text)
@@ -24,14 +24,14 @@ class PerformanceDesignTests(unittest.TestCase):
         self.assertIn("window.OneADAARPerformance.mount",live)
         self.assertIn("publicState.selected?.key!==entry.key",live)
     def test_fictional_timeline_has_internal_consistency(self):
-        fixture=json.loads((DOCS/"data/demo-player.json").read_text())
+        fixture=json.loads(((Path(__file__).resolve().parents[1]/'tests/fixtures/demo-player.json')).read_text())
         self.assertTrue(fixture["fictional"])
         self.assertEqual(len(fixture["matches"]),32)
         self.assertEqual(len(fixture["careerHistory"]),32)
         self.assertEqual(fixture["careerHistory"][-1]["kills"],fixture["player"]["kills"])
         self.assertEqual(fixture["careerHistory"][-1]["deaths"],fixture["player"]["deaths"])
         self.assertEqual(fixture["careerHistory"][-1]["matches"],fixture["player"]["matches"])
-        self.assertEqual((DOCS/"playerone-demo.html").read_text().count("<tr>"),11)
+        self.assertEqual(((Path(__file__).resolve().parents[1]/'tests/fixtures/playerone-demo.html')).read_text().count("<tr>"),11)
         self.assertEqual(fixture["matches"][0]["endedAt"],"2026-10-15T19:00:00Z")
         self.assertEqual(fixture["careerHistory"][0]["matches"],17)
         self.assertTrue(all(b["matches"]==a["matches"]+1 for a,b in

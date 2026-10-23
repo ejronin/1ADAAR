@@ -33,7 +33,7 @@ class SeasonBrowserTests(unittest.TestCase):
         self.assertIn("more.addEventListener('click',renderNext)",js)
 
     def test_all_pages_link_to_older_matches(self):
-        for name in ("index.html", "players.html", "playerone-demo.html",
+        for name in ("index.html", "players.html",
                      "weekly.html", "compare.html"):
             html=(ROOT/"docs"/name).read_text()
             self.assertIn('href="seasons.html"',html,name)

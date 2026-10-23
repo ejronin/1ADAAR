@@ -37,16 +37,16 @@ class WebsiteTests(unittest.TestCase):
                      'wardogstracker.gg/logo.png','logo_steam.svg'):
             self.assertIn(logo,home)
         self.assertTrue((p/'assets'/'brands'/'warcon-logo-on-dark.svg').is_file())
-        self.assertIn('*WHEN CONSENT IS GIVEN',home)
-        self.assertIn('data-steam-logo',home)
-        self.assertIn('js/source-branding.js',home)
+        self.assertIn('OPTIONAL PROFILE IMAGE*',home)
+        self.assertIn('logo_steam.svg',home)
+        self.assertIn('WHERE THE DATA COMES FROM',home)
     def test_match_dialog_does_not_preserve_report_scroll(self):
         p=Path(__file__).resolve().parents[1]/'docs'
         script=(p/'js'/'app.js').read_text()
         self.assertNotIn('${location.pathname}#reports',script)
         self.assertIn('${location.pathname}${location.search}',script)
         for page in ('seasons.html','compare.html','weekly.html','players.html',
-                     'activity.html','map-team.html','playerone-demo.html'):
+                     'activity.html','map-team.html'):
             self.assertNotIn('href="index.html#reports"',(p/page).read_text())
 
     def test_owner_screenshot_cleanup(self):

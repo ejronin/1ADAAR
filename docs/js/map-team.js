@@ -5,7 +5,12 @@
   const message=$('mt-message'),view=$('mt-view'),season=$('mt-season'),sort=$('mt-sort');
   const mapChoice=$('mt-combo-map'),teamChoice=$('mt-combo-faction');
   const KEY=/^[a-f0-9]{64}$/;
-  const playerId=new URLSearchParams(location.search).get('player')||'';
+  const selectedKey='1adaar-selected-player-key-v1';
+  const fromUrl=new URLSearchParams(location.search).get('player')||'';
+  let playerId=fromUrl;
+  if(!playerId){try{playerId=sessionStorage.getItem(selectedKey)||''}catch(_){/* no session access */}}
+  const search=$('mt-player-query'),searchResults=$('mt-player-results');
+  let publicPlayers=[];
   const known=n=>Number.isSafeInteger(n)&&n>=0;
   const number=n=>known(n)?n.toLocaleString():'—';
   const minutes=seconds=>known(seconds)?Math.round(seconds/60).toLocaleString()+' min':'—';
@@ -13,6 +18,42 @@
     (100*n).toFixed(1)+'%':'—';
   const kd=n=>typeof n==='number'&&Number.isFinite(n)&&n>=0?n.toFixed(2):'—';
   let entry=null;
+  function selectPlayer(p){
+    if(!p||!KEY.test(p.key))return;
+    try{sessionStorage.setItem(selectedKey,p.key)}catch(_){/* optional */ }
+    location.assign('map-team.html?player='+encodeURIComponent(p.key));
+  }
+  function searchPlayers(ev){
+    if(ev)ev.preventDefault();
+    searchResults.replaceChildren();
+    const q=search.value.trim().toLocaleLowerCase();
+    if(!q){make(searchResults,'p','Type a player name to search.','mt-empty');return;}
+    const matches=publicPlayers.filter(p=>p.name.toLocaleLowerCase().includes(q)).slice(0,30);
+    if(!matches.length){make(searchResults,'p','No matching players in the current WARCON index.','mt-empty');return;}
+    for(const p of matches){
+      const button=make(searchResults,'button',p.name+' · '+number(p.kills)+' kills · '+number(p.matches)+' career matches','mt-player-result');
+      button.type='button';button.addEventListener('click',()=>selectPlayer(p));
+    }
+  }
+  $('mt-player-search').addEventListener('submit',searchPlayers);
+  function careerCard(parent,label,value){
+    const tile=make(parent,'div',undefined,'mt-summary-card');
+    make(tile,'span',label);make(tile,'strong',value);return tile;
+  }
+  function showCareer(player){
+    if(!player)return;
+    $('mt-career').hidden=false;
+    const grid=$('mt-career-grid');grid.replaceChildren();
+    const kd=known(player.kills)&&known(player.deaths)?
+      player.deaths>0?(player.kills/player.deaths).toFixed(2):
+      player.kills===0?'—':player.kills+' (0 deaths)':'—';
+    for(const [label,value] of [
+      ['Kills',number(player.kills)],['Deaths',number(player.deaths)],['Career K/D',kd],
+      ['Matches',number(player.matches)],['Wins',number(player.wins)],
+      ['Playtime',known(player.minutes)?Math.floor(player.minutes/60)+'h '+player.minutes%60+'m':'—'],
+      ['Headshots',number(player.headshots)],['Best streak',number(player.killStreak)]])
+      careerCard(grid,label,value);
+  }
   const make=(parent,tag,value,cls)=>{
     const el=document.createElement(tag);
     if(cls)el.className=cls;
@@ -193,12 +234,26 @@
   $('mt-combo-filters').addEventListener('submit',event=>event.preventDefault());
   $('mt-filters').addEventListener('submit',event=>event.preventDefault());
   (async()=>{
-    if(!KEY.test(playerId)){
-      message.textContent='Choose a player from Find a player to see their map and team results.';
-      return;
-    }
-    $('mt-back').href='players.html#player-'+playerId;
     try{
+      const playerResponse=await fetch('data/players.json',{cache:'no-store'});
+      if(!playerResponse.ok)throw Error('Player index unavailable');
+      const playerData=await playerResponse.json();
+      if(!Array.isArray(playerData.players))throw Error('Invalid player index');
+      publicPlayers=playerData.players.filter(p=>KEY.test(p.key)&&typeof p.name==='string');
+      if(!KEY.test(playerId)){
+        message.textContent='Search for a player above to view their WARCON career and saved map/team results.';
+        return;
+      }
+      const selected=publicPlayers.find(p=>p.key===playerId);
+      $('mt-back').href='players.html#player-'+playerId;
+      if(!selected){
+        message.textContent='This player is not in the current WARCON index. Search another player above.';
+        return;
+      }
+      $('mt-player-name').textContent=selected.name;
+      search.value=selected.name;
+      showCareer(selected);
+      try{sessionStorage.setItem(selectedKey,playerId)}catch(_){/* optional */}
       const idxRes=await fetch('data/map-team/index.json',{cache:'no-store'});
       if(!idxRes.ok)throw Error('Map and team index unavailable');
       const index=await idxRes.json();
