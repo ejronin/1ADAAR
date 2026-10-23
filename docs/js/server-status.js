@@ -32,8 +32,11 @@
     const online=state==='online';
     target.players.textContent=online&&Number.isSafeInteger(doc.players)&&doc.players>=0?
       String(doc.players)+(Number.isSafeInteger(doc.maxPlayers)&&doc.maxPlayers>0?' / '+doc.maxPlayers:''):'—';
+    const mapTile=target.map.closest('.server-status-cell');
+    if(mapTile){mapTile.classList.remove('map-banner-present');mapTile.style.removeProperty('--map-banner');}
     target.map.textContent=online&&typeof doc.map==='string'&&doc.map.trim()?
       doc.map.slice(0,55):'—';
+    if(online&&doc.map&&mapTile)window.OneADAARMapBanners?.decorateMapRow(mapTile,doc.map);
     target.updated.textContent=valid?
       'WARCON last updated '+new Date(doc.observedAt).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'}):
       'No recent server update. Check WARCON for current status.';
