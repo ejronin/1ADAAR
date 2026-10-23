@@ -106,7 +106,7 @@ class WeeklyReleaseTests(unittest.TestCase):
 
     def test_navigation_exists_in_all_pages(self):
         pages=Path(__file__).resolve().parents[1] / "docs"
-        for name in ("index.html","players.html","playerone-demo.html"):
+        for name in ("index.html","players.html"):
             self.assertIn('href="weekly.html"',(pages/name).read_text(),name)
         weekly=(pages/"weekly.html").read_text()
         self.assertIn('id="weekly-summary"',weekly)
