@@ -18,11 +18,21 @@
 
   function career(primary,secondary,entry) {
     primary.replaceChildren();secondary.replaceChildren();
-    const sample=!!entry.demo,note=sample?'FICTIONAL SAMPLE':'WARCON · ALL-TIME';
-    const add=(host,label,value,compact)=>{
-      const card=make('div',compact?'career-secondary-card':'metric-tile');
-      card.append(make('span','',label),make('strong','',value),make('small','',note));
-      host.append(card);
+    // WARCON's leaderboard is ALL-TIME ON THIS SERVER. The public WARDOGS
+    // Tracker profile currently publishes progression, NOT global combat K/D.
+    // Never recycle this-server totals as global totals.
+    const add=(host,label,serverValue,compact)=>{
+      const card=make('div',compact?'career-secondary-card career-source-pair':'metric-tile career-source-pair');
+      card.append(make('span','career-pair-heading',label));
+      const row=make('div','career-pair-values');
+      for(const [source,value] of [['1AD SERVER',serverValue],['TRACKER · ALL','—']]){
+        const group=make('div','career-pair-column');
+        group.append(make('small','career-pair-source',source),
+          make('strong','career-pair-number',value));
+        if(source.startsWith('TRACKER'))group.title='Global combat total is not published by WARDOGS Tracker.';
+        row.append(group);
+      }
+      card.append(row);host.append(card);
     };
     for(const [label,value] of [
       ['K/D',ratio(entry.kills,entry.deaths)],['Kills',number(entry.kills)],
@@ -30,6 +40,12 @@
     for(const [label,value] of [
       ['Wins',number(entry.wins)],['Playtime',time(entry.minutes)],
       ['Seeding time',time(entry.seedMinutes)]])add(secondary,label,value,true);
+    primary.insertAdjacentElement('beforebegin',(()=>{
+      // No duplicated source legend on repeated player selections.
+      const previous=document.getElementById('career-source-note');if(previous)previous.remove();
+      return make('p','career-source-note',
+        '1AD = WARCON totals for this server. Tracker does not yet publish global combat totals; — means unavailable, not zero.');
+    })());
   }
 
   function observations(records,key) {
