@@ -1,0 +1,863 @@
+{
+  "schemaVersion": 1,
+  "kind": "demo-only",
+  "fictional": true,
+  "notice": "FICTIONAL DATA. The chart has 32 observations for working Last 10, Last 25 and All Available ranges. The separate recent match table intentionally shows only 10.",
+  "player": {
+    "key": "demo-playerone",
+    "name": "PlayerOne",
+    "demo": true,
+    "rank": 12,
+    "minutes": 2220,
+    "seedMinutes": 180,
+    "kills": 634,
+    "deaths": 332,
+    "matches": 48,
+    "wins": 27,
+    "losses": 17,
+    "draws": 4,
+    "cash": 58700,
+    "headshots": 128,
+    "teamKills": 3,
+    "vehicleKills": 19,
+    "killStreak": 14,
+    "lastSeen": "2026-10-15T19:00:00Z",
+    "hasFeed": true
+  },
+  "matches": [
+    {
+      "id": 0,
+      "endedAt": "2026-10-15T19:00:00Z",
+      "map": "Bakurani",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Lonestar",
+          "result": "win",
+          "kills": 29,
+          "deaths": 12,
+          "seconds": 2520
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-14T19:00:00Z",
+      "map": "Ozeti",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Valkyra",
+          "result": "loss",
+          "kills": 18,
+          "deaths": 15,
+          "seconds": 2160
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-12T19:00:00Z",
+      "map": "Zestafona",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Manticore",
+          "result": "win",
+          "kills": 21,
+          "deaths": 8,
+          "seconds": 2280
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-11T19:00:00Z",
+      "map": "Bakurani",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Lonestar",
+          "result": "draw",
+          "kills": 11,
+          "deaths": 10,
+          "seconds": 1740
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-10T19:00:00Z",
+      "map": "Ozeti",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Valkyra",
+          "result": "win",
+          "kills": 20,
+          "deaths": 7,
+          "seconds": 2340
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-09T19:00:00Z",
+      "map": "Zestafona",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Manticore",
+          "result": "loss",
+          "kills": 14,
+          "deaths": 17,
+          "seconds": 2640
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-08T19:00:00Z",
+      "map": "Bakurani",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Lonestar",
+          "result": "win",
+          "kills": 24,
+          "deaths": 10,
+          "seconds": 2460
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-07T19:00:00Z",
+      "map": "Ozeti",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Valkyra",
+          "result": "loss",
+          "kills": 12,
+          "deaths": 14,
+          "seconds": 2160
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-06T19:00:00Z",
+      "map": "Zestafona",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Manticore",
+          "result": "win",
+          "kills": 27,
+          "deaths": 9,
+          "seconds": 2760
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-05T19:00:00Z",
+      "map": "Bakurani",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Lonestar",
+          "result": "loss",
+          "kills": 9,
+          "deaths": 16,
+          "seconds": 1980
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-04T19:00:00Z",
+      "map": "Bakurani",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Lonestar",
+          "result": "draw",
+          "kills": 20,
+          "deaths": 7,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-03T19:00:00Z",
+      "map": "Zestafona",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Manticore",
+          "result": "win",
+          "kills": 17,
+          "deaths": 6,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-02T19:00:00Z",
+      "map": "Ozeti",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Valkyra",
+          "result": "win",
+          "kills": 12,
+          "deaths": 5,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-10-01T19:00:00Z",
+      "map": "Bakurani",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Lonestar",
+          "result": "loss",
+          "kills": 25,
+          "deaths": 8,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-30T19:00:00Z",
+      "map": "Zestafona",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Manticore",
+          "result": "win",
+          "kills": 9,
+          "deaths": 6,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-29T19:00:00Z",
+      "map": "Ozeti",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Valkyra",
+          "result": "win",
+          "kills": 18,
+          "deaths": 7,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-28T19:00:00Z",
+      "map": "Bakurani",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Lonestar",
+          "result": "loss",
+          "kills": 16,
+          "deaths": 5,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-27T19:00:00Z",
+      "map": "Zestafona",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Manticore",
+          "result": "win",
+          "kills": 22,
+          "deaths": 7,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-26T19:00:00Z",
+      "map": "Ozeti",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Valkyra",
+          "result": "win",
+          "kills": 10,
+          "deaths": 6,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-25T19:00:00Z",
+      "map": "Bakurani",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Lonestar",
+          "result": "loss",
+          "kills": 14,
+          "deaths": 5,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-24T19:00:00Z",
+      "map": "Zestafona",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Manticore",
+          "result": "win",
+          "kills": 21,
+          "deaths": 8,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-23T19:00:00Z",
+      "map": "Ozeti",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Valkyra",
+          "result": "draw",
+          "kills": 6,
+          "deaths": 4,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-22T19:00:00Z",
+      "map": "Bakurani",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Lonestar",
+          "result": "win",
+          "kills": 17,
+          "deaths": 7,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-21T19:00:00Z",
+      "map": "Zestafona",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Manticore",
+          "result": "loss",
+          "kills": 13,
+          "deaths": 5,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-20T19:00:00Z",
+      "map": "Ozeti",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Valkyra",
+          "result": "win",
+          "kills": 20,
+          "deaths": 7,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-19T19:00:00Z",
+      "map": "Bakurani",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Lonestar",
+          "result": "win",
+          "kills": 15,
+          "deaths": 6,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-18T19:00:00Z",
+      "map": "Zestafona",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Manticore",
+          "result": "loss",
+          "kills": 11,
+          "deaths": 9,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-17T19:00:00Z",
+      "map": "Ozeti",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Valkyra",
+          "result": "win",
+          "kills": 24,
+          "deaths": 6,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-16T19:00:00Z",
+      "map": "Bakurani",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Lonestar",
+          "result": "win",
+          "kills": 16,
+          "deaths": 4,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-15T19:00:00Z",
+      "map": "Zestafona",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Manticore",
+          "result": "loss",
+          "kills": 8,
+          "deaths": 8,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-14T19:00:00Z",
+      "map": "Ozeti",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Valkyra",
+          "result": "win",
+          "kills": 19,
+          "deaths": 5,
+          "seconds": 2400
+        }
+      ]
+    },
+    {
+      "id": 0,
+      "endedAt": "2026-09-13T19:00:00Z",
+      "map": "Bakurani",
+      "players": [
+        {
+          "key": "demo-playerone",
+          "name": "PlayerOne",
+          "faction": "Lonestar",
+          "result": "win",
+          "kills": 12,
+          "deaths": 7,
+          "seconds": 2400
+        }
+      ]
+    }
+  ],
+  "careerHistory": [
+    {
+      "date": "2026-09-13",
+      "kills": 116,
+      "deaths": 83,
+      "matches": 17,
+      "wins": 9,
+      "losses": 7,
+      "draws": 1,
+      "minutes": 921
+    },
+    {
+      "date": "2026-09-14",
+      "kills": 135,
+      "deaths": 88,
+      "matches": 18,
+      "wins": 10,
+      "losses": 7,
+      "draws": 1,
+      "minutes": 961
+    },
+    {
+      "date": "2026-09-15",
+      "kills": 143,
+      "deaths": 96,
+      "matches": 19,
+      "wins": 10,
+      "losses": 8,
+      "draws": 1,
+      "minutes": 1001
+    },
+    {
+      "date": "2026-09-16",
+      "kills": 159,
+      "deaths": 100,
+      "matches": 20,
+      "wins": 11,
+      "losses": 8,
+      "draws": 1,
+      "minutes": 1041
+    },
+    {
+      "date": "2026-09-17",
+      "kills": 183,
+      "deaths": 106,
+      "matches": 21,
+      "wins": 12,
+      "losses": 8,
+      "draws": 1,
+      "minutes": 1081
+    },
+    {
+      "date": "2026-09-18",
+      "kills": 194,
+      "deaths": 115,
+      "matches": 22,
+      "wins": 12,
+      "losses": 9,
+      "draws": 1,
+      "minutes": 1121
+    },
+    {
+      "date": "2026-09-19",
+      "kills": 209,
+      "deaths": 121,
+      "matches": 23,
+      "wins": 13,
+      "losses": 9,
+      "draws": 1,
+      "minutes": 1161
+    },
+    {
+      "date": "2026-09-20",
+      "kills": 229,
+      "deaths": 128,
+      "matches": 24,
+      "wins": 14,
+      "losses": 9,
+      "draws": 1,
+      "minutes": 1201
+    },
+    {
+      "date": "2026-09-21",
+      "kills": 242,
+      "deaths": 133,
+      "matches": 25,
+      "wins": 14,
+      "losses": 10,
+      "draws": 1,
+      "minutes": 1241
+    },
+    {
+      "date": "2026-09-22",
+      "kills": 259,
+      "deaths": 140,
+      "matches": 26,
+      "wins": 15,
+      "losses": 10,
+      "draws": 1,
+      "minutes": 1281
+    },
+    {
+      "date": "2026-09-23",
+      "kills": 265,
+      "deaths": 144,
+      "matches": 27,
+      "wins": 15,
+      "losses": 10,
+      "draws": 2,
+      "minutes": 1321
+    },
+    {
+      "date": "2026-09-24",
+      "kills": 286,
+      "deaths": 152,
+      "matches": 28,
+      "wins": 16,
+      "losses": 10,
+      "draws": 2,
+      "minutes": 1361
+    },
+    {
+      "date": "2026-09-25",
+      "kills": 300,
+      "deaths": 157,
+      "matches": 29,
+      "wins": 16,
+      "losses": 11,
+      "draws": 2,
+      "minutes": 1401
+    },
+    {
+      "date": "2026-09-26",
+      "kills": 310,
+      "deaths": 163,
+      "matches": 30,
+      "wins": 17,
+      "losses": 11,
+      "draws": 2,
+      "minutes": 1441
+    },
+    {
+      "date": "2026-09-27",
+      "kills": 332,
+      "deaths": 170,
+      "matches": 31,
+      "wins": 18,
+      "losses": 11,
+      "draws": 2,
+      "minutes": 1481
+    },
+    {
+      "date": "2026-09-28",
+      "kills": 348,
+      "deaths": 175,
+      "matches": 32,
+      "wins": 18,
+      "losses": 12,
+      "draws": 2,
+      "minutes": 1521
+    },
+    {
+      "date": "2026-09-29",
+      "kills": 366,
+      "deaths": 182,
+      "matches": 33,
+      "wins": 19,
+      "losses": 12,
+      "draws": 2,
+      "minutes": 1561
+    },
+    {
+      "date": "2026-09-30",
+      "kills": 375,
+      "deaths": 188,
+      "matches": 34,
+      "wins": 20,
+      "losses": 12,
+      "draws": 2,
+      "minutes": 1601
+    },
+    {
+      "date": "2026-10-01",
+      "kills": 400,
+      "deaths": 196,
+      "matches": 35,
+      "wins": 20,
+      "losses": 13,
+      "draws": 2,
+      "minutes": 1641
+    },
+    {
+      "date": "2026-10-02",
+      "kills": 412,
+      "deaths": 201,
+      "matches": 36,
+      "wins": 21,
+      "losses": 13,
+      "draws": 2,
+      "minutes": 1681
+    },
+    {
+      "date": "2026-10-03",
+      "kills": 429,
+      "deaths": 207,
+      "matches": 37,
+      "wins": 22,
+      "losses": 13,
+      "draws": 2,
+      "minutes": 1721
+    },
+    {
+      "date": "2026-10-04",
+      "kills": 449,
+      "deaths": 214,
+      "matches": 38,
+      "wins": 22,
+      "losses": 13,
+      "draws": 3,
+      "minutes": 1761
+    },
+    {
+      "date": "2026-10-05",
+      "kills": 458,
+      "deaths": 230,
+      "matches": 39,
+      "wins": 22,
+      "losses": 14,
+      "draws": 3,
+      "minutes": 1803
+    },
+    {
+      "date": "2026-10-06",
+      "kills": 485,
+      "deaths": 239,
+      "matches": 40,
+      "wins": 23,
+      "losses": 14,
+      "draws": 3,
+      "minutes": 1850
+    },
+    {
+      "date": "2026-10-07",
+      "kills": 497,
+      "deaths": 253,
+      "matches": 41,
+      "wins": 23,
+      "losses": 15,
+      "draws": 3,
+      "minutes": 1896
+    },
+    {
+      "date": "2026-10-08",
+      "kills": 521,
+      "deaths": 263,
+      "matches": 42,
+      "wins": 24,
+      "losses": 15,
+      "draws": 3,
+      "minutes": 1942
+    },
+    {
+      "date": "2026-10-09",
+      "kills": 535,
+      "deaths": 280,
+      "matches": 43,
+      "wins": 24,
+      "losses": 16,
+      "draws": 3,
+      "minutes": 1988
+    },
+    {
+      "date": "2026-10-10",
+      "kills": 555,
+      "deaths": 287,
+      "matches": 44,
+      "wins": 25,
+      "losses": 16,
+      "draws": 3,
+      "minutes": 2035
+    },
+    {
+      "date": "2026-10-11",
+      "kills": 566,
+      "deaths": 297,
+      "matches": 45,
+      "wins": 25,
+      "losses": 16,
+      "draws": 4,
+      "minutes": 2081
+    },
+    {
+      "date": "2026-10-12",
+      "kills": 587,
+      "deaths": 305,
+      "matches": 46,
+      "wins": 26,
+      "losses": 16,
+      "draws": 4,
+      "minutes": 2127
+    },
+    {
+      "date": "2026-10-14",
+      "kills": 605,
+      "deaths": 320,
+      "matches": 47,
+      "wins": 26,
+      "losses": 17,
+      "draws": 4,
+      "minutes": 2173
+    },
+    {
+      "date": "2026-10-15",
+      "kills": 634,
+      "deaths": 332,
+      "matches": 48,
+      "wins": 27,
+      "losses": 17,
+      "draws": 4,
+      "minutes": 2220
+    }
+  ]
+}
