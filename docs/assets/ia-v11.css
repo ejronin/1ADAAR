@@ -110,10 +110,10 @@ body{background:var(--ia-bg);color:var(--ia-ink)}
  border-radius:6px;background:#16251a}
 .hero.motion-hero{min-height:338px;border-radius:11px}
 .hero.motion-hero .hero-text{padding:35px clamp(20px,3.2vw,50px)}
-.hero.motion-hero h2{font:800 clamp(45px,5.2vw,76px)/.96 'Barlow Condensed',Arial,sans-serif;
+.hero.motion-hero :is(h1,h2){font:800 clamp(45px,5.2vw,76px)/.96 'Barlow Condensed',Arial,sans-serif;
  letter-spacing:.01em;color:#f2f6f1;margin:14px 0 16px;max-width:600px;
  text-transform:none}
-.hero.motion-hero h2 em{color:#86f4a4;font-style:normal}
+.hero.motion-hero :is(h1,h2) em{color:#86f4a4;font-style:normal}
 .hero.motion-hero .hero-actions{gap:10px;flex-wrap:wrap}
 .hero.motion-hero .hero-actions a{border-radius:7px;font-size:12px;letter-spacing:.015em;
  text-transform:none;font-weight:800}
@@ -156,7 +156,7 @@ body{background:var(--ia-bg);color:var(--ia-ink)}
 @media(max-width:1200px){.ia-intelligence-grid{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:720px){.ia-titlebar{margin:18px 0}.ia-titlebar h1{font-size:45px}
  .hero.motion-hero .hero-text{padding:28px 19px}
- .hero.motion-hero h2{font-size:clamp(45px,9.5vw,63px);margin:12px 0}
+ .hero.motion-hero :is(h1,h2){font-size:clamp(45px,9.5vw,63px);margin:12px 0}
  .ia-reports-panel,.ia-home-activity{padding:16px}
  .ia-home-hour-row{gap:1.5px}
 }
