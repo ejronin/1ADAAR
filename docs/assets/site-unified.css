@@ -135,3 +135,15 @@ html{scroll-padding-top:18px}
 .weekly-page .weekly-podium-place.silver .weekly-avatar{color:#d7e2ee}
 .weekly-page .weekly-podium-place.bronze .weekly-rank,
 .weekly-page .weekly-podium-place.bronze .weekly-avatar{color:#d9a183}
+
+/* 1ADAAR wordmark is a first-party text identity, not a replacement for WARDOGS. */
+.rail .brand{display:flex;align-items:center;gap:8px;padding:0 0 18px!important;min-width:0}
+.rail .brand .brand-emblem{width:48px;height:48px;flex:0 0 48px}
+.rail .brand-wordmark{display:block;flex:1 1 auto;min-width:0;max-width:125px;border-radius:3px}
+.rail .brand-wordmark img{display:block;width:100%;height:auto;object-fit:contain}
+.rail .brand-wordmark:focus-visible{outline:2px solid #95eeb1;outline-offset:5px}
+@media(max-width:720px){
+ .rail .brand{grid-column:1/-1;padding:0 0 9px!important;gap:10px}
+ .rail .brand .brand-emblem{width:49px;height:49px;flex-basis:49px}
+ .rail .brand-wordmark{max-width:150px}
+}
