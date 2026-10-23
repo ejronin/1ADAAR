@@ -101,7 +101,8 @@ class RecordedActivityTests(unittest.TestCase):
         docs=Path(__file__).resolve().parents[1]/"docs"
         page=(docs/"activity.html").read_text()
         js=(docs/"js/activity.js").read_text()
-        assert "not individual player schedules" in page
+        self.assertIn("not live player counts",page)
+        self.assertNotIn('class="act-caution">This is server-wide',page)
         self.assertIn("if(!group.count)",js)
         self.assertIn("status.hidden=true",js)
         self.assertIn("Data will appear as completed matches are recorded.",page)
