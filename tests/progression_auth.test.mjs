@@ -38,6 +38,33 @@ test('progression fields are game-account values with verified source and no Ste
   assert.equal(record.careerXp,1830450);
   assert.doesNotMatch(JSON.stringify(record),/76561190000000001/);
 });
+test('additional Tracker fields and Steam avatar remain source-gated',()=>{
+  const data=structuredClone(fixture);
+  data.player.stats.unlocks=9;
+  data.player.leaderboardRank=872;
+  data.player.leaderboardPlayers=901;
+  data.player.avatarUrl='https://avatars.steamstatic.com/abc123_full.jpg';
+  const got=core.normalize(data,SID,false);
+  assert.equal(got.unlocks,9);
+  assert.equal(got.leaderboardRank,872);
+  assert.equal(got.leaderboardPlayers,901);
+  assert.equal(got.avatarUrl,data.player.avatarUrl);
+  assert.equal(got.cash,null);
+  const malformed=structuredClone(data);
+  malformed.player.avatarUrl='https://evil.example/track?steamid='+SID;
+  malformed.player.leaderboardRank=902;
+  malformed.player.stats.unlocks=-1;
+  const rejected=core.normalize(malformed,SID,false);
+  assert.equal(rejected.avatarUrl,null);
+  assert.equal(rejected.leaderboardRank,null);
+  assert.equal(rejected.leaderboardPlayers,null);
+  assert.equal(rejected.unlocks,null);
+  assert.equal(core.normalize(data,SID,false).xp.Pilot,457000);
+  const zero=structuredClone(data);
+  zero.player.stats.roles.pilot={level:0,xp:0};
+  assert.equal(core.normalize(zero,SID,false).xp.Pilot,0);
+});
+
 test('economy permission is independent of public game progression',()=>{
   const record=core.normalize(fixture,SID,false);
   assert.equal(record.cash,null);assert.equal(record.gold,null);
