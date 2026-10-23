@@ -6,12 +6,14 @@ ROOT = Path(__file__).resolve().parents[1]/'docs'
 class ShareAndJoinTests(unittest.TestCase):
     def test_contextual_onboarding_does_not_add_sidebar_item(self):
         html=(ROOT/'index.html').read_text()
-        self.assertIn('<section id="join-wardogs"', html)
-        self.assertIn('New to WARDOGS?', html)
-        self.assertIn('Get the server join code from the 1AD Discord', html)
+        self.assertNotIn('<section id="join-wardogs"', html)
+        self.assertIn('Join the 1AD Discord', html)
+        self.assertIn('class="hero motion-hero"', html)
         self.assertEqual(html.count('href="https://discord.gg/e9B69UkE53"'),1)
         sidebar=html.split('<aside class="rail"',1)[1].split('</aside>',1)[0]
         self.assertNotIn('join-wardogs',sidebar)
+        hero=html.split('<section class="hero motion-hero"',1)[1].split('</section>',1)[0]
+        self.assertIn('Join the 1AD Discord',hero)
     def test_match_share_is_for_actual_opened_match_only(self):
         html=(ROOT/'index.html').read_text()
         js=(ROOT/'js/app.js').read_text()
