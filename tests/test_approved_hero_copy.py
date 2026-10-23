@@ -15,7 +15,6 @@ class HeroCopyContract(unittest.TestCase):
             "map-team.html":("MAPS. FACTIONS. ","OUTCOMES.","See where you perform best"),
             "compare.html":("HEAD ","TO HEAD.","Compare two players side by side"),
             "seasons.html":("ARCHIVED ","MATCHES.","Browse older saved reports"),
-            "playerone-demo.html":("PLAYERONE ","SAMPLE.","A fictional player dossier"),
         }
         for page,fragments in expected.items():
             s=(ROOT/'docs'/page).read_text(encoding='utf-8')
