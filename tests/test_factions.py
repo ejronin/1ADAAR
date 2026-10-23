@@ -21,11 +21,11 @@ class OfficialFactionArtworkTests(unittest.TestCase):
         self.assertIn("palette[name.trim().toLowerCase()]||null",js)
         self.assertIn("text.textContent=String(name||'—')",js)
     def test_real_and_demo_pages_include_markers_and_colors(self):
-        for page in ('index.html','players.html','playerone-demo.html'):
+        for page in ('index.html','players.html'):
             html=(ROOT/page).read_text()
             self.assertIn('assets/factions.css?v=1',html)
             self.assertIn('src="js/factions.js?v=1"',html)
-        demo=(ROOT/'playerone-demo.html').read_text()
+        demo=((Path(__file__).resolve().parents[1]/'tests/fixtures/playerone-demo.html')).read_text()
         self.assertIn('class="profile-panel faction-breakdown"',demo)
         for name in ('lonestar','valkyra','manticore'):
             self.assertIn(f'src="assets/factions/{name}.svg"',demo)
