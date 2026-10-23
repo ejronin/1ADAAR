@@ -30,6 +30,7 @@
   <script defer src="js/home-intelligence.js?v=1"></script>
   <script defer src="js/server-status.js?v=5"></script>
   <script defer src="js/home-top.js?v=1"></script>
+  <script defer src="js/source-branding.js?v=1"></script>
 <link rel="stylesheet" href="assets/ia-v11.css?v=1" />
 </head>
 <body>
@@ -48,7 +49,13 @@
     <a class="nav" href="weekly.html"><span class="nav-glyph" aria-hidden="true">◷</span>Weekly roundup</a>
     <a class="nav" href="https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342/leaderboard" rel="noopener noreferrer" target="_blank"><span class="nav-glyph">♜</span>WARCON player rankings <span class="external">↗</span></a>
     <a class="nav" href="https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342" rel="noopener noreferrer" target="_blank"><span class="nav-glyph">◉</span>Server on WARCON <span class="external">↗</span></a>
-    <div class="rail-footer"><div><strong>WHERE THE DATA COMES FROM</strong><small>Public WARCON results · See current status</small></div></div>
+    <div class="rail-footer rail-sources" aria-label="Hosting and data sources">
+      <strong>HOST &amp; DATA SOURCES</strong>
+      <a href="https://1of1servers.com/press-kit" target="_blank" rel="noopener noreferrer" aria-label="1of1 Servers, community server host"><img src="https://1of1servers.com/brand/full-logo-white-amber.svg" alt="1of1 Servers" loading="lazy"><small>SERVER HOST</small></a>
+      <a href="https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342" target="_blank" rel="noopener noreferrer" aria-label="WARCON, public server match data"><img src="assets/brands/warcon-logo-on-dark.svg" alt="WARCON" loading="lazy"><small>MATCH &amp; STATUS DATA</small></a>
+      <a href="https://wardogstracker.gg/" target="_blank" rel="noopener noreferrer" aria-label="WARDOGS Tracker, optional game-wide progression"><img src="https://wardogstracker.gg/logo.png" alt="WARDOGS Tracker" loading="lazy"><small>OPTIONAL PROGRESSION</small></a>
+      <a data-steam-logo href="progression.html" hidden aria-label="Steam verification, only after account consent"><img src="https://store.steampowered.com/public/shared/images/header/logo_steam.svg" alt="Steam" loading="lazy"><small>*WHEN CONSENT IS GIVEN</small></a>
+    </div>
   </aside>
   <main id="content" class="main">
     <header class="topbar"><div class="game-lockup" aria-label="Game: WARDOGS — Tactical All Out Warfare"><img src="assets/wardogs-fullmark.png" alt="WARDOGS — Tactical All Out Warfare" width="200" height="40" /></div><div class="breadcrumb">WARDOGS <span>/</span> ONEAVERAGEDAN <span>/</span> MATCH HISTORY</div></header>
@@ -73,29 +80,7 @@
       <div class="server-status-cell"><span>CURRENT MAP</span><strong id="server-status-map">—</strong></div>
     </section>
 
-    <section class="service-provenance" aria-label="Server hosting and data sources">
-      <a class="service-provenance-card" href="https://1of1servers.com/" target="_blank" rel="noopener noreferrer">
-        <span class="service-provenance-label">SERVER HOST</span>
-        <img src="https://1of1servers.com/brand/full-logo-white-amber.svg" alt="1of1 Servers" loading="lazy" referrerpolicy="no-referrer">
-        <span>Hosts the community game server</span>
-      </a>
-      <a class="service-provenance-card" href="https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342" target="_blank" rel="noopener noreferrer">
-        <span class="service-provenance-label">MATCH DATA SOURCE</span>
-        <img src="assets/brands/warcon-logo-on-dark.svg" alt="WARCON" loading="lazy">
-        <span>Recorded WARDOGS server results</span>
-      </a>
-      <a class="service-provenance-card" href="https://wardogstracker.gg/" target="_blank" rel="noopener noreferrer">
-        <span class="service-provenance-label">OPTIONAL PROGRESSION SOURCE</span>
-        <img src="https://wardogstracker.gg/logo.png" alt="WARDOGS Tracker" loading="lazy" referrerpolicy="no-referrer">
-        <span>Game-wide progression when connected</span>
-      </a>
-      <a class="service-provenance-card" href="progression.html">
-        <span class="service-provenance-label">OPTIONAL ACCOUNT VERIFICATION</span>
-        <img src="https://store.steampowered.com/public/shared/images/header/logo_steam.svg" alt="Steam" loading="lazy" referrerpolicy="no-referrer">
-        <span>Only after you choose to connect and consent*</span>
-      </a>
-    </section>
-    <section aria-label="Match summary" class="kpi-grid"><div class="kpi"><span>MATCHES SAVED</span><strong id="stat-matches">—</strong><small>the latest saved results</small></div><div class="kpi"><span>LAST MATCH WINNER</span><strong id="stat-winner" class="text-value">—</strong><small>last saved match</small></div><div class="kpi"><span>LAST PLAYED MAP</span><strong id="stat-map" class="text-value">—</strong><small>last saved match</small></div><div class="kpi"><span>MATCH HISTORY</span><strong id="stat-feed" class="text-value">WAITING</strong><small id="stat-sync">Waiting for saved results</small></div></section>
+<section aria-label="Match summary" class="kpi-grid"><div class="kpi"><span>MATCHES SAVED</span><strong id="stat-matches">—</strong><small>the latest saved results</small></div><div class="kpi"><span>LAST MATCH WINNER</span><strong id="stat-winner" class="text-value">—</strong><small>last saved match</small></div><div class="kpi"><span>LAST PLAYED MAP</span><strong id="stat-map" class="text-value">—</strong><small>last saved match</small></div><div class="kpi"><span>MATCH HISTORY</span><strong id="stat-feed" class="text-value">WAITING</strong><small id="stat-sync">Waiting for saved results</small></div></section>
     <div class="ia-intelligence-grid">
     <section id="reports" class="reports ia-reports-panel" aria-labelledby="reports-heading"><div class="section-head"><div><div class="eyebrow">MATCH RESULTS</div><h2 id="reports-heading">Latest match reports</h2><p>WARCON completed matches only. This feed keeps the latest 120 matches we have saved and may not include every match played; older matches may be missing.</p></div><div class="filters"><label class="sr-only" for="find-match">Search matches</label><input id="find-match" type="search" placeholder="Search map or winner…" autocomplete="off" /><label class="sr-only" for="sort-matches">Sort match results</label><select id="sort-matches" disabled aria-describedby="sort-explanation"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select><small class="filter-hint" id="sort-explanation" role="status">Sorting becomes available after 2 completed matches.</small></div></div>
     <div id="feedback" class="notice" role="status">Retrieving published match history…</div><div id="match-grid" class="match-grid" aria-live="polite"></div></section>
