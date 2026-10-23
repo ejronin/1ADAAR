@@ -1,0 +1,77 @@
+/* Canonical WARDOGS map previews. Always visible independently of WARCON history. */
+.map-art-section{
+ margin:24px 0 30px;
+ min-width:0;
+}
+.map-art-heading{
+ display:flex;
+ align-items:baseline;
+ flex-wrap:wrap;
+ justify-content:space-between;
+ gap:8px 18px;
+ margin:0 0 12px;
+}
+.map-art-heading h2{
+ margin:0;
+ color:#f4fff6;
+ font:900 clamp(22px,2.3vw,30px)/1.1 'Barlow Condensed',Impact,system-ui,sans-serif;
+ letter-spacing:.02em;
+}
+.map-art-heading p{
+ margin:0;
+ font:700 11px/1.4 system-ui,sans-serif;
+ letter-spacing:.08em;
+ text-transform:uppercase;
+ color:#a5ceb0;
+}
+.map-art-grid{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:12px;
+}
+.map-art-card{
+ display:block;
+ position:relative;
+ isolation:isolate;
+ overflow:hidden;
+ min-width:0;
+ margin:0;
+ border:1px solid #50745b;
+ border-radius:8px;
+ background:#101b14;
+ aspect-ratio:16 / 9;
+ box-shadow:0 5px 14px #0004;
+}
+.map-art-card img{
+ display:block;
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ object-position:center;
+}
+.map-art-card figcaption{
+ position:absolute;
+ inset:auto 0 0 0;
+ z-index:1;
+ display:flex;
+ align-items:center;
+ justify-content:flex-start;
+ min-height:31px;
+ padding:5px 12px;
+ box-sizing:border-box;
+ background:linear-gradient(0deg,#07110cea,transparent);
+ color:#fff;
+ font:800 12px/1.3 system-ui,sans-serif;
+ text-shadow:0 1px 6px #000;
+}
+@media(max-width:700px){
+ .map-art-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .map-art-card:last-child{grid-column:1 / -1;aspect-ratio:21/9}
+ .map-art-card:last-child img{object-position:center}
+ .map-art-section{margin:18px 0 22px}
+}
+@media(max-width:430px){
+ .map-art-grid{grid-template-columns:1fr}
+ .map-art-card,.map-art-card:last-child{grid-column:auto;aspect-ratio:16/9}
+ .map-art-card figcaption{font-size:13px}
+}
