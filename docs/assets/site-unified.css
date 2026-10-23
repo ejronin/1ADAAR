@@ -147,3 +147,7 @@ html{scroll-padding-top:18px}
  .rail .brand .brand-emblem{width:49px;height:49px;flex-basis:49px}
  .rail .brand-wordmark{max-width:150px}
 }
+
+/* Recorded-match map tiles remain compact; the big art belongs to CURRENT MAP. */
+.mt-data-row.map-banner-present{min-height:84px!important;padding-block:10px}
+.mt-data-row.map-banner-present .mt-row-name{font-size:clamp(17px,1.5vw,24px)}
