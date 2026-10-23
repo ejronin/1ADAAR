@@ -53,7 +53,7 @@ I would rather leave a number empty than show one that looks convincing but isn'
 
 The public leaderboard has a limited number of entries, match history only goes back as far as the records we've captured, and career snapshots start when 1ADAAR begins observing them. Activity by match start isn't the same as a player's time online. Those distinctions matter when comparing players or looking at trends.
 
-There is a fictional player called **PlayerOne** in the design examples. It's there to test layouts and calculations, not to appear as a real community member or weekly winner.
+The former PlayerOne demonstration is no longer published. Its fictional sample exists only under `tests/fixtures/` to verify charts and layout without introducing fake community statistics.
 
 The public site uses player lookup keys rather than showing SteamID64 values in its pages. Any later account-connected features will need to respect the player's own privacy choices.
 
