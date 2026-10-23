@@ -1,0 +1,20 @@
+/* Compact recorded-match map artwork, never a whole-card background. */
+.match-card .card-content{padding:13px 16px 15px}
+.match-card-overview{display:flex;align-items:center;gap:14px;min-width:0}
+.match-card-overview .match-overview-text{flex:1 1 auto;min-width:0}
+.match-card-overview .card-map{font-size:clamp(20px,2vw,26px);line-height:1.1}
+.match-card-overview .card-line{margin:7px 0 10px}
+.match-card-overview .match-map-thumb{
+  display:block;flex:0 0 clamp(100px,27%,154px);width:clamp(100px,27%,154px);
+  height:auto;aspect-ratio:16/9;object-fit:cover;
+  border:1px solid #41604b;border-radius:5px;background:#12241a
+}
+.match-card:not(.map-banner-present){background-image:none!important}
+.match-card .scores{margin-top:13px}
+.match-card .card-foot{margin-top:13px;padding-top:10px}
+.match-card{min-height:0!important}
+@media(max-width:510px){
+ .match-card-overview{gap:10px}
+ .match-card-overview .match-map-thumb{flex-basis:108px;width:108px}
+ .match-card-overview .card-map{font-size:22px}
+}
