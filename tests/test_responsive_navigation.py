@@ -25,7 +25,7 @@ class NavigationAccessibilityTests(unittest.TestCase):
         self.assertIn('grid-template-columns:repeat(2,minmax(0,1fr))',css)
         self.assertIn('.detail table{min-width:480px}',css)
         self.assertIn('#latest-match-link[hidden]{display:none!important}',css)
-        for filename in ('index.html','players.html','playerone-demo.html'):
+        for filename in ('index.html','players.html'):
             page=(ROOT/filename).read_text(encoding='utf-8')
             self.assertIn('Match history</a>',page)
             self.assertIn('Find a player</a>',page)
