@@ -80,7 +80,7 @@
     const index=await response.json();
     if(index.schemaVersion!==1||!Array.isArray(index.weeks))throw Error('Invalid weekly index');
     if(index.weeks.length===0){
-      message.textContent='No weekly results yet. We’ll add the first roundup after completed matches are saved.';
+      message.textContent='No weekly results yet.';
       return;
     }
     const requested=new URLSearchParams(location.search).get('week');
