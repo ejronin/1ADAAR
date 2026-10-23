@@ -1,6 +1,6 @@
 'use strict';
-/* Set endpoint only after owner-authorized Worker/D1 deployment and validation.
+/* Auth Worker verified by owner live /health after successful Worker/D1 deployment.
    Public config contains NO keys, user IDs, webhook URLs, SteamIDs or secrets. */
 window.OneADAARProgressionConfig=Object.freeze({
-  endpoint:'' // e.g. 'https://1adaar-steam-progression.<account>.workers.dev'
+  endpoint:'https://1adaar-steam-progression.shawn-k-gordon.workers.dev' // public endpoint, no secrets
 });
