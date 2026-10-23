@@ -158,9 +158,28 @@ function normalize(payload,steamId,allowEconomy){
     levels[name]=raw.level;xp[name]=raw.xp;
   }
   const economy=v=>allowEconomy&&Number.isSafeInteger(v)&&v>=0?v:null;
-  return {sourceStatus:'verified',source:'WARDOGS Tracker',dataScope:'Game-wide WARDOGS progression, not Dan\'s server combat stats',
+  const count=v=>Number.isSafeInteger(v)&&v>=0?v:null;
+  const rank=count(payload.player.leaderboardRank);
+  const population=count(payload.player.leaderboardPlayers);
+  const leaderboardRank=rank!==null&&rank>0&&population!==null&&population>=rank?rank:null;
+  const leaderboardPlayers=leaderboardRank===null?null:population;
+  let avatarUrl=null;
+  if(typeof payload.player.avatarUrl==='string'){
+    try{
+      const avatar=new URL(payload.player.avatarUrl);
+      if(avatar.protocol==='https:'&&
+         ['avatars.steamstatic.com','avatars.akamai.steamstatic.com'].includes(avatar.hostname)&&
+         /^\/[A-Za-z0-9_./-]+\.(?:jpg|jpeg|png|webp)$/i.test(avatar.pathname)&&
+         !avatar.username&&!avatar.password&&!avatar.search&&!avatar.hash)
+        avatarUrl=avatar.toString();
+    }catch(_){/* An untrusted avatar URL is never forwarded. */}
+  }
+  return {sourceStatus:'verified',source:'WARDOGS Tracker',
+    dataScope:'Game-wide WARDOGS progression, not Dan\'s server combat stats',
     syncedAt:stats.syncedAt,maxLevel:100,levels,xp,wardogLevel:stats.wardogLevel,
-    careerXp:stats.careerXp,cash:economy(stats.cash),gold:economy(stats.gold),
+    careerXp:stats.careerXp,unlocks:count(stats.unlocks),
+    leaderboardRank,leaderboardPlayers,avatarUrl,
+    cash:economy(stats.cash),gold:economy(stats.gold),
     economyConsented:allowEconomy};
 }
 async function progression(env,who,consent,force,origin){
