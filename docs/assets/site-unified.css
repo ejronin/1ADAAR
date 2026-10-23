@@ -1,0 +1,116 @@
+/* 1ADAAR v1.1.2 — one layout and source-nav owner across active pages.
+   This final stylesheet intentionally follows older component CSS in HTML. */
+:root{--site-max:1520px;--site-hero-height:430px;--site-gap:20px}
+html{scroll-padding-top:18px}
+.app-shell>.main,.app-shell .main{width:100%;max-width:var(--site-max);min-width:0;margin:0 auto;padding:0 clamp(16px,2.45vw,38px)}
+.topbar{height:78px;min-height:78px;box-sizing:border-box}
+.game-lockup img{display:block;width:200px;height:auto;max-height:50px;object-fit:contain}
+.hero,.weekly-hero,.mt-hero,.act-hero,.season-hero,.compare-hero,.ia-titlebar{
+ box-sizing:border-box;min-height:var(--site-hero-height);height:auto;
+ margin:24px 0 var(--site-gap);border-radius:9px;overflow:hidden;
+}
+.hero,.mt-hero,.act-hero,.season-hero,.compare-hero,.ia-titlebar{background-color:#0d1b13}
+.weekly-hero{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.mt-hero,.act-hero,.season-hero,.compare-hero,.ia-titlebar{
+ display:flex;flex-direction:column;justify-content:center;padding:clamp(24px,3vw,48px)!important;
+ background-image:linear-gradient(92deg,rgba(5,14,10,.96) 2%,rgba(8,21,13,.87) 52%,rgba(12,25,18,.32) 100%),url('wardogs-official-hero.webp');
+ background-position:center;background-size:cover;background-repeat:no-repeat;
+}
+.ia-titlebar{flex-direction:row;align-items:center;justify-content:space-between;gap:20px}
+.ia-titlebar>div{min-width:0}
+.ia-titlebar h1{font-size:clamp(39px,5vw,70px);line-height:1.03}
+.rail{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#3b5943 transparent}
+.rail-nav{display:flex;flex-direction:column;gap:1px;flex:none}
+.rail-nav .nav{font-size:12px;min-height:37px;line-height:1.25;margin:0;padding:8px 9px;gap:8px}
+.rail-nav .nav-glyph{font-size:15px;min-width:19px;text-align:center}
+.rail-nav .nav .external{margin-left:auto;font-size:11px}
+.rail .brand{padding-bottom:17px}
+.rail-label{padding-bottom:8px}
+.rail-footer.rail-sources{display:grid;grid-template-columns:1fr;align-items:stretch;margin-top:auto;padding:13px 0 4px;gap:6px;border-top:1px solid #2b4633;min-width:0}
+.rail-sources>strong{font-size:10px;letter-spacing:.1em}
+.rail-sources>a{display:flex;align-items:center;justify-content:space-between;gap:6px;
+ background:#111d17;border:1px solid #345840;border-radius:6px;padding:6px 8px;min-height:44px}
+.rail-sources>a img{object-fit:contain;object-position:left center;width:95px;max-width:70%;height:27px;flex:0 1 95px}
+.rail-sources>a small{margin:0;color:#a6d5b3;font-size:9px;font-weight:700;line-height:1.25;text-align:right}
+.rail-sources>a:hover,.rail-sources>a:focus-visible{border-color:#87d8a1}
+.rail-sources [hidden]{display:none!important}
+.career-source-note{border-left:3px solid #6fcf8b;padding:9px 12px;margin:1px 0 13px;
+ color:#b7d8c1;font-size:12px;line-height:1.45;background:#112018}
+.career-source-pair{min-width:0}
+.career-source-pair .career-pair-heading{display:block;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#8ee0a5}
+.career-source-pair .career-pair-values{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+ gap:12px;margin-top:9px;min-width:0}
+.career-pair-column{min-width:0;padding-right:7px}
+.career-pair-column+.career-pair-column{border-left:1px solid #365b40;padding-left:12px;padding-right:0}
+.career-source-pair .career-pair-source{display:block;color:#b6d7c0;text-transform:uppercase;font-size:10px;
+ font-weight:750;letter-spacing:.04em;line-height:1.4;overflow-wrap:anywhere}
+.career-source-pair .career-pair-number{display:block;color:#f7fff7;
+ font:800 clamp(24px,2.65vw,37px)/1.2 'Barlow Condensed',system-ui,sans-serif;margin:4px 0 0;white-space:normal}
+.career-source-pair .career-pair-column:last-child .career-pair-number{color:#a6bdac}
+.career-secondary-card.career-source-pair{display:flex;flex-direction:column;gap:4px;align-items:stretch}
+.career-secondary-card.career-source-pair .career-pair-values{width:100%}
+.career-secondary-card.career-source-pair .career-pair-number{font-size:clamp(19px,2vw,29px)}
+/* Previews render as named image tiles. Names remain DOM text for accessibility and indexing. */
+.server-status-cell.map-banner-present,.kpi.map-banner-present,.match-card.map-banner-present,
+.mt-data-row.map-banner-present{
+ background-image:linear-gradient(90deg,rgba(3,12,9,.91),rgba(4,13,10,.48) 64%,rgba(4,13,10,.34)),var(--map-banner)!important;
+ background-position:center!important;background-size:cover!important;background-repeat:no-repeat!important;
+ border-color:#709582!important;position:relative;isolation:isolate;
+}
+.server-status-cell.map-banner-present{min-height:115px;padding:12px 16px}
+.server-status-cell.map-banner-present strong{font-size:clamp(23px,2.8vw,34px)!important;
+ font-weight:900;letter-spacing:.045em;text-transform:uppercase;color:#fff!important;
+ text-shadow:0 2px 13px #000,0 1px 5px #000}
+.kpi.map-banner-present strong,.match-card.map-banner-present .card-map,
+.mt-data-row.map-banner-present .mt-row-name{text-transform:uppercase;letter-spacing:.045em;
+ color:#fff!important;text-shadow:0 2px 12px #000,0 0 4px #000}
+.kpi.map-banner-present small,.server-status-cell.map-banner-present span{color:#e0f7e6;text-shadow:0 2px 5px #000}
+.match-card.map-banner-present .card-top{background:#081710a1}
+.mt-data-row.map-banner-present{min-height:110px}
+.weekly-page{--weekly-edge:#3f5870;--weekly-blue:#83b8e9;background:#0d111a!important;color:#e9f0f9}
+.weekly-page .rail{background:#101722!important;border-right-color:#2e465e!important}
+.weekly-page .rail-nav .nav.active{background:#1b3146!important;color:#b1d9ff!important;border:1px solid #577da3!important}
+.weekly-page .rail-nav .nav:hover{background:#233c51!important;color:white!important}
+.weekly-page .breadcrumb span,.weekly-page .eyebrow{color:#8bbdeb!important}
+.weekly-page .topbar{border-color:#35465b!important}
+.weekly-page .weekly-hero{border-color:#49637b!important;border-top:4px solid #6e9bc6!important;
+ background:linear-gradient(90deg,rgba(11,19,31,.94),rgba(11,21,34,.72),rgba(10,19,29,.55)),
+ url('wardogs-official-hero.webp') center/cover no-repeat!important}
+.weekly-page .weekly-hero:before{background:repeating-linear-gradient(110deg,transparent 0 47px,#8eafd90e 48px,transparent 49px)}
+.weekly-page .weekly-hero h1 em{color:#9ac5f1!important}
+.weekly-page .weekly-main .section-head,.weekly-page .weekly-podium-section .section-head{border-left-color:#75a8d7}
+.weekly-page .weekly-overview,.weekly-page .weekly-season,.weekly-page .weekly-metric,.weekly-page .weekly-award,
+.weekly-page .weekly-empty,.weekly-page .notice{background:#162230!important;border-color:#39546c!important}
+.weekly-page .weekly-count,.weekly-page .weekly-week-links a{color:#a4cefb}
+.weekly-page footer{border-color:#2e465e}
+/* Preserve metallic rank cards; navy page surfaces are intentionally not applied to them. */
+@media(max-width:1100px){
+ .app-shell>.main,.app-shell .main{padding-inline:20px}
+ .rail-sources>a img{width:80px}
+}
+@media(max-width:720px){
+ :root{--site-hero-height:400px}
+ .app-shell>.main,.app-shell .main{padding-inline:15px}
+ .topbar{height:auto;min-height:72px}
+ .hero,.weekly-hero,.mt-hero,.act-hero,.season-hero,.compare-hero,.ia-titlebar{margin:16px 0;min-height:var(--site-hero-height)}
+ .ia-titlebar{align-items:flex-start;flex-direction:column}
+ .rail{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));height:auto;position:static;
+ padding:14px 13px;border-bottom:1px solid #365040;gap:8px}
+ .rail .brand,.rail-label,.rail-nav,.rail-footer.rail-sources{grid-column:1/-1}
+ .rail-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+ .rail-nav .nav{min-height:44px!important;font-size:11px!important;padding:8px!important;line-height:1.35}
+ .rail-footer.rail-sources{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:8px;gap:6px}
+ .rail-footer.rail-sources>strong{grid-column:1/-1}
+ .rail-sources>a{min-height:42px;padding:7px;gap:5px}
+ .rail-sources>a img{width:65px;max-width:55%;height:25px}
+ .rail-sources>a small{font-size:8px}
+ .career-source-pair .career-pair-source{font-size:9px}
+ .career-source-pair .career-pair-values{gap:5px}
+ .career-pair-column+.career-pair-column{padding-left:7px}
+}
+@media(max-width:390px){
+ .rail-sources>a img{height:21px;max-width:50%}
+ .rail-sources>a small{font-size:7.5px}
+ .career-source-pair .career-pair-number{font-size:24px}
+}
+@media(prefers-reduced-motion:reduce){.career-source-pair,.map-banner-present{transition:none!important}}
