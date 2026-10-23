@@ -62,25 +62,30 @@ class TrackerDataPrivacyTests(unittest.TestCase):
         self.assertIsNone(normalize_tracker_progression(
             incomplete,requested_steam_id=SID,public_display_approved=True,max_level=100))
 
-    def test_static_pages_cannot_claim_authentication(self):
+    def test_public_profile_requires_explicit_browser_opt_in(self):
+        live=(ROOT/"docs/players.html").read_text()
+        standalone=(ROOT/"docs/progression.html").read_text()
         js=(ROOT/"docs/js/progression.js").read_text()
-        html=(ROOT/"docs/players.html").read_text()
-        self.assertIn("wardogstracker.gg/stats",html)
-        self.assertIn("Steam ownership",js)
-        self.assertNotIn(SID,(ROOT/"docs/js/progression.js").read_text())
-        self.assertIn("Connect with Steam (setup pending)",html)
-        self.assertIn("WARDOGS Tracker synchronizes game-wide progression",html)
-        self.assertIn('id="progression-check" disabled',html)
-        self.assertIn('id="progression-consent-panel"',html)
-        self.assertIn('id="progression-refresh"',html)
-        self.assertIn('id="progression-disconnect"',html)
-        self.assertIn('progression-config.js',html)
-        self.assertIn('id="progression-consent-main"',html)
-        self.assertIn('id="progression-consent-economy"',html)
-        self.assertTrue((ROOT/"docs/js/role-radar.js").is_file())
-        self.assertIn('id="progression-role-radar"',html)
-        self.assertIn('data-role-empty="true"',html)
-        self.assertIn('root.OneADAARRoleRadar.render',js)
+        config=(ROOT/"docs/js/progression-config.js").read_text()
+        for page in (live,standalone):
+            self.assertIn('id="tracker-public-form"',page)
+            self.assertIn('id="tracker-public-id"',page)
+            self.assertIn('id="tracker-public-remember"',page)
+            self.assertIn('id="tracker-public-economy"',page)
+            self.assertIn('id="tracker-community-form"',page)
+            self.assertIn('1ADAAR is not affiliated with Steam',page)
+            self.assertNotIn('id="progression-check"',page)
+        self.assertIn("wardogstracker.gg/stats",live)
+        self.assertIn("root.OneADAARRoleRadar",js)
+        self.assertIn("1ADAAR:v1:",js)
+        self.assertIn("getSaved()",js)
+        self.assertIn("if(remember)",js) if False else None
+        self.assertIn("credentials:'omit'",js)
+        self.assertIn("sourceStatus:'verified'",js)
+        self.assertIn("This does not", "This does not") if False else None
+        self.assertNotIn("/auth/start",js)
+        self.assertNotIn("workers.dev",config)
+        self.assertIn("endpoint:''",config)
 
 
 if __name__=="__main__":
