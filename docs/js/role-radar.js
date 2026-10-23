@@ -26,7 +26,10 @@
     ROLES.every(role=>Number.isFinite(record.levels[role])&&
       record.levels[role]>=0&&record.levels[role]<=record.maxLevel);
   const empty=[...svg.querySelectorAll('[data-role-empty]')];
-  for(const item of empty)item.style.display=ok?'none':'';
+  const allZero=Boolean(ok&&ROLES.every(role=>record.levels[role]===0));
+  for(const item of empty)item.style.display=ok&&!allZero?'none':'';
+  const emptyText=empty.find(node=>node.tagName?.toLowerCase()==='text');
+  if(emptyText)emptyText.textContent=allZero?'ALL VERIFIED ROLES AT LEVEL 0':'NO VERIFIED ROLE LEVELS';
   if(!ok){
    const scaleCaption=document.getElementById(svg.id==='demo-role-radar'?'demo-radar-scale':'progression-radar-scale');
    if(scaleCaption)scaleCaption.textContent='Display scale adjusts to the highest verified role level';
@@ -36,6 +39,10 @@
   const displayMax=scaleFor(record.levels);
   const scaleCaption=document.getElementById(svg.id==='demo-role-radar'?'demo-radar-scale':'progression-radar-scale');
   if(scaleCaption)scaleCaption.textContent='Display scale 0–'+displayMax+' · Actual levels shown in the table';
+  if(allZero){
+   svg.setAttribute('aria-label','Verified role levels are all zero; display scale 0–10.');
+   return true;
+  }
   const centerX=200,centerY=139,radius=104;
   const points=ROLES.map((name,i)=>{
     const radians=(-90+i*60)*Math.PI/180;
