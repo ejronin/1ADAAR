@@ -100,8 +100,8 @@ class LayoutContractTests(unittest.TestCase):
         self.assertIn("one most-played faction insight",release)
 
     def test_fictional_playerone_totals_and_share_bars_are_original_fixture(self):
-        data=json.loads((DOCS/"data/demo-player.json").read_text())
-        page=(DOCS/"playerone-demo.html").read_text()
+        data=json.loads(((Path(__file__).resolve().parents[1]/'tests/fixtures/demo-player.json')).read_text())
+        page=((Path(__file__).resolve().parents[1]/'tests/fixtures/playerone-demo.html')).read_text()
         self.assertTrue(data["fictional"])
         p=data["player"]
         self.assertEqual((p["kills"],p["deaths"],p["wins"],p["matches"]),(634,332,27,48))
