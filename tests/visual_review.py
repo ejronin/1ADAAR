@@ -153,9 +153,10 @@ async def capture():
                     await real.locator("#progression-panel").wait_for(state="visible",timeout=10000)
                     assert await real.locator("#progression-role-radar").count()==1
                     assert await real.locator("#progression-role-radar [data-role-profile]").count()==0
-                    assert "Steam connection service is not deployed yet" in await real.locator("#progression-status").inner_text()
-                    assert await real.locator('#progression-check').is_disabled()
+                    assert 'Not connected' in await real.locator('#progression-status').inner_text()
+                    assert await real.locator('#progression-check').is_enabled()
                     assert await real.locator('#progression-consent-panel').is_hidden()
+                    assert await real.locator('#progression-refresh').is_hidden()
                     report.setdefault("realProfiles",[]).append({"width":width,**actual,
                         "progressionEmpty":True})
                 assert not real_errors, f"Real player page errors at {width}: {real_errors}"
@@ -168,7 +169,8 @@ async def capture():
                 result=await own.goto(origin+"/progression.html",wait_until="domcontentloaded")
                 assert result and result.status==200
                 assert await own.locator('#progression-panel').is_visible()
-                assert await own.locator('#progression-check').is_disabled()
+                assert await own.locator('#progression-check').is_enabled()
+                assert 'Sign in with Steam' in await own.locator('#progression-status').inner_text()
                 assert await own.locator('#progression-role-radar [data-role-profile]').count()==0
                 ownWidth=await own.evaluate("document.documentElement.scrollWidth-innerWidth")
                 assert ownWidth<=2,f"Standalone progression overflow at {width}px: {ownWidth}"
