@@ -28,6 +28,8 @@ jobs:
         run: |
           python -m pip install playwright==1.55.0 Pillow==11.3.0 CairoSVG==2.8.2
           python -m playwright install --with-deps chromium
+      - name: Build named map previews
+        run: python scripts/build_map_banners.py
       - name: Capture and test 320 / 375 / 390 / 768 / 1024 / 1440px
         run: python tests/visual_review.py
       - name: Checkout IA handoff source for visual comparison
