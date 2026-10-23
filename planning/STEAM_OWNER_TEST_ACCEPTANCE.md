@@ -12,7 +12,7 @@ https://ejronin.github.io/1ADAAR/progression.html
 
 It will call the already-deployed owner-controlled Cloudflare Worker at:
 
-https://1adaar-steam-progression.shawn-k-gordon.workers.dev
+<owner-controlled-neutral-auth-origin>
 
 The Worker now has a confirmed /health response and D1 binding, but no real Steam login has been completed yet.
 

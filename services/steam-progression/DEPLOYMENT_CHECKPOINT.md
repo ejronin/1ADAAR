@@ -12,7 +12,7 @@ Deploy command: `npx wrangler deploy`
 
 D1 binding: `DB` → `1adaar-steam-consent`
 
-Expected public health endpoint: `https://1adaar-steam-progression.shawn-k-gordon.workers.dev/health`
+Expected public health endpoint: `<owner-controlled-neutral-auth-origin>/health`
 
 This non-secret document is committed after the owner connected GitHub to the existing Worker. It deliberately triggers the first production-branch build using the configured Cloudflare Workers Builds integration. It is not evidence that the deployment has succeeded; confirm the Cloudflare build log and the actual `/health` response before enabling the public 1ADAAR sign-in button. Do not include SteamIDs, personal tokens, or private user data in this repository.
 

@@ -1,228 +1,176 @@
 'use strict';
-/* Authenticated game-wide progression. WARDOGS server analytics remain WARCON.
-   No SteamID, credentials, OpenID assertions or private profile values in Pages.
-   A real service is disabled until a verified HTTPS endpoint is configured. */
+// Public, opt-in WARDOGS Tracker lookup. This is NOT Steam authentication.
+// One-time user-provided ID stays in this browser only when Remember is checked.
 (function(root){
-  const host=document.getElementById('progression-panel');
-  if(!host)return;
-  const $=id=>document.getElementById(id);
+  const PROFILE_KEY='1adaar-public-tracker-profile-v1';
+  const getSaved=()=>{try{return localStorage.getItem(PROFILE_KEY)}catch(_){return null}};
+  const save=value=>{try{if(value)localStorage.setItem(PROFILE_KEY,value);else localStorage.removeItem(PROFILE_KEY);return true}catch(_){return false}};
+  const api='https://wardogstracker.gg/api/v1/';
+  const ID=/^7656119\d{10}$/;
   const KEY=/^[a-f0-9]{64}$/;
-  const standalone=document.body.dataset.progressStandalone==='true';
-  const endpoint=String(root.OneADAARProgressionConfig?.endpoint||'').replace(/\/$/,'');
-  const enabled=(()=>{
-    try{return new URL(endpoint).protocol==='https:' &&
-       !endpoint.includes('REPLACE')&&!endpoint.includes('localhost');}
-    catch(_){return false;}
-  })();
-  const SAVED='1adaar-steam-session-v1', VERIFIER='1adaar-steam-pkce-v1', CONSENT='1adaar-steam-consented-v1';
-  let currentKey=null,connected=false,inFlight=false,lastCheck=0;
-  const url=new URL(root.location.href);
-  // Code is a 90-second one-time credential. Remove before fetching any data.
-  const callbackCode=url.searchParams.get('progression_code')||'';
-  const callbackError=url.searchParams.get('progression_error')||'';
-  if(callbackCode||callbackError){
-    url.searchParams.delete('progression_code');url.searchParams.delete('progression_error');
-    root.history.replaceState(null,'',url.pathname+url.search+url.hash);
+  const roles=['Assault','Medic','Support','Recon','Driver','Pilot'];
+  const el=id=>document.getElementById(id);
+  let active=null,seq=0;
+  const validInt=n=>Number.isSafeInteger(n)&&n>=0;
+  const fmt=n=>validInt(n)?n.toLocaleString('en-US'):'—';
+  const status=message=>{const e=el('progression-status');if(e)e.textContent=message;};
+  function parseId(value){
+    const text=String(value||'').trim();
+    const m=/^(?:https:\/\/wardogstracker\.gg\/profile\/)?(7656119\d{10})\/?$/.exec(text);
+    return m&&ID.test(m[1])?m[1]:null;
   }
-  const btn=$('progression-check'),refresh=$('progression-refresh'),
-    disconnect=$('progression-disconnect'),consentBox=$('progression-consent-panel'),
-    consentMain=$('progression-consent-main'),consentEconomy=$('progression-consent-economy'),
-    consentSave=$('progression-consent-save'),status=$('progression-status'),
-    synced=$('progression-synced-at'),connectedActions=$('progression-connected-actions'),
-    economyToggle=$('progression-economy-toggle'),economySave=$('progression-economy-save'),
-    radar=$('progression-role-radar'),roleRows=$('progression-role-values');
-  function note(message){status.textContent=message;}
-  function readSession(){
-    try{
-      const s=JSON.parse(sessionStorage.getItem(SAVED)||'null');
-      return s&&KEY.test(s.playerKey)&&typeof s.token==='string'&&
-        s.token.length>=40&&Number(s.expiresAt)>Date.now()/1000+5?s:null;
-    }catch(_){return null;}
+  async function keyFor(id){
+    const bytes=new TextEncoder().encode('1ADAAR:v1:'+id);
+    const bytesHash=new Uint8Array(await crypto.subtle.digest('SHA-256',bytes));
+    return Array.from(bytesHash,b=>b.toString(16).padStart(2,'0')).join('');
   }
-  function clearSession(){
-    sessionStorage.removeItem(SAVED);sessionStorage.removeItem(VERIFIER);sessionStorage.removeItem(CONSENT);
-  }
-  function show(state){
-    connected=state==='connected';
-    consentBox.hidden=state!=='consent';
-    connectedActions.hidden=!connected;
-    refresh.hidden=!connected;disconnect.hidden=!connected;
-    btn.hidden=state==='connected'||state==='consent';
-    btn.disabled=!enabled||inFlight;
-    btn.textContent=enabled?'Connect with Steam':'Connect with Steam (setup pending)';
-    refresh.disabled=inFlight;disconnect.disabled=inFlight;
-  }
-  const number=n=>Number.isSafeInteger(n)&&n>=0?n.toLocaleString('en-US'):'—';
   function blank(){
-    root.OneADAARRoleRadar?.render(radar,null);
-    $('progression-wardog-level').textContent='—';
-    $('progression-career-xp').textContent='—';
-    $('progression-cash').textContent='Hidden';
-    $('progression-gold').textContent='Hidden';
-    synced.textContent='Last Tracker sync: —';
-    const roles=['Assault','Medic','Support','Recon','Driver','Pilot'];
-    roleRows.replaceChildren();
-    for(const role of roles){
-      const tr=document.createElement('tr'),name=document.createElement('th');name.scope='row';name.textContent=role;
-      const lv=document.createElement('td'),xp=document.createElement('td');
-      lv.textContent='—';xp.textContent='—';tr.append(name,lv,xp);roleRows.append(tr);
+    root.OneADAARRoleRadar?.render(el('progression-role-radar'),null);
+    root.OneADAARProgressionIntelligence?.render(null);
+    for(const id of ['progression-wardog-level','progression-career-xp'])el(id).textContent='—';
+    for(const id of ['progression-cash','progression-gold'])el(id).textContent='Hidden';
+    el('progression-synced-at').textContent='Last Tracker sync: —';
+    const rows=el('progression-role-values');
+    if(rows){
+      rows.replaceChildren();
+      for(const role of roles){
+        const tr=document.createElement('tr'),th=document.createElement('th');
+        th.scope='row';th.textContent=role;
+        const a=document.createElement('td'),b=document.createElement('td');
+        a.textContent='—';b.textContent='—';tr.append(th,a,b);rows.append(tr);
+      }
     }
+  }
+  function normalize(payload,id){
+    const p=payload?.player,st=p?.stats;
+    if(p?.steamId!==id||!st||!validInt(st.wardogLevel)||!validInt(st.careerXp)||
+      !Number.isFinite(Date.parse(st.syncedAt)))return null;
+    const levels={},xp={};
+    for(const role of roles){
+      const value=st.roles?.[role.toLowerCase()];
+      if(!validInt(value?.level)||value.level>100||!validInt(value?.xp))return null;
+      levels[role]=value.level;xp[role]=value.xp;
+    }
+    const known=n=>validInt(n)?n:null;
+    return {sourceStatus:'verified',source:'WARDOGS Tracker public API',
+      dataScope:'Published, synced account progression; not proof of account ownership',
+      maxLevel:100,levels,xp,wardogLevel:st.wardogLevel,careerXp:st.careerXp,
+      unlocks:known(st.unlocks),syncedAt:st.syncedAt,
+      cash:known(st.cash),gold:known(st.gold),
+      leaderboardRank:known(p.leaderboardRank),leaderboardPlayers:known(p.leaderboardPlayers),
+      avatarUrl:typeof p.avatarUrl==='string'?p.avatarUrl:null};
   }
   function paint(record){
-    if(!record||record.sourceStatus!=='verified'||!record.levels||!record.xp){
-      blank();note('Your Steam account is verified, but Tracker progression is private, not synchronized or unavailable. Sync on WARDOGS Tracker and try Refresh.');return;
-    }
-    const roles=root.OneADAARRoleRadar.ROLES;
-    if(!roles.every(r=>Number.isFinite(record.levels[r])&&Number.isSafeInteger(record.xp[r]))) {
-      blank();note('Tracker supplied incomplete role data. No values have been inferred.');return;
-    }
-    root.OneADAARRoleRadar.render(radar,record);
-    $('progression-wardog-level').textContent=number(record.wardogLevel);
-    $('progression-career-xp').textContent=number(record.careerXp);
-    $('progression-cash').textContent=record.economyConsented?number(record.cash):'Hidden';
-    $('progression-gold').textContent=record.economyConsented?number(record.gold):'Hidden';
-    synced.textContent='Last Tracker sync: '+(record.syncedAt?
-      new Date(record.syncedAt).toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'}):'Unavailable')+
-      ' · Source: WARDOGS Tracker · Game-wide progression, not server match data';
-    roleRows.replaceChildren();
+    root.OneADAARRoleRadar?.render(el('progression-role-radar'),record);
+    root.OneADAARProgressionIntelligence?.render(record);
+    el('progression-wardog-level').textContent=fmt(record.wardogLevel);
+    el('progression-career-xp').textContent=fmt(record.careerXp);
+    const economy=Boolean(el('tracker-public-economy')?.checked);
+    el('progression-cash').textContent=economy?fmt(record.cash):'Hidden';
+    el('progression-gold').textContent=economy?fmt(record.gold):'Hidden';
+    el('progression-synced-at').textContent='Last Tracker sync: '+
+      new Date(record.syncedAt).toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'});
+    const rows=el('progression-role-values');rows.replaceChildren();
     for(const role of roles){
-      const tr=document.createElement('tr'),name=document.createElement('th');
-      name.scope='row';name.textContent=role;
+      const tr=document.createElement('tr'),th=document.createElement('th');
+      th.scope='row';th.textContent=role;
       const lv=document.createElement('td'),xp=document.createElement('td');
-      lv.textContent='Level '+record.levels[role];xp.textContent=number(record.xp[role])+' XP';
-      tr.append(name,lv,xp);roleRows.append(tr);
+      lv.textContent='Level '+record.levels[role];
+      xp.textContent=fmt(record.xp[role])+' XP';
+      tr.append(th,lv,xp);rows.append(tr);
     }
-    note('Connected ✓ — Steam ownership verified. Synced game-account progression shown separately from WARCON server statistics.');
+    const caption=rows.closest('table')?.querySelector('caption');
+    if(caption)caption.textContent='Six roles · WARDOGS Tracker public record';
+    status('Public Tracker record loaded. No Steam login was performed by 1ADAAR; this does not verify account ownership.');
   }
-  async function api(path,method='GET',payload){
-    const session=readSession();if(!session)throw Error('session_expired');
-    const r=await fetch(endpoint+path,{
-      method,headers:{Authorization:'Bearer '+session.token,
-        ...(payload?{'Content-Type':'application/json'}:{})},
-      ...(payload?{body:JSON.stringify(payload)}:{}),cache:'no-store'
-    });
-    const data=await r.json().catch(()=>({}));
-    if(!r.ok)throw Error(data.error||'service_unavailable');
-    return data;
-  }
-  async function load(){
-    const key=currentKey;
-    if(!key)return;
-    const s=readSession();
-    if(!s||s.playerKey!==key){sessionStorage.removeItem(CONSENT);show('unlinked');blank();return;}
-    inFlight=true;show(connected?'connected':'unlinked');
+  async function load(input,remember){
+    const id=parseId(input);
+    if(!id){blank();status('Enter a valid SteamID64 or WARDOGS Tracker public profile URL.');return;}
+    const thisSeq=++seq;
+    if(active?.key && (await keyFor(id))!==active.key){
+      blank();status('That public Tracker account does not match the selected WARCON player.');return;
+    }
+    if(!save(remember?id:null))status('Browser storage is disabled; you can still view the public profile for this session.');
+    const submit=el('tracker-public-submit');submit.disabled=true;
+    status('Reading your published WARDOGS Tracker progression…');
     try{
-      const info=await api('/api/me');
-      if(currentKey!==key)return;
-      if(info.playerKey!==key)throw Error('account_mismatch');
-      if(info.state!=='connected'){
-        sessionStorage.removeItem(CONSENT);
-        blank();show('consent');
-        note('Steam ownership verified. Choose the public progression and optional economy permissions below.');
-        return;
+      const response=await fetch(api+'players/'+id,{credentials:'omit',cache:'no-store',
+        referrerPolicy:'no-referrer',headers:{Accept:'application/json'}});
+      if(thisSeq!==seq)return;
+      if(response.status===404){blank();status('This account is private, unknown, or not synced on WARDOGS Tracker. Sync there and allow public profile access.');return;}
+      if(response.status===429){status('Tracker is rate limiting requests; try again later.');return;}
+      if(!response.ok)throw Error('Tracker API unavailable');
+      const value=normalize(await response.json(),id);
+      if(!value){blank();status('Tracker did not return complete public progression for this account. No values were guessed.');return;}
+      paint(value);
+      if(active&&value.avatarUrl&&/^https:\/\/(?:avatars(?:\.akamai)?\.steamstatic\.com)\/[A-Za-z0-9_./-]+\.(?:jpg|jpeg|png|webp)$/i.test(value.avatarUrl)){
+        const frame=el('player-avatar');
+        if(frame){
+          frame.querySelectorAll('img').forEach(x=>x.remove());
+          const img=document.createElement('img');
+          img.className='steam-avatar';img.alt='Steam picture for the matched Tracker profile';
+          img.referrerPolicy='no-referrer';img.loading='lazy';img.onerror=()=>img.remove();
+          img.src=value.avatarUrl;frame.append(img);
+        }
       }
-      economyToggle.checked=Boolean(info.economy);
-      sessionStorage.setItem(CONSENT,String(s.expiresAt));
-      show('connected');
-      const data=await api('/api/progression');
-      if(currentKey!==key)return;
-      if(data.state==='connected')paint(data.record);
-      else paint(null);
-    }catch(e){
-      if(currentKey!==key)return;
-      if(e.message==='session_expired'||e.message==='unauthenticated'||e.message==='account_mismatch'){
-        clearSession();blank();show('unlinked');
-        note('Session expired or the connected Steam account does not match this dossier. Reconnect with Steam.');
-      }else note('Progression is temporarily unavailable ('+e.message+'). Your WARCON stats remain unchanged.');
-    }finally{inFlight=false;show(connected?'connected':!consentBox.hidden?'consent':'unlinked');}
+      const profileLink=el('tracker-open-profile');
+      profileLink.href='https://wardogstracker.gg/profile/'+id;
+      profileLink.hidden=false;
+      const community=el('tracker-community-controls');
+      if(community)community.hidden=false;
+    }catch(_){blank();status('Could not retrieve the public Tracker record. The Steam authentication Worker was not contacted.');}
+    finally{submit.disabled=false;}
   }
-  async function onReturn(code){
-    if(!enabled){note('Steam service has not been activated.');return;}
-    const verifier=sessionStorage.getItem(VERIFIER)||'';
-    sessionStorage.removeItem(VERIFIER);
-    if(!/^[A-Za-z0-9_-]{43}$/.test(verifier)){note('Steam verification expired. Start the connection again.');return;}
-    const response=await fetch(endpoint+'/api/exchange',{method:'POST',
-      headers:{'Content-Type':'application/json'},cache:'no-store',
-      body:JSON.stringify({code,verifier})});
-    const data=await response.json();
-    if(standalone&&!currentKey&&KEY.test(data.playerKey)){
-      currentKey=data.playerKey;
-      root.history.replaceState(null,'',root.location.pathname+'#player-'+data.playerKey);
-    }
-    if(!response.ok||data.playerKey!==currentKey){
-      note('Steam verification was not completed for this player. '+(data.error||'Try again.'));
-      return;
-    }
-    sessionStorage.setItem(SAVED,JSON.stringify({token:data.token,
-      expiresAt:data.expiresAt,playerKey:data.playerKey}));
-    await load();
-  }
-  btn.addEventListener('click',async()=>{
-    if(!enabled||(!currentKey&&!standalone))return;
-    // Authorization code + PKCE: no naked SteamID ever enters the static app.
-    const raw=crypto.getRandomValues(new Uint8Array(32));
-    const verifier=Array.from(raw,b=>b.toString(16).padStart(2,'0')).join('').slice(0,43);
-    const digest=new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(verifier)));
-    const challenge=btoa(String.fromCharCode(...digest))
-      .replaceAll('+','-').replaceAll('/','_').replace(/=+$/,'');
-    sessionStorage.setItem(VERIFIER,verifier);
-    note('Redirecting to Steam account verification. You will return to this 1ADAAR dossier.');
-    root.location.assign(endpoint+'/auth/start?challenge='+encodeURIComponent(challenge)+
-      (standalone?'&route=standalone':'&route=players&player='+encodeURIComponent(currentKey)));
-  });
-  consentSave.addEventListener('click',async()=>{
-    if(!consentMain.checked){note('Public progression permission must be checked before connection.');return;}
-    consentSave.disabled=true;
+  const serverId=/^[a-zA-Z0-9_-]{3,80}$|^[a-f0-9-]{36}$/;
+  async function community(event){
+    event.preventDefault();
+    const server=el('tracker-community-server')?.value.trim()||'';
+    const result=el('tracker-community-status');
+    if(!serverId.test(server)){result.textContent='Enter a Tracker server slug, ID, or join code.';return;}
+    const id=parseId(el('tracker-public-id')?.value);
+    if(!id){result.textContent='Load a public player profile first.';return;}
+    result.textContent='Checking community kill-feed coverage…';
     try{
-      await api('/api/consent','POST',{progression:true,economy:consentEconomy.checked});
-      consentBox.hidden=true;await load();
-    }catch(e){note('Could not save consent: '+e.message);}
-    finally{consentSave.disabled=false;}
-  });
-  refresh.addEventListener('click',async()=>{
-    if(!connected||inFlight)return;
-    refresh.disabled=true;note('Refreshing your synchronized public WARDOGS progression…');
-    try{const r=await api('/api/refresh','POST');
-      if(r.state==='connected')paint(r.record);else paint(null);
-    }catch(e){note('Refresh unavailable ('+e.message+'). Existing displayed data may be outdated.');}
-    finally{refresh.disabled=false;}
-  });
-  economySave.addEventListener('click',async()=>{
-    economySave.disabled=true;
-    try{await api('/api/consent','POST',{progression:true,economy:economyToggle.checked});
-      await load();}catch(e){note('Could not update visibility: '+e.message);}
-    finally{economySave.disabled=false;}
-  });
-  disconnect.addEventListener('click',async()=>{
-    disconnect.disabled=true;
-    try{
-      await api('/api/disconnect','POST');
-      clearSession();blank();connected=false;show('unlinked');
-      note('Disconnected. Your server-side consent, cached progression and login sessions were revoked.');
-    }catch(e){
-      // Do not falsely announce server-side deletion if the request failed.
-      note('Could not revoke the connection on the server ('+e.message+
-        '). Your connection remains active. Please retry Disconnect.');
-    }finally{disconnect.disabled=false;}
-  });
-  root.addEventListener('focus',()=>{if(Date.now()-lastCheck>60000&&readSession()&&currentKey){
-    lastCheck=Date.now();load();
-  }});
-  let usedCallback=false;
-  async function mount(entry){
-    const allowed=standalone||Boolean(entry&&!entry.demo&&KEY.test(entry.key));
-    const fromHash=/^#player-([a-f0-9]{64})$/.exec(root.location.hash);
-    currentKey=standalone?(fromHash?.[1]||readSession()?.playerKey||null):allowed?entry.key:null;
-    host.hidden=!allowed;
-    if(!allowed)return;
-    blank();connected=false;show('unlinked');
-    if(!enabled){note('Steam connection service is not deployed yet. Your WARCON player statistics still work.');return;}
-    if(callbackError){note('Steam connection could not finish: '+callbackError+'. Retry if necessary.');return;}
-    if(callbackCode&&!usedCallback){
-      usedCallback=true;
-      try{await onReturn(callbackCode);}catch(e){note('Steam callback failed: '+e.message);}
-    }else if(currentKey)await load();
-    else note('Sign in with Steam to view your game-wide WARDOGS progression. This works even without a saved match on Dan\'s server.');
+      const url=api+'servers/'+encodeURIComponent(server)+'/leaderboard?range=7d&limit=100';
+      const response=await fetch(url,{credentials:'omit',referrerPolicy:'no-referrer',cache:'no-store'});
+      if(response.status===404){result.textContent='No connected public kill feed was found for this server. No match statistics can be recovered from the server list alone.';return;}
+      if(!response.ok){result.textContent='Community leaderboard unavailable.';return;}
+      const data=await response.json();
+      const player=(Array.isArray(data.players)?data.players:[]).find(p=>p.steamId===id);
+      if(!player){result.textContent='Server feed found, but this player is not in the returned top 100 for the last 7 days. This is not a zero-stat result.';return;}
+      const summary=['Kills '+fmt(player.kills),'Deaths '+fmt(player.deaths),
+        'K/D '+(Number.isFinite(player.kd)?player.kd.toFixed(2):'—'),
+        'Headshots '+fmt(player.headshots),'Longest '+(Number.isFinite(player.longestKillM)?player.longestKillM+' m':'—')];
+      result.textContent='Recorded community kills · last 7 days · '+summary.join(' · ');
+    }catch(_){result.textContent='Community feed could not be reached. No missing play was inferred.';}
   }
+  function mount(entry){
+    const standalone=document.body.dataset.progressStandalone==='true';
+    const host=el('progression-panel');
+    const ok=standalone||Boolean(entry&&!entry.demo&&KEY.test(entry.key));
+    host.hidden=!ok;if(!ok)return;
+    active=standalone?null:entry;
+    ++seq;blank();
+    const saved=parseId(getSaved());
+    const field=el('tracker-public-id');
+    field.value=saved||'';
+    el('tracker-public-remember').checked=Boolean(saved);
+    el('tracker-community-controls').hidden=true;
+    const profileLink=el('tracker-open-profile');profileLink.hidden=true;profileLink.removeAttribute('href');
+    status('Load public Tracker progression without signing in through 1ADAAR.');
+    if(saved)void load(saved,true);
+  }
+  const form=el('tracker-public-form');
+  if(form)form.addEventListener('submit',e=>{e.preventDefault();void load(
+    el('tracker-public-id').value,el('tracker-public-remember').checked);});
+  el('tracker-public-clear')?.addEventListener('click',()=>{
+    ++seq;save(null);el('tracker-public-id').value='';
+    const link=el('tracker-open-profile');link.hidden=true;link.removeAttribute('href');
+    el('tracker-public-remember').checked=false;blank();
+    el('tracker-community-controls').hidden=true;
+    status('Saved public profile cleared from this browser.');
+  });
+  el('tracker-public-economy')?.addEventListener('change',()=>{const id=el('tracker-public-id').value;if(parseId(id))void load(id,el('tracker-public-remember').checked);});
+  el('tracker-community-form')?.addEventListener('submit',community);
   root.OneADAARProgression=Object.freeze({mount});
 })(window);
