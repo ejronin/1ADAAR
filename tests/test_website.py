@@ -21,3 +21,28 @@ class WebsiteTests(unittest.TestCase):
         s=(p/'index.html').read_text()
         self.assertIn('1ad-logo.svg',s)
         self.assertEqual(s.count('Join the 1AD Discord'),1)  # Single contextual onboarding; hero highlights analytics
+
+    def test_owner_home_layout_and_links(self):
+        p=Path(__file__).resolve().parents[1]/'docs'
+        home=(p/'index.html').read_text()
+        hero=home.split('<section class="hero motion-hero"',1)[1].split('</section>',1)[0]
+        self.assertIn('Join the 1AD Discord',hero)
+        self.assertEqual(home.count('Join the 1AD Discord'),1)
+        self.assertNotIn('id="join-wardogs"',home)
+        self.assertNotIn('id="ia-server-briefing"',home)
+        self.assertIn('class="nav active" href="index.html"',home)
+        self.assertIn('class="service-provenance"',home)
+        for logo in ('1of1servers.com/brand/full-logo-white-amber.svg',
+                     'assets/brands/warcon-logo-on-dark.svg',
+                     'wardogstracker.gg/logo.png','logo_steam.svg'):
+            self.assertIn(logo,home)
+        self.assertTrue((p/'assets'/'brands'/'warcon-logo-on-dark.svg').is_file())
+        self.assertIn('Only after you choose to connect and consent',home)
+    def test_match_dialog_does_not_preserve_report_scroll(self):
+        p=Path(__file__).resolve().parents[1]/'docs'
+        script=(p/'js'/'app.js').read_text()
+        self.assertNotIn('${location.pathname}#reports',script)
+        self.assertIn('${location.pathname}${location.search}',script)
+        for page in ('seasons.html','compare.html','weekly.html','players.html',
+                     'activity.html','map-team.html','playerone-demo.html'):
+            self.assertNotIn('href="index.html#reports"',(p/page).read_text())
