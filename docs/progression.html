@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="referrer" content="no-referrer" />
 <meta name="theme-color" content="#0b120f" />
-<title>My WARDOGS Progression | 1ADAAR Owner Test</title>
-<meta name="description" content="Connect your Steam account to view synced game-wide WARDOGS progression, separately from Dan's WARCON match results." />
+<title>My WARDOGS Progression | 1ADAAR</title>
+<meta name="description" content="View your already-synced public WARDOGS progression, separately from Dan's WARCON match results." />
 <link rel="icon" href="assets/1ad-logo.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="assets/style.css" />
 <link rel="stylesheet" href="assets/brand.css?v=9" />
@@ -16,9 +16,9 @@
 <link rel="stylesheet" href="assets/ia-v11.css?v=1" />
 <link rel="stylesheet" href="assets/progression-owner-test.css?v=1" />
 <script defer src="js/role-radar.js?v=2"></script>
-<script defer src="js/progression-config.js?v=1"></script>
+<script defer src="js/progression-config.js?v=2"></script>
 <script defer src="js/progression-intelligence.js?v=1"></script>
-<script defer src="js/progression-owner-test.js?v=2"></script>
+
 <script defer src="js/progression-standalone.js?v=1"></script>
 </head>
 <body class="player-page" data-progress-standalone="true">
@@ -39,7 +39,7 @@
   <main id="content" class="main">
     <section class="ia-titlebar" aria-labelledby="account-title">
       <div>
-        <span class="eyebrow">1ADAAR OWNER TEST · WARDOGS GAME ACCOUNT</span>
+        <span class="eyebrow">1ADAAR · WARDOGS GAME ACCOUNT</span>
         <h1 id="account-title">MY WARDOGS PROGRESSION.</h1>
         <p>Game-wide WARDOG level, role XP and account progression. Not limited to Dan's community server and not combined with WARCON match performance.</p>
       </div>
@@ -83,27 +83,35 @@
             <div class="pi-section-head"><h4>Role specialization</h4><span>Levels / 100 · WARDOGS Tracker</span></div>
             <svg id="pi-role-plot" role="img" viewBox="0 0 660 260"
               aria-label="Verified role-level comparison unavailable until account connection"></svg>
-            <p id="pi-role-plot-empty">The six-role comparison will appear after Steam verification and Tracker synchronization.</p>
+            <p id="pi-role-plot-empty">The six-role comparison will appear after you load your public Tracker profile.</p>
           </div>
         </section>
-        <div class="progression-actions">
-          <a href="https://wardogstracker.gg/stats" target="_blank" rel="noopener noreferrer">Open WARDOGS Tracker to sync ↗</a>
-          <button type="button" id="progression-check" disabled aria-describedby="progression-status">Connect with Steam (setup pending)</button>
-          <button type="button" id="progression-refresh" hidden>Refresh progression</button>
-          <button type="button" id="progression-disconnect" hidden>Disconnect</button>
-        </div>
-        <fieldset id="progression-consent-panel" class="progression-consent-panel" hidden>
-          <legend>Account permission</legend>
-          <label><input type="checkbox" id="progression-consent-main"> I agree to display my synchronized, public WARDOGS progression in this authenticated 1ADAAR session.</label>
-          <label><input type="checkbox" id="progression-consent-economy"> Also display my available cash and gold values (optional).</label>
-          <button type="button" id="progression-consent-save">Connect progression</button>
-          <p>No server match statistics are changed. You can disconnect and revoke consent.</p>
-        </fieldset>
-        <div class="progression-actions progression-connected-actions" id="progression-connected-actions" hidden>
-          <label><input type="checkbox" id="progression-economy-toggle"> Allow available cash and gold</label>
-          <button type="button" id="progression-economy-save">Save visibility</button>
-        </div>
-        <p id="progression-status" role="status" aria-live="polite">Not connected. WARDOGS Tracker synchronizes game-wide progression separately from this server's WARCON records.</p>
+        
+        <form id="tracker-public-form" class="tracker-public-form" autocomplete="off">
+          <h4>Load my public WARDOGS Tracker stats</h4>
+          <p>Already synced on WARDOGS Tracker? Enter your SteamID64 or Tracker profile URL once. 1ADAAR reads the public API directly without redirecting to Steam.</p>
+          <label for="tracker-public-id">Your SteamID64 or public Tracker profile URL</label>
+          <input id="tracker-public-id" type="text" inputmode="text" maxlength="160" spellcheck="false" placeholder="SteamID64 or https://wardogstracker.gg/profile/…" required>
+          <label class="tracker-optin"><input id="tracker-public-remember" type="checkbox"> Remember this public profile on this browser only</label>
+          <label class="tracker-optin"><input id="tracker-public-economy" type="checkbox"> Display public cash and gold, if Tracker provides them</label>
+          <div class="tracker-public-actions">
+            <button id="tracker-public-submit" type="submit">Load public stats</button>
+            <button id="tracker-public-clear" type="button">Clear saved profile</button>
+            <a id="tracker-open-profile" hidden target="_blank" rel="noopener noreferrer">Open my Tracker profile ↗</a>
+          </div>
+          <p class="tracker-independent">1ADAAR is not affiliated with Steam or WARDOGS Tracker. This is a public-data lookup, not Steam ownership verification. Steam credentials are never entered on 1ADAAR.</p>
+        </form>
+        <section id="tracker-community-controls" class="tracker-community-controls" hidden aria-labelledby="tracker-community-heading">
+          <h4 id="tracker-community-heading">Community-server combat</h4>
+          <p>Only connected community kill feeds are available. These results do not include official servers or unreported sessions.</p>
+          <form id="tracker-community-form" autocomplete="off">
+            <label for="tracker-community-server">Tracker server slug, server ID, or join code</label>
+            <input id="tracker-community-server" type="text" maxlength="80" value="ce8ecb97-6ecc-4377-9219-eb0f62a0d2ba" spellcheck="false">
+            <button type="submit">Check last 7 days</button>
+          </form>
+          <p id="tracker-community-status" role="status" aria-live="polite">Try Digital Anarchy using its public server code, or enter another community server.</p>
+        </section>
+<p id="progression-status" role="status" aria-live="polite">Load your public WARDOGS Tracker progression without Steam sign-in.</p>
         <p id="progression-synced-at" class="progression-synced-at">Last Tracker sync: —</p>
         <small>Source: <a href="https://wardogstracker.gg/developers" target="_blank" rel="noopener noreferrer">WARDOGS Tracker public API</a> · Last synced: — · No SteamID or private account data is published by this page.</small>
       </section>
@@ -119,7 +127,7 @@
       </div>
       <small>When both sources support equivalent daily kill-feed coverage, use daily paired values or a stacked day chart with a verified subset. Do not treat missing records as zero activity. No cross-server share or global K/D is implied.</small>
     </section>
-    <p class="profile-disclaimer">WARDOGS Tracker is unofficial and provides public, player-synchronized account data. Sync on Tracker after signing in with Steam. Cash/gold remain private unless you separately allow them. A new season can reset game progression. No real values are displayed without verified consent.</p>
+    <p class="profile-disclaimer">WARDOGS Tracker is unofficial and provides public, player-synchronized account data. Sync on Tracker after signing in with Steam. Cash/gold remain private unless you separately allow them. A new season can reset game progression. Only already-public records are displayed after you choose to load a profile.</p>
     <footer><span>1ADAAR · WARDOGS GAME ACCOUNT</span><span>Game-wide Tracker progression is separate from Dan's WARCON server analytics</span></footer>
   </main>
 </div>
