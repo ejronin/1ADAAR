@@ -17,7 +17,7 @@ class DemoPageTests(unittest.TestCase):
     def test_demo_page_consistent_with_separate_fixture(self):
         root=Path(__file__).resolve().parents[1]/'docs'
         fixture=json.loads(((Path(__file__).resolve().parents[1]/'tests/fixtures/demo-player.json')).read_text())
-        page=(root/'playerone-demo.html').read_text()
+        page=(Path(__file__).resolve().parents[1]/'tests/fixtures/playerone-demo.html').read_text()
         self.assertTrue(fixture['fictional'])
         self.assertEqual(fixture['player']['name'],'PlayerOne')
         self.assertIn(str(fixture['player']['kills']),page)
