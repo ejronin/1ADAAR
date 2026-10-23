@@ -136,6 +136,26 @@ async def capture():
                         "progressionEmpty":True})
                 assert not real_errors, f"Real player page errors at {width}: {real_errors}"
                 await real.close()
+                # Dedicated owner-test page must not change the existing
+                # real WARCON dossier or invent Tracker levels before Steam consent.
+                own=await browser.new_page(viewport={"width":width,"height":900},device_scale_factor=1)
+                own_errors=[]
+                own.on("pageerror",lambda error:own_errors.append(str(error)))
+                resp=await own.goto(origin+"/progression.html",wait_until="domcontentloaded",timeout=30000)
+                assert resp and resp.status==200
+                assert await own.locator("#progression-panel").is_visible()
+                assert await own.locator("#progression-check").is_enabled()
+                assert await own.locator("#progression-consent-panel").is_hidden()
+                assert await own.locator("#progression-refresh").is_hidden()
+                assert await own.locator("#progression-role-radar [data-role-profile]").count()==0
+                assert await own.locator("#progression-role-values tr").count()==6
+                ow=await own.evaluate("document.documentElement.scrollWidth-innerWidth")
+                assert ow<=2,f"Steam owner-test page overflow at {width}px: {ow}"
+                assert not own_errors,f"Steam owner-test JavaScript error: {own_errors}"
+                if width in (390,1440):
+                    await own.screenshot(path=str(ARTIFACT/f"steam-owner-test-{width}px.png"),
+                                         full_page=True,animations="disabled")
+                await own.close()
                 # Server-wide completed-match activity is source-backed and
                 # must show a no-data notice (not fictional activity) until
                 # completed WARCON matches are actually archived.
