@@ -54,7 +54,7 @@ class UnifiedSiteTests(unittest.TestCase):
         self.assertIn("'1AD SERVER'",js)
         self.assertIn("'TRACKER · ALL'",js)
         self.assertIn("'—'",js)
-        self.assertIn('Tracker does not yet publish global combat totals',js)
+        self.assertIn('Tracker does not publish global combat totals',js)
         self.assertNotIn('globalKd',js)
         self.assertIn('career-source-pair',(DOCS/'assets/site-unified.css').read_text())
         self.assertIn('js/player-snapshot.js?v=112',(DOCS/'players.html').read_text())
