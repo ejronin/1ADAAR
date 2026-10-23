@@ -17,7 +17,8 @@
 <link rel="stylesheet" href="assets/progression-owner-test.css?v=1" />
 <script defer src="js/role-radar.js?v=2"></script>
 <script defer src="js/progression-config.js?v=1"></script>
-<script defer src="js/progression-owner-test.js?v=1"></script>
+<script defer src="js/progression-intelligence.js?v=1"></script>
+<script defer src="js/progression-owner-test.js?v=2"></script>
 <script defer src="js/progression-standalone.js?v=1"></script>
 </head>
 <body class="player-page" data-progress-standalone="true">
@@ -46,7 +47,10 @@
     </section>
     <div class="progression-account-layout">
       <section id="progression-panel" class="progression-panel profile-panel" aria-labelledby="progression-heading">
-        <div class="panel-heading"><h3 id="progression-heading">Your WARDOGS progression</h3><span>OPTIONAL · WARDOGS TRACKER</span></div>
+        <div class="panel-heading">
+          <div class="pi-identity"><img id="pi-steam-avatar" alt="" width="52" height="52" hidden /><h3 id="progression-heading">Your WARDOGS progression</h3></div>
+          <span>OPTIONAL · WARDOGS TRACKER</span>
+        </div>
         <p class="progression-explainer">These are game-account progression values, not this server's match statistics. Your WARCON player results work without connecting anything.</p>
         <div class="progression-layout">
           <div class="progression-radar">
@@ -70,6 +74,18 @@
               <tr><th scope="row">Pilot</th><td>—</td><td>—</td></tr></tbody></table></div>
           </div>
         </div>
+        <section class="pi-secondary" aria-label="Additional source-qualified WARDOGS account intelligence">
+          <div class="pi-dossier-extras">
+            <div class="pi-stat"><small>Unlocked items · Tracker</small><strong id="pi-unlocks">—</strong></div>
+            <div class="pi-stat"><small>Leaderboard · eligible synced players</small><strong id="pi-standing">—</strong></div>
+          </div>
+          <div class="pi-role-block">
+            <div class="pi-section-head"><h4>Role specialization</h4><span>Levels / 100 · WARDOGS Tracker</span></div>
+            <svg id="pi-role-plot" role="img" viewBox="0 0 660 260"
+              aria-label="Verified role-level comparison unavailable until account connection"></svg>
+            <p id="pi-role-plot-empty">The six-role comparison will appear after Steam verification and Tracker synchronization.</p>
+          </div>
+        </section>
         <div class="progression-actions">
           <a href="https://wardogstracker.gg/stats" target="_blank" rel="noopener noreferrer">Open WARDOGS Tracker to sync ↗</a>
           <button type="button" id="progression-check" disabled aria-describedby="progression-status">Connect with Steam (setup pending)</button>
@@ -93,6 +109,16 @@
       </section>
 
     </div>
+    <section class="pi-combat" aria-labelledby="pi-combat-title">
+      <div class="pi-section-head"><h3 id="pi-combat-title">Combat intelligence · source comparison</h3><span>WARDOGS Tracker + 1ADAAR / WARCON</span></div>
+      <p>Compare your captured 1AD matches with other recorded community-server combat only where the same player, period and event coverage can be verified.</p>
+      <div class="pi-combat-viewport" role="status">
+        <strong>Daily comparison awaiting compatible records</strong>
+        <p>No day-by-day all-server combat endpoint is documented in Tracker's public API, and 1ADAAR currently has no archived completed matches. The empty plotting area is intentional.</p>
+        <div class="pi-future-axis" aria-hidden="true"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+      </div>
+      <small>When both sources support equivalent daily kill-feed coverage, use daily paired values or a stacked day chart with a verified subset. Do not treat missing records as zero activity. No cross-server share or global K/D is implied.</small>
+    </section>
     <p class="profile-disclaimer">WARDOGS Tracker is unofficial and provides public, player-synchronized account data. Sync on Tracker after signing in with Steam. Cash/gold remain private unless you separately allow them. A new season can reset game progression. No real values are displayed without verified consent.</p>
     <footer><span>1ADAAR · WARDOGS GAME ACCOUNT</span><span>Game-wide Tracker progression is separate from Dan's WARCON server analytics</span></footer>
   </main>
