@@ -131,10 +131,10 @@ async def capture():
                     await real.locator("#progression-panel").wait_for(state="visible",timeout=10000)
                     assert await real.locator("#progression-role-radar").count()==1
                     assert await real.locator("#progression-role-radar [data-role-profile]").count()==0
-                    assert await real.locator('#progression-check').is_enabled()
-                    assert 'Not connected' in await real.locator('#progression-status').inner_text()
-                    assert await real.locator('#progression-consent-panel').is_hidden()
-                    assert await real.locator('#progression-refresh').is_hidden()
+                    assert await real.locator('#tracker-public-submit').is_enabled()
+                    assert 'public' in (await real.locator('#progression-status').inner_text()).lower()
+                    assert await real.locator('#tracker-public-form').is_visible()
+                    assert await real.locator('#tracker-public-id').is_visible()
                     report.setdefault("realProfiles",[]).append({"width":width,**actual,
                         "progressionEmpty":True})
                 assert not real_errors, f"Real player page errors at {width}: {real_errors}"
@@ -147,7 +147,7 @@ async def capture():
                 resp=await own.goto(origin+"/progression.html",wait_until="domcontentloaded",timeout=30000)
                 assert resp and resp.status==200
                 assert await own.locator("#progression-panel").is_visible()
-                assert await own.locator("#progression-check").is_enabled()
+                assert await own.locator('#tracker-public-submit').is_enabled()
                 assert await own.locator("#progression-consent-panel").is_hidden()
                 assert await own.locator("#progression-refresh").is_hidden()
                 assert await own.locator("#progression-role-radar [data-role-profile]").count()==0
