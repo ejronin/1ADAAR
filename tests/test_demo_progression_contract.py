@@ -30,7 +30,8 @@ class FictionalProgressionContractTests(unittest.TestCase):
         assert "sourceStatus==='verified'" in radar
         assert "data-fictional-demo" not in live
         assert "demo-progression.js" not in live
-        assert 'id="tracker-public-form"' in live\n        assert 'id="progression-check"' not in live
+        assert 'id="tracker-public-form"' in live
+        assert 'id="progression-check"' not in live
         assert 'id="progression-role-radar"' in live
 
     def test_navigation_exposes_player_map_and_activity_pages(self):
