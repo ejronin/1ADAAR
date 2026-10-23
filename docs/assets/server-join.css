@@ -10,7 +10,7 @@
 .server-banner-media{
  display:block;flex:none;width:100%;aspect-ratio:4 / 1;min-height:0;
  background-color:#12221a;
- background-image:url('oneaveragedan-server-banner.png'),url('wardogs-official-hero.webp');
+ background-image:url('oneaveragedan-server-banner.png?v=113'),url('wardogs-official-hero.webp');
  background-position:center,center;
  background-size:cover,cover;
  background-repeat:no-repeat,no-repeat;
@@ -124,4 +124,16 @@
  .server-banner-identity span{font-size:8px}
  .server-banner-identity img{width:115px}
  .server-banner-1ad-mark{height:55px}
+}
+
+/* Page share image: match approved 1024x256 art on both pages without recropping. */
+.server-banner-media{background-position:center center!important;background-size:100% 100%,cover!important}
+.join-landing .topbar{flex-wrap:wrap;gap:10px}
+.join-landing .join-site-wordmark{display:block;flex:none;margin-left:auto;margin-right:16px}
+.join-landing .join-site-wordmark img{display:block;width:132px;max-width:100%;height:auto}
+.join-landing .join-site-wordmark:focus-visible{outline:2px solid #9bf2ad;outline-offset:4px}
+@media(max-width:720px){
+ .join-landing .join-site-wordmark{margin-right:0;margin-left:auto}
+ .join-landing .join-site-wordmark img{width:112px}
+ .join-landing .breadcrumb{flex-basis:100%;text-align:center}
 }
