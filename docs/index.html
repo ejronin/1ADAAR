@@ -35,7 +35,7 @@
 <link rel="stylesheet" href="assets/ia-v11.css?v=1" />
   <link rel="stylesheet" href="assets/site-unified.css?v=112" />
   <link rel="stylesheet" href="assets/server-join.css?v=114" />
-<link rel="stylesheet" href="assets/map-gallery.css?v=117" />
+
 <link rel="stylesheet" href="assets/server-map-feature.css?v=118" />
 </head>
 <body>
@@ -118,29 +118,7 @@
     </section>
 
 <section aria-label="Match summary" class="kpi-grid"><div class="kpi"><span>MATCHES SAVED</span><strong id="stat-matches">—</strong><small>the latest saved results</small></div><div class="kpi"><span>LAST MATCH WINNER</span><strong id="stat-winner" class="text-value">—</strong><small>last saved match</small></div><div class="kpi"><span>LAST PLAYED MAP</span><strong id="stat-map" class="text-value">—</strong><small>last saved match</small></div><div class="kpi"><span>MATCH HISTORY</span><strong id="stat-feed" class="text-value">WAITING</strong><small id="stat-sync">Waiting for saved results</small></div></section>
-    <section class="map-art-section" aria-labelledby="map-art-heading">
-      <div class="map-art-heading">
-        <h2 id="map-art-heading">WARDOGS MAPS</h2>
-        <p>Map previews</p>
-      </div>
-      <div class="map-art-grid">
-        <figure class="map-art-card">
-          <img src="assets/map-banners/bakurani-card.webp?v=117" width="1280" height="720"
-            alt="Bakurani WARDOGS map panorama with its name on the artwork" loading="lazy" decoding="async">
-          <figcaption>Bakurani</figcaption>
-        </figure>
-        <figure class="map-art-card">
-          <img src="assets/map-banners/ozeti-card.webp?v=117" width="1280" height="720"
-            alt="Ozeti WARDOGS map panorama with its name on the artwork" loading="lazy" decoding="async">
-          <figcaption>Ozeti</figcaption>
-        </figure>
-        <figure class="map-art-card">
-          <img src="assets/map-banners/zestafona-card.webp?v=117" width="1280" height="720"
-            alt="Zestafona WARDOGS map panorama with its name on the artwork" loading="lazy" decoding="async">
-          <figcaption>Zestafona</figcaption>
-        </figure>
-      </div>
-    </section>
+    
     <div class="ia-intelligence-grid">
     <section id="reports" class="reports ia-reports-panel" aria-labelledby="reports-heading"><div class="section-head"><div><div class="eyebrow">MATCH RESULTS</div><h2 id="reports-heading">Latest match reports</h2><p>WARCON completed matches only. This feed keeps the latest 120 matches we have saved and may not include every match played; older matches may be missing.</p></div><div class="filters"><label class="sr-only" for="find-match">Search matches</label><input id="find-match" type="search" placeholder="Search map or winner…" autocomplete="off" /><label class="sr-only" for="sort-matches">Sort match results</label><select id="sort-matches" disabled aria-describedby="sort-explanation"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select><small class="filter-hint" id="sort-explanation" role="status">Sorting becomes available after 2 completed matches.</small></div></div>
     <div id="feedback" class="notice" role="status">Retrieving published match history…</div><div id="match-grid" class="match-grid" aria-live="polite"></div></section>
