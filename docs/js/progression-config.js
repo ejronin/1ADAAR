@@ -1,6 +1,4 @@
 'use strict';
-/* Auth Worker verified by owner live /health after successful Worker/D1 deployment.
-   Public config contains NO keys, user IDs, webhook URLs, SteamIDs or secrets. */
-window.OneADAARProgressionConfig=Object.freeze({
-  endpoint:'https://1adaar-steam-progression.shawn-k-gordon.workers.dev' // public endpoint, no secrets
-});
+// Steam OpenID is intentionally disabled until an anonymous, owner-controlled
+// authentication hostname exists. Do not expose personal Cloudflare account IDs.
+window.OneADAARProgressionConfig=Object.freeze({endpoint:''});
