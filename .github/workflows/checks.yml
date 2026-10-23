@@ -21,6 +21,8 @@ jobs:
           python-version: '3.12'
       - name: Install pinned image renderer
         run: python -m pip install Pillow==11.3.0 CairoSVG==2.8.2
+      - name: Validate generated named map assets
+        run: python scripts/build_map_banners.py
       - name: Unit tests
         run: python -m unittest discover -s tests -v
       - name: Python compilation
