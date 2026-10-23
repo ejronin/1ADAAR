@@ -113,3 +113,14 @@ body[data-progress-standalone="true"] .pi-combat>small{display:block;margin-top:
  body[data-progress-standalone="true"] .pi-dossier-extras{grid-template-columns:minmax(0,1fr)}
  body[data-progress-standalone="true"] .pi-combat-viewport{min-height:245px}
 }
+
+/* Prevent the WARDOGS progression titlebar's long word from forcing a 368px page
+   at 320px. Keep rail navigation independently clipped as before. */
+body[data-progress-standalone="true"] .ia-titlebar,
+body[data-progress-standalone="true"] .ia-titlebar>div{
+ min-width:0;max-width:100%;overflow-wrap:anywhere;
+}
+body[data-progress-standalone="true"] #account-title{
+ max-width:100%;font-size:clamp(27px,7.5vw,54px);line-height:1.08;
+ overflow-wrap:anywhere;
+}
