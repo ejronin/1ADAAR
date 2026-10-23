@@ -149,6 +149,14 @@ async def capture():
                 assert await own.locator("#progression-refresh").is_hidden()
                 assert await own.locator("#progression-role-radar [data-role-profile]").count()==0
                 assert await own.locator("#progression-role-values tr").count()==6
+                assert await own.locator('#pi-role-plot').is_visible()
+                assert await own.locator('#pi-role-plot-empty').is_visible()
+                assert await own.locator('#pi-role-plot circle').count()==0
+                assert await own.locator('#pi-unlocks').inner_text()=='—'
+                assert await own.locator('#pi-standing').inner_text()=='—'
+                assert await own.locator('#pi-steam-avatar').is_hidden()
+                assert 'awaiting compatible records' in (
+                    await own.locator('.pi-combat-viewport').inner_text()).lower()
                 ow=await own.evaluate("document.documentElement.scrollWidth-innerWidth")
                 assert ow<=2,f"Steam owner-test page overflow at {width}px: {ow}"
                 assert not own_errors,f"Steam owner-test JavaScript error: {own_errors}"
