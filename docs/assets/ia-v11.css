@@ -321,3 +321,9 @@ body{background:var(--ia-bg);color:var(--ia-ink)}
 #dossier .progression-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:375px){#dossier .progression-panel{padding:12px}
 #dossier .progression-kpis>div{padding:9px;min-width:0}}
+
+/* Owner screenshot 4: no oversized gap for the unassigned weekly winner. */
+.weekly-page .weekly-podium{align-items:stretch;margin-top:17px}
+.weekly-page .weekly-podium-place.gold[data-award-verified="false"]{min-height:0;padding:19px 12px}
+.weekly-page .weekly-podium-place.gold[data-award-verified="false"] .weekly-crown{display:none!important}
+@media(max-width:650px){.weekly-page .weekly-podium-place.gold[data-award-verified="false"]{min-height:0;padding:13px 6px}}
