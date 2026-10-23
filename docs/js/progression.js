@@ -103,6 +103,16 @@
       const value=normalize(await response.json(),id);
       if(!value){blank();status('Tracker did not return complete public progression for this account. No values were guessed.');return;}
       paint(value);
+      if(active&&value.avatarUrl&&/^https:\/\/(?:avatars(?:\.akamai)?\.steamstatic\.com)\/[A-Za-z0-9_./-]+\.(?:jpg|jpeg|png|webp)$/i.test(value.avatarUrl)){
+        const frame=el('player-avatar');
+        if(frame){
+          frame.querySelectorAll('img').forEach(x=>x.remove());
+          const img=document.createElement('img');
+          img.className='steam-avatar';img.alt='Steam picture for the matched Tracker profile';
+          img.referrerPolicy='no-referrer';img.loading='lazy';img.onerror=()=>img.remove();
+          img.src=value.avatarUrl;frame.append(img);
+        }
+      }
       const profileLink=el('tracker-open-profile');
       profileLink.href='https://wardogstracker.gg/profile/'+id;
       profileLink.hidden=false;
