@@ -30,9 +30,12 @@ class TestCollector(unittest.TestCase):
         self.assertFalse(recap.usable_match({**SAMPLE,'finalScores':None}))
     def test_malicious_names_cannot_ping_everyone(self):
         sample={**SAMPLE,'winner':'@everyone','finalScores':[{'name':'@here', 'score':100}]}
-        p=recap.discord_payload(recap.public_match(sample,DETAIL))
-        self.assertEqual(p['allowed_mentions'], {'parse':[]})
-        self.assertNotIn('@everyone',json.dumps(p))
+        incomplete=recap.public_match(sample,DETAIL)
+        self.assertFalse(incomplete["winnerVerified"])
+        self.assertEqual(incomplete["winner"],"")
+        with self.assertRaises(ValueError):
+            recap.discord_payload(incomplete)
+        self.assertNotIn('@everyone',json.dumps(incomplete))
     def test_first_run_baselines_no_old_matches_posted(self):
         with tempfile.TemporaryDirectory() as temp:
             def response(url):

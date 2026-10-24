@@ -36,6 +36,19 @@ class TestDiscordSmoke(unittest.TestCase):
         with patch.dict("os.environ",{"DISCORD_MATCH_WEBHOOK":""}), self.assertRaises(SystemExit):
             main()
 
+    def test_weekly_preview_kills_are_explicit_and_aligned(self):
+        from pathlib import Path
+        import src.discord_preview_cards as weekly
+        code = Path(weekly.__file__).read_text()
+        self.assertIn("MAP LEADERS  /  MOST KILLS", code)
+        for total in ("27 KILLS", "22 KILLS", "24 KILLS",
+                      "42 KILLS", "55 KILLS", "35 KILLS"):
+            self.assertIn(total, code)
+        self.assertIn('y2-80', code)
+        self.assertIn('y2-32', code)
+        self.assertIn('anchor="lm"', code)
+        self.assertIn('anchor="rm"', code)
+
     def test_weekly_preview_png_contains_real_named_map_art(self):
         from src.discord_preview_cards import render_weekly_smoke_card
         png=render_weekly_smoke_card()

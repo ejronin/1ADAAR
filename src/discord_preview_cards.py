@@ -43,20 +43,22 @@ def render_weekly_smoke_card() -> bytes:
     d.line((72, 284, 1006, 284), fill=LINE, width=2)
     _text(d, (74, 305), "COMMUNITY TOP 3", 26, BLUE, True)
     podium = [
-        (76, 383, 372, 542, "02", "PLAYER BRAVO", "42 K", SILVER),
-        (382, 353, 699, 542, "01", "PLAYER ALPHA", "55 K", GOLD),
-        (710, 405, 1004, 542, "03", "PLAYER CHARLIE", "35 K", BRONZE),
+        (76, 383, 372, 542, "02", "PLAYER BRAVO", "42 KILLS", SILVER),
+        (382, 353, 699, 542, "01", "PLAYER ALPHA", "55 KILLS", GOLD),
+        (710, 405, 1004, 542, "03", "PLAYER CHARLIE", "35 KILLS", BRONZE),
     ]
     for x, y, x2, y2, place, name, total, color in podium:
         _rounded(d, (x, y, x2, y2), "#233549", color, 12, 3)
         _text(d, (x+17, y+17), place, 30, color, True)
-        _text(d, ((x+x2)//2, y+87), name, 21, WHITE, True, anchor="mm")
-        _text(d, ((x+x2)//2, y+130), total, 25, color, True, anchor="mm")
-    _text(d, (74, 565), "TOP PLAYER ON EACH MAP", 26, BLUE, True)
+        # Different podium heights, shared visual baselines: no clipped bronze score.
+        center = (x+x2)//2
+        _text(d, (center, y2-80), name, 21, WHITE, True, anchor="mm")
+        _text(d, (center, y2-32), total, 23, color, True, anchor="mm")
+    _text(d, (74, 565), "MAP LEADERS  /  MOST KILLS", 26, BLUE, True)
     maps = [
-        ("Bakurani", "PLAYER ALPHA", "27 K"),
-        ("Ozeti", "PLAYER ECHO", "22 K"),
-        ("Zestafona", "PLAYER CHARLIE", "24 K"),
+        ("Bakurani", "PLAYER ALPHA", "27 KILLS"),
+        ("Ozeti", "PLAYER ECHO", "22 KILLS"),
+        ("Zestafona", "PLAYER CHARLIE", "24 KILLS"),
     ]
     for index, (name, who, score) in enumerate(maps):
         y=615+index*112
@@ -69,13 +71,14 @@ def render_weekly_smoke_card() -> bytes:
         else:
             d.rectangle((79,y+4,305,y+95),fill="#254f4d")
             _text(d,(95,y+32),name.upper(),18,WHITE,True)
-        _text(d,(328,y+23),who,24,WHITE,True)
-        _text(d,(984,y+35),score,25,BLUE,True,anchor="ra")
+        # Player and score share the same vertical center on every map row.
+        _text(d,(328,y+50),who,23,WHITE,True,anchor="lm")
+        _text(d,(984,y+50),score,23,BLUE,True,anchor="rm")
     _text(d,(74,970),"ADDITIONAL WEEKLY AWARDS",26,BLUE,True)
     awards=[
         ("MOST RANK GAINED","Not verified"),
         ("LONGEST SHOT","PLAYER DELTA  ·  486 m"),
-        ("MOST KILLS","PLAYER ALPHA  ·  55 K"),
+        ("MOST KILLS","PLAYER ALPHA  ·  55 KILLS"),
         ("BEST K/D (20+ MATCHES)","No qualified player"),
     ]
     for i,(label,value) in enumerate(awards):
