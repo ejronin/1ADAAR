@@ -169,14 +169,15 @@ def public_match(raw: dict, detail: dict | None = None) -> dict:
                             "headshots": safe_int("headshots") if detail.get("hasFeed") else None,
                             "longestM": safe_int("longestM") if detail.get("hasFeed") else None,
                             "killStreak": safe_int("killStreak") if detail.get("hasFeed") else None})
+    confirmed_winner = verified_winner(raw)
     return {"schemaVersion": 2, "id": identifier, "startedAt": started.isoformat().replace("+00:00", "Z"),
             "endedAt": ended.isoformat().replace("+00:00", "Z"),
             "durationSeconds": max(0, int((ended - started).total_seconds())),
             "map": MAP_LABELS.get(clean(raw.get("map"), 55), clean(raw.get("map"), 55)) or "Unknown map",
             "mode": "King of the Hill" if "_KOTH_" in str(raw.get("experiences") or "") else (clean(raw.get("experiences"), 90) or "Unknown mode"),
             "lighting": clean(raw.get("lighting"), 50),
-            "winner": verified_winner(raw),
-            "winnerVerified": bool(verified_winner(raw)),
+            "winner": confirmed_winner,
+            "winnerVerified": bool(confirmed_winner),
             "scores": score_rows(raw.get("finalScores")),
             "peakPlayers": max(0, int(raw.get("peakPlayers") or 0)),
             "verifiedCompleted": True,
@@ -270,10 +271,12 @@ def run(*, webhook: str = "", dry_run: bool = False) -> dict:
     for match_id, raw in fetched.items():
         try:
             if (match_id not in old_matches or old_matches[match_id].get("schemaVersion") != 2
-                    or old_matches[match_id].get("winnerVerified") is not True):
+                    or old_matches[match_id].get("winnerVerified") is not True
+                    or (ledger.get("initialized") and str(match_id) not in ledger.get("posted", {}))):
                 # WARCON's game-final result can correct the first closed-match snapshot.
-                # Fetch the match detail on EVERY scheduled run until the winner is verified;
-                # the list result may still be stale when the detail has caught up.
+                # Fetch detail every scheduled run while missing a verified winner, AND
+                # again for unposted matches immediately before attempting delivery;
+                # list entries can be stale when the game-final detail has caught up.
                 detailed = fetch_json(f"{PUBLIC_MATCHES}/{match_id}")
                 if not isinstance(detailed.get("match"), dict) or detailed["match"].get("id") != match_id:
                     raise ValueError("Match detail mismatch")
