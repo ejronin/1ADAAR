@@ -1,4 +1,4 @@
-name: Verify Discord match recap webhook
+name: Verify Discord match and weekly preview webhook
 on:
   workflow_dispatch:
   push:
@@ -13,17 +13,19 @@ jobs:
       github.repository == 'ejronin/1ADAAR' &&
       github.ref == 'refs/heads/main' &&
       (github.event_name == 'workflow_dispatch' ||
-       github.event.head_commit.message == 'ci: [discord-smoke] verify match recap webhook')
+       startsWith(github.event.head_commit.message, 'ci: [discord-smoke] verify match recap webhook'))
     runs-on: ubuntu-24.04
-    timeout-minutes: 4
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - name: Install pinned image renderer
+      - name: Install pinned preview renderer
         run: python -m pip install Pillow==11.3.0 CairoSVG==2.8.2
-      - name: Send clearly labeled test recap via dedicated webhook
+      - name: Validate both fictional preview formats before dispatch
+        run: python -m unittest tests.test_discord_smoke -v
+      - name: Send marked TEST match and TEST weekly preview to match-recap webhook
         env:
           DISCORD_MATCH_WEBHOOK: ${{ secrets.DISCORD_MATCH_WEBHOOK }}
         run: python -m src.discord_smoke
