@@ -102,6 +102,30 @@ def usable_match(raw: dict) -> bool:
     return bool(scores) and max(s["score"] for s in scores) >= MIN_SCORE
 
 
+def verified_winner(raw: dict) -> str:
+    """Require WARCON's explicit final winner and a consistent final scoreboard.
+
+    A provisional score leader is not proof that the game awarded a win:
+    WARCON may receive and apply the game's own corrected result later.
+    Never infer a winner from highest score, and never award a score tie.
+    """
+    if not usable_match(raw):
+        return ""
+    winner = clean(raw.get("winner"), 35)
+    scores = score_rows(raw.get("finalScores"))
+    if not winner or not scores:
+        return ""
+    named = [row for row in scores if row["name"].casefold() == winner.casefold()]
+    if len(named) != 1:
+        return ""
+    highest = max(row["score"] for row in scores)
+    if named[0]["score"] != highest:
+        return ""
+    if sum(row["score"] == highest for row in scores) != 1:
+        return ""
+    return named[0]["name"]
+
+
 def public_match(raw: dict, detail: dict | None = None) -> dict:
     if not usable_match(raw):
         raise ValueError("Match is unfinished or abandoned")
@@ -151,7 +175,8 @@ def public_match(raw: dict, detail: dict | None = None) -> dict:
             "map": MAP_LABELS.get(clean(raw.get("map"), 55), clean(raw.get("map"), 55)) or "Unknown map",
             "mode": "King of the Hill" if "_KOTH_" in str(raw.get("experiences") or "") else (clean(raw.get("experiences"), 90) or "Unknown mode"),
             "lighting": clean(raw.get("lighting"), 50),
-            "winner": clean(raw.get("winner"), 35),
+            "winner": verified_winner(raw),
+            "winnerVerified": bool(verified_winner(raw)),
             "scores": score_rows(raw.get("finalScores")),
             "peakPlayers": max(0, int(raw.get("peakPlayers") or 0)),
             "verifiedCompleted": True,
@@ -164,7 +189,10 @@ def public_match(raw: dict, detail: dict | None = None) -> dict:
 
 
 def discord_payload(match: dict) -> dict:
-    """One image-first Discord recap; next round posts separately."""
+    """No public recap unless a final match winner was verified from WARCON."""
+    if match.get("verifiedCompleted") is not True or match.get("winnerVerified") is not True \
+            or not isinstance(match.get("winner"), str) or not match["winner"].strip():
+        raise ValueError("Refusing Discord recap without a verified final winner")
     from src.discord_layout import match_recap
     return match_recap(match)
 
@@ -241,7 +269,11 @@ def run(*, webhook: str = "", dry_run: bool = False) -> dict:
     # Fail closed: no output change when the upstream request/schema is broken.
     for match_id, raw in fetched.items():
         try:
-            if match_id not in old_matches or old_matches[match_id].get("schemaVersion") != 2:
+            if (match_id not in old_matches or old_matches[match_id].get("schemaVersion") != 2
+                    or old_matches[match_id].get("winnerVerified") is not True):
+                # WARCON's game-final result can correct the first closed-match snapshot.
+                # Fetch the match detail on EVERY scheduled run until the winner is verified;
+                # the list result may still be stale when the detail has caught up.
                 detailed = fetch_json(f"{PUBLIC_MATCHES}/{match_id}")
                 if not isinstance(detailed.get("match"), dict) or detailed["match"].get("id") != match_id:
                     raise ValueError("Match detail mismatch")
@@ -337,6 +369,12 @@ def run(*, webhook: str = "", dry_run: bool = False) -> dict:
         # A failed delivery raises and stops; retry next schedule with the committed ledger.
         for match in unposted[:15]:
             if dry_run:
+                continue
+            # Finished != verified winner. When WARCON's final game result is late,
+            # do not publish a "winner not verified" recap or mark the match posted.
+            # A future full collector pass refreshes its detail and retries.
+            if match.get("winnerVerified") is not True or not match.get("winner"):
+                print(f"1ADAAR match {match['id']} recap deferred: final winner unverified")
                 continue
             message_id = send_discord(webhook, discord_payload(match), image_bytes=render_match_card(match))
             ledger["posted"][str(match["id"])] = message_id
