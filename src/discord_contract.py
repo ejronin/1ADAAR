@@ -102,7 +102,7 @@ def build_design_recap(
                 {"type":10,"content":summary},
                 {"type":10,"content":"Next map and conditions will be posted separately only if WARCON confirms them."},
                 {"type":1,"components":[{"type":2,"style":5,
-                  "label":"Open in 1ADAAR","url":dashboard_url}]}
+                  "label":"See full report","url":dashboard_url}]}
             ]}
         ]
     }
