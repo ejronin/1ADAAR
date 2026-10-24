@@ -1,4 +1,4 @@
-"""Append-only, public, season-organized history from captured completed matches.
+"""Append-only match history with constrained authoritative WARCON result finalization.
 
 Preserves older records when the dashboard's 120-match window rolls over.
 This is an archive of matches 1ADAAR *captured*, NOT a complete census of
@@ -90,6 +90,7 @@ def _public_copy(match: dict) -> dict:
         "mode": _text(match.get("mode"), 90),
         "lighting": _text(match.get("lighting"), 50),
         "winner": _text(match.get("winner"), 35),
+        "winnerVerified": match.get("winnerVerified") is True,
         "scores": scores, "peakPlayers": _count(match.get("peakPlayers")),
         "players": players, "awards": awards,
         "hasFeed": match.get("hasFeed") is True,
@@ -107,6 +108,36 @@ def _public_copy(match: dict) -> dict:
 def _season_for(ended, seasons):
     applicable = [s for s in seasons if s[2] <= ended]
     return applicable[-1][0] if applicable else None
+
+
+def _verified_result_upgrade(before: dict, after: dict) -> bool:
+    """Only a confirmed late winner and final score correction may amend history.
+
+    Dates, maps, player identities, combat figures and already-verified winners
+    remain immutable. The game may correct a final score and win/loss flags.
+    """
+    if before.get("winnerVerified") is True or after.get("winnerVerified") is not True:
+        return False
+    if before.get("winner") not in ("", after.get("winner")) or not after.get("winner"):
+        return False
+    for key in before:
+        if key not in {"winner", "winnerVerified", "scores", "players"} and before[key] != after.get(key):
+            return False
+    if len(before["scores"]) != len(after["scores"]):
+        return False
+    if {s["name"].casefold() for s in before["scores"]} != {s["name"].casefold() for s in after["scores"]}:
+        return False
+    highest = max(r["score"] for r in after["scores"])
+    leaders = [r for r in after["scores"] if r["score"] == highest]
+    if len(leaders) != 1 or leaders[0]["name"].casefold() != after["winner"].casefold():
+        return False
+    if len(before["players"]) != len(after["players"]):
+        return False
+    for previous, current in zip(before["players"], after["players"]):
+        for key, value in previous.items():
+            if key != "result" and value != current.get(key):
+                return False
+    return True
 
 
 def archive_captured_matches(directory: Path, matches: list[dict],
@@ -176,13 +207,18 @@ def archive_captured_matches(directory: Path, matches: list[dict],
             if clean_existing["id"] in by_id:
                 raise ValueError("Duplicate existing match ID")
             by_id[clean_existing["id"]] = clean_existing
+        needs_write = False
         for ident, match in additions.items():
             if ident in by_id and by_id[ident] != match:
-                raise ValueError("Existing saved match conflicts with new capture")
+                if not _verified_result_upgrade(by_id[ident], match):
+                    raise ValueError("Existing saved match conflicts with new capture")
+                by_id[ident] = match
+                needs_write = True
             if ident not in by_id:
                 by_id[ident] = match
                 changed += 1
-        if len(by_id) != len(entries):
+                needs_write = True
+        if needs_write:
             to_write[target] = {
                 "schemaVersion": 1, "source": "Completed matches captured by 1ADAAR from public WARCON data",
                 "coverage": "captured-only", "seasonKey": season, "month": month,
