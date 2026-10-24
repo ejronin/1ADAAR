@@ -1,8 +1,7 @@
-"""Stage-only weekly summaries. No network access, posting or file writes.
+"""Weekly results derived only from archived, sanitized WARCON match records.
 
-All awards describe ONLY matches captured in 1ADAAR's bounded archive, and
-cannot establish a complete weekly census. Never infer character levels,
-weapon TTK, actual faction join events, or season-wide K/D from this archive.
+No network calls or posting happen here. The saved match window is incomplete;
+no award is a claim about all WARDOGS matches or career progression.
 """
 from collections import Counter
 from datetime import date, datetime, time, timedelta, timezone
@@ -67,13 +66,34 @@ def _award(players, metric, unit):
     return {"name": name, "value": value, "unit": unit}
 
 
+def _winner_is_verified(match):
+    """Count victory awards only when WARCON explicitly confirmed a unique winner."""
+    if match.get("winnerVerified") is not True:
+        return False
+    winner = match.get("winner")
+    scores = match.get("scores")
+    if not isinstance(winner, str) or not winner.strip() or not isinstance(scores, list):
+        return False
+    valid = [s for s in scores if isinstance(s, dict)
+             and isinstance(s.get("name"), str)
+             and type(s.get("score")) in (int, float)]
+    if not valid or len(valid) != len(scores):
+        return False
+    top = max(row["score"] for row in valid)
+    leaders = [row for row in valid if row["score"] == top]
+    return len(leaders) == 1 and leaders[0]["name"].strip().casefold() == winner.strip().casefold()
+
+
 def _segment(matches, start, end):
     stats, factions, durations, wins, maps = {}, Counter(), Counter(), Counter(), Counter()
+    map_kills = {}
     feed_complete = bool(matches) and all(m.get("hasFeed") is True for m in matches)
     for m in matches:
-        if isinstance(m.get("map"), str) and m["map"].strip():
-            maps[m["map"].strip()[:55]] += 1
-        if isinstance(m.get("winner"), str) and m["winner"].strip():
+        map_name = m["map"].strip()[:55] if isinstance(m.get("map"), str) else ""
+        if map_name:
+            maps[map_name] += 1
+        winner_confirmed = _winner_is_verified(m)
+        if winner_confirmed:
             wins[m["winner"].strip()[:40]] += 1
         seen = set()
         for p in m["players"]:
@@ -84,15 +104,26 @@ def _segment(matches, start, end):
                 continue
             seen.add(p["key"])
             v = stats.setdefault(p["key"], {"name": "", "matches": 0, "kills": 0,
-                "deaths": 0, "wins": 0, "seconds": 0, "headshots": 0, "longestM": 0})
+                "deaths": 0, "wins": 0, "seconds": 0, "headshots": 0,
+                "longestM": 0, "kdEligible": True})
             v["name"] = name
             v["matches"] += 1
-            if p.get("result") == "win":
+            if (winner_confirmed and p.get("result") == "win"
+                    and str(p.get("faction", "")).strip().casefold()
+                    == m["winner"].strip().casefold()):
                 v["wins"] += 1
             for f in ("kills", "deaths", "seconds"):
                 amount = _nonnegative(p.get(f))
                 if amount is not None:
                     v[f] += amount
+                elif f in ("kills", "deaths"):
+                    v["kdEligible"] = False
+            recorded_kills = _nonnegative(p.get("kills"))
+            if map_name and recorded_kills is not None:
+                by_map = map_kills.setdefault(map_name, {})
+                mark = by_map.setdefault(p["key"], {"name": name, "kills": 0})
+                mark["name"] = name
+                mark["kills"] += recorded_kills
             if feed_complete:
                 for f in ("headshots", "longestM"):
                     amount = _nonnegative(p.get(f))
@@ -113,6 +144,29 @@ def _segment(matches, start, end):
     if not feed_complete:
         for p in stats.values():
             p["headshots"] = p["longestM"] = None
+    killers = sorted(stats.items(), key=lambda item: (
+        -item[1]["kills"], item[1]["name"].casefold(), item[0]))
+    top_killers = [
+        {"name": row["name"], "kills": row["kills"], "matches": row["matches"]}
+        for _, row in killers if row["kills"] > 0
+    ][:3]
+    map_leaders = []
+    for map_name, matches_count in sorted(maps.items(),
+                                          key=lambda item: (-item[1], item[0])):
+        ranked = sorted(map_kills.get(map_name, {}).items(),
+                        key=lambda item: (-item[1]["kills"],
+                                          item[1]["name"].casefold(), item[0]))
+        best = ranked[0][1] if ranked and ranked[0][1]["kills"] > 0 else None
+        map_leaders.append({
+            "name": map_name, "matches": matches_count,
+            "leader": {"name": best["name"], "kills": best["kills"]} if best else None,
+        })
+    kd_players = [(row["kills"] / row["deaths"], row["name"], key)
+                  for key, row in stats.items()
+                  if row["matches"] >= 20 and row["kdEligible"] and row["deaths"] > 0]
+    kd_players.sort(key=lambda item: (-item[0], item[1].casefold(), item[2]))
+    best_kd = ({"name": kd_players[0][1], "value": round(kd_players[0][0], 2),
+                "unit": "K/D"} if kd_players else None)
     awards = {
         "mostMatches": _award(stats, "matches", "matches"),
         "mostKills": _award(stats, "kills", "kills"),
@@ -120,6 +174,7 @@ def _segment(matches, start, end):
         "mostPlaytime": _award(stats, "seconds", "seconds"),
         "mostHeadshots": _award(stats, "headshots", "headshots") if feed_complete else None,
         "longestShot": _award(stats, "longestM", "meters") if feed_complete else None,
+        "bestWeeklyKd20": best_kd,
     }
     return {
         "fromUtc": iso(start), "toUtc": iso(end),
@@ -129,6 +184,7 @@ def _segment(matches, start, end):
                      for f, c in sorted(factions.items(), key=lambda row: (-row[1], row[0]))],
         "maps": [{"name": name, "matches": n}
                  for name, n in sorted(maps.items(), key=lambda row: (-row[1], row[0]))],
+        "topKillers": top_killers, "mapLeaders": map_leaders,
         "awards": awards, "combatFeedCoverage": "complete" if feed_complete else "unverified",
         "coverage": "archive-limited", "completeWeekProven": False,
     }
