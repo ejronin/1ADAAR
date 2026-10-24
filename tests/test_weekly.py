@@ -11,7 +11,7 @@ def match(mid, when, *, team="Lonestar", feed=True, players=None):
     return {
         "schemaVersion": 2, "id": mid, "startedAt": "2026-10-11T15:00:00Z",
         "endedAt": when, "map": "Bakurani", "winner": team,
-        "scores": [{"name": team, "score": 100}], "hasFeed": feed,
+        "winnerVerified": True, "scores": [{"name": team, "score": 100}], "hasFeed": feed,
         "players": players if players is not None else [
             {"key": A, "name": "Player A", "faction": team, "result": "win",
              "kills": 15, "deaths": 8, "seconds": 1800, "headshots": 4, "longestM": 270},
@@ -99,6 +99,44 @@ class WeeklyStagingTests(unittest.TestCase):
         self.assertNotIn("@", serialized)
         self.assertNotIn("76561190000000001", serialized)
         self.assertEqual(summary["segments"][1]["uniqueRecordedPlayers"], 1)
+
+    def test_ranked_kill_podium_and_map_leaders_are_from_saved_matches(self):
+        first = match(31, "2026-10-16T20:30:00Z")
+        second = match(32, "2026-10-17T20:30:00Z")
+        second["map"] = "Ozeti"
+        second["players"][0]["kills"] = 2
+        second["players"][1]["kills"] = 50
+        result = summarize_week([first, second], "2026-10-18")["segments"][1]
+        self.assertEqual([r["name"] for r in result["topKillers"]], ["Player B", "Player A"])
+        self.assertEqual([r["kills"] for r in result["topKillers"]], [53, 17])
+        maps = {r["name"]: r for r in result["mapLeaders"]}
+        self.assertEqual(maps["Bakurani"]["leader"], {"name": "Player A", "kills": 15})
+        self.assertEqual(maps["Ozeti"]["leader"], {"name": "Player B", "kills": 50})
+        self.assertEqual(maps["Ozeti"]["matches"], 1)
+        for row in result["topKillers"]:
+            self.assertNotIn("key", row)
+
+    def test_pending_or_disputed_winner_does_not_receive_win_awards(self):
+        pending = match(33, "2026-10-17T20:30:00Z")
+        pending["winnerVerified"] = False
+        report = summarize_week([pending], "2026-10-18")["segments"][1]
+        self.assertEqual(sum(row["matchesWon"] for row in report["factions"]), 0)
+        self.assertIsNone(report["awards"]["mostWins"])
+        self.assertEqual(report["topKillers"][0]["kills"], 15)
+        disputed = match(34, "2026-10-17T20:31:00Z")
+        disputed["scores"] = [{"name": "Lonestar", "score": 50},
+                              {"name": "Valkyra", "score": 100}]
+        report = summarize_week([disputed], "2026-10-18")["segments"][1]
+        self.assertIsNone(report["awards"]["mostWins"])
+
+    def test_weekly_kd_requires_twenty_recorded_matches(self):
+        items = [match(100 + i, "2026-10-17T20:30:00Z") for i in range(19)]
+        self.assertIsNone(summarize_week(items, "2026-10-18")["segments"][1]
+                          ["awards"]["bestWeeklyKd20"])
+        items.append(match(119, "2026-10-17T20:31:00Z"))
+        result = summarize_week(items, "2026-10-18")["segments"][1]
+        self.assertEqual(result["awards"]["bestWeeklyKd20"],
+                         {"name": "Player A", "value": 1.88, "unit": "K/D"})
 
     def test_invalid_season_order_rejected(self):
         with self.assertRaises(ValueError):

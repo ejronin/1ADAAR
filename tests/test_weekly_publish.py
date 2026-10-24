@@ -4,6 +4,8 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from io import BytesIO
+from PIL import Image
 from unittest.mock import Mock
 
 from src.weekly_publish import FIRST_RELEASE_SUNDAY, last_finished_sunday, payload, run
@@ -17,7 +19,7 @@ def sample(mid=9001):
     return {
         "schemaVersion": 2, "id": mid, "startedAt": "2026-10-22T20:00:00Z",
         "endedAt": "2026-10-22T20:45:00Z", "map": "Bakurani",
-        "winner": "Lonestar", "hasFeed": False,
+        "winner": "Lonestar", "winnerVerified": True, "hasFeed": False,
         "scores": [{"name": "Lonestar", "score": 100}],
         "players": [{"key": P, "name": "Sample Player", "faction": "Lonestar",
                      "result": "win", "kills": 16, "deaths": 7, "seconds": 2400,
@@ -100,7 +102,13 @@ class WeeklyReleaseTests(unittest.TestCase):
 
     def test_render_weekly_png_and_season_separation(self):
         report=summarize_week([sample()], "2026-10-25")
-        self.assertTrue(render_weekly_card(report).startswith(bytes((137,80,78,71,13,10,26,10))))
+        png = render_weekly_card(report)
+        self.assertTrue(png.startswith(bytes((137,80,78,71,13,10,26,10))))
+        with Image.open(BytesIO(png)) as image:
+            self.assertEqual(image.size, (1080, 1290))
+        season = next(s for s in report["segments"] if s["completedMatchesInArchive"])
+        self.assertEqual(season["topKillers"][0]["name"], "Sample Player")
+        self.assertEqual(season["mapLeaders"][0]["leader"]["kills"], 16)
         with self.assertRaises(ValueError):
             render_weekly_card(summarize_week([], "2026-10-25"))
 
