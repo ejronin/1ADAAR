@@ -32,7 +32,7 @@ class RecapV11ContractTests(unittest.TestCase):
         self.assertEqual(container["components"][-1]["type"],1)
         button=container["components"][-1]["components"][0]
         self.assertEqual(button["style"],5)
-        self.assertEqual(button["label"],"Open in 1ADAAR")
+        self.assertEqual(button["label"],"See full report")
         self.assertEqual(button["url"],
                          "https://ejronin.github.io/1ADAAR/#match-401")
         self.assertNotIn("custom_id",button)
