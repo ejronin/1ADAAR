@@ -75,6 +75,46 @@ class SeasonArchiveTests(unittest.TestCase):
             archive_captured_matches(self.archive, [bad, finished_match(9)])
         self.assertEqual([m["id"] for m in self.records("wardogs-2", "2026-10")], [8])
 
+    def test_pending_result_can_be_finalized_once_without_changing_combat(self):
+        pending = finished_match(90)
+        pending["winner"] = ""
+        pending["winnerVerified"] = False
+        pending["players"][0]["result"] = ""
+        archive_captured_matches(self.archive, [pending])
+        final = finished_match(90)
+        final["winnerVerified"] = True
+        final["scores"][0]["score"] = 101
+        final["players"][0]["result"] = "win"
+        self.assertEqual(archive_captured_matches(self.archive,[final])["newMatches"],0)
+        row = self.records("wardogs-2","2026-10")[0]
+        self.assertEqual(row["winner"],"Lonestar")
+        self.assertTrue(row["winnerVerified"])
+        self.assertEqual(row["scores"][0]["score"],101)
+        self.assertEqual(row["players"][0]["kills"],12)
+        self.assertEqual(archive_captured_matches(self.archive,[final])["changedFiles"],0)
+        later = finished_match(90)
+        later["winnerVerified"] = True
+        later["winner"] = "Manticore"
+        with self.assertRaises(ValueError):
+            archive_captured_matches(self.archive,[later])
+        self.assertEqual(self.records("wardogs-2","2026-10")[0]["winner"],"Lonestar")
+
+    def test_pending_result_cannot_be_amended_with_changed_kills_or_map(self):
+        pending = finished_match(91)
+        pending["winner"] = ""
+        pending["winnerVerified"] = False
+        archive_captured_matches(self.archive,[pending])
+        altered = finished_match(91)
+        altered["winnerVerified"] = True
+        altered["players"][0]["kills"] = 999
+        with self.assertRaises(ValueError):
+            archive_captured_matches(self.archive,[altered])
+        altered = finished_match(91)
+        altered["winnerVerified"] = True
+        altered["map"] = "Ozeti"
+        with self.assertRaises(ValueError):
+            archive_captured_matches(self.archive,[altered])
+
     def test_same_id_cannot_move_to_another_month_or_season(self):
         archive_captured_matches(self.archive, [finished_match(60, "2026-10-16T20:30:00Z")])
         with self.assertRaises(ValueError):
