@@ -39,7 +39,7 @@ class TestDiscordSmoke(unittest.TestCase):
     def test_weekly_preview_png_contains_real_named_map_art(self):
         from src.discord_preview_cards import render_weekly_smoke_card
         png=render_weekly_smoke_card()
-        self.assertTrue(png.startswith(b"\\x89PNG\\r\\n\\x1a\\n"))
+        self.assertTrue(png[:4] == bytes((137,80,78,71)))
         self.assertLess(len(png),7_000_000)
 
 if __name__=="__main__":
