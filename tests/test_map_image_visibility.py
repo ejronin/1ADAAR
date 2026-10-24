@@ -32,7 +32,7 @@ class MapArtTests(unittest.TestCase):
         self.assertIn("delete mapTile.dataset.mapBanner",status)
         self.assertIn("if(online&&doc.map&&mapTile)",status)
         self.assertIn("decorateMapRow(mapTile,doc.map)",status)
-        self.assertIn("OneADAARMapBanners?.decorateMapRow",(DOCS/"js"/"app.js").read_text())
+        self.assertIn("OneADAARMapBanners?.resolveMap",(DOCS/"js"/"app.js").read_text())
         self.assertIn("OneADAARMapBanners.decorateMapRow",(DOCS/"js"/"map-team.js").read_text())
 
 if __name__=="__main__":

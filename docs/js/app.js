@@ -8,7 +8,40 @@ const durationOf = s => s >= 3600 ? `${Math.floor(s/3600)}h ${Math.floor(s%3600/
 function node(tag, className, value) { const el=document.createElement(tag);if(className)el.className=className;if(value!==undefined)el.textContent=String(value);return el; }
 function scoresList(scores) { const wrap=node('div','scores');let max=Math.max(1,...scores.map(x=>x.score));scores.forEach(s=>{const row=node('div','score');const name=window.OneADAARFactions.label(s.name);row.append(name,node('strong','',s.score));wrap.append(row);const track=node('div','track');const bar=node('span');const identity=window.OneADAARFactions.identify(s.name);if(identity)bar.style.setProperty('--faction-accent',identity.color);bar.style.width=`${Math.max(0,Math.min(100,100*s.score/max))}%`;track.append(bar);wrap.append(track);});return wrap; }
 function winnerMark(name){const wrap=node('div','winner');wrap.append(window.OneADAARFactions.label(name),node('span','','WINS'));return wrap;}
-function card(m){const btn=node('button','match-card');btn.type='button';btn.setAttribute('aria-label',`Open match ${m.id} on ${m.map}`);const top=node('div','card-top');top.append(node('span','card-id',`MATCH #${String(m.id).padStart(5,'0')}`),node('span','card-time',dateOf(m.endedAt)));const content=node('div','card-content');content.append(node('div','card-map',m.map),node('div','card-line',`${durationOf(m.durationSeconds)} · ${m.peakPlayers} peak players`),m.winner?winnerMark(m.winner):node('div','winner','DRAW'));content.append(scoresList(m.scores));const foot=node('div','card-foot');foot.append(node('span','',m.awards?.length ? `${m.awards.length} MATCH AWARDS`:'MATCH RESULTS'),node('b','', 'VIEW MATCH →'));content.append(foot);btn.append(top,content);window.OneADAARMapBanners?.decorateMapRow(btn,m.map);btn.onclick=()=>show(m);return btn;}
+function card(m){
+  const btn=node('button','match-card');btn.type='button';
+  btn.setAttribute('aria-label',`Open match ${m.id} on ${m.map}`);
+  const top=node('div','card-top');
+  top.append(node('span','card-id',`MATCH #${String(m.id).padStart(5,'0')}`),
+             node('span','card-time',dateOf(m.endedAt)));
+  const content=node('div','card-content');
+  const overview=node('div','match-card-overview');
+  const slug=window.OneADAARMapBanners?.resolveMap(m.map);
+  if(slug){
+    const thumb=node('img','match-map-thumb');
+    thumb.src=`assets/map-banners/${slug}-card.webp?v=119`;
+    thumb.alt='';
+    thumb.loading='lazy';thumb.decoding='async';
+    thumb.width=180;thumb.height=102;
+    thumb.onerror=()=>{
+      if(thumb.dataset.fallback==='true'){thumb.remove();return;}
+      thumb.dataset.fallback='true';thumb.src=`assets/map-banners/${slug}.webp?v=119`;
+    };
+    overview.append(thumb);
+  }
+  const info=node('div','match-overview-text');
+  info.append(node('div','card-map',m.map),
+              node('div','card-line',`${durationOf(m.durationSeconds)} · ${m.peakPlayers} peak players`),
+              m.winner?winnerMark(m.winner):node('div','winner','DRAW'));
+  overview.append(info);
+  content.append(overview,scoresList(m.scores));
+  const foot=node('div','card-foot');
+  foot.append(node('span','',m.awards?.length?`${m.awards.length} MATCH AWARDS`:'MATCH RESULTS'),
+              node('b','','VIEW MATCH →'));
+  content.append(foot);btn.append(top,content);
+  btn.onclick=()=>show(m);
+  return btn;
+}
 function show(m){state.currentMatch=m;$('match-share-status').hidden=true;const body=$('detail-body');body.replaceChildren();body.append(node('h2','',m.map),node('p','detail-sub',`${dateOf(m.endedAt)} · Match #${m.id} · ${durationOf(m.durationSeconds)}`));const data=node('div','data-grid');for(const [key,val] of [['Winner',m.winner||'Draw'],['Peak players',m.peakPlayers],['Players in results',m.players?.length??0]]){const cell=node('div');cell.append(node('span','',key));if(key==='Winner'&&val!=='Draw')cell.append(window.OneADAARFactions.label(val));else cell.append(node('strong','',val));data.append(cell);}body.append(data,node('h3','','Faction scores'),scoresList(m.scores));if(m.awards?.length){body.append(node('h3','','Match awards'));m.awards.forEach(a=>{const line=node('div','award');line.append(node('b','',a.label+' — '),document.createTextNode(`${a.name} · ${a.value}`));body.append(line);});}if(m.players?.length){body.append(node('h3','','Player scoreboard'));const table=node('table');const head=node('thead');const hdr=node('tr');['Player','Faction','Kills','Deaths','K/D'].forEach(t=>hdr.append(node('th','',t)));head.append(hdr);table.append(head);const tbody=node('tbody');m.players.forEach(p=>{const tr=node('tr');const kd=p.deaths? (p.kills/p.deaths).toFixed(2):p.kills.toFixed(2);[p.name,p.faction||'—',p.kills,p.deaths,kd].forEach((v,i)=>{const cell=node('td');if(i===1)cell.append(window.OneADAARFactions.label(String(v)));else cell.textContent=String(v);tr.append(cell);});tbody.append(tr);});table.append(tbody);body.append(table);}const link=node('a','report-link','VIEW MATCH ON WARCON ↗');link.href=m.warconUrl;link.target='_blank';link.rel='noopener noreferrer';body.append(link);$('match-dialog').showModal();history.replaceState(null,'',`#match-${m.id}`);}
 function render(){
   const rows=window.OneADAARArchive.visible(state.matches,state.q,state.sort);

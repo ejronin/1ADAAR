@@ -72,6 +72,6 @@ class WebsiteTests(unittest.TestCase):
         home=(p/'index.html').read_text()
         self.assertIn('js/map-banners.js',home)
         self.assertIn('decorateMapRow',(p/'js'/'server-status.js').read_text())
-        self.assertIn('decorateMapRow',(p/'js'/'app.js').read_text())
+        self.assertIn('OneADAARMapBanners?.resolveMap',(p/'js'/'app.js').read_text())
         self.assertIn('map-banner-present',(p/'assets'/'brand.css').read_text())
         self.assertIn('map-banner-present',(p/'assets'/'map-team.css').read_text())
