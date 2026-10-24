@@ -106,7 +106,7 @@ class WeeklyReleaseTests(unittest.TestCase):
         self.assertTrue(png.startswith(bytes((137,80,78,71,13,10,26,10))))
         with Image.open(BytesIO(png)) as image:
             self.assertEqual(image.size, (1080, 1290))
-        season = report["segments"][1]
+        season = next(s for s in report["segments"] if s["completedMatchesInArchive"])
         self.assertEqual(season["topKillers"][0]["name"], "Sample Player")
         self.assertEqual(season["mapLeaders"][0]["leader"]["kills"], 16)
         with self.assertRaises(ValueError):
