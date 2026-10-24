@@ -35,7 +35,7 @@ class NextRoundTests(unittest.TestCase):
         self.assertEqual(data["components"][0]["components"][0]["content"],"## AFTER ACTION REPORT")
         self.assertIn("attachment://match-recap.png",json.dumps(data))
         self.assertIn("only if WARCON confirms",json.dumps(data))
-        self.assertIn("Open in 1ADAAR",json.dumps(data))
+        self.assertIn("See full report",json.dumps(data))
         self.assertNotIn(JOIN_CODE,json.dumps(data))
         self.assertNotIn("NEXT MAP:",json.dumps(data))
         self.assertNotIn("embeds",data)
