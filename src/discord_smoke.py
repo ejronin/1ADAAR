@@ -79,11 +79,12 @@ def main():
     webhook = os.environ.get("DISCORD_MATCH_WEBHOOK", "").strip()
     if not webhook:
         raise SystemExit("DISCORD_MATCH_WEBHOOK secret missing; neither test sent")
-    match_id = send_discord(webhook, smoke_payload(),
-                            image_bytes=render_match_card(DEMO_MATCH, demo=True))
+    match_image = render_match_card(DEMO_MATCH, demo=True)
+    weekly_image = render_weekly_smoke_card()
+    match_id = send_discord(webhook, smoke_payload(), image_bytes=match_image)
     print(f"TEST match recap acknowledged, Discord message ID {match_id}")
     weekly_id = send_discord(webhook, weekly_smoke_payload(),
-                             image_bytes=render_weekly_smoke_card())
+                             image_bytes=weekly_image)
     print(f"TEST weekly roundup acknowledged, Discord message ID {weekly_id}")
 
 if __name__ == "__main__":
