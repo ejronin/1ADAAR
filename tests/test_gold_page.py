@@ -53,5 +53,47 @@ assert.deepEqual(g.normalize({points:[[d,110],[0,100],[d,111],[30,2]]}).rows,
                                capture_output=True,text=True,timeout=12)
         self.assertEqual(process.returncode,0,process.stderr)
 
+
+    def test_forecast_contract(self):
+        page=(ROOT/'gold.html').read_text(encoding='utf-8')
+        js=(ROOT/'js/gold.js').read_text(encoding='utf-8')
+        engine=(ROOT/'js/gold-forecast.js').read_text(encoding='utf-8')
+        self.assertIn('js/gold-forecast.js?v=1',page)
+        self.assertIn('gold-forecast-title',page)
+        self.assertIn('rolling historical tests',page)
+        self.assertIn('GoldForecast',js)
+        for name in ('naive','ses','damped','ar1','momentum'):
+            self.assertIn(name,engine)
+        self.assertNotIn('fetch(',engine)
+
+    @unittest.skipUnless(shutil.which('node'),'Node.js not installed')
+    def test_forecast_walkforward(self):
+        expression=r"""
+const assert=require('node:assert/strict');
+const m=require('./docs/js/gold-forecast.js');
+const D=86400000;
+const rows=Array.from({length:68},(_,i)=>({
+  ts:Date.UTC(2026,7,20)+D*i,
+  price:Math.round(500000*Math.exp(i*.02+.30*Math.sin(i*.5)))
+}));
+const r=m.evaluate(rows);
+assert.equal(r.state,'ready');
+assert.ok(['naive','ses','damped','ar1','momentum'].includes(r.model));
+assert.equal(r.rows.length,7);
+assert.ok(r.validations>=14);
+assert.equal(r.rows[0].ts,rows[rows.length-1].ts+D);
+assert.ok(r.rows.every(x=>x.lower>0&&x.lower<=x.price&&x.price<=x.upper));
+assert.ok(m.simulate([100,100,100,100],'naive').every(x=>Math.abs(x-100)<1e-9));
+assert.equal(m.evaluate(rows.slice(0,42)).state,'insufficient');
+const gapped=rows.slice();gapped.splice(45,1);
+assert.equal(m.evaluate(gapped).state,'insufficient');
+// Forecast model never receives future data during historical validation;
+// first 21 fold origin dates must precede each evaluated outcome.
+assert.ok(r.validations<=21);
+"""
+        process=subprocess.run(['node','-e',expression],cwd=ROOT.parent,
+                               capture_output=True,text=True,timeout=12)
+        self.assertEqual(process.returncode,0,process.stderr)
+
 if __name__=='__main__':
     unittest.main()
