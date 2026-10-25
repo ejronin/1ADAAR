@@ -116,8 +116,7 @@ class WeeklyReleaseTests(unittest.TestCase):
         self.assertEqual(no_hook["status"],"archive-ready-no-webhook")
         self.assertEqual(json.loads((self.directory/"index.json").read_text())
                          ["weeks"][0]["completedMatchesSaved"],0)
-        self.assertEqual(json.loads((self.directory/"delivery.json").read_text())
-                         ["posted"],{})
+        self.assertFalse((self.directory/"delivery.json").exists())
         sender.assert_not_called()
         sender.return_value="55555"
         self.assertEqual(self.invoke(send=sender,webhook="https://discord.com/api/webhooks/1/valid")["status"],"posted")
@@ -145,15 +144,14 @@ class WeeklyReleaseTests(unittest.TestCase):
         with self.assertRaises(urllib.error.URLError):
             self.invoke(send=sender,webhook="https://discord.com/api/webhooks/1/valid")
         sender.assert_called_once()
-        ledger=json.loads((self.directory/"delivery.json").read_text())
-        self.assertEqual(ledger["posted"],{})
+        self.assertFalse((self.directory/"delivery.json").exists())
 
     def test_unconfirmed_message_id_does_not_mark_delivered(self):
         self.save([])
         sender=Mock(return_value=None)
         with self.assertRaises(ValueError):
             self.invoke(send=sender,webhook="https://discord.com/api/webhooks/1/valid")
-        self.assertEqual(json.loads((self.directory/"delivery.json").read_text())["posted"],{})
+        self.assertFalse((self.directory/"delivery.json").exists())
 
     def test_no_backfilled_prelaunch_week(self):
         self.save([sample()])
