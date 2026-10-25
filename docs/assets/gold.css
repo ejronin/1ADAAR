@@ -1,0 +1,97 @@
+/* Gold exchange is an independent page theme; it does not recolor WARCON or weekly intelligence. */
+.gold-page{--gold:#dba634;--gold-light:#f4d076;--gold-bright:#f3c951;--gold-edge:#52462a;--gold-soft:#afaa99;background:#100f0d!important;color:#f2efe8}
+.gold-page .rail{background:#15130e!important;border-right-color:#453a22!important;scrollbar-color:#7b6332 transparent}
+.gold-page .rail-label,.gold-page .breadcrumb span,.gold-page .eyebrow{color:#efc35d}
+.gold-page .rail-nav .nav.active{color:#ffe2a0!important;background:#302819!important;border:1px solid #8d6e30!important}
+.gold-page .rail-nav .nav:hover,.gold-page .rail-nav .nav:focus-visible{background:#30281b!important;color:#fff!important}
+.gold-page .rail-footer.rail-sources{border-color:#54442a}
+.gold-page .rail-sources>a{background:#201b12;border-color:#5b4a2b}
+.gold-page .rail-sources>a small{color:#e1ca91}
+.gold-page .topbar,.gold-page footer{border-color:#433921}
+.gold-page .breadcrumb{color:#c5bba6}
+.gold-page a:focus-visible,.gold-page button:focus-visible,.gold-page input:focus-visible{outline:2px solid #f4d076;outline-offset:3px}
+.gold-hero{margin:23px 0 20px;padding:clamp(21px,3vw,38px);background:linear-gradient(105deg,#2e2615e8,#191712e8),url('tactical-terrain.svg') center/cover;border:1px solid #695531;border-top:3px solid #e8ba4f;border-radius:9px;min-height:188px}
+.gold-eyebrow{font:800 11px/1.3 'DM Sans',sans-serif;color:#eac46a;letter-spacing:.15em;text-transform:uppercase}
+.gold-title-row{display:flex;gap:16px;justify-content:space-between;align-items:center}
+.gold-title-row img{object-fit:contain;filter:drop-shadow(0 0 21px #e5aa3a55);flex-shrink:0}
+.gold-hero h1{font:800 clamp(40px,5.3vw,74px)/.99 'Barlow Condensed',sans-serif;margin:13px 0 8px;color:#fff;letter-spacing:.035em}
+.gold-hero h1 em{font-style:normal;color:#f4c752}
+.gold-hero p{margin:0;max-width:560px;font-size:13px;color:#d3c7ac;line-height:1.6}
+.gold-dashboard{display:grid;grid-template-columns:minmax(0,2.8fr) minmax(265px,1fr);gap:15px;align-items:stretch}
+.gold-panel{background:linear-gradient(145deg,#201e1a,#191919);border:1px solid #484138;border-radius:8px;padding:clamp(17px,2vw,25px);min-width:0}
+.gold-market{display:flex;flex-direction:column;min-height:505px}
+.gold-market-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.gold-main-price{display:block;font:800 clamp(39px,4.1vw,63px)/1.1 'Barlow Condensed',sans-serif;letter-spacing:.035em;color:#fff;margin-top:6px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.gold-subtle{font:400 11px/1.65 'DM Sans',sans-serif;color:#bcb4a6;margin:8px 0 0}
+.gold-range{display:flex;gap:4px;background:#191815;border:1px solid #504735;padding:3px;border-radius:6px}
+.gold-range button,.gold-quick button{background:transparent;color:#ddd6c9;border:1px solid transparent;border-radius:4px;padding:9px 10px;font-size:11px;font-weight:800;cursor:pointer;min-width:37px}
+.gold-range button:hover,.gold-quick button:hover{background:#40341e}
+.gold-range button[aria-pressed=true],.gold-quick button[aria-pressed=true]{color:#20180d;background:#f2c451;border-color:#f2c451}
+.gold-moves{display:flex;gap:20px;margin:18px 0 5px;flex-wrap:wrap}
+.gold-moves div{display:flex;gap:7px;align-items:baseline}
+.gold-moves span{font-size:10px;letter-spacing:.08em;color:#a99f8c;font-weight:800}
+.gold-moves strong{font-size:12px;font-variant-numeric:tabular-nums}
+.gold-positive{color:#f19d84!important} /* A rise costs more cash */
+.gold-negative{color:#85dba7!important} /* A drop makes gold cheaper */
+.gold-neutral{color:#d7d2c9!important}
+.gold-chart-wrap{position:relative;width:100%;flex:1;min-height:310px;display:flex;align-items:center;justify-content:center}
+.gold-chart-wrap svg{display:block;width:100%;height:auto;max-height:450px;overflow:visible;touch-action:pan-y}
+.gold-chart-wrap .gold-grid{stroke:#423f38;stroke-width:1}
+.gold-chart-wrap .gold-axis{fill:#b4ad9f;font:12px 'DM Sans',sans-serif}
+.gold-chart-wrap .gold-area{fill:#e7b34a;fill-opacity:.12}
+.gold-chart-wrap .gold-line{fill:none;stroke:#ffd36b;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.gold-chart-wrap .gold-mean{stroke:#dfbe82;stroke-width:1.25;stroke-dasharray:5 6;opacity:.85}
+.gold-chart-wrap .gold-focus-line{stroke:#ffe6a4;stroke-width:1;stroke-dasharray:3 4}
+.gold-chart-wrap .gold-focus-dot{fill:#fff1bb;stroke:#ae7929;stroke-width:3}
+.gold-chart-note{position:absolute;bottom:3px;left:78px;background:#201a13ed;color:#f6e9c6;padding:5px 9px;font-size:11px;max-width:calc(100% - 85px);border-radius:3px;line-height:1.3;pointer-events:none}
+.gold-legend{display:flex;gap:20px;align-items:center;flex-wrap:wrap;color:#c1b9a7;font-size:10px;margin-top:10px}
+.gold-legend span{display:flex;align-items:center;gap:7px}
+.gold-legend-line,.gold-legend-average{display:inline-block;width:21px;border-top:2px solid #ffcb54}
+.gold-legend-average{border-top-style:dashed;border-color:#d6bd8c}
+.gold-disclosure{font-size:10px}
+.gold-sidebar{display:flex;flex-direction:column;gap:15px}
+.gold-sidebar .gold-panel h2,.gold-history h2{margin:0 0 15px;font:800 22px/1 'Barlow Condensed',sans-serif;letter-spacing:.065em;color:#fff}
+.gold-converter label{display:block;font-size:10px;letter-spacing:.11em;font-weight:800;color:#e9cc86;margin:15px 0 6px}
+.gold-converter input,.gold-converter output{display:block;width:100%;background:#131311;border:1px solid #655433;border-radius:5px;padding:11px 13px;color:#fff;font-size:20px;font-weight:800;min-width:0}
+.gold-converter output{font:800 clamp(20px,2vw,27px) 'Barlow Condensed',sans-serif;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.gold-quick{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin:8px 0 13px}
+.gold-quick button{min-width:0;border:1px solid #4d4435;padding:8px 0}
+.gold-stats{margin:0}
+.gold-stats>div{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #39352d;padding:11px 0}
+.gold-stats>div:last-child{border:0}
+.gold-stats dt{font-size:11px;color:#c8bfad}
+.gold-stats dd{margin:0;text-align:right}
+.gold-stats strong{display:block;color:#fff;font:800 21px 'Barlow Condensed',sans-serif;font-variant-numeric:tabular-nums}
+.gold-stats small{display:block;color:#b8ab93;font-size:10px;margin-top:3px}
+.gold-trend-number{font:800 34px 'Barlow Condensed',sans-serif;color:#f5ce75}
+.gold-trend-range{display:flex;justify-content:space-between;gap:10px;border-top:1px solid #4b402c;padding-top:12px;margin-top:13px;font:700 12px 'DM Sans',sans-serif;color:#eed292}
+.gold-history{margin-top:15px}
+.gold-history-head{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:13px}
+.gold-history-head h2{margin:6px 0 0}
+.gold-day-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.gold-day{background:#181715;border:1px solid #494136;border-radius:6px;padding:12px 9px;text-align:left;color:#f4eee0;cursor:pointer;min-width:0;min-height:92px}
+.gold-day:hover,.gold-day:focus-visible,.gold-day[aria-pressed=true]{background:#342a19;border-color:#f0bd4d}
+.gold-day time,.gold-day strong,.gold-day span{display:block}
+.gold-day time{font-size:10px;color:#d6bb83;font-weight:700;margin-bottom:8px}
+.gold-day strong{font:800 clamp(17px,1.9vw,23px) 'Barlow Condensed',sans-serif;overflow-wrap:anywhere}
+.gold-day span{font-size:10px;font-weight:800;margin-top:5px}
+.gold-error{background:#422921;border:1px solid #b56b4b;padding:13px 16px;border-radius:6px;color:#ffe4d3;margin-top:14px;font-size:12px}
+.gold-error[hidden]{display:none}
+.gold-source{font-size:11px;line-height:1.8;color:#aba291;margin-top:20px;max-width:960px}
+.gold-source a{color:#ebc568;text-underline-offset:3px}
+@media(max-width:1120px){.gold-dashboard{grid-template-columns:minmax(0,2fr) minmax(240px,1fr)}.gold-day-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:860px){.gold-dashboard{grid-template-columns:1fr}.gold-sidebar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.gold-sidebar .gold-panel:last-child{grid-column:1/-1}}
+@media(max-width:570px){.gold-title-row img{width:66px;height:66px}.gold-hero{padding:18px;min-height:auto}.gold-market{min-height:0}.gold-chart-wrap{min-height:250px}.gold-sidebar{grid-template-columns:1fr}.gold-sidebar .gold-panel:last-child{grid-column:auto}.gold-day-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.gold-chart-note{left:52px;max-width:calc(100% - 55px);font-size:9px}.gold-moves{gap:9px 18px}.gold-range{width:100%;justify-content:space-between}.gold-range button{flex:1}}
+@media(prefers-reduced-motion:reduce){.gold-page *{scroll-behavior:auto!important;transition:none!important}}
+/* Model outlook extends the daily history chart. Projections are never styled as observed prices. */
+.gold-chart-wrap .gold-forecast-band{fill:#eac575;fill-opacity:.22;stroke:none}
+.gold-chart-wrap .gold-forecast-line{stroke:#fff0b5;stroke-width:2.4;stroke-dasharray:8 6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.gold-chart-wrap .gold-future-separator{stroke:#b58f4c;stroke-width:1.5;stroke-dasharray:3 7;opacity:.7}
+.gold-legend-forecast{display:inline-block;width:21px;border-top:2px dashed #fff0b5}
+.gold-forecast-panel .gold-eyebrow{font-size:9px;margin-bottom:7px}
+.gold-forecast-numbers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:15px}
+.gold-forecast-numbers>div{background:#15130f;border:1px solid #51462f;border-radius:5px;padding:12px 9px;min-width:0}
+.gold-forecast-numbers span{display:block;font-size:9px;letter-spacing:.07em;color:#dfc28a;font-weight:800}
+.gold-forecast-numbers strong{display:block;font:800 clamp(24px,2.5vw,33px) 'Barlow Condensed',sans-serif;color:#ffe4a0;margin-top:5px;overflow-wrap:anywhere}
+.gold-forecast-numbers small{display:block;font-size:9px;color:#d5c7a6;line-height:1.5;margin-top:7px}
+.gold-forecast-caveat{font-size:9px;border-top:1px solid #56462c;padding-top:10px;margin-top:14px}

@@ -1,0 +1,28 @@
+{
+  "source": "https://wardogserverlist.com/api/gold-bars",
+  "sourceLatest": {
+    "ts": 1792886400000,
+    "price": 862150
+  },
+  "capturedAt": "2026-10-25T14:43:15.721465+00:00",
+  "results": [
+    {
+      "width": 1440,
+      "price": "862,150",
+      "cashForTen": "8,621,500 cash",
+      "forecast": "Daily-price outlook through Nov 1, 2026 (UTC).",
+      "overflow": 0,
+      "pageErrors": [],
+      "selectedModel": "Selected model: No-change benchmark \u00b7 advanced models did not beat the baseline by 5%"
+    },
+    {
+      "width": 390,
+      "price": "862,150",
+      "cashForTen": "8,621,500 cash",
+      "forecast": "Daily-price outlook through Nov 1, 2026 (UTC).",
+      "overflow": 0,
+      "pageErrors": [],
+      "selectedModel": "Selected model: No-change benchmark \u00b7 advanced models did not beat the baseline by 5%"
+    }
+  ]
+}

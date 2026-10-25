@@ -1,0 +1,96 @@
+"""Browser acceptance and real source-data screenshots for the staged 1ADAAR GOLD page."""
+from __future__ import annotations
+import asyncio
+import datetime as dt
+import functools
+import http.server
+import json
+import threading
+import urllib.request
+from pathlib import Path
+
+from playwright.async_api import async_playwright
+
+ROOT=Path(__file__).resolve().parents[1]
+OUT=ROOT/"review"/"gold"
+API="https://wardogserverlist.com/api/gold-bars"
+DAY=86400000
+
+def source_snapshot():
+    request=urllib.request.Request(
+        API,headers={"Accept":"application/json",
+                     "User-Agent":"1ADAAR-GoldReview/1.0 (+https://github.com/ejronin/1ADAAR)"})
+    with urllib.request.urlopen(request,timeout=35) as response:
+        assert response.status==200
+        raw=response.read(500000)
+    payload=json.loads(raw.decode("utf-8"))
+    assert isinstance(payload.get("points"),list) and len(payload["points"])>=49, "Source has too few history points"
+    assert isinstance(payload.get("latest"),dict), "Source has no latest price"
+    assert all(isinstance(pair,list) and len(pair)==2 for pair in payload["points"])
+    assert payload["latest"]["price"]>0
+    assert payload["latest"]["ts"]==payload["points"][-1][0]
+    assert all(pair[0]%DAY==0 for pair in payload["points"])
+    return raw,payload
+
+async def capture():
+    raw,payload=source_snapshot()
+    OUT.mkdir(parents=True,exist_ok=True)
+    handler=functools.partial(http.server.SimpleHTTPRequestHandler,directory=str(ROOT/"docs"))
+    server=http.server.ThreadingHTTPServer(("127.0.0.1",0),handler)
+    threading.Thread(target=server.serve_forever,daemon=True).start()
+    results=[]
+    try:
+        async with async_playwright() as p:
+            browser=await p.chromium.launch(headless=True,args=["--no-sandbox"])
+            for width,name in ((1440,"desktop-1440"),(390,"mobile-390")):
+                page=await browser.new_page(viewport={"width":width,"height":900},device_scale_factor=1)
+                errors=[]
+                page.on("pageerror",lambda e: errors.append(str(e)))
+                async def fulfill(route):
+                    await route.fulfill(status=200,body=raw,
+                        headers={"Content-Type":"application/json",
+                                 "Access-Control-Allow-Origin":"*",
+                                 "Cache-Control":"no-store"})
+                await page.route(API,fulfill)
+                response=await page.goto(
+                    f"http://127.0.0.1:{server.server_port}/gold.html",
+                    wait_until="domcontentloaded",timeout=40000)
+                assert response and response.status==200
+                await page.wait_for_function(
+                    "() => document.querySelector('#gold-price').textContent !== '—'",
+                    timeout=25000)
+                price=await page.locator("#gold-price").inner_text()
+                assert price==f"{payload['latest']['price']:,}", (price,payload["latest"])
+                assert await page.locator(".gold-line").count()>=1, "Daily price line absent"
+                forecast=await page.locator("#gold-forecast-message").inner_text()
+                assert forecast.startswith("Daily-price outlook"),forecast
+                assert await page.locator(".gold-forecast-line").count()==1, "Forecast line absent"
+                assert await page.locator("#gold-forecast-model").inner_text()!="Model: —"
+                await page.locator(".gold-range [data-range='7']").click()
+                assert await page.locator(".gold-range [data-range='7']").get_attribute("aria-pressed")=="true"
+                await page.locator(".gold-range [data-range='30']").click()
+                await page.locator(".gold-quick [data-bars='10']").click()
+                cash=await page.locator("#gold-cash").inner_text()
+                assert cash==f"{payload['latest']['price']*10:,} cash",cash
+                await page.locator(".gold-quick [data-bars='1']").click()
+                await page.locator(".gold-day").first.click()
+                overflow=await page.evaluate("document.documentElement.scrollWidth-innerWidth")
+                assert overflow<=2,f"Horizontal overflow {width}: {overflow}"
+                assert not errors,f"Uncaught JavaScript errors {width}: {errors}"
+                await page.screenshot(path=str(OUT/f"{name}.png"),
+                    full_page=True,animations="disabled")
+                results.append({"width":width,"price":price,"cashForTen":cash,
+                                "forecast":forecast,"overflow":overflow,
+                                "pageErrors":errors,
+                                "selectedModel":await page.locator("#gold-forecast-model").inner_text()})
+                await page.close()
+            await browser.close()
+    finally:
+        server.shutdown()
+    report={"source":API,"sourceLatest":payload["latest"],
+            "capturedAt":dt.datetime.now(dt.timezone.utc).isoformat(),"results":results}
+    (OUT/"browser-report.json").write_text(json.dumps(report,indent=2)+"\n",encoding="utf-8")
+    print(json.dumps(report,indent=2))
+
+if __name__=="__main__":
+    asyncio.run(capture())

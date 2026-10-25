@@ -7,7 +7,7 @@
 
 **A home for the matches, players and stories behind the OneAverageDan WARDOGS Community Server.**
 
-[Open 1ADAAR](https://ejronin.github.io/1ADAAR/) · [Find your stats](https://ejronin.github.io/1ADAAR/players.html) · [Match records on WARCON](https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342/matches)
+[Open 1ADAAR](https://ejronin.github.io/1ADAAR/) · [Find your stats](https://ejronin.github.io/1ADAAR/players.html) · [Gold exchange](https://ejronin.github.io/1ADAAR/gold.html) · [Match records on WARCON](https://console.warcon.app/s/e30a7ee9-7ea5-4633-882e-98d2e0c03342/matches)
 
 ![Official WARDOGS game artwork](docs/assets/wardogs-official-hero.webp)
 

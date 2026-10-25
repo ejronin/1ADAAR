@@ -1,0 +1,37 @@
+name: GOLD page real-data browser review
+on:
+  pull_request:
+    paths:
+      - 'docs/gold.html'
+      - 'docs/js/gold.js'
+      - 'docs/js/gold-forecast.js'
+      - 'docs/assets/gold.css'
+      - 'tests/gold_visual_review.py'
+      - '.github/workflows/gold-visual-review.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  capture:
+    if: github.repository == 'ejronin/1ADAAR'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install browser
+        run: |
+          python -m pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Capture desktop and mobile screenshots from current public gold data
+        run: python tests/gold_visual_review.py
+      - name: Preserve screenshots and browser report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gold-visual-review
+          path: review/gold/
+          if-no-files-found: warn
+          retention-days: 30
