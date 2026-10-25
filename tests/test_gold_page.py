@@ -127,5 +127,34 @@ assert.deepEqual(m.buildCandles([], '30'),[]);
         self.assertIn('data/gold-observations.json',script)
         self.assertIn('.gold-dashboard{align-items:start}',css)
 
+
+    def test_forecast_follows_balanced_dashboard(self):
+        html=(ROOT/'gold.html').read_text(encoding='utf-8')
+        css=(ROOT/'assets/gold.css').read_text(encoding='utf-8')
+        before,after=html.split('</aside>\n</div>\n<section class="gold-panel gold-forecast-panel"',1)
+        self.assertIn('class="gold-sidebar"',before)
+        self.assertNotIn('class="gold-forecast-panel"',before)
+        self.assertIn('class="gold-forecast-overview"',after)
+        self.assertIn('class="gold-forecast-method"',after)
+        self.assertLess(html.index('id="gold-forecast-title"'),html.index('id="gold-history-title"'))
+        for identifier in ('gold-forecast-1','gold-forecast-7','gold-forecast-model','gold-forecast-backtest'):
+            self.assertEqual(html.count('id="'+identifier+'"'),1)
+        self.assertIn('.gold-forecast-panel{',css)
+        self.assertIn('grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)',css)
+
+
+    def test_hover_tooltip_uses_svg_screen_transform(self):
+        html=(ROOT/'gold.html').read_text(encoding='utf-8')
+        js=(ROOT/'js/gold.js').read_text(encoding='utf-8')
+        css=(ROOT/'assets/gold.css').read_text(encoding='utf-8')
+        self.assertIn('id="gold-tooltip"',html)
+        self.assertIn('role="tooltip"',html)
+        self.assertIn('svg.getScreenCTM()',js)
+        self.assertIn('screen.inverse()',js)
+        self.assertIn('svg.onpointermove=showHover',js)
+        self.assertNotIn('renderChart(rows,selectedTs,projection,mode,range);',js)
+        self.assertIn('.gold-tooltip{',css)
+        self.assertIn('pointer-events:none',css)
+
 if __name__=='__main__':
     unittest.main()
