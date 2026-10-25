@@ -1,4 +1,4 @@
-/* 1ADAAR GOLD: public daily price only, no account data, subscriptions, or forecasts. */
+/* 1ADAAR GOLD: public daily price only, no account data or subscriptions; separately validated model forecasts. */
 (function (root) {
   'use strict';
   const SOURCE='https://wardogserverlist.com/api/gold-bars';
@@ -48,15 +48,17 @@
     if(text!==undefined)el.textContent=text;
     return el;
   }
-  function renderChart(rows,selectedTs){
+  function renderChart(rows,selectedTs,projection){
     const svg=get('gold-chart');
     svg.replaceChildren();
     const W=940,H=420,L=76,R=25,T=20,B=52,base=H-B,plotW=W-L-R,plotH=base-T;
     if(!rows.length){get('gold-chart-note').textContent='No daily gold price history available.';return;}
-    const max=Math.max(...rows.map(row=>row.price));
+    const projected=projection&&projection.state==='ready'?projection.rows:[];
+    const max=Math.max(...rows.map(row=>row.price),...projected.map(row=>row.upper));
     const maxY=Math.max(100000,Math.ceil(max*1.16/100000)*100000);
     const first=rows[0].ts,last=rows[rows.length-1].ts;
-    const x=ts=>L+(last===first?.5:(ts-first)/(last-first))*plotW;
+    const end=projected.length?projected[projected.length-1].ts:last;
+    const x=ts=>L+(end===first?.5:(ts-first)/(end-first))*plotW;
     const y=price=>base-price/maxY*plotH;
     for(let i=0;i<=4;i++){
       const val=maxY*i/4,yy=y(val);
@@ -86,6 +88,15 @@
     }
     const mean=average(rows);
     svg.appendChild(node('line',{class:'gold-mean',x1:L,x2:W-R,y1:y(mean),y2:y(mean)}));
+    if(projected.length){
+      const observed=rows[rows.length-1];
+      svg.appendChild(node('line',{class:'gold-future-separator',x1:x(last),x2:x(last),y1:T,y2:base}));
+      const low=[[x(last),y(observed.price)],...projected.map(r=>[x(r.ts),y(r.lower)])];
+      const high=projected.map(r=>[x(r.ts),y(r.upper)]).reverse();
+      svg.appendChild(node('path',{class:'gold-forecast-band',d:'M'+[...low,...high].map(pair=>pair.join(',')).join(' L')+' Z'}));
+      svg.appendChild(node('path',{class:'gold-forecast-line',d:'M'+[[x(last),y(observed.price)],...projected.map(r=>[x(r.ts),y(r.price)])].map(pair=>pair.join(',')).join(' L')}));
+      svg.appendChild(node('text',{class:'gold-axis',x:x(end),y:H-2,'text-anchor':'end'},'Est. '+dateText(end,true)));
+    }
     const chosen=rows.find(r=>r.ts===selectedTs)||rows[rows.length-1];
     svg.appendChild(node('line',{class:'gold-focus-line',x1:x(chosen.ts),x2:x(chosen.ts),y1:T,y2:base}));
     svg.appendChild(node('circle',{class:'gold-focus-dot',cx:x(chosen.ts),cy:y(chosen.price),r:6}));
@@ -97,13 +108,13 @@
       const ratio=Math.max(0,Math.min(1,(px-L)/plotW));
       const target=first+ratio*(last-first);
       const near=rows.reduce((best,r)=>Math.abs(r.ts-target)<Math.abs(best.ts-target)?r:best,rows[0]);
-      if(near.ts!==selectedTs){selectedTs=near.ts;renderChart(rows,selectedTs);}
+      if(near.ts!==selectedTs){selectedTs=near.ts;renderChart(rows,selectedTs,projection);}
     };
   }
   function init(){
     const rangeButtons=Array.from(document.querySelectorAll('[data-range]'));
     const qty=get('gold-count'),cash=get('gold-cash'),quick=Array.from(document.querySelectorAll('[data-bars]'));
-    let price=null,rows=[],range='30',selected=null;
+    let price=null,rows=[],range='30',selected=null,forecast=null;
     function updateConverter(){
       const bars=Number(qty.value);
       cash.textContent=price!=null&&Number.isSafeInteger(bars)&&bars>=1&&bars<=1000000?number(price*bars)+' cash':'—';
@@ -157,7 +168,7 @@
           if(!sliceDays(rows,range).some(p=>p.ts===selected)){
             range='all';for(const b of rangeButtons)b.setAttribute('aria-pressed',String(b.dataset.range===range));
           }
-          renderHistory();renderChart(sliceDays(rows,range),selected);
+          renderHistory();renderChart(sliceDays(rows,range),selected,forecast);
         });
         host.appendChild(btn);
       }
@@ -165,14 +176,33 @@
     function showRange(){
       const selectedRows=sliceDays(rows,range);
       selected=null;
-      renderChart(selectedRows,null);
+      renderChart(selectedRows,null,forecast);
       for(const b of rangeButtons)b.setAttribute('aria-pressed',String(b.dataset.range===range));
     }
     for(const b of rangeButtons)b.addEventListener('click',function(){if(!rows.length)return;range=b.dataset.range;showRange();renderHistory();});
+    function renderForecast(){
+      const forecastSource=root.GoldForecast;
+      forecast=forecastSource&&typeof forecastSource.evaluate==='function'?forecastSource.evaluate(rows):{state:'insufficient',reason:'Forecast module unavailable.'};
+      const message=get('gold-forecast-message');
+      if(forecast.state!=='ready'){
+        message.textContent=forecast.reason||'Not enough daily history for a validated forecast.';
+        get('gold-forecast-model').textContent='Model: not selected';
+        get('gold-forecast-backtest').textContent='Validation requires sufficient consecutive daily observations.';
+        return;
+      }
+      const one=forecast.rows[0],seven=forecast.rows[6];
+      get('gold-forecast-1').textContent=number(one.price);
+      get('gold-forecast-7').textContent=number(seven.price);
+      get('gold-forecast-range-1').textContent='Observed-error range: '+number(one.lower)+'–'+number(one.upper);
+      get('gold-forecast-range-7').textContent='Observed-error range: '+number(seven.lower)+'–'+number(seven.upper);
+      message.textContent='Daily-price outlook through '+dateText(seven.ts)+' (UTC).';
+      get('gold-forecast-model').textContent='Selected model: '+forecast.modelLabel+(forecast.model==='naive'?' · advanced models did not beat the baseline by 5%':' · improvement vs no-change: '+forecast.improvementPct+'%');
+      get('gold-forecast-backtest').textContent='Walk-forward validation: '+forecast.validations+' origins. 1-day mean absolute error '+number(forecast.modelMae1)+' cash (no-change: '+number(forecast.baselineMae1)+'). 7-day mean absolute error '+number(forecast.modelMae7)+' (no-change: '+number(forecast.baselineMae7)+').';
+    }
     fetch(SOURCE,{headers:{'Accept':'application/json'},cache:'no-store'})
       .then(response=>{if(!response.ok)throw Error('Price service returned HTTP '+response.status);return response.json();})
-      .then(data=>{rows=normalize(data).rows;renderStats();})
-      .catch(()=>{get('gold-price').textContent='Unavailable';get('gold-asof').textContent='No price data could be loaded.';get('gold-error').hidden=false;get('gold-error').textContent='The independent price source is unavailable right now. No last-known price has been substituted. You can check the linked source directly.';get('gold-chart-note').textContent='Gold price history unavailable.';get('gold-days').textContent='No verified daily prices available.';});
+      .then(data=>{rows=normalize(data).rows;renderForecast();renderStats();})
+      .catch(()=>{get('gold-price').textContent='Unavailable';get('gold-asof').textContent='No price data could be loaded.';get('gold-error').hidden=false;get('gold-error').textContent='The independent price source is unavailable right now. No last-known price has been substituted. You can check the linked source directly.';get('gold-chart-note').textContent='Gold price history unavailable.';get('gold-days').textContent='No verified daily prices available.';get('gold-forecast-message').textContent='Forecast unavailable without verified price history.';});
   }
   if(typeof module!=='undefined'&&module.exports)module.exports={normalize,sliceDays,diffDays,average,changeText};
   if(typeof document!=='undefined')document.addEventListener('DOMContentLoaded',init);
