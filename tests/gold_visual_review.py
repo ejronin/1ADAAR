@@ -71,6 +71,7 @@ async def capture():
                 await page.locator(".gold-range [data-range='30']").click()
                 await page.locator('[data-chart-mode="candles"]').click()
                 assert await page.locator('.gold-candle-body').count()>=8
+                await page.locator('#gold-chart').scroll_into_view_if_needed()
                 # Hit three actual candle centers, including near the right edge.
                 # Hover must not drift as the SVG scales.
                 candles=await page.evaluate("""() => {
@@ -127,6 +128,7 @@ async def capture():
                                       full_page=True,animations="disabled")
                 await page.locator('[data-chart-mode="line"]').click()
                 assert await page.locator('.gold-line').count()>=1
+                await page.locator('#gold-chart').scroll_into_view_if_needed()
                 # Line points at different x-coordinates must match marker and hover.
                 points=await page.evaluate("""() => {
                     const svg=document.getElementById('gold-chart');
