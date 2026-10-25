@@ -95,5 +95,37 @@ assert.ok(r.validations<=21);
                                capture_output=True,text=True,timeout=12)
         self.assertEqual(process.returncode,0,process.stderr)
 
+
+    @unittest.skipUnless(shutil.which('node'),'Node.js not installed')
+    def test_grouped_daily_candles_use_actual_prices(self):
+        expression=r"""
+const assert=require('node:assert/strict');
+const m=require('./docs/js/gold.js');
+const d=86400000;
+const values=[100,130,110,75,90,135,95];
+const rows=values.map((price,i)=>({ts:i*d,price}));
+const candles=m.buildCandles(rows,'7');
+assert.equal(m.candleSpan('7',7),2);
+assert.equal(m.candleSpan('30',30),3);
+assert.equal(m.candleSpan('90',90),7);
+assert.equal(candles.length,4);
+assert.deepEqual([candles[0].open,candles[0].close,candles[0].high,candles[0].low],[100,100,100,100]);
+assert.deepEqual([candles[3].open,candles[3].close,candles[3].high,candles[3].low],[135,95,135,95]);
+assert.ok(candles.every(x=>x.low<=x.open&&x.low<=x.close&&x.high>=x.open&&x.high>=x.close));
+assert.deepEqual(m.buildCandles([], '30'),[]);
+"""
+        run=subprocess.run(['node','-e',expression],cwd=ROOT.parent,capture_output=True,text=True,timeout=12)
+        self.assertEqual(run.returncode,0,run.stderr)
+
+    def test_mode_switch_and_no_fake_intraday(self):
+        page=(ROOT/'gold.html').read_text(encoding='utf-8')
+        script=(ROOT/'js/gold.js').read_text(encoding='utf-8')
+        css=(ROOT/'assets/gold.css').read_text(encoding='utf-8')
+        self.assertIn('data-chart-mode="line"',page)
+        self.assertIn('data-chart-mode="candles"',page)
+        self.assertIn('OHLC candlesticks use actual',page)
+        self.assertIn('data/gold-observations.json',script)
+        self.assertIn('.gold-dashboard{align-items:start}',css)
+
 if __name__=='__main__':
     unittest.main()

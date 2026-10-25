@@ -58,17 +58,23 @@
     <button type="button" data-range="all" aria-pressed="false">ALL</button>
    </div>
   </header>
+  <div class="gold-chart-toolbar" role="group" aria-label="Gold price chart type">
+   <button type="button" data-chart-mode="line" aria-pressed="true">LINE</button>
+   <button type="button" data-chart-mode="candles" aria-pressed="false">CANDLESTICKS</button>
+  </div>
   <div class="gold-moves" aria-label="Price changes compared with prior daily quotes">
    <div><span>24 HOURS</span><strong id="gold-change-1">—</strong></div>
    <div><span>7 DAYS</span><strong id="gold-change-7">—</strong></div>
    <div><span>30 DAYS</span><strong id="gold-change-30">—</strong></div>
   </div>
   <div class="gold-chart-wrap" id="gold-chart-wrap">
-   <svg id="gold-chart" viewBox="0 0 940 420" role="img" aria-label="Daily WARDOGS gold price history. Values are also available in the recent daily prices section below." preserveAspectRatio="xMidYMid meet"></svg>
+   <svg id="gold-chart" viewBox="0 0 940 480" role="img" aria-label="WARDOGS gold price history with daily line and grouped multi-day OHLC candlesticks. Values are also available in the recent daily prices section below." preserveAspectRatio="xMidYMid meet"></svg>
    <p class="gold-chart-note" id="gold-chart-note" aria-live="polite">Waiting for price history…</p>
   </div>
+  <p id="gold-candle-explainer" class="gold-subtle gold-candle-explainer" hidden>OHLC candlesticks use actual <strong>daily UTC prices</strong> grouped by period: 2 days for 7D, 3 days for 30D, 7 days for 90D, and 7–14 days for ALL. They are not intraday trading candles. The game resets the price at 00:00 UTC.</p>
+  <p id="gold-observed-at" class="gold-subtle">Four-hour observations will appear after the collector's first successful run.</p>
   <div class="gold-legend"><span><i class="gold-legend-line"></i> Daily price (UTC)</span><span><i class="gold-legend-average"></i> Selected-period average</span><span><i class="gold-legend-forecast"></i> Model projection + historical-error range</span></div>
-  <p class="gold-subtle gold-disclosure">Each observation is one calendar day's cash price. This is not a traded market, and the chart does not imply intraday volatility.</p>
+  <p class="gold-subtle gold-disclosure">The line uses daily quotes. Candlesticks aggregate those real daily quotes into multi-day OHLC ranges; six scheduled checks each day do not imply intraday price changes.</p>
  </section>
  <aside class="gold-sidebar" aria-label="Gold exchange information">
   <section class="gold-panel gold-converter" aria-labelledby="gold-convert-title">

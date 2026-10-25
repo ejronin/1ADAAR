@@ -69,6 +69,20 @@ async def capture():
                 await page.locator(".gold-range [data-range='7']").click()
                 assert await page.locator(".gold-range [data-range='7']").get_attribute("aria-pressed")=="true"
                 await page.locator(".gold-range [data-range='30']").click()
+                await page.locator('[data-chart-mode="candles"]').click()
+                assert await page.locator('.gold-candle-body').count()>=8
+                assert await page.locator('[data-chart-mode="candles"]').get_attribute('aria-pressed') == "true"
+                assert await page.locator('#gold-candle-explainer').is_visible()
+                rect=await page.locator('#gold-chart').bounding_box()
+                toolbar=await page.locator('.gold-chart-toolbar').bounding_box()
+                assert rect['y']-toolbar['y']<160, (rect,toolbar)
+                assert rect['height']>=350, rect
+                await page.screenshot(path=str(OUT/f"{name}-candles.png"),
+                                      full_page=True,animations="disabled")
+                await page.locator('[data-chart-mode="line"]').click()
+                assert await page.locator('.gold-line').count()>=1
+                assert await page.locator('#gold-candle-explainer').is_hidden()
+
                 await page.locator(".gold-quick [data-bars='10']").click()
                 cash=await page.locator("#gold-cash").inner_text()
                 assert cash==f"{payload['latest']['price']*10:,} cash",cash
