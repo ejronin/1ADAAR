@@ -1,0 +1,42 @@
+name: GOLD four-hour observations
+on:
+  schedule:
+    # Six attempted UTC observations per day, not guaranteed exact-time delivery.
+    - cron: '17 0,4,8,12,16,20 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: 1adaar-gold-observations
+  cancel-in-progress: false
+jobs:
+  observe:
+    if: github.repository == 'ejronin/1ADAAR' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Validate collector
+        run: python -m unittest discover -s tests -p 'test_gold_observations.py' -v
+      - name: Check public daily gold quote
+        run: python -m src.gold_observations
+      - name: Save actual observation (never fabricate missed polls)
+        run: |
+          git config user.name "1adaar-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data/gold-observations.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: record UTC gold price observation"
+            for attempt in 1 2 3 4; do
+              git pull --rebase origin main
+              if git push origin HEAD:main; then exit 0; fi
+              sleep 8
+            done
+            echo "::error::Cannot publish observation without overwriting another update"
+            exit 1
+          fi

@@ -42,16 +42,46 @@
   function compact(price){return price>=1000000?(price/1000000).toFixed(2)+'M':price>=1000?Math.round(price/1000)+'K':number(price);}
   function changeText(value){return value==null?'—':(value>0?'+':'')+value.toFixed(1)+'%';}
   function changeClass(v){return v==null||v===0?'gold-neutral':v>0?'gold-positive':'gold-negative';}
+  // Multi-day candles from actual daily UTC price observations, never invented intraday OHLC.
+  function candleSpan(range,count){
+    if(range==='7')return 2;
+    if(range==='30')return 3;
+    if(range==='90')return 7;
+    return count>180?14:7;
+  }
+  function buildCandles(rows,range){
+    if(!rows.length)return [];
+    const span=candleSpan(range,rows.length);
+    const latest=Math.floor(rows[rows.length-1].ts/DAY);
+    const groups=new Map();
+    for(const point of rows){
+      const bucket=Math.floor((latest-Math.floor(point.ts/DAY))/span);
+      if(!groups.has(bucket))groups.set(bucket,[]);
+      groups.get(bucket).push(point);
+    }
+    return Array.from(groups.values()).map(values=>{
+      values.sort((a,b)=>a.ts-b.ts);
+      return {ts:values[Math.floor((values.length-1)/2)].ts,
+        from:values[0].ts,to:values[values.length-1].ts,
+        open:values[0].price,close:values[values.length-1].price,
+        high:Math.max(...values.map(row=>row.price)),
+        low:Math.min(...values.map(row=>row.price)),
+        readings:values.length,span};
+    }).sort((a,b)=>a.ts-b.ts);
+  }
   function node(tag,attrs,text){
     const el=document.createElementNS('http://www.w3.org/2000/svg',tag);
     for(const [key,value] of Object.entries(attrs||{}))el.setAttribute(key,String(value));
     if(text!==undefined)el.textContent=text;
     return el;
   }
-  function renderChart(rows,selectedTs,projection){
+  function renderChart(rows,selectedTs,projection,mode='line',range='30'){
     const svg=get('gold-chart');
     svg.replaceChildren();
-    const W=940,H=420,L=76,R=25,T=20,B=52,base=H-B,plotW=W-L-R,plotH=base-T;
+    const W=Math.max(310,Math.floor(svg.getBoundingClientRect().width||svg.parentElement.clientWidth||940));
+    const H=W<540?360:W<900?440:480,L=W<540?58:76,R=W<540?12:24,T=20,B=52,base=H-B,plotW=W-L-R,plotH=base-T;
+    svg.setAttribute('viewBox','0 0 '+W+' '+H);
+    svg.style.height=H+'px';
     if(!rows.length){get('gold-chart-note').textContent='No daily gold price history available.';return;}
     const projected=projection&&projection.state==='ready'?projection.rows:[];
     const max=Math.max(...rows.map(row=>row.price),...projected.map(row=>row.upper));
@@ -70,20 +100,31 @@
       const item=rows[Math.round(i*(rows.length-1)/Math.max(1,intervals))];
       svg.appendChild(node('text',{class:'gold-axis',x:x(item.ts),y:H-18,'text-anchor':i===0?'start':i===intervals?'end':'middle'},dateText(item.ts,true)));
     }
-    const groups=[];
-    let group=[];
-    for(const r of rows){
-      if(group.length&&r.ts-group[group.length-1].ts>DAY){groups.push(group);group=[];}
-      group.push(r);
-    }
-    if(group.length)groups.push(group);
-    for(const batch of groups){
-      const points=batch.map(r=>x(r.ts)+','+y(r.price));
-      if(batch.length>1){
-        svg.appendChild(node('path',{class:'gold-area',d:'M'+x(batch[0].ts)+','+base+' L'+points.join(' L')+' L'+x(batch[batch.length-1].ts)+','+base+' Z'}));
-        svg.appendChild(node('path',{class:'gold-line',d:'M'+points.join(' L')}));
-      }else{
-        svg.appendChild(node('circle',{cx:x(batch[0].ts),cy:y(batch[0].price),r:3,fill:'#ffd36b'}));
+    const candleData=mode==='candles'?buildCandles(rows,range):[];
+    if(mode==='candles'){
+      const bodyWidth=Math.max(6,Math.min(34,plotW/(candleData.length+3)*.70));
+      for(const c of candleData){
+        const xx=x(c.ts),rise=c.close>c.open,fall=c.close<c.open;
+        const kind=rise?'up':fall?'down':'flat';
+        svg.appendChild(node('line',{class:'gold-candle-wick gold-candle-'+kind,
+          x1:xx,y1:y(c.high),x2:xx,y2:y(c.low)}));
+        const top=Math.min(y(c.open),y(c.close)),height=Math.max(3,Math.abs(y(c.open)-y(c.close)));
+        svg.appendChild(node('rect',{class:'gold-candle-body gold-candle-'+kind,
+          x:xx-bodyWidth/2,y:top,width:bodyWidth,height:height}));
+      }
+    }else{
+      const groups=[];let group=[];
+      for(const r of rows){
+        if(group.length&&r.ts-group[group.length-1].ts>DAY){groups.push(group);group=[];}
+        group.push(r);
+      }
+      if(group.length)groups.push(group);
+      for(const batch of groups){
+        const points=batch.map(r=>x(r.ts)+','+y(r.price));
+        if(batch.length>1){
+          svg.appendChild(node('path',{class:'gold-area',d:'M'+x(batch[0].ts)+','+base+' L'+points.join(' L')+' L'+x(batch[batch.length-1].ts)+','+base+' Z'}));
+          svg.appendChild(node('path',{class:'gold-line',d:'M'+points.join(' L')}));
+        }else svg.appendChild(node('circle',{cx:x(batch[0].ts),cy:y(batch[0].price),r:3,fill:'#ffd36b'}));
       }
     }
     const mean=average(rows);
@@ -97,10 +138,21 @@
       svg.appendChild(node('path',{class:'gold-forecast-line',d:'M'+[[x(last),y(observed.price)],...projected.map(r=>[x(r.ts),y(r.price)])].map(pair=>pair.join(',')).join(' L')}));
       svg.appendChild(node('text',{class:'gold-axis',x:x(end),y:H-2,'text-anchor':'end'},'Est. '+dateText(end,true)));
     }
-    const chosen=rows.find(r=>r.ts===selectedTs)||rows[rows.length-1];
-    svg.appendChild(node('line',{class:'gold-focus-line',x1:x(chosen.ts),x2:x(chosen.ts),y1:T,y2:base}));
-    svg.appendChild(node('circle',{class:'gold-focus-dot',cx:x(chosen.ts),cy:y(chosen.price),r:6}));
-    get('gold-chart-note').textContent=dateText(chosen.ts)+' · '+number(chosen.price)+' cash per bar';
+    if(mode==='candles'){
+      const candle=candleData.find(c=>selectedTs!==null&&c.from<=selectedTs&&selectedTs<=c.to)
+        ||candleData[candleData.length-1];
+      if(candle){
+        svg.appendChild(node('line',{class:'gold-focus-line',x1:x(candle.ts),x2:x(candle.ts),y1:T,y2:base}));
+        get('gold-chart-note').textContent=dateText(candle.from,true)+' – '+dateText(candle.to,true)+
+          ' · O '+number(candle.open)+' · H '+number(candle.high)+
+          ' · L '+number(candle.low)+' · C '+number(candle.close);
+      }
+    }else{
+      const chosen=rows.find(r=>r.ts===selectedTs)||rows[rows.length-1];
+      svg.appendChild(node('line',{class:'gold-focus-line',x1:x(chosen.ts),x2:x(chosen.ts),y1:T,y2:base}));
+      svg.appendChild(node('circle',{class:'gold-focus-dot',cx:x(chosen.ts),cy:y(chosen.price),r:6}));
+      get('gold-chart-note').textContent=dateText(chosen.ts)+' · '+number(chosen.price)+' cash per bar';
+    }
     svg.onpointermove=function(evt){
       const rect=svg.getBoundingClientRect();
       if(!rect.width)return;
@@ -108,13 +160,14 @@
       const ratio=Math.max(0,Math.min(1,(px-L)/plotW));
       const target=first+ratio*(last-first);
       const near=rows.reduce((best,r)=>Math.abs(r.ts-target)<Math.abs(best.ts-target)?r:best,rows[0]);
-      if(near.ts!==selectedTs){selectedTs=near.ts;renderChart(rows,selectedTs,projection);}
+      if(near.ts!==selectedTs){selectedTs=near.ts;renderChart(rows,selectedTs,projection,mode,range);}
     };
   }
   function init(){
     const rangeButtons=Array.from(document.querySelectorAll('[data-range]'));
+    const chartButtons=Array.from(document.querySelectorAll('[data-chart-mode]'));
     const qty=get('gold-count'),cash=get('gold-cash'),quick=Array.from(document.querySelectorAll('[data-bars]'));
-    let price=null,rows=[],range='30',selected=null,forecast=null;
+    let price=null,rows=[],range='30',selected=null,forecast=null,chartMode='line';
     function updateConverter(){
       const bars=Number(qty.value);
       cash.textContent=price!=null&&Number.isSafeInteger(bars)&&bars>=1&&bars<=1000000?number(price*bars)+' cash':'—';
@@ -168,7 +221,7 @@
           if(!sliceDays(rows,range).some(p=>p.ts===selected)){
             range='all';for(const b of rangeButtons)b.setAttribute('aria-pressed',String(b.dataset.range===range));
           }
-          renderHistory();renderChart(sliceDays(rows,range),selected,forecast);
+          renderHistory();renderChart(sliceDays(rows,range),selected,forecast,chartMode,range);
         });
         host.appendChild(btn);
       }
@@ -176,10 +229,37 @@
     function showRange(){
       const selectedRows=sliceDays(rows,range);
       selected=null;
-      renderChart(selectedRows,null,forecast);
+      renderChart(selectedRows,null,forecast,chartMode,range);
       for(const b of rangeButtons)b.setAttribute('aria-pressed',String(b.dataset.range===range));
     }
     for(const b of rangeButtons)b.addEventListener('click',function(){if(!rows.length)return;range=b.dataset.range;showRange();renderHistory();});
+    function changeMode(){
+      for(const button of chartButtons)button.setAttribute('aria-pressed',String(button.dataset.chartMode===chartMode));
+      const explanation=get('gold-candle-explainer');
+      if(explanation)explanation.hidden=chartMode!=='candles';
+      if(rows.length)renderChart(sliceDays(rows,range),selected,forecast,chartMode,range);
+    }
+    for(const button of chartButtons)button.addEventListener('click',function(){
+      chartMode=button.dataset.chartMode;changeMode();
+    });
+    let resizeTask;
+    if(typeof window!=='undefined')window.addEventListener('resize',function(){
+      clearTimeout(resizeTask);
+      resizeTask=setTimeout(function(){
+        if(rows.length)renderChart(sliceDays(rows,range),selected,forecast,chartMode,range);
+      },100);
+    });
+    fetch('data/gold-observations.json',{cache:'no-store'}).then(response=>response.ok?response.json():null).then(data=>{
+      const list=data&&Array.isArray(data.observations)?data.observations:[];
+      const newest=list[list.length-1];
+      const target=get('gold-observed-at');
+      if(newest&&target&&Number.isSafeInteger(newest.observedAt)&&Number.isSafeInteger(newest.price)){
+        const date=new Date(newest.observedAt).toLocaleString('en-US',{
+          timeZone:'UTC',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false});
+        target.textContent='Last four-hour check: '+date+' UTC · '+number(newest.price)+' cash';
+      }
+    }).catch(()=>{});
+
     function renderForecast(){
       const forecastSource=root.GoldForecast;
       forecast=forecastSource&&typeof forecastSource.evaluate==='function'?forecastSource.evaluate(rows):{state:'insufficient',reason:'Forecast module unavailable.'};
@@ -204,6 +284,6 @@
       .then(data=>{rows=normalize(data).rows;renderForecast();renderStats();})
       .catch(()=>{get('gold-price').textContent='Unavailable';get('gold-asof').textContent='No price data could be loaded.';get('gold-error').hidden=false;get('gold-error').textContent='The independent price source is unavailable right now. No last-known price has been substituted. You can check the linked source directly.';get('gold-chart-note').textContent='Gold price history unavailable.';get('gold-days').textContent='No verified daily prices available.';get('gold-forecast-message').textContent='Forecast unavailable without verified price history.';});
   }
-  if(typeof module!=='undefined'&&module.exports)module.exports={normalize,sliceDays,diffDays,average,changeText};
+  if(typeof module!=='undefined'&&module.exports)module.exports={normalize,sliceDays,diffDays,average,changeText,buildCandles,candleSpan};
   if(typeof document!=='undefined')document.addEventListener('DOMContentLoaded',init);
 })(typeof globalThis!=='undefined'?globalThis:this);
