@@ -87,7 +87,18 @@ async def capture():
                 }""")
                 for pt in candles:
                     await page.mouse.move(pt['x'],pt['y'])
-                    assert await page.locator('#gold-tooltip').is_visible()
+                    is_visible=await page.locator('#gold-tooltip').is_visible()
+                    if not is_visible:
+                        debug=await page.evaluate("""() => {
+                            const svg=document.getElementById('gold-chart'),box=svg.getBoundingClientRect();
+                            const tip=document.getElementById('gold-tooltip');
+                            return {svgBounds:{x:box.x,y:box.y,w:box.width,h:box.height},
+                              viewBox:svg.getAttribute('viewBox'),tooltipHidden:tip.hidden,
+                              pointerHandler:typeof svg.onpointermove,
+                              hovered:document.querySelectorAll(':hover').length,
+                              testX:window.__last_pointer_x||null};
+                        }""")
+                        raise AssertionError(f"Candle hover invisible width={width}, point={pt}, debug={debug}")
                     label=await page.locator('#gold-tooltip').inner_text()
                     assert all(t in label for t in ('OPEN','HIGH','LOW','CLOSE')),label
                     circle_x=float(await page.locator('.gold-focus-dot').get_attribute('cx'))
