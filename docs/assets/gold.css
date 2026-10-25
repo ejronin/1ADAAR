@@ -83,3 +83,15 @@
 @media(max-width:860px){.gold-dashboard{grid-template-columns:1fr}.gold-sidebar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.gold-sidebar .gold-panel:last-child{grid-column:1/-1}}
 @media(max-width:570px){.gold-title-row img{width:66px;height:66px}.gold-hero{padding:18px;min-height:auto}.gold-market{min-height:0}.gold-chart-wrap{min-height:250px}.gold-sidebar{grid-template-columns:1fr}.gold-sidebar .gold-panel:last-child{grid-column:auto}.gold-day-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.gold-chart-note{left:52px;max-width:calc(100% - 55px);font-size:9px}.gold-moves{gap:9px 18px}.gold-range{width:100%;justify-content:space-between}.gold-range button{flex:1}}
 @media(prefers-reduced-motion:reduce){.gold-page *{scroll-behavior:auto!important;transition:none!important}}
+/* Model outlook extends the daily history chart. Projections are never styled as observed prices. */
+.gold-chart-wrap .gold-forecast-band{fill:#eac575;fill-opacity:.22;stroke:none}
+.gold-chart-wrap .gold-forecast-line{stroke:#fff0b5;stroke-width:2.4;stroke-dasharray:8 6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.gold-chart-wrap .gold-future-separator{stroke:#b58f4c;stroke-width:1.5;stroke-dasharray:3 7;opacity:.7}
+.gold-legend-forecast{display:inline-block;width:21px;border-top:2px dashed #fff0b5}
+.gold-forecast-panel .gold-eyebrow{font-size:9px;margin-bottom:7px}
+.gold-forecast-numbers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:15px}
+.gold-forecast-numbers>div{background:#15130f;border:1px solid #51462f;border-radius:5px;padding:12px 9px;min-width:0}
+.gold-forecast-numbers span{display:block;font-size:9px;letter-spacing:.07em;color:#dfc28a;font-weight:800}
+.gold-forecast-numbers strong{display:block;font:800 clamp(24px,2.5vw,33px) 'Barlow Condensed',sans-serif;color:#ffe4a0;margin-top:5px;overflow-wrap:anywhere}
+.gold-forecast-numbers small{display:block;font-size:9px;color:#d5c7a6;line-height:1.5;margin-top:7px}
+.gold-forecast-caveat{font-size:9px;border-top:1px solid #56462c;padding-top:10px;margin-top:14px}
