@@ -1,4 +1,10 @@
 {
   "schemaVersion": 1,
-  "weeks": []
+  "weeks": [
+    {
+      "completedMatchesSaved": 0,
+      "seasons": [],
+      "weekEnding": "2026-10-25"
+    }
+  ]
 }
