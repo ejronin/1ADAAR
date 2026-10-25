@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="assets/ia-v11.css?v=1">
 <link rel="stylesheet" href="assets/site-unified.css?v=112">
 <link rel="stylesheet" href="assets/gold.css?v=1">
+<script defer src="js/gold-forecast.js?v=1"></script>
 <script defer src="js/gold.js?v=1"></script>
 </head>
 <body class="gold-page">
@@ -66,7 +67,7 @@
    <svg id="gold-chart" viewBox="0 0 940 420" role="img" aria-label="Daily WARDOGS gold price history. Values are also available in the recent daily prices section below." preserveAspectRatio="xMidYMid meet"></svg>
    <p class="gold-chart-note" id="gold-chart-note" aria-live="polite">Waiting for price history…</p>
   </div>
-  <div class="gold-legend"><span><i class="gold-legend-line"></i> Daily price (UTC)</span><span><i class="gold-legend-average"></i> Selected-period average</span></div>
+  <div class="gold-legend"><span><i class="gold-legend-line"></i> Daily price (UTC)</span><span><i class="gold-legend-average"></i> Selected-period average</span><span><i class="gold-legend-forecast"></i> Model projection + historical-error range</span></div>
   <p class="gold-subtle gold-disclosure">Each observation is one calendar day's cash price. This is not a traded market, and the chart does not imply intraday volatility.</p>
  </section>
  <aside class="gold-sidebar" aria-label="Gold exchange information">
@@ -91,6 +92,18 @@
    <div class="gold-trend-number" id="gold-trend-average">—</div><p class="gold-subtle">7-day average cash per bar</p>
    <div class="gold-trend-range"><span id="gold-trend-low">—</span><span id="gold-trend-high">—</span></div>
    <p class="gold-subtle">Lowest to highest recorded price over the last 7 UTC days. Historical range, not a price forecast.</p>
+  </section>
+  <section class="gold-panel gold-forecast-panel" aria-labelledby="gold-forecast-title">
+   <div class="gold-eyebrow">QUANTITATIVE OUTLOOK / MODEL VALIDATION</div>
+   <h2 id="gold-forecast-title">GOLD PRICE FORECAST</h2>
+   <p id="gold-forecast-message" class="gold-subtle" aria-live="polite">Evaluating historical daily prices…</p>
+   <div class="gold-forecast-numbers">
+    <div><span>NEXT UTC DAY</span><strong id="gold-forecast-1">—</strong><small id="gold-forecast-range-1">—</small></div>
+    <div><span>IN 7 DAYS</span><strong id="gold-forecast-7">—</strong><small id="gold-forecast-range-7">—</small></div>
+   </div>
+   <p class="gold-subtle" id="gold-forecast-model">Model: —</p>
+   <p class="gold-subtle" id="gold-forecast-backtest">Historical error: —</p>
+   <p class="gold-subtle gold-forecast-caveat">The shaded projection is based on past forecasting errors, not a guaranteed 80% probability range. Models are selected using rolling historical tests, not independent prospective results. WARDOGS sets prices, not market traders.</p>
   </section>
  </aside>
 </div>
