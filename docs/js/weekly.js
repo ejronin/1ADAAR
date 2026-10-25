@@ -94,6 +94,10 @@
     add(overview,'p','','Only matches saved in 1ADAAR are counted. Each WARDOGS season is shown separately.');
     add(overview,'span','weekly-count',week.completedMatchesSaved);
     add(overview,'span','weekly-count-label','completed matches saved');
+    if(week.completedMatchesSaved===0){
+      add(overview,'p','weekly-caveat',
+        'No completed matches were recorded in the 1ADAAR archive for this reporting period. This does not mean nobody played. Match statistics and player awards are unavailable.');
+    }
     for(const entry of week.seasons)await season(summary,entry);
     add(history,'h3','','Earlier weeks');
     const links=add(history,'div','weekly-week-links');

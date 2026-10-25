@@ -69,12 +69,43 @@ def _draw_map(im, draw, y, row):
     _text(draw, (984, y + 50), score, 23, BLUE, bold=True, anchor="rm")
 
 
+
+def render_empty_weekly_card(report: dict) -> bytes:
+    """A branded, truthful weekly card without fictitious players or awards."""
+    im = Image.new("RGB", (W, 750), "#101823")
+    draw = ImageDraw.Draw(im)
+    _panel(draw, (30, 25, 1050, 725), fill=NAVY, outline="#56728e", radius=19)
+    draw.rectangle((30, 25, 1050, 33), fill=BLUE)
+    alpha_paste(im, community_emblem(), (72, 62))
+    _text(draw, (178, 67), "1ADAAR  /  WEEKLY INTELLIGENCE", 24, BLUE, bold=True)
+    _text(draw, (74, 173), "THIS WEEK ON THE SERVER", 48, WHITE, bold=True)
+    _text(draw, (74, 244),
+          f"WEEK ENDING {report['weekEndingEastern']}  /  SAVED WARCON RESULTS",
+          21, GOLD, bold=True)
+    draw.line((74, 287, 1005, 287), fill=LINE, width=2)
+    _panel(draw, (74, 320, 1005, 576), fill="#20354b", radius=12)
+    _text(draw, (110, 352), "NO COMPLETED MATCHES RECORDED", 33, GOLD, bold=True)
+    _text(draw, (110, 424), "1ADAAR did not capture completed match results", 25, WHITE)
+    _text(draw, (110, 461), "for this weekly reporting period.", 25, WHITE)
+    _text(draw, (110, 522), "Player awards and match statistics are unavailable.", 20, MUTED)
+    _text(draw, (76, 603), "IMPORTANT: THIS DOES NOT CONFIRM THAT NO MATCHES WERE PLAYED.",
+          19, GOLD, bold=True)
+    _text(draw, (76, 642), "1ADAAR only reports matches saved from public WARCON records.", 18, MUTED)
+    _text(draw, (76, 684), "ONEAVERAGEDAN WARDOGS COMMUNITY SERVER", 16, BLUE, bold=True)
+    output = BytesIO()
+    im.save(output, format="PNG", optimize=True)
+    data = output.getvalue()
+    if len(data) > 7_000_000:
+        raise ValueError("Weekly Discord image exceeds upload size limit")
+    return data
+
+
 def render_weekly_card(report: dict) -> bytes:
     """PNG for the real Discord publisher; use no fictional preview data."""
     segments = [s for s in report.get("segments", [])
                 if s.get("completedMatchesInArchive", 0) > 0]
     if not segments:
-        raise ValueError("No completed matches available for a weekly card")
+        return render_empty_weekly_card(report)
     # Do not combine players or awards from different seasons into one ranking.
     featured = max(segments, key=lambda row: row["completedMatchesInArchive"])
     total = sum(s["completedMatchesInArchive"] for s in segments)

@@ -1,8 +1,8 @@
 """Publish one honest, season-separated weekly roundup from saved WARCON results.
 
-Runs after each full collector. Before Sunday noon Eastern or without completed
-saved matches, there is no Discord call. GitHub Actions is best-effort: an overdue
-run may publish after noon, but never labels missing match data as complete.
+The dedicated Sunday-noon Eastern workflow publishes a truthful report even for
+zero recorded matches. Never claims that no game was played, or invents awards.
+GitHub Actions timing is best-effort. Confirmed Discord IDs stop duplicate sends.
 """
 from __future__ import annotations
 
@@ -11,6 +11,8 @@ import json
 import os
 from pathlib import Path
 import sys
+import time
+import urllib.error
 
 from src.weekly import EASTERN, summarize_week
 from src.recap import DATA, SITE_URL, atomic_write_json, read_json, send_discord
@@ -34,6 +36,16 @@ def payload(report: dict) -> dict:
     count = sum(s["completedMatchesInArchive"] for s in segments)
     season_lines = [f'**{s["seasonName"]}** — {s["completedMatchesInArchive"]} saved matches'
                     for s in segments]
+    if count:
+        description = ("**OneAverageDan WARDOGS Community Server**\n"
+                       f"{count} completed matches saved this week. "
+                       "This may not include every match played.\n" +
+                       "\n".join(season_lines))
+    else:
+        description = ("**OneAverageDan WARDOGS Community Server**\n"
+                       "No completed matches were recorded in the 1ADAAR archive "
+                       "this week. Match statistics and player awards are unavailable. "
+                       "This does **not** confirm that no matches were played.")
     return {
         "username": "1ADAAR | WARDOGS",
         "allowed_mentions": {"parse": []},
@@ -41,10 +53,7 @@ def payload(report: dict) -> dict:
             "title": f"WARDOGS weekly roundup · {end}",
             "url": f"{SITE_URL}weekly.html?week={end}",
             "color": 0xD8AC65,
-            "description": ("**OneAverageDan WARDOGS Community Server**\n"
-                            f"{count} completed matches saved this week. "
-                            "This may not include every match played.\n" +
-                            "\n".join(season_lines)),
+            "description": description,
             "image": {"url": "attachment://match-recap.png"},
             "fields": [{"name": "See the weekly results",
                         "value": f"[Open the weekly roundup]({SITE_URL}weekly.html?week={end})",
@@ -69,8 +78,6 @@ def run(*, directory: Path = ARCHIVE, matches_file: Path | None = None,
         raise ValueError("Malformed public match archive")
     summary = summarize_week(match_doc["matches"], key)
     segments = [s for s in summary["segments"] if s["completedMatchesInArchive"] > 0]
-    if not segments:
-        return {"status": "no-completed-matches", "weekEnding": key}
     index_file = directory / "index.json"
     ledger_file = directory / "delivery.json"
     index = read_json(index_file, {"schemaVersion": 1, "weeks": []})
@@ -105,9 +112,23 @@ def run(*, directory: Path = ARCHIVE, matches_file: Path | None = None,
     if not webhook:
         return {"status": "archive-ready-no-webhook", "weekEnding": key}
     image = renderer(summary)
-    # Never retry an ambiguous Discord POST inside one run. Persist confirmed
-    # message ID; GitHub Actions job serializes writes before the Pages deploy.
-    message_id = send(webhook, payload(summary), image_bytes=image)
+    # Retry only an explicit HTTP 429 response, which means Discord refused the
+    # request. Network timeouts and server errors are ambiguous: never blindly
+    # re-POST because Discord may already have delivered the message.
+    try:
+        message_id = send(webhook, payload(summary), image_bytes=image)
+    except urllib.error.HTTPError as error:
+        if error.code != 429:
+            raise
+        header = error.headers.get("Retry-After", "1") if error.headers else "1"
+        try:
+            delay = min(10.0, max(1.0, float(header)))
+        except (TypeError, ValueError):
+            delay = 2.0
+        time.sleep(delay)
+        message_id = send(webhook, payload(summary), image_bytes=image)
+    if not isinstance(message_id, str) or not message_id.isdecimal():
+        raise ValueError("Discord did not confirm a weekly message ID")
     ledger["posted"][key] = message_id
     atomic_write_json(ledger_file, ledger)
     return {"status": "posted", "weekEnding": key, "savedMatches":
@@ -116,9 +137,10 @@ def run(*, directory: Path = ARCHIVE, matches_file: Path | None = None,
 
 def main() -> int:
     try:
-        print(json.dumps(run(webhook=os.environ.get("DISCORD_MATCH_WEBHOOK", "").strip()),
-                         sort_keys=True))
-        return 0
+        result = run(webhook=os.environ.get("DISCORD_MATCH_WEBHOOK", "").strip())
+        print(json.dumps(result, sort_keys=True))
+        # A missing webhook must not be marked as a successful weekly delivery.
+        return 1 if result["status"] == "archive-ready-no-webhook" else 0
     except Exception as error:
         # No webhook, SteamID, or private fields in error output.
         print(f"1ADAAR weekly roundup error: {type(error).__name__}", file=sys.stderr)

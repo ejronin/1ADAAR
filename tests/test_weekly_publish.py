@@ -50,13 +50,29 @@ class WeeklyReleaseTests(unittest.TestCase):
         self.assertEqual(last_finished_sunday(dt.datetime(
             2026, 11, 1, 17, 20, tzinfo=dt.timezone.utc)).isoformat(), "2026-11-01")
 
-    def test_empty_real_archive_never_posts_or_makes_up_winners(self):
+    def test_empty_real_archive_posts_truthful_week_and_dedupes(self):
         self.save([])
-        sender=Mock()
+        sender=Mock(return_value="123456789")
         result=self.invoke(webhook="https://discord.com/api/webhooks/1/valid",send=sender)
-        self.assertEqual(result["status"], "no-completed-matches")
-        sender.assert_not_called()
+        self.assertEqual(result["status"], "posted")
+        self.assertEqual(result["savedMatches"], 0)
+        sender.assert_called_once()
+        message=sender.call_args.args[1]
+        self.assertIn("No completed matches were recorded",message["embeds"][0]["description"])
+        self.assertIn("does **not** confirm that no matches were played",message["embeds"][0]["description"])
+        self.assertEqual(message["allowed_mentions"], {"parse": []})
+        image_bytes=sender.call_args.kwargs["image_bytes"]
+        with Image.open(BytesIO(image_bytes)) as image:
+            self.assertEqual(image.size, (1080, 750))
         self.assertFalse((self.directory/"wardogs-2"/"2026-10-25.json").exists())
+        index=json.loads((self.directory/"index.json").read_text())
+        self.assertEqual(index["weeks"], [{
+            "weekEnding": "2026-10-25", "completedMatchesSaved": 0, "seasons": []}])
+        ledger=json.loads((self.directory/"delivery.json").read_text())
+        self.assertEqual(ledger["posted"]["2026-10-25"], "123456789")
+        self.assertEqual(self.invoke(webhook="https://discord.com/api/webhooks/1/valid",
+                                     send=sender)["status"], "already-posted")
+        sender.assert_called_once()
 
     def test_only_real_matches_build_archive_and_post_once(self):
         self.save([sample()])
@@ -93,6 +109,50 @@ class WeeklyReleaseTests(unittest.TestCase):
                                      renderer=lambda _: b"PNG")["status"],"posted")
         sender.assert_called_once()
 
+    def test_zero_week_without_webhook_archives_but_does_not_claim_delivery(self):
+        self.save([])
+        sender=Mock()
+        no_hook=self.invoke(send=sender)
+        self.assertEqual(no_hook["status"],"archive-ready-no-webhook")
+        self.assertEqual(json.loads((self.directory/"index.json").read_text())
+                         ["weeks"][0]["completedMatchesSaved"],0)
+        self.assertFalse((self.directory/"delivery.json").exists())
+        sender.assert_not_called()
+        sender.return_value="55555"
+        self.assertEqual(self.invoke(send=sender,webhook="https://discord.com/api/webhooks/1/valid")["status"],"posted")
+        sender.assert_called_once()
+
+    def test_explicit_rate_limit_can_retry_but_ambiguous_error_cannot(self):
+        import urllib.error
+        from unittest.mock import patch
+        self.save([])
+        http429=urllib.error.HTTPError("https://discord.com",429,"too many requests",
+                                        {"Retry-After":"1"},None)
+        sender=Mock(side_effect=[http429,"887766"])
+        with patch("src.weekly_publish.time.sleep") as sleep:
+            self.assertEqual(self.invoke(
+                send=sender,webhook="https://discord.com/api/webhooks/1/valid")["status"],"posted")
+        sleep.assert_called_once_with(1.0)
+        self.assertEqual(sender.call_count,2)
+        self.assertEqual(json.loads((self.directory/"delivery.json").read_text())
+                         ["posted"]["2026-10-25"],"887766")
+
+    def test_network_failure_is_not_retried_in_process(self):
+        import urllib.error
+        self.save([])
+        sender=Mock(side_effect=urllib.error.URLError("timeout uncertain"))
+        with self.assertRaises(urllib.error.URLError):
+            self.invoke(send=sender,webhook="https://discord.com/api/webhooks/1/valid")
+        sender.assert_called_once()
+        self.assertFalse((self.directory/"delivery.json").exists())
+
+    def test_unconfirmed_message_id_does_not_mark_delivered(self):
+        self.save([])
+        sender=Mock(return_value=None)
+        with self.assertRaises(ValueError):
+            self.invoke(send=sender,webhook="https://discord.com/api/webhooks/1/valid")
+        self.assertFalse((self.directory/"delivery.json").exists())
+
     def test_no_backfilled_prelaunch_week(self):
         self.save([sample()])
         self.now=dt.datetime(2026,10,20,15,10,tzinfo=dt.timezone.utc)
@@ -109,8 +169,9 @@ class WeeklyReleaseTests(unittest.TestCase):
         season = next(s for s in report["segments"] if s["completedMatchesInArchive"])
         self.assertEqual(season["topKillers"][0]["name"], "Sample Player")
         self.assertEqual(season["mapLeaders"][0]["leader"]["kills"], 16)
-        with self.assertRaises(ValueError):
-            render_weekly_card(summarize_week([], "2026-10-25"))
+        with Image.open(BytesIO(render_weekly_card(
+                summarize_week([], "2026-10-25")))) as empty_image:
+            self.assertEqual(empty_image.size, (1080, 750))
 
     def test_navigation_exists_in_all_pages(self):
         pages=Path(__file__).resolve().parents[1] / "docs"
