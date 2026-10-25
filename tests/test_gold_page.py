@@ -142,5 +142,19 @@ assert.deepEqual(m.buildCandles([], '30'),[]);
         self.assertIn('.gold-forecast-panel{',css)
         self.assertIn('grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)',css)
 
+
+    def test_hover_tooltip_uses_svg_screen_transform(self):
+        html=(ROOT/'gold.html').read_text(encoding='utf-8')
+        js=(ROOT/'js/gold.js').read_text(encoding='utf-8')
+        css=(ROOT/'assets/gold.css').read_text(encoding='utf-8')
+        self.assertIn('id="gold-tooltip"',html)
+        self.assertIn('role="tooltip"',html)
+        self.assertIn('svg.getScreenCTM()',js)
+        self.assertIn('screen.inverse()',js)
+        self.assertIn('svg.onpointermove=showHover',js)
+        self.assertNotIn('renderChart(rows,selectedTs,projection,mode,range);',js)
+        self.assertIn('.gold-tooltip{',css)
+        self.assertIn('pointer-events:none',css)
+
 if __name__=='__main__':
     unittest.main()

@@ -149,3 +149,10 @@
  .gold-forecast-method{grid-column:auto}
  .gold-forecast-panel .gold-forecast-numbers strong{font-size:30px}
 }
+
+/* Actual chart-point tooltip: screen-matrix anchored, no redraw on hover. */
+.gold-market .gold-chart-note{position:static;left:auto;bottom:auto;max-width:none;pointer-events:none;margin:3px 0 0;background:transparent;color:#e5cfa1;line-height:1.5;min-height:18px;padding:0 4px}
+.gold-market .gold-chart-wrap{position:relative;overflow:visible}
+.gold-tooltip{position:absolute;z-index:4;pointer-events:none;white-space:pre-line;text-align:left;background:#15130ff2;border:1px solid #dfb358;color:#ffe4a2;border-radius:6px;box-shadow:0 6px 24px #000a;font:700 11px/1.7 'DM Sans',sans-serif;min-width:140px;max-width:min(250px,85%);padding:9px 12px;overflow-wrap:anywhere}
+.gold-chart-wrap .gold-focus-dot{pointer-events:none}
+@media(max-width:570px){.gold-market .gold-chart-note{max-width:none;font-size:10px}.gold-tooltip{font-size:10px;min-width:120px;padding:7px 9px}}

@@ -153,15 +153,59 @@
       svg.appendChild(node('circle',{class:'gold-focus-dot',cx:x(chosen.ts),cy:y(chosen.price),r:6}));
       get('gold-chart-note').textContent=dateText(chosen.ts)+' · '+number(chosen.price)+' cash per bar';
     }
-    svg.onpointermove=function(evt){
-      const rect=svg.getBoundingClientRect();
-      if(!rect.width)return;
-      const px=(evt.clientX-rect.left)*W/rect.width;
-      const ratio=Math.max(0,Math.min(1,(px-L)/plotW));
-      const target=first+ratio*(last-first);
-      const near=rows.reduce((best,r)=>Math.abs(r.ts-target)<Math.abs(best.ts-target)?r:best,rows[0]);
-      if(near.ts!==selectedTs){selectedTs=near.ts;renderChart(rows,selectedTs,projection,mode,range);}
-    };
+    // Transform browser pointer coordinates through the SVG screen matrix.
+    // Pixel/viewBox ratios drift if the SVG letterboxes or the user zooms.
+    const tooltip=get('gold-tooltip');
+    if(tooltip)tooltip.hidden=true;
+    const candidates=mode==='candles'?candleData:rows;
+    const focusLine=svg.querySelector('.gold-focus-line');
+    let focusDot=svg.querySelector('.gold-focus-dot');
+    if(!focusDot){
+      focusDot=node('circle',{class:'gold-focus-dot',r:6,cx:-100,cy:-100});
+      svg.appendChild(focusDot);
+    }
+    function hideHover(){if(tooltip)tooltip.hidden=true;}
+    function showHover(evt){
+      const screen=svg.getScreenCTM();
+      if(!screen||!candidates.length)return;
+      const cursor=svg.createSVGPoint();
+      cursor.x=evt.clientX;cursor.y=evt.clientY;
+      let pos;
+      try{pos=cursor.matrixTransform(screen.inverse());}catch(_){hideHover();return;}
+      if(pos.x<L-12||pos.x>x(last)+10||pos.y<T-14||pos.y>base+16){
+        hideHover();return;
+      }
+      const selected=candidates.reduce((closest,item)=>
+        Math.abs(x(item.ts)-pos.x)<Math.abs(x(closest.ts)-pos.x)?item:closest,candidates[0]);
+      const cx=x(selected.ts);
+      const closePrice=mode==='candles'?selected.close:selected.price;
+      const cy=y(closePrice);
+      if(focusLine){
+        focusLine.setAttribute('x1',cx);focusLine.setAttribute('x2',cx);
+      }
+      focusDot.setAttribute('cx',cx);focusDot.setAttribute('cy',cy);
+      const label=mode==='candles'
+        ?dateText(selected.from,true)+' – '+dateText(selected.to,true)+
+         '\nOPEN  '+number(selected.open)+'\nHIGH  '+number(selected.high)+
+         '\nLOW   '+number(selected.low)+'\nCLOSE '+number(selected.close)
+        :dateText(selected.ts)+'\n'+number(selected.price)+' cash per bar';
+      get('gold-chart-note').textContent=label.replace(/\n/g,' · ');
+      if(!tooltip)return;
+      tooltip.textContent=label;
+      tooltip.hidden=false;
+      const point=svg.createSVGPoint();point.x=cx;point.y=cy;
+      const anchor=point.matrixTransform(screen);
+      const bounds=svg.parentElement.getBoundingClientRect();
+      const margin=9,localX=anchor.x-bounds.left,localY=anchor.y-bounds.top;
+      const left=Math.max(margin,Math.min(bounds.width-tooltip.offsetWidth-margin,
+        localX+14+tooltip.offsetWidth>bounds.width?localX-tooltip.offsetWidth-15:localX+14));
+      const above=localY-tooltip.offsetHeight-13;
+      tooltip.style.left=Math.round(left)+'px';
+      tooltip.style.top=Math.round(above<margin?localY+13:above)+'px';
+    }
+    svg.onpointermove=showHover;
+    svg.onpointerdown=showHover;
+    svg.onpointerleave=function(evt){if(evt.pointerType!=='touch')hideHover();};
   }
   function init(){
     const rangeButtons=Array.from(document.querySelectorAll('[data-range]'));

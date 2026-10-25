@@ -71,6 +71,28 @@ async def capture():
                 await page.locator(".gold-range [data-range='30']").click()
                 await page.locator('[data-chart-mode="candles"]').click()
                 assert await page.locator('.gold-candle-body').count()>=8
+                # Hit three actual candle centers, including near the right edge.
+                # Hover must not drift as the SVG scales.
+                candles=await page.evaluate("""() => {
+                    const svg=document.getElementById('gold-chart');
+                    const items=[...svg.querySelectorAll('.gold-candle-body')];
+                    const indexes=[0,Math.floor(items.length/2),items.length-1];
+                    return indexes.map(i=>{
+                        const r=items[i],p=svg.createSVGPoint();
+                        p.x=Number(r.getAttribute('x'))+Number(r.getAttribute('width'))/2;
+                        p.y=Number(r.getAttribute('y'))+Number(r.getAttribute('height'))/2;
+                        const pt=p.matrixTransform(svg.getScreenCTM());
+                        return {x:pt.x,y:pt.y,cx:p.x};
+                    });
+                }""")
+                for pt in candles:
+                    await page.mouse.move(pt['x'],pt['y'])
+                    assert await page.locator('#gold-tooltip').is_visible()
+                    label=await page.locator('#gold-tooltip').inner_text()
+                    assert all(t in label for t in ('OPEN','HIGH','LOW','CLOSE')),label
+                    circle_x=float(await page.locator('.gold-focus-dot').get_attribute('cx'))
+                    assert abs(circle_x-pt['cx'])<0.05,(circle_x,pt)
+
                 assert await page.locator('[data-chart-mode="candles"]').get_attribute('aria-pressed') == "true"
                 assert await page.locator('#gold-candle-explainer').is_visible()
                 # Forecast belongs beneath BOTH dashboard columns, with no long empty left gutter.
@@ -94,6 +116,29 @@ async def capture():
                                       full_page=True,animations="disabled")
                 await page.locator('[data-chart-mode="line"]').click()
                 assert await page.locator('.gold-line').count()>=1
+                # Line points at different x-coordinates must match marker and hover.
+                points=await page.evaluate("""() => {
+                    const svg=document.getElementById('gold-chart');
+                    const d=svg.querySelector('.gold-line').getAttribute('d');
+                    const parsed=[...d.matchAll(/([ML])([0-9.]+),([0-9.]+)/g)]
+                        .map(m=>({x:Number(m[2]),y:Number(m[3])}));
+                    const ix=[2,Math.floor(parsed.length/2),parsed.length-2];
+                    return ix.map(i=>{
+                        const p=svg.createSVGPoint();p.x=parsed[i].x;p.y=parsed[i].y;
+                        const screen=p.matrixTransform(svg.getScreenCTM());
+                        return {x:screen.x,y:screen.y,cx:p.x};
+                    });
+                }""")
+                for pt in points:
+                    await page.mouse.move(pt['x'],pt['y'])
+                    assert await page.locator('#gold-tooltip').is_visible()
+                    text=await page.locator('#gold-tooltip').inner_text()
+                    assert 'cash per bar' in text,text
+                    cx=float(await page.locator('.gold-focus-dot').get_attribute('cx'))
+                    assert abs(cx-pt['cx'])<0.1,(cx,pt)
+                await page.mouse.move(2,2)
+                assert await page.locator('#gold-tooltip').is_hidden()
+
                 assert await page.locator('#gold-candle-explainer').is_hidden()
 
                 await page.locator(".gold-quick [data-bars='10']").click()
