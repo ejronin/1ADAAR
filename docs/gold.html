@@ -99,20 +99,24 @@
    <div class="gold-trend-range"><span id="gold-trend-low">—</span><span id="gold-trend-high">—</span></div>
    <p class="gold-subtle">Lowest to highest recorded price over the last 7 UTC days. Historical range, not a price forecast.</p>
   </section>
-  <section class="gold-panel gold-forecast-panel" aria-labelledby="gold-forecast-title">
+ </aside>
+</div>
+<section class="gold-panel gold-forecast-panel" aria-labelledby="gold-forecast-title">
+  <div class="gold-forecast-overview">
    <div class="gold-eyebrow">QUANTITATIVE OUTLOOK / MODEL VALIDATION</div>
    <h2 id="gold-forecast-title">GOLD PRICE FORECAST</h2>
    <p id="gold-forecast-message" class="gold-subtle" aria-live="polite">Evaluating historical daily prices…</p>
-   <div class="gold-forecast-numbers">
-    <div><span>NEXT UTC DAY</span><strong id="gold-forecast-1">—</strong><small id="gold-forecast-range-1">—</small></div>
-    <div><span>IN 7 DAYS</span><strong id="gold-forecast-7">—</strong><small id="gold-forecast-range-7">—</small></div>
-   </div>
+  </div>
+  <div class="gold-forecast-numbers" aria-label="Forecast point estimates">
+   <div><span>NEXT UTC DAY</span><strong id="gold-forecast-1">—</strong><small id="gold-forecast-range-1">—</small></div>
+   <div><span>IN 7 DAYS</span><strong id="gold-forecast-7">—</strong><small id="gold-forecast-range-7">—</small></div>
+  </div>
+  <div class="gold-forecast-method">
    <p class="gold-subtle" id="gold-forecast-model">Model: —</p>
    <p class="gold-subtle" id="gold-forecast-backtest">Historical error: —</p>
    <p class="gold-subtle gold-forecast-caveat">The shaded projection is based on past forecasting errors, not a guaranteed 80% probability range. Models are selected using rolling historical tests, not independent prospective results. WARDOGS sets prices, not market traders.</p>
-  </section>
- </aside>
-</div>
+  </div>
+ </section>
 <section class="gold-panel gold-history" aria-labelledby="gold-history-title">
  <div class="gold-history-head"><div><div class="gold-eyebrow">PRICE HISTORY</div><h2 id="gold-history-title">LAST 14 RECORDED DAYS</h2></div><span class="gold-subtle">Select a day to inspect its exact price</span></div>
  <div id="gold-days" class="gold-day-grid" aria-live="polite"><p class="gold-subtle">Loading recent daily prices…</p></div>

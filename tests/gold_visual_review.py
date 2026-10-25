@@ -73,6 +73,19 @@ async def capture():
                 assert await page.locator('.gold-candle-body').count()>=8
                 assert await page.locator('[data-chart-mode="candles"]').get_attribute('aria-pressed') == "true"
                 assert await page.locator('#gold-candle-explainer').is_visible()
+                # Forecast belongs beneath BOTH dashboard columns, with no long empty left gutter.
+                dashboard=await page.locator('.gold-dashboard').bounding_box()
+                market=await page.locator('.gold-market').bounding_box()
+                sidebar=await page.locator('.gold-sidebar').bounding_box()
+                forecast_rect=await page.locator('.gold-forecast-panel').bounding_box()
+                history=await page.locator('.gold-history').bounding_box()
+                assert await page.locator('.gold-sidebar .gold-forecast-panel').count()==0
+                assert abs(forecast_rect['x']-dashboard['x'])<=2, (forecast_rect,dashboard)
+                assert forecast_rect['width']>=dashboard['width']-2, (forecast_rect,dashboard)
+                columns_bottom=max(market['y']+market['height'],sidebar['y']+sidebar['height'])
+                assert 0 <= forecast_rect['y']-columns_bottom<=24, (forecast_rect,market,sidebar)
+                assert 0 <= history['y']-(forecast_rect['y']+forecast_rect['height'])<=24, (history,forecast_rect)
+
                 rect=await page.locator('#gold-chart').bounding_box()
                 toolbar=await page.locator('.gold-chart-toolbar').bounding_box()
                 assert rect['y']-toolbar['y']<160, (rect,toolbar)

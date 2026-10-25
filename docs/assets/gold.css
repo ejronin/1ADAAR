@@ -121,3 +121,31 @@
  .gold-chart-toolbar{display:flex;width:100%}
  .gold-chart-toolbar button{flex:1}
 }
+
+/* Forecast is a full-width second row, so it never leaves dead space beside a tall sidebar. */
+.gold-forecast-panel{
+ display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) minmax(0,1.35fr);
+ gap:clamp(16px,2vw,30px);align-items:start;margin-top:15px;
+}
+.gold-forecast-panel h2{
+ margin:7px 0 12px;color:#fff;
+ font:800 clamp(22px,2vw,28px)/1.07 'Barlow Condensed',sans-serif;
+ letter-spacing:.045em;
+}
+.gold-forecast-panel .gold-forecast-numbers{margin:0;gap:10px}
+.gold-forecast-panel .gold-forecast-numbers>div{padding:14px 12px}
+.gold-forecast-panel .gold-forecast-numbers strong{font-size:clamp(27px,2.3vw,34px)}
+.gold-forecast-panel .gold-forecast-numbers small{overflow-wrap:anywhere}
+.gold-forecast-method{border-left:1px solid #56462c;padding-left:clamp(14px,1.4vw,22px)}
+.gold-forecast-method .gold-subtle:first-child{margin-top:0}
+.gold-forecast-method .gold-forecast-caveat{margin-top:12px;padding-top:9px;line-height:1.5}
+.gold-history{margin-top:15px}
+@media(max-width:1120px){
+ .gold-forecast-panel{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:14px 22px}
+ .gold-forecast-method{grid-column:1/-1;border-left:0;border-top:1px solid #56462c;padding:12px 0 0}
+}
+@media(max-width:660px){
+ .gold-forecast-panel{grid-template-columns:minmax(0,1fr);gap:15px}
+ .gold-forecast-method{grid-column:auto}
+ .gold-forecast-panel .gold-forecast-numbers strong{font-size:30px}
+}
