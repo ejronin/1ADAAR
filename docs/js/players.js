@@ -91,6 +91,6 @@ const incoming=/^#player-([a-f0-9]{64})$/.exec(location.hash);if(incoming){const
 
 $('share-player').addEventListener('click',()=>{const entry=publicState.selected;if(!entry||entry.demo||!(/^[a-f0-9]{64}$/.test(entry.key)))return;const url=new URL(`players.html#player-${entry.key}`,location.href).href;window.OneADAARShare.share(url,`WARDOGS stats: ${entry.name} — 1ADAAR`,$('player-share-status'),{
   intro:'🐺 Check out my stats on the OneAverageDan WARDOGS Community Server!\n\n📊 View my 1ADAAR player profile:',
-  outro:'🎮 Join the 1AD Discord: https://discord.gg/e9B69UkE53'
+  outro:'🎮 Join the 1AD Discord: https://discord.gg/Yv5HPEFzGj'
 });});
 $('player-search').addEventListener('submit',submitLookup);$('new-search').addEventListener('click',()=>{$('dossier').hidden=true;$('lookup-results').hidden=true;setMessage('Enter an in-game name or SteamID64 to search again.');history.replaceState(null,'','players.html');$('player-query').focus();});init();

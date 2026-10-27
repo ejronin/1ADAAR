@@ -22,7 +22,7 @@ class AssetParser(HTMLParser):
                 self.logo_count += 1
         if tag == "link" and a.get("href", "").startswith("assets/"):
             self.assets.append(a["href"])
-        if tag == "a" and "discord.gg/e9B69UkE53" in a.get("href", ""):
+        if tag == "a" and "discord.gg/Yv5HPEFzGj" in a.get("href", ""):
             self.discord_cta += 1
 
 

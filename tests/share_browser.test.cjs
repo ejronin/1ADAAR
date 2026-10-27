@@ -40,7 +40,7 @@ function simulate(options = {}) {
 (async () => {
   const report = BASE + 'players.html#player-' + 'a'.repeat(64);
   const intro = '🐺 Check out my stats on the OneAverageDan WARDOGS Community Server!\n\n📊 View my 1ADAAR player profile:';
-  const outro = '🎮 Join the 1AD Discord: https://discord.gg/e9B69UkE53';
+  const outro = '🎮 Join the 1AD Discord: https://discord.gg/Yv5HPEFzGj';
   const message = {intro, outro};
   const normal = simulate();
   await normal.share(report, 'Player stats', normal.status, message);
