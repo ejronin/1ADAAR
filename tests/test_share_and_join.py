@@ -9,7 +9,7 @@ class ShareAndJoinTests(unittest.TestCase):
         self.assertNotIn('<section id="join-wardogs"', html)
         self.assertIn('Join the 1AD Discord', html)
         self.assertIn('class="hero motion-hero server-banner-hero"', html)
-        self.assertEqual(html.count('href="https://discord.gg/e9B69UkE53"'),1)
+        self.assertEqual(html.count('href="https://discord.gg/Yv5HPEFzGj"'),1)
         sidebar=html.split('<aside class="rail"',1)[1].split('</aside>',1)[0]
         self.assertNotIn('join-wardogs',sidebar)
         hero=html.split('<section class="hero motion-hero server-banner-hero"',1)[1].split('</section>',1)[0]
@@ -37,6 +37,14 @@ class ShareAndJoinTests(unittest.TestCase):
         self.assertIn('id="share-demo"',html)
         self.assertIn('demo-share-status',html)
         self.assertIn('fictional stats',js)
+    def test_permanent_invite_consistent_across_public_paths(self):
+        invite='https://discord.gg/Yv5HPEFzGj'
+        for item in ('index.html','join.html','js/players.js','js/demo-share.js'):
+            text=(ROOT/item).read_text(encoding='utf-8')
+            self.assertIn(invite,text,item)
+            self.assertNotIn('e9B69UkE53',text,item)
+        self.assertIn('js/players.js?v=13',(ROOT/'players.html').read_text())
+
     def test_fallback_link_without_clipboard_dependency(self):
         share=(ROOT/'js/share.js').read_text()
         self.assertIn('navigator.share',share)
@@ -50,7 +58,7 @@ class ShareAndJoinTests(unittest.TestCase):
         demo=(ROOT/'js/demo-share.js').read_text()
         for content in (players,demo):
             self.assertIn('OneAverageDan WARDOGS Community Server!',content)
-            self.assertIn('Join the 1AD Discord: https://discord.gg/e9B69UkE53',content)
+            self.assertIn('Join the 1AD Discord: https://discord.gg/Yv5HPEFzGj',content)
         self.assertIn('View my 1ADAAR player profile:',players)
         self.assertIn('DEMO',demo)
         self.assertNotIn('steamcommunity.com',players+demo)

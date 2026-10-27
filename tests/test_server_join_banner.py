@@ -28,7 +28,7 @@ class JoinBannerContracts(unittest.TestCase):
         self.assertIn('max-width:325px', (DOCS/'assets/server-join.css').read_text())
         self.assertIn('href="join.html"',home)
         self.assertEqual(home.count('Join the 1AD Discord'),1)
-        self.assertEqual(home.count('discord.gg/e9B69UkE53'),1)
+        self.assertEqual(home.count('discord.gg/Yv5HPEFzGj'),1)
         css=(DOCS/'assets/server-join.css').read_text()
         self.assertIn("url('oneaveragedan-server-banner.png?v=113')",css)
         self.assertIn('aspect-ratio:4 / 1',css)
@@ -40,8 +40,8 @@ class JoinBannerContracts(unittest.TestCase):
         self.assertIn('class="join-discord-panel"',html)
         self.assertIn("Join Dan's Discord",html)
         self.assertIn('aria-label="Join Dan\'s Discord community (opens in a new tab)"',html)
-        self.assertIn('href="https://discord.gg/e9B69UkE53"',html)
-        self.assertEqual(html.count('https://discord.gg/e9B69UkE53'),1)
+        self.assertIn('href="https://discord.gg/Yv5HPEFzGj"',html)
+        self.assertEqual(html.count('https://discord.gg/Yv5HPEFzGj'),1)
         self.assertLess(html.index('id="copy-server-join-code"'),
                         html.index('class="join-discord-panel"'))
         self.assertLess(html.index('class="join-discord-panel"'),
