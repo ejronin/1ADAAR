@@ -19,7 +19,7 @@ class JoinBannerContracts(unittest.TestCase):
             self.assertIn('aria-live="polite"',page)
             self.assertIn('type="button"',page)
             self.assertEqual(page.count(CODE),2)
-            self.assertIn('assets/server-join.css?v=114' if page is home else 'assets/server-join.css?v=113',page)
+            self.assertIn('assets/server-join.css?v=114' if page is home else 'assets/server-join.css?v=115',page)
             self.assertIn('js/server-join.js?v=113',page)
         self.assertLess(home.index('class="hero-text server-banner-toolbar"'),home.index('class="server-join-overlay"'))
         self.assertGreater(home.index('class="server-join-overlay"'),home.index('class="server-banner-media"'))
@@ -33,6 +33,22 @@ class JoinBannerContracts(unittest.TestCase):
         self.assertIn("url('oneaveragedan-server-banner.png?v=113')",css)
         self.assertIn('aspect-ratio:4 / 1',css)
         self.assertIn('background-position:center,center',css)
+
+    def test_qr_landing_shows_dan_discord_invite_beside_join_code(self):
+        html=(DOCS/'join.html').read_text()
+        css=(DOCS/'assets/server-join.css').read_text()
+        self.assertIn('class="join-discord-panel"',html)
+        self.assertIn("Join Dan's Discord",html)
+        self.assertIn('aria-label="Join Dan\'s Discord community (opens in a new tab)"',html)
+        self.assertIn('href="https://discord.gg/e9B69UkE53"',html)
+        self.assertEqual(html.count('https://discord.gg/e9B69UkE53'),1)
+        self.assertLess(html.index('id="copy-server-join-code"'),
+                        html.index('class="join-discord-panel"'))
+        self.assertLess(html.index('class="join-discord-panel"'),
+                        html.index('id="join-steps"'))
+        self.assertIn('rel="noopener noreferrer"',html)
+        self.assertIn('.join-landing .join-discord-link:focus-visible',css)
+        self.assertIn('min-height:52px',css)
 
     def test_game_join_never_claims_browser_auto_launch(self):
         html=(DOCS/'join.html').read_text()
